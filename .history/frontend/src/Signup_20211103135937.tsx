@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import Alert from "react-bootstrap/Alert"
 import { useAuth } from './contexts/AuthContext';
-import {Link} from 'react-router-dom'
 
 export default function Signup(){
 
@@ -13,7 +12,7 @@ export default function Signup(){
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const passwordConfirmRef = useRef<HTMLInputElement>(null);
-    const signup = useAuth()
+    const {signup} = useAuth()
 
     async function handleSubmit(e: { preventDefault: () => void; }){
         e.preventDefault()
@@ -37,6 +36,7 @@ export default function Signup(){
             <Card>
                 <Card.Body>
                     <h2 className = "text-center mb-4">Sign up</h2>
+                    {currentUser?.email}
                     {error && <Alert variant ="danger">{error}</Alert>}
                     <Form onSubmit = {handleSubmit}>
                         <Form.Group id = "email">
@@ -58,7 +58,7 @@ export default function Signup(){
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Already have an account? <Link to="/login">Log in</Link>
+                Already have an account? Log in
             </div>
         </>
     )

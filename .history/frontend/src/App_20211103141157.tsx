@@ -20,6 +20,7 @@ function App() {
             </Switch>
           </AuthProvider>
         </Router>
+        <Signup/>
       </div>
     </Container> 
   )

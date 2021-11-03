@@ -4,7 +4,6 @@ import { Container } from 'react-bootstrap';
 import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Dashboard from './Dashboard';
-import Login from './Login';
 
 function App() {
   return(    
@@ -20,6 +19,7 @@ function App() {
             </Switch>
           </AuthProvider>
         </Router>
+        <Signup/>
       </div>
     </Container> 
   )

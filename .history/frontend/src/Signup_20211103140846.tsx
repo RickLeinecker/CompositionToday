@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import Alert from "react-bootstrap/Alert"
 import { useAuth } from './contexts/AuthContext';
-import {Link} from 'react-router-dom'
 
 export default function Signup(){
 
@@ -58,7 +57,7 @@ export default function Signup(){
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Already have an account? <Link to="/login">Log in</Link>
+                Already have an account? Log in
             </div>
         </>
     )
