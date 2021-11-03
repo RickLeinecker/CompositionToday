@@ -25,6 +25,7 @@ export default function Login(){
             setError("Failed to log in")
         }
         setLoading(false)
+        
     }
 
     return(

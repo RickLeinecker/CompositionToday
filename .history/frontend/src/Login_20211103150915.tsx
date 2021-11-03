@@ -25,6 +25,8 @@ export default function Login(){
             setError("Failed to log in")
         }
         setLoading(false)
+        console.log("logged in!")
+        
     }
 
     return(

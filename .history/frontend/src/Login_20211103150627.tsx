@@ -25,6 +25,7 @@ export default function Login(){
             setError("Failed to log in")
         }
         setLoading(false)
+        
     }
 
     return(
@@ -49,7 +50,7 @@ export default function Login(){
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Need an account? <Link to="/signup">Sign up</Link>
+                Already have an account? <Link to="/login">Log in</Link>
             </div>
         </>
     )

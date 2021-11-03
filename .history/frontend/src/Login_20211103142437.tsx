@@ -12,7 +12,7 @@ export default function Login(){
     const [loading, setLoading] = useState<boolean>(false)
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const {login} = useAuth()
+    const signup = useAuth()
 
     async function handleSubmit(e: { preventDefault: () => void; }){
         e.preventDefault()
@@ -20,11 +20,12 @@ export default function Login(){
         try{
             setError("")
             setLoading(true)
-            await login(emailRef.current?.value, passwordRef.current?.value)
+            await signup(emailRef.current?.value, passwordRef.current?.value)
         } catch {
-            setError("Failed to log in")
+            setError("Failed to sign in")
         }
         setLoading(false)
+        
     }
 
     return(
