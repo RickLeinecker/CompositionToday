@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from './contexts/AuthContext'
-import {useHistory} from "react-router-dom"
+import { Link, useHistory} from "react-router-dom"
 import { Button } from 'react-bootstrap'
 
 export default function Dashboard() {
