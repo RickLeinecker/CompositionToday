@@ -6,12 +6,11 @@ import Alert from "react-bootstrap/Alert"
 import { useAuth } from './contexts/AuthContext';
 import {Link, useHistory} from 'react-router-dom'
 
-export default function Login(){
+export default function ForgotPassword(){
 
     const [error, setError] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
     const {login} = useAuth()
     const history = useHistory()
 
@@ -21,7 +20,7 @@ export default function Login(){
         try{
             setError("")
             setLoading(true)
-            await login(emailRef.current?.value, passwordRef.current?.value)
+            // await login(emailRef.current?.value, passwordRef.current?.value)
             history.push("/")
         } catch {
             setError("Failed to log in")
@@ -39,10 +38,6 @@ export default function Login(){
                         <Form.Group id = "email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type = "email" ref={emailRef} required/>
-                        </Form.Group>
-                        <Form.Group id = "password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type = "password" ref={passwordRef} required/>
                         </Form.Group>
                         <Button disabled={loading} className = "w-100" type="submit">
                             Log in

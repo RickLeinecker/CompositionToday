@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Dashboard from './Dashboard';
 import PrivateRoute from './PrivateRoute'
 import Login from './Login';
-import ForgotPassword from './ForgotPassword';
 
 function App() {
   return(    
