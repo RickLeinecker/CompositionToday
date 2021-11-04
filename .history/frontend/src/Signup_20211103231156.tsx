@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import Alert from "react-bootstrap/Alert"
 import { useAuth } from './contexts/AuthContext';
-import {Link, useHistory} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 export default function Signup(){
 
@@ -14,7 +14,6 @@ export default function Signup(){
     const passwordRef = useRef<HTMLInputElement>(null)
     const passwordConfirmRef = useRef<HTMLInputElement>(null)
     const {signup} = useAuth()
-    const history = useHistory()
 
     async function handleSubmit(e: { preventDefault: () => void; }){
         e.preventDefault()
