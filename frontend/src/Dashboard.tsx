@@ -9,7 +9,7 @@ export default function Dashboard() {
     const [error, setError] = useState<string>("")
     const {currentUser, logout} = useAuth()
     const history = useHistory()
-
+//
     async function handleLogout(){
         setError('')
 
