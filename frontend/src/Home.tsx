@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from './contexts/AuthContext'
 import {useHistory} from "react-router-dom"
-import { Button } from 'react-bootstrap'
+import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
 export default function Home() {
 
@@ -21,11 +21,26 @@ export default function Home() {
         }
     }
     return (
-        <div>
-            Homepage 
-            <Button variant="link" onClick={handleLogout}>
-                Logout
-            </Button>  
-        </div>
+        <>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand href="/">Composition Today</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link href="/showcase">Showcase</Nav.Link>
+                        <Nav.Link href="/related-projects">Related Projects</Nav.Link>
+                        <Nav.Link href="/blog">Blog</Nav.Link>
+                    </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <div>
+                Homepage 
+                <Button variant="link" onClick={handleLogout}>
+                    Logout
+                </Button>  
+            </div>
+        </>
     )
 }
