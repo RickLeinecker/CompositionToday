@@ -10,6 +10,7 @@ import ForgotPassword from './ForgotPassword';
 import Blog from './Blog';
 import RelatedProjects from './RelatedProjects';
 import Showcase from './Showcase';
+import TopNavBar from './TopNavBar';
 
 function App() {
   return(    

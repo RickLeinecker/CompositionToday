@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useAuth } from './contexts/AuthContext'
 import {useHistory} from "react-router-dom"
-import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import TopNavBar from './TopNavBar'
 
 export default function Home() {
 
@@ -12,7 +13,6 @@ export default function Home() {
 
     async function handleLogout(){
         setError('')
-
         try{
             await logout()
             history.push("/login")
@@ -22,19 +22,7 @@ export default function Home() {
     }
     return (
         <>
-            <Navbar bg="light" expand="lg">
-                <Container>
-                    <Navbar.Brand href="/">Composition Today</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="/showcase">Showcase</Nav.Link>
-                        <Nav.Link href="/related-projects">Related Projects</Nav.Link>
-                        <Nav.Link href="/blog">Blog</Nav.Link>
-                    </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+            <TopNavBar/>
             <div>
                 Homepage 
                 <Button variant="link" onClick={handleLogout}>

@@ -1,9 +1,13 @@
 import React from 'react'
+import TopNavBar from './TopNavBar'
 
 export default function Showcase() {
     return (
-        <div>
-            Showcase
-        </div>
+        <>
+            <TopNavBar/>
+            <div>
+                Showcase
+            </div>
+        </>
     )
 }
