@@ -3,13 +3,13 @@ import { useAuth } from './contexts/AuthContext'
 import {useHistory} from "react-router-dom"
 import { Button } from 'react-bootstrap'
 
-export default function Dashboard() {
+export default function Home() {
 
     
     const [error, setError] = useState<string>("")
     const {currentUser, logout} = useAuth()
     const history = useHistory()
-//
+
     async function handleLogout(){
         setError('')
 
@@ -22,7 +22,7 @@ export default function Dashboard() {
     }
     return (
         <div>
-            Dashboard 
+            Homepage 
             <Button variant="link" onClick={handleLogout}>
                 Logout
             </Button>  
