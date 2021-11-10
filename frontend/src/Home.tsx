@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuth } from './contexts/AuthContext'
 import {useHistory} from "react-router-dom"
 import { Button } from 'react-bootstrap'
+import TopNavBar from './TopNavBar'
 
 export default function Home() {
 
@@ -12,7 +13,6 @@ export default function Home() {
 
     async function handleLogout(){
         setError('')
-
         try{
             await logout()
             history.push("/login")
@@ -21,11 +21,14 @@ export default function Home() {
         }
     }
     return (
-        <div>
-            Homepage 
-            <Button variant="link" onClick={handleLogout}>
-                Logout
-            </Button>  
-        </div>
+        <>
+            <TopNavBar/>
+            <div>
+                Homepage 
+                <Button variant="link" onClick={handleLogout}>
+                    Logout
+                </Button>  
+            </div>
+        </>
     )
 }
