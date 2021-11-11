@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+/**
+ * Custom hook for many array utilities.
+ * Credit: WebDevSimplified
+ * @param defaultValue Value to start using array
+ * @returns 
+ */
 export default function useArray(defaultValue: any) {
     const [array, setArray] = useState(defaultValue);
 
