@@ -13,6 +13,7 @@ export default function MyProfile() {
 
     useEffect(() => {
 
+        // sets current section button color to selected 
         let property = document.getElementById(currentSection)
             if(property != null)
                 property.style.background = "#3981FF"
@@ -24,6 +25,8 @@ export default function MyProfile() {
     const handleClick=(event: any)=>{
         event.preventDefault()
         
+        // sets old section button color to selected
+        // and updates section 
         if(event?.target?.value != null){
             let oldProperty = document.getElementById(currentSection)
             if(oldProperty != null){
