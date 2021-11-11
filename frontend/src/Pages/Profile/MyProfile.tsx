@@ -18,9 +18,8 @@ export default function MyProfile() {
     return (
         <>
             <TopNavBar/>
-            <Container className="d-flex justify-content-center" style = {{minHeight:"100vh", padding:"3%"}}>
-                <div id="container">
-                    
+            <Container style = {{minHeight:"100vh", padding:"2%"}}>
+                <div id="container">   
                     <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
                     <ButtonGroup onClick={handleClick}>
                         <Button variant="light" value="Experience">Experience</Button>{' '}
@@ -28,13 +27,13 @@ export default function MyProfile() {
                         <Button variant="light" value="Events">Events</Button>{' '}
                         <Button variant="light" value="Articles">Articles</Button>{' '}
                     </ButtonGroup>
-                    <div>
-                        {currentSection === "Experience" && <ExperienceSection/>}
-                        {currentSection === "Music" && <MusicSection/>}
-                        {currentSection === "Events" && <EventsSection/>}
-                        {currentSection === "Articles" && <ArticlesSection/>}
-                    </div>
                     <div id="my-profile-box"></div>
+                </div>
+                <div id="sections">
+                    {currentSection === "Experience" && <ExperienceSection/>}
+                    {currentSection === "Music" && <MusicSection/>}
+                    {currentSection === "Events" && <EventsSection/>}
+                    {currentSection === "Articles" && <ArticlesSection/>}
                 </div>
             </Container>
         </>
