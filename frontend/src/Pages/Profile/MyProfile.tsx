@@ -39,9 +39,12 @@ export default function MyProfile() {
     return (
         <>
             <TopNavBar/>
-            <Container style = {{minHeight:"100vh", padding:"2%"}}>
-                <div id="container">   
-                    <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
+            <Container style = {{padding:"2%"}}>
+                <div id="container">
+                    <div style ={{display: "flex", marginLeft: "5%"}}>
+                        <img className="profile-pic" src="img_avatar.png" alt="avatar"/>   
+                        <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
+                    </div>
                     <ButtonGroup className="buttonContainer" onClick={handleClick}>
                         <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
                         <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
