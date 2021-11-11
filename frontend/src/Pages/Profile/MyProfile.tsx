@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Container } from 'react-bootstrap'
-import TopNavBar from './TopNavBar'
+import TopNavBar from '../TopNavBar'
 import './MyProfileStyle.css'
 
 export default function MyProfile() {
