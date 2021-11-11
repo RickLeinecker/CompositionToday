@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
 import ArticlesSection from './Articles/ArticlesSection'
@@ -10,10 +10,27 @@ import './MyProfileStyle.css'
 export default function MyProfile() {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
+
+    useEffect(() => {
+
+        let property = document.getElementById(currentSection)
+            if(property != null)
+                property.style.background = "#3981FF"
+
+        return () => {
+        }
+    }, [currentSection])
+
     const handleClick=(event: any)=>{
         event.preventDefault()
-        if(event?.target?.value != null)
+        
+        if(event?.target?.value != null){
+            let oldProperty = document.getElementById(currentSection)
+            if(oldProperty != null){
+                oldProperty.style.background = "#FFFBFF"
+            }
             setCurrentSection(event?.target?.value)
+        }
     }
 
     return (
@@ -23,10 +40,10 @@ export default function MyProfile() {
                 <div id="container">   
                     <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
                     <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                        <Button className="rounded-pill" variant="light" value="Experience">Experience</Button>{' '}
-                        <Button className="rounded-pill" variant="light" value="Music">Music</Button>{' '}
-                        <Button className="rounded-pill" variant="light" value="Events">Events</Button>{' '}
-                        <Button className="rounded-pill" variant="light" value="Articles">Articles</Button>{' '}
+                        <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
+                        <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
+                        <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
+                        <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
                     </ButtonGroup>
                     <div id="my-profile-box"></div>
                 </div>
