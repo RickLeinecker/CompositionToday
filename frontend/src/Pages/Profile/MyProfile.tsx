@@ -21,11 +21,11 @@ export default function MyProfile() {
             <Container style = {{minHeight:"100vh", padding:"2%"}}>
                 <div id="container">   
                     <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
-                    <ButtonGroup onClick={handleClick}>
-                        <Button variant="light" value="Experience">Experience</Button>{' '}
-                        <Button variant="light" value="Music">Music</Button>{' '}
-                        <Button variant="light" value="Events">Events</Button>{' '}
-                        <Button variant="light" value="Articles">Articles</Button>{' '}
+                    <ButtonGroup className="buttonContainer" onClick={handleClick}>
+                        <Button className="rounded-pill" variant="light" value="Experience">Experience</Button>{' '}
+                        <Button className="rounded-pill" variant="light" value="Music">Music</Button>{' '}
+                        <Button className="rounded-pill" variant="light" value="Events">Events</Button>{' '}
+                        <Button className="rounded-pill" variant="light" value="Articles">Articles</Button>{' '}
                     </ButtonGroup>
                     <div id="my-profile-box"></div>
                 </div>
