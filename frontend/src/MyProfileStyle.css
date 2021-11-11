@@ -1,5 +1,7 @@
 #container {
     position: relative;
+    width: 100%;
+    height: 30%;
 }
 #my-profile-box {
     background-color: #F7B41F;
