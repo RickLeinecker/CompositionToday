@@ -1,0 +1,14 @@
+#container {
+    position: relative;
+}
+#my-profile-box {
+    background-color: #F7B41F;
+    opacity: 0.4;
+    padding: 10%;
+    border-radius: 25px;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+}
