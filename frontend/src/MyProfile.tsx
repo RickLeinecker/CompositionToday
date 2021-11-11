@@ -10,7 +10,7 @@ export default function MyProfile() {
             <Container className="d-flex justify-content-center" style = {{minHeight:"100vh", padding:"3%"}}>
                 <div id="container">
                     <div id="my-profile-box"></div>
-                    <h1 style = {{padding: "2%"}}>Username</h1>
+                    <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
                 </div>
             </Container>
         </>
