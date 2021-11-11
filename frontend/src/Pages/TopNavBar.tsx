@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { Container, Nav, Navbar, Image } from 'react-bootstrap'
 
 export default function TopNavBar() {
     return (
@@ -12,7 +12,12 @@ export default function TopNavBar() {
                         <Nav.Link href="/showcase">Showcase</Nav.Link>
                         <Nav.Link href="/related-projects">Related Projects</Nav.Link>
                         <Nav.Link href="/blog">Blog</Nav.Link>
-                        <Nav.Link href="/my-profile">My Profile</Nav.Link>
+                    </Nav>
+                    <Nav className="justify-content-end">
+                        <Nav.Link className="justify-content-end" href="/my-profile">
+                            <Image style={{width: "10%"}} src="img_avatar.png" roundedCircle/>
+                            My Profile
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Container } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, Image } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
 import ArticlesSection from './Articles/ArticlesSection'
 import EventsSection from './Events/EventsSection'
@@ -13,6 +13,7 @@ export default function MyProfile() {
 
     useEffect(() => {
 
+        // sets current section button color to selected 
         let property = document.getElementById(currentSection)
             if(property != null)
                 property.style.background = "#3981FF"
@@ -24,6 +25,8 @@ export default function MyProfile() {
     const handleClick=(event: any)=>{
         event.preventDefault()
         
+        // sets old section button color to selected
+        // and updates section 
         if(event?.target?.value != null){
             let oldProperty = document.getElementById(currentSection)
             if(oldProperty != null){
@@ -36,9 +39,12 @@ export default function MyProfile() {
     return (
         <>
             <TopNavBar/>
-            <Container style = {{minHeight:"100vh", padding:"2%"}}>
-                <div id="container">   
-                    <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
+            <Container style = {{padding:"2%"}}>
+                <div id="container">
+                    <div style ={{display: "flex", marginLeft: "5%"}}>
+                        <Image style={{width: "10%", height: "auto"}} src="img_avatar.png" roundedCircle/>
+                        <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
+                    </div>
                     <ButtonGroup className="buttonContainer" onClick={handleClick}>
                         <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
                         <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
