@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Container } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, Image } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
 import ArticlesSection from './Articles/ArticlesSection'
 import EventsSection from './Events/EventsSection'
@@ -42,7 +42,7 @@ export default function MyProfile() {
             <Container style = {{padding:"2%"}}>
                 <div id="container">
                     <div style ={{display: "flex", marginLeft: "5%"}}>
-                        <img className="profile-pic" src="img_avatar.png" alt="avatar"/>   
+                        <Image style={{width: "10%", height: "auto"}} src="img_avatar.png" roundedCircle/>
                         <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
                     </div>
                     <ButtonGroup className="buttonContainer" onClick={handleClick}>
