@@ -1,10 +1,10 @@
 import React from 'react'
-import TopNavBar from './TopNavBar'
+import TopNavBar from '../TopNavBar'
 
 export default function Showcase() {
     return (
         <>
-            <TopNavBar/>
+            <TopNavBar />
             <div>
                 Showcase
             </div>
