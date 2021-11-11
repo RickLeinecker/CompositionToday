@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
 import ArticlesSection from './Articles/ArticlesSection'
@@ -10,31 +10,48 @@ import './MyProfileStyle.css'
 export default function MyProfile() {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
+
+    useEffect(() => {
+
+        let property = document.getElementById(currentSection)
+            if(property != null)
+                property.style.background = "#3981FF"
+
+        return () => {
+        }
+    }, [currentSection])
+
     const handleClick=(event: any)=>{
         event.preventDefault()
-        setCurrentSection(event?.target?.value)
+        
+        if(event?.target?.value != null){
+            let oldProperty = document.getElementById(currentSection)
+            if(oldProperty != null){
+                oldProperty.style.background = "#FFFBFF"
+            }
+            setCurrentSection(event?.target?.value)
+        }
     }
 
     return (
         <>
             <TopNavBar/>
-            <Container className="d-flex justify-content-center" style = {{minHeight:"100vh", padding:"3%"}}>
-                <div id="container">
-                    
+            <Container style = {{minHeight:"100vh", padding:"2%"}}>
+                <div id="container">   
                     <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
-                    <ButtonGroup onClick={handleClick}>
-                        <Button variant="light" value="Experience">Experience</Button>{' '}
-                        <Button variant="light" value="Music">Music</Button>{' '}
-                        <Button variant="light" value="Events">Events</Button>{' '}
-                        <Button variant="light" value="Articles">Articles</Button>{' '}
+                    <ButtonGroup className="buttonContainer" onClick={handleClick}>
+                        <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
+                        <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
+                        <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
+                        <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
                     </ButtonGroup>
-                    <div>
-                        {currentSection === "Experience" && <ExperienceSection/>}
-                        {currentSection === "Music" && <MusicSection/>}
-                        {currentSection === "Events" && <EventsSection/>}
-                        {currentSection === "Articles" && <ArticlesSection/>}
-                    </div>
                     <div id="my-profile-box"></div>
+                </div>
+                <div id="sections">
+                    {currentSection === "Experience" && <ExperienceSection/>}
+                    {currentSection === "Music" && <MusicSection/>}
+                    {currentSection === "Events" && <EventsSection/>}
+                    {currentSection === "Articles" && <ArticlesSection/>}
                 </div>
             </Container>
         </>
