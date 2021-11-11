@@ -12,7 +12,12 @@ export default function TopNavBar() {
                         <Nav.Link href="/showcase">Showcase</Nav.Link>
                         <Nav.Link href="/related-projects">Related Projects</Nav.Link>
                         <Nav.Link href="/blog">Blog</Nav.Link>
-                        <Nav.Link href="/my-profile">My Profile</Nav.Link>
+                    </Nav>
+                    <Nav className="ml-auto">
+                        <Nav.Link href="/my-profile">
+                            <img className="profile-pic" src="img_avatar.png" alt="avatar"/>
+                            My Profile
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
