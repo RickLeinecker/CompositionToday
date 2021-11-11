@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
+import ArticlesSection from './Articles/ArticlesSection'
+import EventsSection from './Events/EventsSection'
+import ExperienceSection from './Experience/ExperienceSection'
+import MusicSection from './Music/MusicSection'
 import './MyProfileStyle.css'
 
 export default function MyProfile() {
@@ -25,10 +29,10 @@ export default function MyProfile() {
                         <Button variant="light" value="Articles">Articles</Button>{' '}
                     </ButtonGroup>
                     <div>
-                        {currentSection === "Experience" && <h1>Experience</h1>}
-                        {currentSection === "Music" && <h1>Music</h1>}
-                        {currentSection === "Events" && <h1>Events</h1>}
-                        {currentSection === "Articles" && <h1>Articles</h1>}
+                        {currentSection === "Experience" && <ExperienceSection/>}
+                        {currentSection === "Music" && <MusicSection/>}
+                        {currentSection === "Events" && <EventsSection/>}
+                        {currentSection === "Articles" && <ArticlesSection/>}
                     </div>
                     {/* <div id="my-profile-box"></div> */}
                 </div>
