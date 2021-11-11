@@ -12,7 +12,8 @@ export default function MyProfile() {
     const [currentSection, setCurrentSection] = useState<string>("Experience")
     const handleClick=(event: any)=>{
         event.preventDefault()
-        setCurrentSection(event?.target?.value)
+        if(event?.target?.value != null)
+            setCurrentSection(event?.target?.value)
     }
 
     return (
