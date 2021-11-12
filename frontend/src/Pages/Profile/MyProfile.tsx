@@ -27,7 +27,7 @@ export default function MyProfile() {
         
         // sets old section button color to selected
         // and updates section 
-        if(event?.target?.value != null){
+        if(event?.target?.value != null && event?.target?.value !== currentSection){
             let oldProperty = document.getElementById(currentSection)
             if(oldProperty != null){
                 oldProperty.style.background = "#FFFBFF"
