@@ -13,8 +13,8 @@ export default function TopNavBar() {
                         <Nav.Link href="/related-projects">Related Projects</Nav.Link>
                         <Nav.Link href="/blog">Blog</Nav.Link>
                     </Nav>
-                    <Nav className="justify-content-end">
-                        <Nav.Link className="justify-content-end" href="/my-profile">
+                    <Nav>
+                        <Nav.Link href="/my-profile">
                             <Image style={{width: "10%"}} src="img_avatar.png" roundedCircle/>
                             My Profile
                         </Nav.Link>
