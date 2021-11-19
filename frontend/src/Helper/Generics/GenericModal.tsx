@@ -13,7 +13,7 @@ interface ModalProps {
  * will be through a button that toggles boolean to open the modal.
  * USING THE useModal() CUSTOM HOOK WILL BE HELPFUL.
  * @param show boolean on whether to open the modal
- * @param title string that displays as large text in modal
+ * @param title [Optional] string that displays as large text in modal
  * @param children JSX children to display in modal
  * @returns JSX for usable modal
  */
