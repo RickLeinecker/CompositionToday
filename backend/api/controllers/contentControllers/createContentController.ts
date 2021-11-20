@@ -3,7 +3,7 @@ var { connection } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
-  // incoming: userId, image, contentText, genre, location, timestamp, likes, audioFilePath, sheetMusicFilePath, contentTypeId
+  // incoming: userId, image, contentText, location, timestamp, likes, audioFilepath, sheetMusicFilepath, contentTypeId, contentTags
   // outgoing: error
 
   var error = "";
@@ -12,32 +12,32 @@ exports.createContent = async (req, res) => {
 
   const {
     userId,
-    image,
+    imageFilepathArray,
     contentText,
-    genre,
     location,
     timestamp,
     likes,
-    audioFilePath,
-    sheetMusicFilePath,
-    contentTypeId,
+    audioFilepath,
+    sheetMusicFilepath,
+    contentType,
+    contentTags,
   } = req.body;
 
   const sqlInsert =
-    "INSERT INTO content(userId,image,contentText,genre,location,timestamp,likes,audioFilePath,sheetMusicFilePath,contentTypeId) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO content(userId,imageFilepathArray,contentText,location,timestamp,likes,audioFilepath,sheetMusicFilepath,contentType,contentTags) VALUES (?,?,?,?,?,?,?,?,?,?)";
   connection.query(
     sqlInsert,
     [
       userId,
-      image,
+      imageFilepathArray,
       contentText,
-      genre,
       location,
       timestamp,
       likes,
-      audioFilePath,
-      sheetMusicFilePath,
-      contentTypeId,
+      audioFilepath,
+      sheetMusicFilepath,
+      contentType,
+      contentTags,
     ],
     function (err, result) {
       if (err) {

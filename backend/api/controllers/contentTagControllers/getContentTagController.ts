@@ -1,16 +1,16 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// getContentGenres
-exports.getContentGenres = async (req, res) => {
+// getContentTags
+exports.getContentTags = async (req, res) => {
   // incoming: nothing
-  // outgoing: genres with contentIDs, error
+  // outgoing: tags with contentIDs, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  connection.query("SELECT * FROM contentGenre", function (err, result) {
+  connection.query("SELECT * FROM contentTag", function (err, result) {
     if (err) {
       error = "SQL Search Error";
       responseCode = 500;

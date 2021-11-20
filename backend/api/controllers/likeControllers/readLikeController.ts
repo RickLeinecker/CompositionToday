@@ -1,17 +1,20 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// getComposerSpecialization
-exports.getComposerSpecializations = async (req, res) => {
-  // incoming: nothing
-  // outgoing: genres with contentIDs, error
+// readLike
+exports.readLike = async (req, res) => {
+  // incoming: likeID
+  // outgoing: like, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
+  const { likeID } = req.body;
+
   connection.query(
-    "SELECT * FROM composerSpecialization",
+    "SELECT * FROM like WHERE id=?",
+    [likeID],
     function (err, result) {
       if (err) {
         error = "SQL Search Error";
@@ -19,10 +22,10 @@ exports.getComposerSpecializations = async (req, res) => {
         // console.log(err);
       } else {
         if (result[0]) {
-          results = result;
+          results = result[0];
           responseCode = 200;
         } else {
-          error = "Composer with this specialization does not exist";
+          error = "This like does not exist";
           responseCode = 500;
         }
       }

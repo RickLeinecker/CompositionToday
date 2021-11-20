@@ -13,10 +13,10 @@ exports.updateUserProfile = async (req, res) => {
   const {
     userId,
     bio,
-    specialization,
+    specializationTags,
     location,
     privacySetting,
-    content,
+    contents,
     profilePicPath,
     connections,
     displayName,
@@ -24,17 +24,17 @@ exports.updateUserProfile = async (req, res) => {
   } = req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specialization=?,location=?,privacySetting=?,content=?,profilePicPath=?,connections=?,displayName=? WHERE id=?";
+    "UPDATE userProfile SET userId=?,bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=? WHERE id=?";
 
   connection.query(
     sqlInsert,
     [
       userId,
       bio,
-      specialization,
+      specializationTags,
       location,
       privacySetting,
-      content,
+      contents,
       profilePicPath,
       connections,
       displayName,

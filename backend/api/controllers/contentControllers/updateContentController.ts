@@ -12,34 +12,34 @@ exports.updateContent = async (req, res) => {
 
   const {
     userId,
-    image,
+    imageFilepathArray,
     contentText,
-    genre,
     location,
     timestamp,
     likes,
-    audioFilePath,
-    sheetMusicFilePath,
-    contentTypeId,
+    audioFilepath,
+    sheetMusicFilepath,
+    contentType,
+    contentTags,
     contentID,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE content SET userId=?,image=?,contentText=?,genre=?,location=?,timestamp=?,likes=?,audioFilePath=?,sheetMusicFilePath=?,contentTypeId=?,contentID=? WHERE id=?";
+    "UPDATE content SET userId=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,likes=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentTags=? WHERE id=?";
 
   connection.query(
     sqlInsert,
     [
       userId,
-      image,
+      imageFilepathArray,
       contentText,
-      genre,
       location,
       timestamp,
       likes,
-      audioFilePath,
-      sheetMusicFilePath,
-      contentTypeId,
+      audioFilepath,
+      sheetMusicFilepath,
+      contentType,
+      contentTags,
       contentID,
     ],
     function (err, result) {

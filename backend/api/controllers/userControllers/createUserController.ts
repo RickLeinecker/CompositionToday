@@ -11,16 +11,24 @@ exports.createUser = async (req, res) => {
   var results = "";
   var responseCode = 0;
   // reading data from frontend
-  const { firstName, lastName, username, uid, email, isPublisher } = req.body;
+  const {
+    firstName,
+    lastName,
+    username,
+    uid,
+    email,
+    isPublisher,
+    userProfileID,
+  } = req.body;
 
   // preparing MySQL string
   var sqlInsert =
-    "INSERT INTO user(firstName,lastName,username,uid,email,isPublisher) VALUES(?,?,?,?,?,?,?)";
+    "INSERT INTO user(firstName,lastName,username,uid,email,isPublisher,userProfileID) VALUES(?,?,?,?,?,?,?)";
 
   // query database, handle errors, return JSON
   connection.query(
     sqlInsert,
-    [firstName, lastName, username, uid, email, isPublisher],
+    [firstName, lastName, username, uid, email, isPublisher, userProfileID],
     function (err, result) {
       if (err) {
         error = "SQL Insert Error";
