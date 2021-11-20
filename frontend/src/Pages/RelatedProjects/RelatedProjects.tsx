@@ -1,13 +1,14 @@
 import { Button } from 'react-bootstrap'
-import useModal from '../../Helper/CustomHooks/useModal';
+import useOpen from '../../Helper/CustomHooks/useOpen';
 import TopNavBar from '../TopNavBar';
 import GenericModal from '../../Helper/Generics/GenericModal';
 import GenericInput from '../../Helper/Generics/GenericInput';
 import GenericForm from '../../Helper/Generics/GenericForm';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
+import GenericFilter from '../../Helper/Generics/GenericFilter';
 
 export default function RelatedProjects() {
-    const { open, handleClick, handleClose } = useModal();
+    const { open, handleClick, handleClose } = useOpen();
 
     return (
         <>
@@ -34,6 +35,8 @@ export default function RelatedProjects() {
                 <GenericInput />
                 <p>Search Bar</p>
                 <GenericSearch />
+                <p>Filter</p>
+                <GenericFilter />
             </div>
         </>
     )

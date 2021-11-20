@@ -5,7 +5,7 @@ import { useState } from "react";
  * and closing modals. THIS BEST WORKS WITH GenericModal.
  * @returns open, handleModalOpen, handleModalClose
  */
-export default function useModal() {
+export default function useOpen() {
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
