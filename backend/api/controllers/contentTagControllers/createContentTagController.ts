@@ -1,19 +1,19 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// createGenre
-exports.createContentGenre = async (req, res) => {
-  // incoming: contentID, genre
+// createContentTag
+exports.createContentTag = async (req, res) => {
+  // incoming: contentID, tagID
   // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { contentID, genre } = req.body;
+  const { contentID, tagID } = req.body;
 
-  const sqlInsert = "INSERT INTO contentGenre(contentID, genre) VALUES (?,?)";
-  connection.query(sqlInsert, [contentID, genre], function (err, result) {
+  const sqlInsert = "INSERT INTO contentGenre(contentID, tagID) VALUES (?,?)";
+  connection.query(sqlInsert, [contentID, tagID], function (err, result) {
     if (err) {
       error = "SQL Insert Error";
       responseCode = 500;

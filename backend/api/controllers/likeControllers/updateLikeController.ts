@@ -1,33 +1,37 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// readContentGenre
-exports.readContentGenre = async (req, res) => {
-  // incoming: contentID
-  // outgoing: content, error
+// updateLike
+exports.updateLike = async (req, res) => {
+  // incoming: likeID, userID, timestamp, likeTypeID
+  // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { contentID } = req.body;
+  const { likeID, userID, timestamp, likeTypeID } = req.body;
+
+  var sqlInsert =
+    "UPDATE like SET userID=?,timestamp=?,likeTypeID=? WHERE id=?";
 
   connection.query(
-    "SELECT * FROM contentGenre WHERE contentID=?",
-    [contentID],
+    sqlInsert,
+    [userID, timestamp, likeTypeID, likeID],
     function (err, result) {
       if (err) {
-        error = "SQL Search Error";
+        error = "SQL Update Error";
         responseCode = 500;
         // console.log(err);
       } else {
-        if (result[0]) {
-          results = result[0];
+        if (result.affectedRows > 0) {
+          results = "Success";
           responseCode = 200;
         } else {
-          error = "Content with this genre does not exist";
+          error = "Like does not exist";
           responseCode = 500;
         }
+        // console.log(result);
       }
       // package data
       var ret = {
