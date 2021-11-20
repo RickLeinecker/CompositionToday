@@ -1,31 +1,33 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// deleteContentGenre
-exports.deleteContentGenre = async (req, res) => {
-  // incoming: contentGenreID
-  // outgoing: error
+// readTag
+exports.readTag = async (req, res) => {
+  // incoming: tagID
+  // outgoing: tag, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { contentGenreID } = req.body;
+  const { tagID } = req.body;
 
   connection.query(
-    "DELETE FROM contentGenre WHERE contentGenreID=?",
-    [contentGenreID],
+    "SELECT * FROM tag WHERE id=?",
+    [tagID],
     function (err, result) {
       if (err) {
-        error = "SQL Delete Error";
+        error = "SQL Search Error";
+        responseCode = 500;
         // console.log(err);
       } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+        if (result[0]) {
+          results = result[0];
+          responseCode = 200;
         } else {
-          error = "Content with this genre does not exist";
+          error = "This tag does not exist";
+          responseCode = 500;
         }
-        // console.log(result);
       }
       // package data
       var ret = {

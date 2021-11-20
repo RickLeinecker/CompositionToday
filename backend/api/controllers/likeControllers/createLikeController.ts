@@ -1,22 +1,22 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// createComposerSpecialization
-exports.createComposerSpecialization = async (req, res) => {
-  // incoming: userProfileID, specialization
+// createLike
+exports.createLike = async (req, res) => {
+  // incoming: userID, timestamp, likeTypeID
   // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { userProfileID, specialization } = req.body;
+  const { userID, timestamp, likeTypeID } = req.body;
 
   const sqlInsert =
-    "INSERT INTO composerSpecialization(userProfileID,specialization) VALUES (?,?)";
+    "INSERT INTO contentGenre(userID, timestamp, likeTypeID) VALUES (?,?,?)";
   connection.query(
     sqlInsert,
-    [userProfileID, specialization],
+    [userID, timestamp, likeTypeID],
     function (err, result) {
       if (err) {
         error = "SQL Insert Error";
