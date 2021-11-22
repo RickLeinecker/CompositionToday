@@ -31,7 +31,7 @@ export default function MyProfile() {
         if(event?.target?.value != null && event?.target?.value !== currentSection){
             let oldProperty = document.getElementById(currentSection)
             if(oldProperty != null){
-                oldProperty.style.background = DefaultValues.backgroundColor
+                oldProperty.style.background = DefaultValues.white
             }
             setCurrentSection(event?.target?.value)
         }

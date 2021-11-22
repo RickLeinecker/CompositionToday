@@ -1,9 +1,13 @@
 $primary-color: #F7B41F;
 $secondary-color: #3981FF;
 $background-color: #FFFBFF;
+$white: #FFFBFF;
+
 
 :export {
     primaryColor: $primary-color;
     secondaryColor: $secondary-color;
     backgroundColor: $background-color;
+    white: $white;
 }
+
