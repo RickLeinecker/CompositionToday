@@ -3,21 +3,21 @@ var { connection } = require("../../../database/database.ts");
 
 // createComment
 exports.createComment = async (req, res) => {
-  // incoming: contentID, commenterUserID, likeType, comment
+  // incoming: contentID, commenterUserID, timestamp, likes, comment, approved
   // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { contentID, commenterUserID, timestamp, likeType, comment, approved } =
+  const { contentID, commenterUserID, timestamp, likes, comment, approved } =
     req.body;
 
   const sqlInsert =
-    "INSERT INTO comments(contentID,commenterUserID,timestamp,likeType,comment,approved) VALUES (?,?,?,?,?,?)";
+    "INSERT INTO comments(contentID,commenterUserID,timestamp,likes,comment,approved) VALUES (?,?,?,?,?,?)";
   connection.query(
     sqlInsert,
-    [contentID, commenterUserID, timestamp, likeType, comment, approved],
+    [contentID, commenterUserID, timestamp, likes, comment, approved],
     function (err, result) {
       if (err) {
         error = "SQL Insert Error";

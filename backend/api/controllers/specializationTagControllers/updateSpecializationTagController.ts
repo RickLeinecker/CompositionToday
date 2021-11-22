@@ -1,23 +1,22 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// updateComposerSpecialization
-exports.updateComposerSpecialization = async (req, res) => {
-  // incoming: userProfileID, specialization, composerSpecializationID
+// updateSpecializationTag
+exports.updateSpecializationTag = async (req, res) => {
+  // incoming: userID, tagID, specializationTagID
   // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { userProfileID, specialization, composerSpecializationID } = req.body;
+  const { userID, tagID, specializationTagID } = req.body;
 
-  var sqlInsert =
-    "UPDATE composerSpecialization SET userProfileID=?,specialization=? WHERE id=?";
+  var sqlInsert = "UPDATE specializationTag SET userID=?,tagID=? WHERE id=?";
 
   connection.query(
     sqlInsert,
-    [userProfileID, specialization, composerSpecializationID],
+    [userID, tagID, specializationTagID],
     function (err, result) {
       if (err) {
         error = "SQL Update Error";
@@ -28,7 +27,7 @@ exports.updateComposerSpecialization = async (req, res) => {
           results = "Success";
           responseCode = 200;
         } else {
-          error = "Composer with this specialization does not exist";
+          error = "Specialization with this tag does not exist";
           responseCode = 500;
         }
         // console.log(result);

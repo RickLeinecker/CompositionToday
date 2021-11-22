@@ -1,36 +1,33 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// updateContentGenre
-exports.updateContentGenre = async (req, res) => {
-  // incoming: contentID, genre, contentGenreID
-  // outgoing: error
+// readSpecializationTag
+exports.readSpecializationTag = async (req, res) => {
+  // incoming: specializationTagID
+  // outgoing: content, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { contentID, genre, contentGenreID } = req.body;
-
-  var sqlInsert = "UPDATE contentGenre SET contentID=?,genre=? WHERE id=?";
+  const { specializationTagID } = req.body;
 
   connection.query(
-    sqlInsert,
-    [contentID, genre, contentGenreID],
+    "SELECT * FROM specializationTag WHERE id=?",
+    [specializationTagID],
     function (err, result) {
       if (err) {
-        error = "SQL Update Error";
+        error = "SQL Search Error";
         responseCode = 500;
         // console.log(err);
       } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+        if (result[0]) {
+          results = result[0];
           responseCode = 200;
         } else {
-          error = "Content with this genre does not exist";
+          error = "Specialization with this tag does not exist";
           responseCode = 500;
         }
-        // console.log(result);
       }
       // package data
       var ret = {

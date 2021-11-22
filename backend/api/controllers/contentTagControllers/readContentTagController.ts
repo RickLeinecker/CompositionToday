@@ -1,31 +1,33 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// deleteComposerSpecialization
-exports.deleteComposerSpecialization = async (req, res) => {
-  // incoming: userProfileID, specialization
-  // outgoing: error
+// readContentTag
+exports.readContentTag = async (req, res) => {
+  // incoming: contentID
+  // outgoing: content, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { userProfileID, specialization } = req.body;
+  const { contentID } = req.body;
 
   connection.query(
-    "DELETE FROM composerSpecialization WHERE contentID=? AND genre=?",
-    [userProfileID, specialization],
+    "SELECT * FROM contentTag WHERE contentID=?",
+    [contentID],
     function (err, result) {
       if (err) {
-        error = "SQL Delete Error";
+        error = "SQL Search Error";
+        responseCode = 500;
         // console.log(err);
       } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+        if (result[0]) {
+          results = result[0];
+          responseCode = 200;
         } else {
           error = "Content with this genre does not exist";
+          responseCode = 500;
         }
-        // console.log(result);
       }
       // package data
       var ret = {

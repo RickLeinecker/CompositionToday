@@ -1,38 +1,22 @@
 // mysql connection
 var { connection } = require("../../../database/database.ts");
 
-// updateComment
-exports.updateComment = async (req, res) => {
-  // incoming: contentID, commenterUserID, timestamp, likes, comment, approved, commentID
+// updateContentTag
+exports.updateContentTag = async (req, res) => {
+  // incoming: contentID, tagID, contentTagID
   // outgoing: error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const {
-    contentID,
-    commenterUserID,
-    timestamp,
-    likes,
-    comment,
-    approved,
-    commentID,
-  } = req.body;
-  var sqlInsert =
-    "UPDATE comments SET contentID=?,commenterUserID=?,timestamp=?,likes=?,comment=?,approved=? WHERE id=?";
+  const { contentID, tagID, contentTagID } = req.body;
+
+  var sqlInsert = "UPDATE contentTag SET contentID=?,tagID=? WHERE id=?";
 
   connection.query(
     sqlInsert,
-    [
-      contentID,
-      commenterUserID,
-      timestamp,
-      likes,
-      comment,
-      approved,
-      commentID,
-    ],
+    [contentID, tagID, contentTagID],
     function (err, result) {
       if (err) {
         error = "SQL Update Error";
@@ -43,7 +27,7 @@ exports.updateComment = async (req, res) => {
           results = "Success";
           responseCode = 200;
         } else {
-          error = "Comment does not exist";
+          error = "Content with this tag does not exist";
           responseCode = 500;
         }
         // console.log(result);
