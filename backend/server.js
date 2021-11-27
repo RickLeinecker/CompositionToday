@@ -10,7 +10,11 @@ var userProfileRoutes = require("./api/routes/userProfileRoutes.ts");
 var contentRoutes = require("./api/routes/contentRoutes.ts");
 var commentRoutes = require("./api/routes/commentRoutes.ts");
 var inboxRoutes = require("./api/routes/inboxRoutes.ts");
-var contentGenreRoutes = require("./api/routes/contentGenreRoutes.ts");
+var contentTagRoutes = require("./api/routes/contentTagRoutes.ts");
+var specializationTagRoutes = require("./api/routes/specializationTagRoutes.ts");
+var tagRoutes = require("./api/routes/tagRoutes.ts");
+var likeRoutes = require("./api/routes/likeRoutes.ts");
+var likeTypeRoutes = require("./api/routes/likeTypeRoutes.ts");
 
 const app = express();
 app.use(cors());
@@ -21,7 +25,11 @@ app.use("/", userProfileRoutes);
 app.use("/", contentRoutes);
 app.use("/", commentRoutes);
 app.use("/", inboxRoutes);
-app.use("/", contentGenreRoutes);
+app.use("/", contentTagRoutes);
+app.use("/", specializationTagRoutes);
+app.use("/", tagRoutes);
+app.use("/", likeRoutes);
+app.use("/", likeTypeRoutes);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
