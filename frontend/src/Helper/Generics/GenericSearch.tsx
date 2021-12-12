@@ -2,7 +2,7 @@ import { Form, FormControl } from "react-bootstrap";
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
-const GenericSearch = () => {
+const GenericSearch = (): JSX.Element => {
     return (
         <Form className="d-flex">
             <FormControl

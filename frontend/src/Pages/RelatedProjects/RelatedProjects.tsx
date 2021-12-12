@@ -6,6 +6,7 @@ import GenericInput from '../../Helper/Generics/GenericInput';
 import GenericForm from '../../Helper/Generics/GenericForm';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
 import GenericFilter from '../../Helper/Generics/GenericFilter';
+import GenericCard from '../../Helper/Generics/GenericCard';
 
 export default function RelatedProjects() {
     const { open, handleClick, handleClose } = useOpen();
@@ -37,6 +38,8 @@ export default function RelatedProjects() {
                 <GenericSearch />
                 <p>Filter</p>
                 <GenericFilter />
+                <p>Card</p>
+                <GenericCard />
             </div>
         </>
     )
