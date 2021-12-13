@@ -1,16 +1,16 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getTags
-exports.getTags = async (req, res) => {
+// getLikeTypes
+exports.getLikeTypes = async (req, res) => {
   // incoming: nothing
-  // outgoing: tags, error
+  // outgoing: like types, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
-    connection.query("SELECT * FROM tag", function (err, result) {
+    connection.query("SELECT * FROM likeType", function (err, result) {
       if (err) {
         error = "SQL Search Error";
         responseCode = 500;
@@ -20,7 +20,7 @@ exports.getTags = async (req, res) => {
           results = result;
           responseCode = 200;
         } else {
-          error = "No tags exist";
+          error = "No like types exist";
           responseCode = 500;
         }
       }

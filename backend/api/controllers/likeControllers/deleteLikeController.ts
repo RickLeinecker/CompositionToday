@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // deleteLike
 exports.deleteLike = async (req, res) => {
@@ -11,29 +11,30 @@ exports.deleteLike = async (req, res) => {
   var responseCode = 0;
 
   const { likeID } = req.body;
-
-  connection.query(
-    "DELETE FROM like WHERE id=?",
-    [likeID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Delete Error";
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      "DELETE FROM like WHERE id=?",
+      [likeID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Delete Error";
+          // console.log(err);
         } else {
-          error = "Like does not exist";
+          if (result.affectedRows > 0) {
+            results = "Success";
+          } else {
+            error = "Like does not exist";
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };
