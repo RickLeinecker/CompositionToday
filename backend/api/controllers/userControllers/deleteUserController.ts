@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // deleteUser - delete a user from database
 exports.deleteUser = async (req, res) => {
@@ -12,30 +12,31 @@ exports.deleteUser = async (req, res) => {
   var responseCode = 0;
   // reading data from frontend
   const { userID } = req.body;
-
-  // query database, handle errors, return JSON
-  connection.query(
-    "DELETE FROM user WHERE id=?",
-    [userID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Delete Error";
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+  mysql_pool.getConnection(function (err, connection) {
+    // query database, handle errors, return JSON
+    connection.query(
+      "DELETE FROM user WHERE id=?",
+      [userID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Delete Error";
+          // console.log(err);
         } else {
-          error = "User does not exist";
+          if (result.affectedRows > 0) {
+            results = "Success";
+          } else {
+            error = "User does not exist";
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // readComment
 exports.readComment = async (req, res) => {
@@ -11,31 +11,32 @@ exports.readComment = async (req, res) => {
   var responseCode = 0;
 
   const { commentID } = req.body;
-
-  connection.query(
-    "SELECT * FROM comments WHERE id=?",
-    [commentID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Search Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        if (result[0]) {
-          results = result[0];
-          responseCode = 200;
-        } else {
-          error = "Comment does not exist";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      "SELECT * FROM comment WHERE id=?",
+      [commentID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Search Error";
           responseCode = 500;
+          // console.log(err);
+        } else {
+          if (result[0]) {
+            results = result[0];
+            responseCode = 200;
+          } else {
+            error = "Comment does not exist";
+            responseCode = 500;
+          }
         }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

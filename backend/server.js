@@ -1,8 +1,8 @@
 // server.js - Composition Today Server
 
 // import middleware
-const express = require("express");
-const cors = require("cors");
+var express = require("express");
+var cors = require("cors");
 require("dotenv").config();
 
 var userRoutes = require("./api/routes/userRoutes.ts");
@@ -44,4 +44,5 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(4001); // start Node + Express server on port 4000
+// app.listen(4001); // start Node + Express server on port 4000
+app.listen(4001); // start Node + Express server on port 5000

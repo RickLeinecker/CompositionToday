@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // approveComment
 exports.approveComment = async (req, res) => {
@@ -11,29 +11,30 @@ exports.approveComment = async (req, res) => {
   var responseCode = 0;
 
   const { approved, commentID } = req.body;
-  var sqlInsert = "UPDATE comments SET approved=? WHERE id=?";
-
-  connection.query(sqlInsert, [approved, commentID], function (err, result) {
-    if (err) {
-      error = "SQL Update Error";
-      responseCode = 500;
-      // console.log(err);
-    } else {
-      if (result.affectedRows > 0) {
-        results = "Success";
-        responseCode = 200;
-      } else {
-        error = "Comment does not exist";
+  var sqlInsert = "UPDATE comment SET approved=? WHERE id=?";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(sqlInsert, [approved, commentID], function (err, result) {
+      if (err) {
+        error = "SQL Update Error";
         responseCode = 500;
+        // console.log(err);
+      } else {
+        if (result.affectedRows > 0) {
+          results = "Success";
+          responseCode = 200;
+        } else {
+          error = "Comment does not exist";
+          responseCode = 500;
+        }
+        // console.log(result);
       }
-      // console.log(result);
-    }
-    // package data
-    var ret = {
-      result: results,
-      error: error,
-    };
-    // send data
-    res.status(responseCode).json(ret);
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+    });
   });
 };

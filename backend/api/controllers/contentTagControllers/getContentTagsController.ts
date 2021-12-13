@@ -1,16 +1,16 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getTags
-exports.getTags = async (req, res) => {
+// getContentTags
+exports.getContentTags = async (req, res) => {
   // incoming: nothing
-  // outgoing: tags, error
+  // outgoing: tags with contentIDs, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
-    connection.query("SELECT * FROM tag", function (err, result) {
+    connection.query("SELECT * FROM contentTag", function (err, result) {
       if (err) {
         error = "SQL Search Error";
         responseCode = 500;
@@ -20,7 +20,7 @@ exports.getTags = async (req, res) => {
           results = result;
           responseCode = 200;
         } else {
-          error = "No tags exist";
+          error = "Content with this genre does not exist";
           responseCode = 500;
         }
       }

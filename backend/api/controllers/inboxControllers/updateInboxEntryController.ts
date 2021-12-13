@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateInboxEntry
 exports.updateInboxEntry = async (req, res) => {
@@ -15,32 +15,33 @@ exports.updateInboxEntry = async (req, res) => {
 
   var sqlInsert =
     "UPDATE userProfile SET userId=?,bio=?,specialization=?,location=?,displayName=? WHERE id=?";
-
-  connection.query(
-    sqlInsert,
-    [contentID, profileID, requesterID, commentID, inboxEntryID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Update Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
-          responseCode = 200;
-        } else {
-          error = "Inbox entry does not exist";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      sqlInsert,
+      [contentID, profileID, requesterID, commentID, inboxEntryID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Update Error";
           responseCode = 500;
+          // console.log(err);
+        } else {
+          if (result.affectedRows > 0) {
+            results = "Success";
+            responseCode = 200;
+          } else {
+            error = "Inbox entry does not exist";
+            responseCode = 500;
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

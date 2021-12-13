@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateLike
 exports.updateLike = async (req, res) => {
@@ -14,32 +14,33 @@ exports.updateLike = async (req, res) => {
 
   var sqlInsert =
     "UPDATE like SET userID=?,timestamp=?,likeTypeID=? WHERE id=?";
-
-  connection.query(
-    sqlInsert,
-    [userID, timestamp, likeTypeID, likeID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Update Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
-          responseCode = 200;
-        } else {
-          error = "Like does not exist";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      sqlInsert,
+      [userID, timestamp, likeTypeID, likeID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Update Error";
           responseCode = 500;
+          // console.log(err);
+        } else {
+          if (result.affectedRows > 0) {
+            results = "Success";
+            responseCode = 200;
+          } else {
+            error = "Like does not exist";
+            responseCode = 500;
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };
