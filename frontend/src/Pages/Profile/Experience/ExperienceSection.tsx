@@ -28,8 +28,11 @@ export default function ExperienceSection() {
                 : 
                 <div>
                     {response?.result.map((_result: Content) => (
-                        <ExperienceCard contentName={_result.contentName} contentText={_result.contentText} timestamp={_result.timestamp}>
-                        </ExperienceCard>
+                        <li key={_result.id}>
+                            <ExperienceCard contentName={_result.contentName} contentText={_result.contentText} timestamp={_result.timestamp}>
+                            </ExperienceCard>
+                        </li>
+
                     ))}
                 </div>
                 }
