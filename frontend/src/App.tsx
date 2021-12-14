@@ -25,7 +25,7 @@ function App() {
                         <PrivateRoute exact path="/blog" component={Blog} />
                         <PrivateRoute exact path="/showcase" component={Showcase} />
                         <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
-                        <PrivateRoute exact path="/my-profile" component={MyProfile}/>
+                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={"UserID123"}/>
                     </Switch>
                 </AuthProvider>
             </Router>

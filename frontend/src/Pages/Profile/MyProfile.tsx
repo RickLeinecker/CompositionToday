@@ -8,7 +8,7 @@ import MusicSection from './Music/MusicSection'
 import './MyProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
 
-export default function MyProfile() {
+export default function MyProfile(props: any) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
 
