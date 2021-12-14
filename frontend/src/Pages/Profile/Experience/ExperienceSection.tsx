@@ -8,7 +8,7 @@ export default function ExperienceSection() {
 
     const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
 
 
     useEffect(() => {
@@ -19,22 +19,22 @@ export default function ExperienceSection() {
                 methodType: "POST",
                 path: "getContentByType",
             }
-
+            
             try{
                 let answer = (await GenericHandler(handlerObject));
                 if(answer.error.length > 0){
-                    console.log("error");
+                    setError(answer.error);
                     return;
                 }
                 
-                setError(false);
+                setError("");
                 setResponse(await answer.result);
                 setLoading(false);
                 
 
             } catch(e: any){
                 console.error("Frontend Error: " + e);
-                setError(true);
+                setError("Could not process this request, please reload the page");
             }
         
         }
@@ -49,7 +49,7 @@ export default function ExperienceSection() {
                 {!error && loading ? <div>...loading</div> 
                 :
                 error ? 
-                <Alert variant="danger">Could not process this request, please reload the page</Alert>
+                <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
                     {response?.map((_result: Content) => (

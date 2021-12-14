@@ -16,11 +16,6 @@ export default async function GetContentByTypeHandler(obj: GenericHandlerObject)
         var txt = retResponse.text();
         var res = JSON.parse(await txt);
         
-        let status = retResponse.status;
-        if(status !== 200 && status !== 201){
-            throw status;
-        }
-
         message = (await res);
     } catch (e: any) {
         console.error("Handler Error: " + e)
