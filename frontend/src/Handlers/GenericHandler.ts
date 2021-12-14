@@ -6,7 +6,7 @@ export default async function GetContentByTypeHandler(obj: GenericHandlerObject)
     let message = []
 
     try {
-        const response = fetch(("http://137.184.149.145:5000/api/" + obj.url), {
+        const response = fetch(("http://137.184.149.145:5000/api/" + obj.path), {
         method: obj.methodType,
         body: obj.data,
         headers: { "Content-Type": "application/json" },

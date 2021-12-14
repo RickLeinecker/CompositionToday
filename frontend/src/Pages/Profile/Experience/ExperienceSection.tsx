@@ -16,7 +16,7 @@ export default function ExperienceSection() {
             const handlerObject: GenericHandlerObject = {
                 data: JSON.stringify({contentType: "experience"}),
                 methodType: "POST",
-                url: "getContentByType",
+                path: "getContentByType",
             }
 
             try{

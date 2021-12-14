@@ -27,22 +27,22 @@ export type Content = {
 
 /**
  * Example
- * data: JSON.stringify({contentType: "experience"}),
- * methodType: "POST",
- * url: "getContentByType",    
-*/
+ * @property data: JSON.stringify({contentType: "experience"})
+ * @property methodType: "POST"
+ * @property path: "getContentByType"
+ */
 export type GenericHandlerObject = {
     data: string;
     methodType: string;
-    url: string;
+    path: string;
 }
 
 /**
  * Example
- * url: "getContentByType",    
-*/
+ * @property path: "getContentByType"    
+ */
 export type GenericGetHandlerObject = {
-    url: string;
+    path: string;
 }   
 
 
