@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateUserProfile
 exports.updateUserProfile = async (req, res) => {
-  // incoming: userId, bio, specialization, location, privacySetting, content, profilePicPath, connections, displayName, userProfileID
+  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, userProfileID
   // outgoing: error
 
   var error = "";
@@ -12,30 +12,24 @@ exports.updateUserProfile = async (req, res) => {
 
   const {
     bio,
-    specializationTags,
     location,
     privacySetting,
-    contents,
     profilePicPath,
-    connections,
     displayName,
     websiteLink,
     userID,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=?,websiteLink=? WHERE userId=?";
+    "UPDATE userProfile SET bio=?,location=?,privacySetting=?,profilePicPath=?,displayName=?,websiteLink=? WHERE userID=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,
       [
         bio,
-        specializationTags,
         location,
         privacySetting,
-        contents,
         profilePicPath,
-        connections,
         displayName,
         websiteLink,
         userID,

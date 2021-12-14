@@ -12,7 +12,7 @@ router.post(
   "/api/createUserProfile",
   createUserProfileController.createUserProfile
 );
-router.post("/api/readUsersProfile", readUserProfileController.readUserProfile);
+router.post("/api/readUserProfile", readUserProfileController.readUserProfile);
 router.patch(
   "/api/updateUserProfile",
   updateUserProfileController.updateUserProfile

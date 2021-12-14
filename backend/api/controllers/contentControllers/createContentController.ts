@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
-  // incoming: userId, image, contentText, location, timestamp, likes, audioFilepath, sheetMusicFilepath, contentTypeId, contentTags
+  // incoming: userID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink
   // outgoing: error
 
   var error = "";
@@ -11,36 +11,32 @@ exports.createContent = async (req, res) => {
   var responseCode = 0;
 
   const {
-    userId,
+    userID,
     imageFilepathArray,
     contentName,
     contentText,
     location,
     timestamp,
-    likes,
     audioFilepath,
     sheetMusicFilepath,
     contentType,
-    contentTags,
     websiteLink,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO content(userId,imageFilepathArray,contentName,contentText,location,timestamp,likes,audioFilepath,sheetMusicFilepath,contentType,contentTags,websiteLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink) VALUES (?,?,?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
-        userId,
+        userID,
         imageFilepathArray,
         contentName,
         contentText,
         location,
         timestamp,
-        likes,
         audioFilepath,
         sheetMusicFilepath,
         contentType,
-        contentTags,
         websiteLink,
       ],
       function (err, result) {
