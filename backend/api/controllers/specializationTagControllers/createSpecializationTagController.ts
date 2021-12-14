@@ -12,7 +12,8 @@ exports.createSpecializationTag = async (req, res) => {
 
   const { userID, tagID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
-    const sqlInsert = "INSERT INTO contentGenre(userID, tagID) VALUES (?,?)";
+    const sqlInsert =
+      "INSERT INTO specializationTag(userID, tagID) VALUES (?,?)";
     connection.query(sqlInsert, [userID, tagID], function (err, result) {
       if (err) {
         error = "SQL Insert Error";

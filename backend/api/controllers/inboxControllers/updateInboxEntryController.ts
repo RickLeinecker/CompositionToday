@@ -14,7 +14,7 @@ exports.updateInboxEntry = async (req, res) => {
     req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specialization=?,location=?,displayName=? WHERE id=?";
+    "UPDATE inbox SET contentID=?,profileID=?,requesterID=?,commentID=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,

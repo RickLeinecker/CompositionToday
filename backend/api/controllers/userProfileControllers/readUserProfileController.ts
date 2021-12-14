@@ -3,18 +3,18 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // readUserProfile
 exports.readUserProfile = async (req, res) => {
-  // incoming: userProfileID
+  // incoming: userId
   // outgoing: content, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { userProfileID } = req.body;
+  const { userId } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM userProfile WHERE id=?",
-      [userProfileID],
+      "SELECT * FROM userProfile WHERE userId=?",
+      [userId],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";

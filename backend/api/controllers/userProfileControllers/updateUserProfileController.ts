@@ -11,7 +11,6 @@ exports.updateUserProfile = async (req, res) => {
   var responseCode = 0;
 
   const {
-    userId,
     bio,
     specializationTags,
     location,
@@ -20,17 +19,16 @@ exports.updateUserProfile = async (req, res) => {
     profilePicPath,
     connections,
     displayName,
-    userProfileID,
     websiteLink,
+    userID,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=?,websiteLink=? WHERE id=?";
+    "UPDATE userProfile SET bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=?,websiteLink=? WHERE userId=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,
       [
-        userId,
         bio,
         specializationTags,
         location,
@@ -40,7 +38,7 @@ exports.updateUserProfile = async (req, res) => {
         connections,
         displayName,
         websiteLink,
-        userProfileID,
+        userID,
       ],
       function (err, result) {
         if (err) {
