@@ -7,14 +7,10 @@ import ExperienceSection from './Experience/ExperienceSection'
 import MusicSection from './Music/MusicSection'
 import './MyProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import GetUsersHandler from '../../Handlers/GetUsersHandler'
-import {User, Content, JSONfileContent} from "../../ObjectInterface"
-import GetContentByTypeHandler from '../../Handlers/GetContentByTypeHandler'
 
 export default function MyProfile() {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
-    const [response, setResponse] = useState<JSONfileContent| undefined>(undefined);
 
     useEffect(() => {
 
@@ -28,10 +24,6 @@ export default function MyProfile() {
     }, [currentSection])
 
     const handleClick = async (event: any)=>{
-        // let answer = (await GetUsersHandler(event));
-        let answer = (await GetContentByTypeHandler(event, "music"));
-        setResponse(answer)
-        console.log("here is answer" + answer);
 
         event.preventDefault()
         
@@ -64,11 +56,6 @@ export default function MyProfile() {
                     </ButtonGroup>
                     <div id="my-profile-box"></div>
                 </div>
-                {response?.result.map((_result: Content) => (
-                    <li key={_result.id}>
-                        <p>{_result.contentText}</p>
-                    </li> 
-                ))}
                 <div id="sections">
                     {currentSection === "Experience" && <ExperienceSection/>}
                     {currentSection === "Music" && <MusicSection/>}

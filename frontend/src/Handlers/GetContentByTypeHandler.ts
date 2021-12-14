@@ -1,9 +1,7 @@
 // returns JSON containing users 
-export default async function GetContentByTypeHandler(event: { preventDefault: () => void }, contentType: string){
+export default async function GetContentByTypeHandler(contentType: string){
 
     let message = []
-    
-    event.preventDefault();
 
     var obj = {contentType: contentType};
     var js = JSON.stringify(obj);

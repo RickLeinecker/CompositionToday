@@ -25,12 +25,13 @@ export type Content = {
     imageFilePathArray?: object;
     contentText?: string;
     location?: string;
-    timestamp?: string;
     likes?: object;
     audioFilePath?: string;
     sheetMusicFilePath?: string;
     websiteLink?: string;
     conentTags?: object;
+    contentName?: string;
+    timestamp?: string;
 }
 
 
