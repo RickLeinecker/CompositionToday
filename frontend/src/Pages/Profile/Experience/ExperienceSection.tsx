@@ -12,14 +12,15 @@ export default function ExperienceSection() {
 
     useEffect(() => {
         async function fetchData(){
+
+            const handlerObject: GenericHandlerObject = {
+                data: JSON.stringify({contentType: "experience"}),
+                methodType: "POST",
+                url: "getContentByType",
+            }
+
             try{
-                const obj: GenericHandlerObject = {
-                    data: JSON.stringify({contentType: "experience"}),
-                    methodType: "POST",
-                    url: "getContentByType",
-                }
-                
-                let answer = (await GenericHandler(obj));
+                let answer = (await GenericHandler(handlerObject));
                 if(answer.error.length > 0){
                     console.log("error");
                     return;
