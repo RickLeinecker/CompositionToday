@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 
@@ -13,7 +14,7 @@ export default function EventsSection() {
         async function fetchData(){
 
             const handlerObject: GenericHandlerObject = {
-                data: JSON.stringify({contentType: "music"}),
+                data: JSON.stringify({contentType: "events"}),
                 methodType: "POST",
                 path: "getContentByType",
             }
@@ -47,7 +48,7 @@ export default function EventsSection() {
                 {!error && loading ? <div>...loading</div> 
                 :
                 error ? 
-                <div>Could not process this request, please reload the page</div> 
+                <Alert variant="danger">Could not process this request, please reload the page</Alert> 
                 : 
                 <div>
                     {response?.map((_result: Content) => (

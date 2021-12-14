@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 
@@ -47,7 +48,7 @@ export default function MusicSection() {
                 {!error && loading ? <div>...loading</div> 
                 :
                 error ? 
-                <div>Could not process this request, please reload the page</div> 
+                <Alert variant="danger">Could not process this request, please reload the page</Alert>
                 : 
                 <div>
                     {response?.map((_result: Content) => (
