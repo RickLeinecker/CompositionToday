@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createUserProfile
 exports.createUserProfile = async (req, res) => {
-  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, websiteLink
+  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, websiteLink, userProfileID
   // outgoing: error
 
   var error = "";
@@ -18,10 +18,11 @@ exports.createUserProfile = async (req, res) => {
     profilePicPath,
     displayName,
     websiteLink,
+    userProfileID,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO userProfile(userID,bio,location,privacySetting,profilePicPath,displayName,websiteLink) VALUES (?,?,?,?,?,?,?)";
+      "INSERT INTO userProfile(userID,bio,location,privacySetting,profilePicPath,displayName,websiteLink,userProfileID) VALUES (?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
@@ -32,6 +33,7 @@ exports.createUserProfile = async (req, res) => {
         profilePicPath,
         displayName,
         websiteLink,
+        userProfileID,
       ],
       function (err, result) {
         if (err) {
