@@ -1,13 +1,3 @@
-export type JSONfileUser = {
-    result: Array<User>;
-    error: string;
-};
-
-export type JSONfileContent = {
-    result: Array<Content>;
-    error: string;
-};
-
 export type User = {
     id: number;
     uid?: string;
@@ -33,5 +23,27 @@ export type Content = {
     contentName?: string;
     timestamp?: string;
 }
+
+
+/**
+ * Example
+ * @property data: JSON.stringify({contentType: "experience"})
+ * @property methodType: "POST"
+ * @property path: "getContentByType"
+ */
+export type GenericHandlerObject = {
+    data: string;
+    methodType: string;
+    path: string;
+}
+
+/**
+ * Example
+ * @property path: "getContentByType"    
+ */
+export type GenericGetHandlerObject = {
+    path: string;
+}   
+
 
 
