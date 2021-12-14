@@ -13,7 +13,7 @@ exports.readLike = async (req, res) => {
   const { likeID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM like WHERE id=?",
+      "SELECT * FROM likes WHERE id=?",
       [likeID],
       function (err, result) {
         if (err) {

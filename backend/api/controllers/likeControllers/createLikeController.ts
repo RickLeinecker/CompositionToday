@@ -13,7 +13,7 @@ exports.createLike = async (req, res) => {
   const { userID, timestamp, likeTypeID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO contentGenre(userID, timestamp, likeTypeID) VALUES (?,?,?)";
+      "INSERT INTO likes(userID, timestamp, likeTypeID) VALUES (?,?,?)";
     connection.query(
       sqlInsert,
       [userID, timestamp, likeTypeID],

@@ -10,7 +10,7 @@ exports.getLikes = async (req, res) => {
   var results = "";
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
-    connection.query("SELECT * FROM like", function (err, result) {
+    connection.query("SELECT * FROM likes", function (err, result) {
       if (err) {
         error = "SQL Search Error";
         responseCode = 500;

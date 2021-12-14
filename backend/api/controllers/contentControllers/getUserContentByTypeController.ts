@@ -1,31 +1,33 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// deleteLike
-exports.deleteLike = async (req, res) => {
-  // incoming: likeID
-  // outgoing: error
+// getContentByType
+exports.getUserContentByType = async (req, res) => {
+  // incoming: contentType, userID
+  // outgoing: content, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { likeID } = req.body;
+  const { contentType, userID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "DELETE FROM likes WHERE id=?",
-      [likeID],
+      "SELECT * FROM content WHERE contentType=? AND userId=?",
+      [contentType, userID],
       function (err, result) {
         if (err) {
-          error = "SQL Delete Error";
+          error = "SQL Search Error";
+          responseCode = 500;
           // console.log(err);
         } else {
-          if (result.affectedRows > 0) {
-            results = "Success";
+          if (result[0]) {
+            results = result;
+            responseCode = 200;
           } else {
-            error = "Like does not exist";
+            error = "Content does not exist";
+            responseCode = 500;
           }
-          // console.log(result);
         }
         // package data
         var ret = {

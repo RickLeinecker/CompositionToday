@@ -13,7 +13,7 @@ exports.updateLike = async (req, res) => {
   const { likeID, userID, timestamp, likeTypeID } = req.body;
 
   var sqlInsert =
-    "UPDATE like SET userID=?,timestamp=?,likeTypeID=? WHERE id=?";
+    "UPDATE likes SET userID=?,timestamp=?,likeTypeID=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,

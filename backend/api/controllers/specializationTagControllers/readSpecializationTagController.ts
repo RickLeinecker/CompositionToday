@@ -3,19 +3,19 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // readSpecializationTag
 exports.readSpecializationTag = async (req, res) => {
-  // incoming: specializationTagID
+  // incoming: userID
   // outgoing: content, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { specializationTagID } = req.body;
+  const { userID } = req.body;
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM specializationTag WHERE id=?",
-      [specializationTagID],
+      "SELECT * FROM specializationTag WHERE userID=?",
+      [userID],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
