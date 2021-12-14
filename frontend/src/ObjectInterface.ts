@@ -24,4 +24,15 @@ export type Content = {
     timestamp?: string;
 }
 
+export type GenericHandlerObject = {
+    data: string;
+    methodType: string;
+    url: string;
+}
+
+export type GenericGetHandlerObject = {
+    url: string;
+}   
+
+
 

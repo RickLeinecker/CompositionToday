@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import GetContentByTypeHandler from '../../../Handlers/GetContentByTypeHandler';
-import { Content } from '../../../ObjectInterface';
+import GenericHandler from '../../../Handlers/GenericHandler';
+import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 
 export default function ExperienceSection() {
@@ -13,7 +13,13 @@ export default function ExperienceSection() {
     useEffect(() => {
         async function fetchData(){
             try{
-                let answer = (await GetContentByTypeHandler("experience"));
+                const obj: GenericHandlerObject = {
+                    data: JSON.stringify({contentType: "experience"}),
+                    methodType: "POST",
+                    url: "getContentByType",
+                }
+                
+                let answer = (await GenericHandler(obj));
                 if(answer.error.length > 0){
                     console.log("error");
                     return;
@@ -46,7 +52,10 @@ export default function ExperienceSection() {
                 <div>
                     {response?.map((_result: Content) => (
                         <li key={_result.id}>
-                            <ExperienceCard contentName={_result.contentName} contentText={_result.contentText} timestamp={_result.timestamp}>
+                            <ExperienceCard 
+                                contentName={_result.contentName} 
+                                contentText={_result.contentText} 
+                                timestamp={_result.timestamp}>
                             </ExperienceCard>
                         </li>
                     ))}
