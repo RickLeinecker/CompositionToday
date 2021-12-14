@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // createLike
 exports.createLike = async (req, res) => {
@@ -11,29 +11,30 @@ exports.createLike = async (req, res) => {
   var responseCode = 0;
 
   const { userID, timestamp, likeTypeID } = req.body;
-
-  const sqlInsert =
-    "INSERT INTO contentGenre(userID, timestamp, likeTypeID) VALUES (?,?,?)";
-  connection.query(
-    sqlInsert,
-    [userID, timestamp, likeTypeID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Insert Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        results = "Success";
-        responseCode = 201;
-        // console.log(result);
+  mysql_pool.getConnection(function (err, connection) {
+    const sqlInsert =
+      "INSERT INTO likes(userID, timestamp, likeTypeID) VALUES (?,?,?)";
+    connection.query(
+      sqlInsert,
+      [userID, timestamp, likeTypeID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Insert Error";
+          responseCode = 500;
+          // console.log(err);
+        } else {
+          results = "Success";
+          responseCode = 201;
+          // console.log(result);
+        }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

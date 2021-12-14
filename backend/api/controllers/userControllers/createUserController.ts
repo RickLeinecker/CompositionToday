@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // createUser - add user to database
 exports.createUser = async (req, res) => {
@@ -24,28 +24,29 @@ exports.createUser = async (req, res) => {
   // preparing MySQL string
   var sqlInsert =
     "INSERT INTO user(firstName,lastName,username,uid,email,isPublisher,userProfileID) VALUES(?,?,?,?,?,?,?)";
-
-  // query database, handle errors, return JSON
-  connection.query(
-    sqlInsert,
-    [firstName, lastName, username, uid, email, isPublisher, userProfileID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Insert Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        results = "Success";
-        responseCode = 201;
-        // console.log(result);
+  mysql_pool.getConnection(function (err, connection) {
+    // query database, handle errors, return JSON
+    connection.query(
+      sqlInsert,
+      [firstName, lastName, username, uid, email, isPublisher, userProfileID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Insert Error";
+          responseCode = 500;
+          // console.log(err);
+        } else {
+          results = "Success";
+          responseCode = 201;
+          // console.log(result);
+        }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

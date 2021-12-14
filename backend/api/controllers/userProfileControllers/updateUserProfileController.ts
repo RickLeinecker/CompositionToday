@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateUserProfile
 exports.updateUserProfile = async (req, res) => {
@@ -11,7 +11,6 @@ exports.updateUserProfile = async (req, res) => {
   var responseCode = 0;
 
   const {
-    userId,
     bio,
     specializationTags,
     location,
@@ -20,48 +19,50 @@ exports.updateUserProfile = async (req, res) => {
     profilePicPath,
     connections,
     displayName,
-    userProfileID,
+    websiteLink,
+    userID,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=? WHERE id=?";
-
-  connection.query(
-    sqlInsert,
-    [
-      userId,
-      bio,
-      specializationTags,
-      location,
-      privacySetting,
-      contents,
-      profilePicPath,
-      connections,
-      displayName,
-      userProfileID,
-    ],
-    function (err, result) {
-      if (err) {
-        error = "SQL Update Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
-          responseCode = 200;
-        } else {
-          error = "User Profile does not exist";
+    "UPDATE userProfile SET bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=?,websiteLink=? WHERE userId=?";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      sqlInsert,
+      [
+        bio,
+        specializationTags,
+        location,
+        privacySetting,
+        contents,
+        profilePicPath,
+        connections,
+        displayName,
+        websiteLink,
+        userID,
+      ],
+      function (err, result) {
+        if (err) {
+          error = "SQL Update Error";
           responseCode = 500;
+          // console.log(err);
+        } else {
+          if (result.affectedRows > 0) {
+            results = "Success";
+            responseCode = 200;
+          } else {
+            error = "User Profile does not exist";
+            responseCode = 500;
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

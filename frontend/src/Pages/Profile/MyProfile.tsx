@@ -5,7 +5,8 @@ import ArticlesSection from './Articles/ArticlesSection'
 import EventsSection from './Events/EventsSection'
 import ExperienceSection from './Experience/ExperienceSection'
 import MusicSection from './Music/MusicSection'
-import './MyProfileStyle.css'
+import './MyProfileStyle.scss'
+import DefaultValues from '../../Styles/DefaultValues.module.scss'
 
 export default function MyProfile() {
 
@@ -16,7 +17,7 @@ export default function MyProfile() {
         // sets current section button color to selected 
         let property = document.getElementById(currentSection)
             if(property != null)
-                property.style.background = "#3981FF"
+                property.style.background = DefaultValues.secondaryColor
 
         return () => {
         }
@@ -30,7 +31,7 @@ export default function MyProfile() {
         if(event?.target?.value != null && event?.target?.value !== currentSection){
             let oldProperty = document.getElementById(currentSection)
             if(oldProperty != null){
-                oldProperty.style.background = "#FFFBFF"
+                oldProperty.style.background = DefaultValues.white
             }
             setCurrentSection(event?.target?.value)
         }

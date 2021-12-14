@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateUser - update user in database
 exports.updateUser = async (req, res) => {
@@ -21,45 +21,46 @@ exports.updateUser = async (req, res) => {
     isPublisher,
     userProfileID,
   } = req.body;
-
-  // preparing MySQL string
-  var sqlInsert =
-    "UPDATE user SET firstName=?,lastName=?,username=?,email=?,uid=?,isPublisher=?,userProfileID=? WHERE id=?";
-  // query database, handle errors, return JSON
-  connection.query(
-    sqlInsert,
-    [
-      firstName,
-      lastName,
-      username,
-      email,
-      uid,
-      isPublisher,
-      userProfileID,
-      userID,
-    ],
-    function (err, result) {
-      if (err) {
-        error = "SQL Update Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
-          responseCode = 200;
-        } else {
-          error = "User does not exist";
+  mysql_pool.getConnection(function (err, connection) {
+    // preparing MySQL string
+    var sqlInsert =
+      "UPDATE user SET firstName=?,lastName=?,username=?,email=?,uid=?,isPublisher=?,userProfileID=? WHERE id=?";
+    // query database, handle errors, return JSON
+    connection.query(
+      sqlInsert,
+      [
+        firstName,
+        lastName,
+        username,
+        email,
+        uid,
+        isPublisher,
+        userProfileID,
+        userID,
+      ],
+      function (err, result) {
+        if (err) {
+          error = "SQL Update Error";
           responseCode = 500;
+          // console.log(err);
+        } else {
+          if (result.affectedRows > 0) {
+            results = "Success";
+            responseCode = 200;
+          } else {
+            error = "User does not exist";
+            responseCode = 500;
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

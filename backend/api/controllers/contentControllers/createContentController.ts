@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
@@ -13,6 +13,7 @@ exports.createContent = async (req, res) => {
   const {
     userId,
     imageFilepathArray,
+    contentName,
     contentText,
     location,
     timestamp,
@@ -21,41 +22,45 @@ exports.createContent = async (req, res) => {
     sheetMusicFilepath,
     contentType,
     contentTags,
+    websiteLink,
   } = req.body;
-
-  const sqlInsert =
-    "INSERT INTO content(userId,imageFilepathArray,contentText,location,timestamp,likes,audioFilepath,sheetMusicFilepath,contentType,contentTags) VALUES (?,?,?,?,?,?,?,?,?,?)";
-  connection.query(
-    sqlInsert,
-    [
-      userId,
-      imageFilepathArray,
-      contentText,
-      location,
-      timestamp,
-      likes,
-      audioFilepath,
-      sheetMusicFilepath,
-      contentType,
-      contentTags,
-    ],
-    function (err, result) {
-      if (err) {
-        error = "SQL Insert Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        results = "Success";
-        responseCode = 201;
-        // console.log(result);
+  mysql_pool.getConnection(function (err, connection) {
+    const sqlInsert =
+      "INSERT INTO content(userId,imageFilepathArray,contentName,contentText,location,timestamp,likes,audioFilepath,sheetMusicFilepath,contentType,contentTags,websiteLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    connection.query(
+      sqlInsert,
+      [
+        userId,
+        imageFilepathArray,
+        contentName,
+        contentText,
+        location,
+        timestamp,
+        likes,
+        audioFilepath,
+        sheetMusicFilepath,
+        contentType,
+        contentTags,
+        websiteLink,
+      ],
+      function (err, result) {
+        if (err) {
+          error = "SQL Insert Error";
+          responseCode = 500;
+          // console.log(err);
+        } else {
+          results = "Success";
+          responseCode = 201;
+          // console.log(result);
+        }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };
