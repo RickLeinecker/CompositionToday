@@ -12,7 +12,7 @@ exports.createContentTag = async (req, res) => {
 
   const { contentID, tagID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
-    const sqlInsert = "INSERT INTO contentGenre(contentID, tagID) VALUES (?,?)";
+    const sqlInsert = "INSERT INTO contentTag(contentID, tagID) VALUES (?,?)";
     connection.query(sqlInsert, [contentID, tagID], function (err, result) {
       if (err) {
         error = "SQL Insert Error";
