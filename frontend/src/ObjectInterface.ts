@@ -24,12 +24,23 @@ export type Content = {
     timestamp?: string;
 }
 
+
+/**
+ * Example
+ * data: JSON.stringify({contentType: "experience"}),
+ * methodType: "POST",
+ * url: "getContentByType",    
+*/
 export type GenericHandlerObject = {
     data: string;
     methodType: string;
     url: string;
 }
 
+/**
+ * Example
+ * url: "getContentByType",    
+*/
 export type GenericGetHandlerObject = {
     url: string;
 }   
