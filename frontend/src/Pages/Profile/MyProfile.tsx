@@ -23,7 +23,8 @@ export default function MyProfile() {
         }
     }, [currentSection])
 
-    const handleClick=(event: any)=>{
+    const handleClick = async (event: any)=>{
+
         event.preventDefault()
         
         // sets old section button color to selected
@@ -36,6 +37,7 @@ export default function MyProfile() {
             setCurrentSection(event?.target?.value)
         }
     }
+      
 
     return (
         <>
