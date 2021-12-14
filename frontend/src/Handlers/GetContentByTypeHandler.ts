@@ -10,7 +10,7 @@ export default async function GetContentByTypeHandler(event: { preventDefault: (
 
     // try {
         const response = fetch("http://137.184.149.145:5000/api/getContentByType", {
-        method: "GET",
+        method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
         });
