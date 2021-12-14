@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
 export default function EventsSection() {
 
@@ -33,7 +34,7 @@ export default function EventsSection() {
 
             } catch(e: any){
                 console.error("Frontend Error: " + e);
-                setError("Could not process this request, please reload the page");
+                setError(DefaultValues.apiErrorMessage);
             }
         
         }

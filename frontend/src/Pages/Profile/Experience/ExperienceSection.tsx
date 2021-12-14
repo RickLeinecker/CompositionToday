@@ -3,6 +3,7 @@ import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
 export default function ExperienceSection() {
 
@@ -34,7 +35,7 @@ export default function ExperienceSection() {
 
             } catch(e: any){
                 console.error("Frontend Error: " + e);
-                setError("Could not process this request, please reload the page");
+                setError(DefaultValues.apiErrorMessage);
             }
         
         }

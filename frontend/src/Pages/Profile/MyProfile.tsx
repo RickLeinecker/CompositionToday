@@ -13,7 +13,6 @@ export default function MyProfile() {
     const [currentSection, setCurrentSection] = useState<string>("Experience")
 
     useEffect(() => {
-
         // sets current section button color to selected 
         let property = document.getElementById(currentSection)
             if(property != null)
