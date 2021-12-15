@@ -6,16 +6,19 @@ import Alert from "react-bootstrap/Alert"
 import { useAuth } from '../../FirebaseAuth/AuthContext';
 import { Link, useHistory } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
+import { getAuth } from 'firebase/auth'
+import { useUser } from '../../UserContext'
 
 export default function Signup() {
 
-    const [error, setError] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
-    const emailRef = useRef<HTMLInputElement>(null)
-    const passwordRef = useRef<HTMLInputElement>(null)
-    const passwordConfirmRef = useRef<HTMLInputElement>(null)
-    const { signup } = useAuth()
-    const history = useHistory()
+    const [error, setError] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const passwordConfirmRef = useRef<HTMLInputElement>(null);
+    const { signup } = useAuth();
+    const history = useHistory();
+    const {setCurrentUser} = useUser();
 
     async function handleSubmit(e: { preventDefault: () => void; }) {
         e.preventDefault()
@@ -28,6 +31,13 @@ export default function Signup() {
             setLoading(true)
             await signup(emailRef.current?.value, passwordRef.current?.value)
             history.push("/")
+            var user = getAuth().currentUser;
+            if(user !== null){
+                setCurrentUser({
+                    email: user.email,
+                    uid: user.uid,
+                })
+            }
         } catch {
             setError("Failed to create an account")
         }

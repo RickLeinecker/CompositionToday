@@ -11,21 +11,32 @@ import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
 import MyProfile from './Pages/Profile/MyProfile';
+import { UserContext } from './UserContext';
+import { useState } from 'react';
+import { CurrentUser } from './ObjectInterface';
 
 function App() {
+    
+    const [currentUser, setCurrentUser] = useState<CurrentUser>({
+        email: "",
+        uid: "",
+    })
+
     return (
         <>
             <Router>
                 <AuthProvider>
                     <Switch>
-                        <PrivateRoute exact path="/" component={Home} />
-                        <Route path="/signup" component={Signup} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/forgot-password" component={ForgotPassword} />
-                        <PrivateRoute exact path="/blog" component={Blog} />
-                        <PrivateRoute exact path="/showcase" component={Showcase} />
-                        <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
-                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={{uid: "UserID123"}}/>
+                        <UserContext.Provider value={{currentUser, setCurrentUser}}>
+                            <PrivateRoute exact path="/" component={Home} />
+                            <Route path="/signup" component={Signup} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/forgot-password" component={ForgotPassword} />
+                            <PrivateRoute exact path="/blog" component={Blog} />
+                            <PrivateRoute exact path="/showcase" component={Showcase} />
+                            <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
+                            <PrivateRoute exact path="/my-profile" component={MyProfile} props={{uid: "UserID123"}}/>
+                        </UserContext.Provider>
                     </Switch>
                 </AuthProvider>
             </Router>
@@ -33,4 +44,5 @@ function App() {
     )
 }
 
-export default App
+
+export default App;

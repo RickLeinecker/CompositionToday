@@ -6,24 +6,35 @@ import Alert from "react-bootstrap/Alert"
 import { useAuth } from '../../FirebaseAuth/AuthContext';
 import { Link, useHistory } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
+import { getAuth } from 'firebase/auth'
+import { useUser } from '../../UserContext'
 
 export default function Login() {
 
-    const [error, setError] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const { login } = useAuth()
-    const history = useHistory()
+    const { login } = useAuth();
+    const history = useHistory();
+    const {setCurrentUser} = useUser();
 
     async function handleSubmit(e: { preventDefault: () => void; }) {
         e.preventDefault()
 
         try {
-            setError("")
-            setLoading(true)
-            await login(emailRef.current?.value, passwordRef.current?.value)
-            history.push("/")
+            setError("");
+            setLoading(true);
+            await login(emailRef.current?.value, passwordRef.current?.value);
+            history.push("/");
+            var user = getAuth().currentUser;
+            if(user !== null){
+                setCurrentUser({
+                    email: user.email,
+                    uid: user.uid,
+                })
+            }
+            
         } catch {
             setError("Failed to log in")
         }

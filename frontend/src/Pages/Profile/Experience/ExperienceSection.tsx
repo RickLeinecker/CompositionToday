@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
@@ -11,7 +11,6 @@ export default function ExperienceSection() {
     const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
 
     useEffect(() => {
         var user = getAuth().currentUser?.email;

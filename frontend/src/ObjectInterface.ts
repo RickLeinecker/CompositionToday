@@ -45,5 +45,10 @@ export type GenericGetHandlerObject = {
     path: string;
 }   
 
-
+export type CurrentUser = {
+    firstName?: string
+    lastName?: string
+    email: string | null
+    uid: string | null
+}
 
