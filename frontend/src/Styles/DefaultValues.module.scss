@@ -2,6 +2,7 @@ $primary-color: #F7B41F;
 $secondary-color: #3981FF;
 $background-color: #FFFBFF;
 $white: #FFFBFF;
+$apiErrorMessage: "Could not process this request, please reload the page";
 
 
 :export {
@@ -9,5 +10,6 @@ $white: #FFFBFF;
     secondaryColor: $secondary-color;
     backgroundColor: $background-color;
     white: $white;
+    apiErrorMessage: $apiErrorMessage;
 }
 

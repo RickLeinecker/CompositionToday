@@ -1,44 +1,49 @@
 import React, { useEffect, useState } from 'react'
+import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
-export default function ExperienceSection() {
+type Props = {
+    userID: number;
+}
+
+export default function ExperienceSection({userID}: Props) {
 
     const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
 
 
     useEffect(() => {
         async function fetchData(){
-
             const handlerObject: GenericHandlerObject = {
-                data: JSON.stringify({contentType: "experience"}),
+                data: JSON.stringify({contentType: "experience", userID}),
                 methodType: "POST",
-                path: "getContentByType",
+                path: "getUserContentByType",
             }
-
+            
             try{
                 let answer = (await GenericHandler(handlerObject));
                 if(answer.error.length > 0){
-                    console.log("error");
+                    setError(answer.error);
                     return;
                 }
                 
-                setError(false);
+                setError("");
                 setResponse(await answer.result);
                 setLoading(false);
                 
 
             } catch(e: any){
                 console.error("Frontend Error: " + e);
-                setError(true);
+                setError(DefaultValues.apiErrorMessage);
             }
         
         }
         fetchData();
-    }, [])
+    }, [userID])
 
 
         
@@ -48,7 +53,7 @@ export default function ExperienceSection() {
                 {!error && loading ? <div>...loading</div> 
                 :
                 error ? 
-                <div>Could not process this request, please reload the page</div> 
+                <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
                     {response?.map((_result: Content) => (

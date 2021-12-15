@@ -7,13 +7,13 @@ import ExperienceSection from './Experience/ExperienceSection'
 import MusicSection from './Music/MusicSection'
 import './MyProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
+import { getAuth } from 'firebase/auth'
 
-export default function MyProfile() {
+export default function MyProfile(props: any) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
 
     useEffect(() => {
-
         // sets current section button color to selected 
         let property = document.getElementById(currentSection)
             if(property != null)
@@ -37,6 +37,16 @@ export default function MyProfile() {
             setCurrentSection(event?.target?.value)
         }
     }
+
+    function getUser(){
+        var user = getAuth().currentUser;
+        var email = user?.email
+        console.log("MYprofile userid  " + props.userID)
+
+        return(
+            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{email}</h1>
+        )
+    }
       
 
     return (
@@ -46,7 +56,7 @@ export default function MyProfile() {
                 <div id="container">
                     <div style ={{display: "flex", marginLeft: "5%"}}>
                         <Image style={{width: "10%", height: "auto"}} src="img_avatar.png" roundedCircle/>
-                        <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
+                        {getUser()}
                     </div>
                     <ButtonGroup className="buttonContainer" onClick={handleClick}>
                         <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
@@ -57,7 +67,7 @@ export default function MyProfile() {
                     <div id="my-profile-box"></div>
                 </div>
                 <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection/>}
+                    {currentSection === "Experience" && <ExperienceSection userID={0}/>}
                     {currentSection === "Music" && <MusicSection/>}
                     {currentSection === "Events" && <EventsSection/>}
                     {currentSection === "Articles" && <ArticlesSection/>}
