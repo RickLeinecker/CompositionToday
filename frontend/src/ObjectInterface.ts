@@ -25,6 +25,14 @@ export type Content = {
     description?: string;
 }
 
+export type ExperienceType = {
+    id: number;
+    contentText: string;
+    contentName: string;
+    timestamp: string;
+    description?: string;
+}
+
 /**
  * Example
  * @property data: JSON.stringify({contentType: "experience"})

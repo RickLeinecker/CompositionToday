@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { Content, GenericHandlerObject } from '../../../ObjectInterface';
+import { Content, ExperienceType, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
@@ -11,7 +11,7 @@ type Props = {
 
 export default function ExperienceSection({userID}: Props) {
 
-    const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
+    const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -56,7 +56,7 @@ export default function ExperienceSection({userID}: Props) {
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: Content) => (
+                    {response?.map((_result: ExperienceType) => (
                         <li key={_result.id}>
                             <ExperienceCard 
                                 contentName={_result.contentName} 
