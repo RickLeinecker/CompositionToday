@@ -9,7 +9,7 @@ const deleteUserController = require("../controllers/userControllers/deleteUserC
 const getUsersController = require("../controllers/userControllers/getUsersController.ts");
 
 router.post("/api/createUser", createUserController.createUser);
-router.post("/api/readUsers", readUserController.readUser);
+router.post("/api/readUser", readUserController.readUser);
 router.patch("/api/updateUser", updateUserController.updateUser);
 router.delete("/api/deleteUser", deleteUserController.deleteUser);
 router.get("/api/getUsers", getUsersController.getUsers);

@@ -1,9 +1,9 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // createUserProfile
 exports.createUserProfile = async (req, res) => {
-  // incoming: userId, bio, specializationTags, location, privacySetting, contents, profilePicPath, connections, displayName
+  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, websiteLink, userProfileID
   // outgoing: error
 
   var error = "";
@@ -11,49 +11,48 @@ exports.createUserProfile = async (req, res) => {
   var responseCode = 0;
 
   const {
-    userId,
+    userID,
     bio,
-    specializationTags,
     location,
     privacySetting,
-    contents,
     profilePicPath,
-    connections,
     displayName,
+    websiteLink,
+    userProfileID,
   } = req.body;
-
-  const sqlInsert =
-    "INSERT INTO userProfile(userId,bio,specializationTags,location,privacySetting,contents,profilePicPath,connections,displayName) VALUES (?,?,?,?,?,?,?,?,?)";
-  connection.query(
-    sqlInsert,
-    [
-      userId,
-      bio,
-      specializationTags,
-      location,
-      privacySetting,
-      contents,
-      profilePicPath,
-      connections,
-      displayName,
-    ],
-    function (err, result) {
-      if (err) {
-        error = "SQL Insert Error";
-        responseCode = 500;
-        // console.log(err);
-      } else {
-        results = "Success";
-        responseCode = 201;
-        // console.log(result);
+  mysql_pool.getConnection(function (err, connection) {
+    const sqlInsert =
+      "INSERT INTO userProfile(userID,bio,location,privacySetting,profilePicPath,displayName,websiteLink,userProfileID) VALUES (?,?,?,?,?,?,?,?)";
+    connection.query(
+      sqlInsert,
+      [
+        userID,
+        bio,
+        location,
+        privacySetting,
+        profilePicPath,
+        displayName,
+        websiteLink,
+        userProfileID,
+      ],
+      function (err, result) {
+        if (err) {
+          error = "SQL Insert Error";
+          responseCode = 500;
+          // console.log(err);
+        } else {
+          results = "Success";
+          responseCode = 201;
+          // console.log(result);
+        }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };
