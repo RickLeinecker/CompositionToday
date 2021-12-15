@@ -1,11 +1,11 @@
 export type User = {
     id: number;
     uid?: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     username?: string;
     email?: string;
-    isPublisher: number;
+    isPublisher?: number;
     userProfileId?: number;
 };
 
