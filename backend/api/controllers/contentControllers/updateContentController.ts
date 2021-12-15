@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateContent
 exports.updateContent = async (req, res) => {
-  // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink
+  // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators
   // outgoing: error
 
   var error = "";
@@ -22,10 +22,11 @@ exports.updateContent = async (req, res) => {
     contentName,
     websiteLink,
     contentID,
+    collaborators,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentName=?,websiteLink=? WHERE id=?";
+    "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentName=?,websiteLink=?,collaborators=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,
@@ -40,6 +41,7 @@ exports.updateContent = async (req, res) => {
         contentType,
         contentName,
         websiteLink,
+        collaborators,
         contentID,
       ],
       function (err, result) {
