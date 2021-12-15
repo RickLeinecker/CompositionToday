@@ -1,45 +1,31 @@
+// creates a like for a comment
+
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// createUserProfile
-exports.createUserProfile = async (req, res) => {
-  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, websiteLink, userProfileID
+// createLikeForComment
+exports.createLikeForComment = async (req, res) => {
+  // incoming: userID, timestamp, likeTypeID, commentID
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
-  const {
-    userID,
-    bio,
-    location,
-    privacySetting,
-    profilePicPath,
-    displayName,
-    websiteLink,
-  } = req.body;
+  const { userID, timestamp, likeTypeID, commentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO userProfile(userID,bio,location,privacySetting,profilePicPath,displayName,websiteLink) VALUES (?,?,?,?,?,?,?)";
+      "INSERT INTO likes(userID, timestamp, likeTypeID, commentID) VALUES (?,?,?,?)";
     connection.query(
       sqlInsert,
-      [
-        userID,
-        bio,
-        location,
-        privacySetting,
-        profilePicPath,
-        displayName,
-        websiteLink,
-      ],
+      [userID, timestamp, likeTypeID, commentID],
       function (err, result) {
         if (err) {
           error = "SQL Insert Error";
           responseCode = 500;
           // console.log(err);
         } else {
-          results = "Success";
+          results.push("Success");
           responseCode = 201;
           // console.log(result);
         }
