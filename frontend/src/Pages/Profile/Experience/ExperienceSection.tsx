@@ -4,6 +4,7 @@ import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
+import { getAuth } from "firebase/auth";
 
 export default function ExperienceSection() {
 
@@ -13,6 +14,8 @@ export default function ExperienceSection() {
 
 
     useEffect(() => {
+        var user = getAuth().currentUser?.email;
+        console.log("user is " + user);
         async function fetchData(){
 
             const handlerObject: GenericHandlerObject = {
