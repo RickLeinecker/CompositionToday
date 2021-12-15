@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { Content, GenericHandlerObject } from '../../../ObjectInterface';
+import { ContentType, ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
@@ -11,14 +11,14 @@ type Props = {
 
 export default function ExperienceSection({userID}: Props) {
 
-    const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
+    const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
 
     useEffect(() => {
         async function fetchData(){
-            const handlerObject: GenericHandlerObject = {
+            const handlerObject: GenericHandlerType = {
                 data: JSON.stringify({contentType: "experience", userID}),
                 methodType: "POST",
                 path: "getUserContentByType",
@@ -56,13 +56,14 @@ export default function ExperienceSection({userID}: Props) {
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: Content) => (
+                    {response?.map((_result: ExperienceType) => (
                         <li key={_result.id}>
                             <ExperienceCard 
                                 contentName={_result.contentName} 
+                                description={_result.description}
                                 contentText={_result.contentText} 
-                                timestamp={_result.timestamp}>
-                            </ExperienceCard>
+                                timestamp={_result.timestamp}
+                            />
                         </li>
                     ))}
                 </div>

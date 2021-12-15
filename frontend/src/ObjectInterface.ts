@@ -9,7 +9,7 @@ export type User = {
     userProfileId?: number;
 };
 
-export type Content = {
+export type ContentType = {
     id: number;
     userId: string;
     imageFilePathArray?: object;
@@ -22,8 +22,16 @@ export type Content = {
     conentTags?: object;
     contentName?: string;
     timestamp?: string;
+    description?: string;
 }
 
+export type ExperienceType = {
+    id: number;
+    contentText: string;
+    contentName: string;
+    timestamp: string;
+    description?: string;
+}
 
 /**
  * Example
@@ -31,7 +39,7 @@ export type Content = {
  * @property methodType: "POST"
  * @property path: "getContentByType"
  */
-export type GenericHandlerObject = {
+export type GenericHandlerType = {
     data: string;
     methodType: string;
     path: string;
@@ -41,7 +49,7 @@ export type GenericHandlerObject = {
  * Example
  * @property path: "getContentByType"    
  */
-export type GenericGetHandlerObject = {
+export type GenericGetHandlerType = {
     path: string;
 }   
 
