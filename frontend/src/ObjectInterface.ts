@@ -22,8 +22,8 @@ export type Content = {
     conentTags?: object;
     contentName?: string;
     timestamp?: string;
+    description?: string;
 }
-
 
 /**
  * Example

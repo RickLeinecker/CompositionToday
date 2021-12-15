@@ -60,9 +60,10 @@ export default function ExperienceSection({userID}: Props) {
                         <li key={_result.id}>
                             <ExperienceCard 
                                 contentName={_result.contentName} 
+                                description={_result.description}
                                 contentText={_result.contentText} 
-                                timestamp={_result.timestamp}>
-                            </ExperienceCard>
+                                timestamp={_result.timestamp}
+                            />
                         </li>
                     ))}
                 </div>
