@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateContent
 exports.updateContent = async (req, res) => {
-  // incoming: userId, image, contentText, genre, location, timestamp, likes, audioFilePath, sheetMusicFilePath, contentType, contentName, contentID
+  // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators
   // outgoing: error
 
   var error = "";
@@ -11,39 +11,37 @@ exports.updateContent = async (req, res) => {
   var responseCode = 0;
 
   const {
-    userId,
+    userID,
     imageFilepathArray,
     contentText,
     location,
     timestamp,
-    likes,
     audioFilepath,
     sheetMusicFilepath,
     contentType,
     contentName,
-    contentTags,
     websiteLink,
     contentID,
+    collaborators,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE content SET userId=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,likes=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentName=?,contentTags=?,websiteLink=? WHERE id=?";
+    "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentName=?,websiteLink=?,collaborators=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,
       [
-        userId,
+        userID,
         imageFilepathArray,
         contentText,
         location,
         timestamp,
-        likes,
         audioFilepath,
         sheetMusicFilepath,
         contentType,
         contentName,
-        contentTags,
         websiteLink,
+        collaborators,
         contentID,
       ],
       function (err, result) {
