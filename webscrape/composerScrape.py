@@ -68,8 +68,16 @@ def find_composer(path):
     soup_composer = BeautifulSoup(composer_page, 'lxml')
     # print(soup_composer)
 
-    get_user_profile(soup_composer)
-    get_content(soup_composer)
+    temp_dict = {
+        "userProfile": {},
+        "content": []
+    }
+
+    user_profile = get_user_profile(soup_composer)
+    temp_dict.update({"userProfile": user_profile})
+
+    content = get_content(soup_composer)
+    # print(temp_dict)
 
 def get_user_profile(html):
     composer_profile = html.find('div', {'style': "font-size: 100%;"})
@@ -87,7 +95,7 @@ def get_user_profile(html):
         user_profile_dict.update({"bio": composer_profile.text})
     
     # print(user_profile_dict)
-    return
+    return user_profile_dict
 
 def get_content(html):
     composer_content = html.find('td', {'width': "100%"})
@@ -102,26 +110,66 @@ def get_content(html):
 
     # Ignore external music sheets for now
     content_dict = {
-
+        "contentName": "",
+        "contentText": "",
+        "contentType": "",
+        # "location": "",
+        # "timestamp": "",
+        # "tag": ""
     }
 
+# There is a space between the location and contentText of the performance
 def get_past_performances(html):
     past_performances = html.find_all('div', {'style' : "width:250px;height:80"})
     # print(past_performances)
 
-    
     for performance in past_performances:
-        get_calendar(performance.find('a'))
+        get_concert(performance.find('a'))
 
-def get_calendar(html):
+def get_concert(html):
     # print(html)
+    concert_response = requests.get(f'http://www.compositiontoday.com/{html["href"]}')
+    concert_page = concert_response.text
 
+    concert_soup = BeautifulSoup(concert_page, "lxml")
+
+    date = concert_soup.find("span", {'style' : "background-color:AD3442;color:black"})
+
+    if date is None:
+        return
+
+    format_date = date.text.strip().lower()
+    print(format_date)
+
+    to_24_hour(format_date)
 
     # Do a split on date
     # if 'pm' in 
     datetime_object = datetime.strptime('04 October 2014 at 9:30AM', '%d %B %Y at %I:%M%p')
     # print(datetime_object)
 
+def to_24_hour(format_date):
+    # if the date contains am or pm
+    if any(x in format_date for x in ['am', 'pm']):
+        split_date = format_date.split()
+
+        if 'am' in split_date[4]:
+            split_date[4] = split_date[4].replace('am', '')
+        elif 'pm' in split_date[4]:
+            hours = ""
+            for num in split_date[4]:
+                if num.isnumeric():
+                    hours = hours + num
+                else:
+                    break
+            
+            if hours != 12:
+                hours = (int(hours) + 12) % 24
+            # print(type(hours), hours)
+            # split_date[4] = split_date[4].
+
+        print(split_date)
+        print(True)
 
 # For audio, get it from side site
 # For list of works, get it from main page
@@ -140,5 +188,5 @@ def get_music(html):
     print(html)
     # audio = html.find()
 
-g = geopy
+g = geocoders.Nominatim(user_agent="geoapiExercises")
 start_scraping()
