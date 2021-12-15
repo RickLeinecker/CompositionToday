@@ -41,6 +41,7 @@ export default function MyProfile(props: any) {
     function getUser(){
         var user = getAuth().currentUser;
         var email = user?.email
+        console.log("MYprofile userid  " + props.userID)
 
         return(
             <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{email}</h1>
@@ -66,7 +67,7 @@ export default function MyProfile(props: any) {
                     <div id="my-profile-box"></div>
                 </div>
                 <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection/>}
+                    {currentSection === "Experience" && <ExperienceSection userID={props.userID}/>}
                     {currentSection === "Music" && <MusicSection/>}
                     {currentSection === "Events" && <EventsSection/>}
                     {currentSection === "Articles" && <ArticlesSection/>}

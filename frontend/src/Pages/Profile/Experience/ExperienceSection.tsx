@@ -4,9 +4,8 @@ import GenericHandler from '../../../Handlers/GenericHandler';
 import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
-import { getAuth } from "firebase/auth";
 
-export default function ExperienceSection() {
+export default function ExperienceSection(props: any) {
 
     const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -14,14 +13,11 @@ export default function ExperienceSection() {
 
 
     useEffect(() => {
-        var user = getAuth().currentUser?.email;
-        console.log("user is " + user);
         async function fetchData(){
-
             const handlerObject: GenericHandlerObject = {
-                data: JSON.stringify({contentType: "experience"}),
+                data: JSON.stringify({contentType: "experience", userID: props.userID}),
                 methodType: "POST",
-                path: "getContentByType",
+                path: "getUserContentByType",
             }
             
             try{
@@ -43,7 +39,7 @@ export default function ExperienceSection() {
         
         }
         fetchData();
-    }, [])
+    }, [props.userID])
 
 
         
