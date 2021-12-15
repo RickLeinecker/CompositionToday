@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { Content, GenericHandlerObject } from '../../../ObjectInterface';
+import { ContentType, GenericHandlerType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
 export default function ArticlesSection() {
 
-    const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
+    const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -14,7 +14,7 @@ export default function ArticlesSection() {
     useEffect(() => {
         async function fetchData(){
 
-            const handlerObject: GenericHandlerObject = {
+            const handlerObject: GenericHandlerType = {
                 data: JSON.stringify({contentType: "articles"}),
                 methodType: "POST",
                 path: "getContentByType",
@@ -52,7 +52,7 @@ export default function ArticlesSection() {
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: Content) => (
+                    {response?.map((_result: ContentType) => (
                         <li key={_result.id}>
                             <div>
                                 <p>{_result.contentText}</p>

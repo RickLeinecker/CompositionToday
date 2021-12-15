@@ -4,7 +4,7 @@ import TopNavBar from '../TopNavBar'
 import './MyProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import { getAuth } from 'firebase/auth'
-import { GenericHandlerObject, User } from '../../ObjectInterface'
+import { GenericHandlerType, User } from '../../ObjectInterface'
 import GenericHandler from '../../Handlers/GenericHandler'
 import MyProfileContentSelector from './MyProfileContentSelector'
 
@@ -17,7 +17,7 @@ export default function MyProfile(props: any) {
     // get user info
     useEffect(() => {
         async function fetchUser(){
-            const handlerObject: GenericHandlerObject = {
+            const handlerObject: GenericHandlerType = {
                 data: JSON.stringify({uid: getAuth().currentUser?.uid}),
                 methodType: "POST",
                 path: "getLoggedInUser",

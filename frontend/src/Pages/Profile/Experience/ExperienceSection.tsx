@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { Content, ExperienceType, GenericHandlerObject } from '../../../ObjectInterface';
+import { ContentType, ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
@@ -18,7 +18,7 @@ export default function ExperienceSection({userID}: Props) {
 
     useEffect(() => {
         async function fetchData(){
-            const handlerObject: GenericHandlerObject = {
+            const handlerObject: GenericHandlerType = {
                 data: JSON.stringify({contentType: "experience", userID}),
                 methodType: "POST",
                 path: "getUserContentByType",

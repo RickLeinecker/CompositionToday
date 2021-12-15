@@ -1,7 +1,7 @@
-import { GenericHandlerObject } from "../ObjectInterface";
+import { GenericHandlerType } from "../ObjectInterface";
 
 // returns JSON containing users 
-export default async function GetContentByTypeHandler(obj: GenericHandlerObject){
+export default async function GetContentByTypeHandler(obj: GenericHandlerType){
 
     let message = []
 
