@@ -5,7 +5,11 @@ import { Content, GenericHandlerObject } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
-export default function ExperienceSection(props: any) {
+type Props = {
+    userID: number;
+}
+
+export default function ExperienceSection({userID}: Props) {
 
     const [response, setResponse] = useState<Array<Content> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -15,7 +19,7 @@ export default function ExperienceSection(props: any) {
     useEffect(() => {
         async function fetchData(){
             const handlerObject: GenericHandlerObject = {
-                data: JSON.stringify({contentType: "experience", userID: props.userID}),
+                data: JSON.stringify({contentType: "experience", userID}),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -39,7 +43,7 @@ export default function ExperienceSection(props: any) {
         
         }
         fetchData();
-    }, [props.userID])
+    }, [userID])
 
 
         

@@ -67,7 +67,7 @@ export default function MyProfile(props: any) {
                     <div id="my-profile-box"></div>
                 </div>
                 <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection userID={props.userID}/>}
+                    {currentSection === "Experience" && <ExperienceSection userID={0}/>}
                     {currentSection === "Music" && <MusicSection/>}
                     {currentSection === "Events" && <EventsSection/>}
                     {currentSection === "Articles" && <ArticlesSection/>}
