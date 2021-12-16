@@ -7,7 +7,7 @@ exports.getContents = async (req, res) => {
   // outgoing: Contents, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM content", function (err, result) {

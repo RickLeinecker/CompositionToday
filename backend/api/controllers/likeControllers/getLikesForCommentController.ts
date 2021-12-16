@@ -9,7 +9,7 @@ exports.getLikesForComment = async (req, res) => {
   // outgoing: likes, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { commentID } = req.body;

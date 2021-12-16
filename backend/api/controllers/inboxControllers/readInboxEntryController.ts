@@ -7,7 +7,7 @@ exports.readInboxEntry = async (req, res) => {
   // outgoing: content, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { commentID } = req.body;

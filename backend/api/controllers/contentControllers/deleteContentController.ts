@@ -7,7 +7,7 @@ exports.deleteContent = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID } = req.body;
@@ -21,7 +21,7 @@ exports.deleteContent = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
           } else {
             error = "Content does not exist";
           }

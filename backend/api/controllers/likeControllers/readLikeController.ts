@@ -7,7 +7,7 @@ exports.readLike = async (req, res) => {
   // outgoing: like, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { likeID } = req.body;

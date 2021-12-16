@@ -8,7 +8,7 @@ exports.updateUser = async (req, res) => {
 
   // declaring variables for errors and results
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   // reading data from frontend
   var {
@@ -45,7 +45,7 @@ exports.updateUser = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
             responseCode = 200;
           } else {
             error = "User does not exist";

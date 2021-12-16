@@ -8,7 +8,7 @@ exports.getCommentsForContent = async (req, res) => {
   // outgoing: comments, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID } = req.body;

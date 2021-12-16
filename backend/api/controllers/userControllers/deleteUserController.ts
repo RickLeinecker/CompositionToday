@@ -8,7 +8,7 @@ exports.deleteUser = async (req, res) => {
 
   // declaring variables for errors and results
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   // reading data from frontend
   const { userID } = req.body;
@@ -23,7 +23,7 @@ exports.deleteUser = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
           } else {
             error = "User does not exist";
           }

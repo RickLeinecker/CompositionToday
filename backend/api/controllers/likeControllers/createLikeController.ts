@@ -7,7 +7,7 @@ exports.createLike = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { userID, timestamp, likeTypeID, commentID, contentID } = req.body;
@@ -23,7 +23,7 @@ exports.createLike = async (req, res) => {
           responseCode = 500;
           // console.log(err);
         } else {
-          results = "Success";
+          results.push("Success");
           responseCode = 201;
           // console.log(result);
         }

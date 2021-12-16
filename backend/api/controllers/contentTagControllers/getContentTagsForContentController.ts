@@ -5,9 +5,10 @@ var { mysql_pool } = require("../../../database/database.ts");
 exports.getContentTagsForContent = async (req, res) => {
   // incoming: contentID
   // outgoing: content, error
+  // to
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID } = req.body;

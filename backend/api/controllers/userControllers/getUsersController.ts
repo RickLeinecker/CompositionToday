@@ -9,7 +9,7 @@ exports.getUsers = async (req, res) => {
 
   // declaring variables for errors and results
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   mysql_pool.getConnection(function (err, connection) {

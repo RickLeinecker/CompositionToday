@@ -8,7 +8,7 @@ exports.createUser = async (req, res) => {
 
   // declaring variables for errors and results
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   // reading data from frontend
   const {
@@ -35,7 +35,7 @@ exports.createUser = async (req, res) => {
           responseCode = 500;
           // console.log(err);
         } else {
-          results = "Success";
+          results.push("Success");
           responseCode = 201;
           // console.log(result);
         }
