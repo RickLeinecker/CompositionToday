@@ -1,21 +1,21 @@
+// get all of the comments for any content
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// readSpecializationTag
-exports.readSpecializationTag = async (req, res) => {
-  // incoming: userID
-  // outgoing: content, error
+// getCommentsForContentController
+exports.getCommentsForContent = async (req, res) => {
+  // incoming: contentID
+  // outgoing: comments, error
 
   var error = "";
   var results = "";
   var responseCode = 0;
 
-  const { userID } = req.body;
-
+  const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM specializationTag WHERE userID=?",
-      [userID],
+      "SELECT * FROM comment WHERE contentID=?",
+      [contentID],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
@@ -23,10 +23,10 @@ exports.readSpecializationTag = async (req, res) => {
           // console.log(err);
         } else {
           if (result[0]) {
-            results = result[0];
+            results = result;
             responseCode = 200;
           } else {
-            error = "Specialization with this tag does not exist";
+            error = "No comments for this content";
             responseCode = 500;
           }
         }

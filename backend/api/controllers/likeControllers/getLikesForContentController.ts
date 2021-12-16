@@ -1,19 +1,21 @@
+// gets all of the likes for a comment
+
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// readContentTag
-exports.readContentTag = async (req, res) => {
+// getLikesForContent
+exports.getLikesForContent = async (req, res) => {
   // incoming: contentID
-  // outgoing: content, error
+  // outgoing: likes, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM contentTag WHERE contentID=?",
+      "SELECT * FROM likes WHERE contentID=?",
       [contentID],
       function (err, result) {
         if (err) {
@@ -22,10 +24,10 @@ exports.readContentTag = async (req, res) => {
           // console.log(err);
         } else {
           if (result[0]) {
-            results = result[0];
+            results.push(result);
             responseCode = 200;
           } else {
-            error = "Content with this genre does not exist";
+            error = "This like does not exist";
             responseCode = 500;
           }
         }
