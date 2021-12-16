@@ -7,7 +7,7 @@ exports.getUserProfiles = async (req, res) => {
   // outgoing: user profiles, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM userProfile", function (err, result) {

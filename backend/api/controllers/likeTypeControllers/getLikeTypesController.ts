@@ -7,7 +7,7 @@ exports.getLikeTypes = async (req, res) => {
   // outgoing: like types, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM likeType", function (err, result) {

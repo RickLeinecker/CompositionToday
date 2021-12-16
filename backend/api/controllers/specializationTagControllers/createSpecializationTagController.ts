@@ -7,7 +7,7 @@ exports.createSpecializationTag = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { userID, tagID } = req.body;
@@ -20,7 +20,7 @@ exports.createSpecializationTag = async (req, res) => {
         responseCode = 500;
         // console.log(err);
       } else {
-        results = "Success";
+        results.push("Success");
         responseCode = 201;
         // console.log(result);
       }

@@ -7,7 +7,7 @@ exports.readTag = async (req, res) => {
   // outgoing: tag, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { tagID } = req.body;

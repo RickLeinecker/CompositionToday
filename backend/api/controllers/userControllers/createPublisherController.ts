@@ -63,7 +63,7 @@ exports.createPublisher = async (req, res) => {
               } else {
                 if (result[0]) {
                   results = [];
-                  results.push(result[0]);
+                  results = result[0];
                   responseCode = 200;
                 } else {
                   error = "User does not exist";
@@ -128,7 +128,7 @@ exports.createPublisher = async (req, res) => {
                               } else {
                                 if (result[0]) {
                                   results = [];
-                                  results.push(result[0]);
+                                  results = result[0];
                                   responseCode = 200;
                                 } else {
                                   error = "User does not exist";

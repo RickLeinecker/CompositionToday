@@ -24,7 +24,7 @@ exports.getLikesForContent = async (req, res) => {
           // console.log(err);
         } else {
           if (result[0]) {
-            results.push(result);
+            results = result;
             responseCode = 200;
           } else {
             error = "This like does not exist";

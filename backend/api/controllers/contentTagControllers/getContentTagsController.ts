@@ -7,7 +7,7 @@ exports.getContentTags = async (req, res) => {
   // outgoing: tags with contentIDs, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM contentTag", function (err, result) {

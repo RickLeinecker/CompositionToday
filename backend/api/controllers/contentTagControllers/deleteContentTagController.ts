@@ -7,7 +7,7 @@ exports.deleteContentTag = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentTagID } = req.body;
@@ -21,7 +21,7 @@ exports.deleteContentTag = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
           } else {
             error = "Content with this tag does not exist";
           }

@@ -7,7 +7,7 @@ exports.getTags = async (req, res) => {
   // outgoing: tags, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM tag", function (err, result) {

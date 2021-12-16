@@ -7,7 +7,7 @@ exports.readComment = async (req, res) => {
   // outgoing: comment, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { commentID } = req.body;
@@ -22,7 +22,7 @@ exports.readComment = async (req, res) => {
           // console.log(err);
         } else {
           if (result[0]) {
-            results = result[0];
+            results = result;
             responseCode = 200;
           } else {
             error = "Comment does not exist";
