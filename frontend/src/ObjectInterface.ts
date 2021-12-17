@@ -1,27 +1,17 @@
-export type JSONfileUser = {
-    result: Array<User>;
-    error: string;
-};
-
-export type JSONfileContent = {
-    result: Array<Content>;
-    error: string;
-};
-
 export type User = {
     id: number;
     uid?: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     username?: string;
     email?: string;
-    isPublisher: number;
-    userProfileId?: number;
+    isPublisher?: number;
+    userProfileID?: number;
 };
 
-export type Content = {
+export type ContentType = {
     id: number;
-    userId: string;
+    userID: string;
     imageFilePathArray?: object;
     contentText?: string;
     location?: string;
@@ -32,6 +22,36 @@ export type Content = {
     conentTags?: object;
     contentName?: string;
     timestamp?: string;
+    description?: string;
 }
+
+export type ExperienceType = {
+    id: number;
+    contentText: string;
+    contentName: string;
+    timestamp: string;
+    description?: string;
+}
+
+/**
+ * Example
+ * @property data: JSON.stringify({contentType: "experience"})
+ * @property methodType: "POST"
+ * @property path: "getContentByType"
+ */
+export type GenericHandlerType = {
+    data: string;
+    methodType: string;
+    path: string;
+}
+
+/**
+ * Example
+ * @property path: "getContentByType"    
+ */
+export type GenericGetHandlerType = {
+    path: string;
+}   
+
 
 

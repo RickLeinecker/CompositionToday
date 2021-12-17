@@ -13,7 +13,7 @@ exports.getUserContentByType = async (req, res) => {
   const { contentType, userID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM content WHERE contentType=? AND userId=?",
+      "SELECT * FROM content WHERE contentType=? AND userID=?",
       [contentType, userID],
       function (err, result) {
         if (err) {

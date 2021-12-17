@@ -7,7 +7,7 @@ exports.deleteUserProfile = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { userProfileID } = req.body;
@@ -22,7 +22,7 @@ exports.deleteUserProfile = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
           } else {
             error = "User Profile does not exist";
           }

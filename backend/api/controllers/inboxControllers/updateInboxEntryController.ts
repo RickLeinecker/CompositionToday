@@ -7,7 +7,7 @@ exports.updateInboxEntry = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { inboxEntryID, contentID, profileID, requesterID, commentID } =
@@ -26,7 +26,7 @@ exports.updateInboxEntry = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
             responseCode = 200;
           } else {
             error = "Inbox entry does not exist";

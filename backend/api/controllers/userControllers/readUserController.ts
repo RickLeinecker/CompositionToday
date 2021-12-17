@@ -8,7 +8,7 @@ exports.readUser = async (req, res) => {
 
   // declaring variables for errors and results
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   // reading data from frontend
   const { userID } = req.body;

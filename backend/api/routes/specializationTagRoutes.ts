@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 
 const createSpecializationTagController = require("../controllers/specializationTagControllers/createSpecializationTagController.ts");
-const readSpecializationTagController = require("../controllers/specializationTagControllers/readSpecializationTagController.ts");
+const getSpecializationTagsForUserController = require("../controllers/specializationTagControllers/getSpecializationTagsForUserController.ts");
 const updateSpecializationTagController = require("../controllers/specializationTagControllers/updateSpecializationTagController.ts");
 const deleteSpecializationTagController = require("../controllers/specializationTagControllers/deleteSpecializationTagController.ts");
 const getSpecializationTagsController = require("../controllers/specializationTagControllers/getSpecializationTagsController.ts");
@@ -13,8 +13,8 @@ router.post(
   createSpecializationTagController.createSpecializationTag
 );
 router.post(
-  "/api/readSpecializationTag",
-  readSpecializationTagController.readSpecializationTag
+  "/api/getSpecializationTagsForUser",
+  getSpecializationTagsForUserController.getSpecializationTagsForUser
 );
 router.patch(
   "/api/updateSpecializationTag",

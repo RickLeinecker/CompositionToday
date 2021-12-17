@@ -7,7 +7,7 @@ exports.getInboxEntries = async (req, res) => {
   // outgoing: inbox entries, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM inbox", function (err, result) {

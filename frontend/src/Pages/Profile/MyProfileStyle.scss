@@ -1,9 +1,10 @@
 @import "../frontend/src/Styles/DefaultValues.module.scss";
+@import "../../Styles/DefaultComponents.module.scss";
 
 #container {
     position: relative;
     width: 100%;
-    height: 30%;
+    height: 40%;
 }
 
 #my-profile-box {
@@ -19,8 +20,7 @@
 }
 
 #sections {
-    position: absolute;
-    top:50%;
+
 }
 
 .buttonContainer {

@@ -7,7 +7,7 @@ exports.updateContentTag = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID, tagID, contentTagID } = req.body;
@@ -24,7 +24,7 @@ exports.updateContentTag = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
             responseCode = 200;
           } else {
             error = "Content with this tag does not exist";

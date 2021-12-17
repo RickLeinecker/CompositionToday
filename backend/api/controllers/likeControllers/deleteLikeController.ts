@@ -7,7 +7,7 @@ exports.deleteLike = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { likeID } = req.body;
@@ -21,7 +21,7 @@ exports.deleteLike = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
           } else {
             error = "Like does not exist";
           }

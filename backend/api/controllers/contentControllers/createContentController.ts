@@ -3,45 +3,43 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
-  // incoming: userId, image, contentText, location, timestamp, likes, audioFilepath, sheetMusicFilepath, contentTypeId, contentTags
+  // incoming: userID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const {
-    userId,
+    userID,
     imageFilepathArray,
     contentName,
     contentText,
     location,
     timestamp,
-    likes,
     audioFilepath,
     sheetMusicFilepath,
     contentType,
-    contentTags,
     websiteLink,
+    collaborators,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO content(userId,imageFilepathArray,contentName,contentText,location,timestamp,likes,audioFilepath,sheetMusicFilepath,contentType,contentTags,websiteLink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
-        userId,
+        userID,
         imageFilepathArray,
         contentName,
         contentText,
         location,
         timestamp,
-        likes,
         audioFilepath,
         sheetMusicFilepath,
         contentType,
-        contentTags,
         websiteLink,
+        collaborators,
       ],
       function (err, result) {
         if (err) {
@@ -49,7 +47,7 @@ exports.createContent = async (req, res) => {
           responseCode = 500;
           // console.log(err);
         } else {
-          results = "Success";
+          results.push("Success");
           responseCode = 201;
           // console.log(result);
         }

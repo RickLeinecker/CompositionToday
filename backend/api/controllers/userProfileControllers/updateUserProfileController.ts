@@ -3,41 +3,37 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateUserProfile
 exports.updateUserProfile = async (req, res) => {
-  // incoming: userId, bio, specialization, location, privacySetting, content, profilePicPath, connections, displayName, userProfileID
+  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, userProfileID
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const {
     bio,
-    specializationTags,
     location,
     privacySetting,
-    contents,
     profilePicPath,
-    connections,
     displayName,
     websiteLink,
+    userProfileID,
     userID,
   } = req.body;
 
   var sqlInsert =
-    "UPDATE userProfile SET bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=?,websiteLink=? WHERE userId=?";
+    "UPDATE userProfile SET bio=?,location=?,privacySetting=?,profilePicPath=?,displayName=?,websiteLink=?,userProfileID=? WHERE userID=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       sqlInsert,
       [
         bio,
-        specializationTags,
         location,
         privacySetting,
-        contents,
         profilePicPath,
-        connections,
         displayName,
         websiteLink,
+        userProfileID,
         userID,
       ],
       function (err, result) {
@@ -47,7 +43,7 @@ exports.updateUserProfile = async (req, res) => {
           // console.log(err);
         } else {
           if (result.affectedRows > 0) {
-            results = "Success";
+            results.push("Success");
             responseCode = 200;
           } else {
             error = "User Profile does not exist";

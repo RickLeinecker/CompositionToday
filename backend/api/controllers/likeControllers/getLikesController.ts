@@ -7,7 +7,7 @@ exports.getLikes = async (req, res) => {
   // outgoing: likes, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query("SELECT * FROM likes", function (err, result) {
