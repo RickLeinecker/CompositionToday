@@ -5,6 +5,7 @@ interface ModalProps {
     children: JSX.Element;
     title?: string | null | undefined;
     show: boolean;
+    actionText?: string | null | undefined;
     onHide: () => void;
 }
 
@@ -35,6 +36,7 @@ const GenericModal = (props: ModalProps): JSX.Element => {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
+                {!!props.actionText && <Button className="btn-danger" onClick={props.onHide}>{props.actionText}</Button>}
             </Modal.Footer>
         </Modal>
     );
