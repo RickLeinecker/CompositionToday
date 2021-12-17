@@ -1,5 +1,5 @@
-import Button from '@restart/ui/esm/Button'
 import React from 'react'
+import { Button } from 'react-bootstrap';
 
 type Props = {
     contentName: string;
