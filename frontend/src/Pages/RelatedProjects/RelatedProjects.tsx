@@ -1,29 +1,44 @@
-// import { Button } from 'react-bootstrap'
-// import useOpen from '../../Helper/CustomHooks/useOpen';
+import { Button } from 'react-bootstrap'
+import useOpen from '../../Helper/CustomHooks/useOpen';
 import TopNavBar from '../TopNavBar';
-// import GenericModal from '../../Helper/Generics/GenericModal';
-// import GenericInput from '../../Helper/Generics/GenericInput';
-// import GenericForm from '../../Helper/Generics/GenericForm';
-// import GenericSearch from '../../Helper/Generics/GenericSearch';
-// import GenericFilter from '../../Helper/Generics/GenericFilter';
+import GenericModal from '../../Helper/Generics/GenericModal';
+import GenericInput from '../../Helper/Generics/GenericInput';
+import GenericForm from '../../Helper/Generics/GenericForm';
+import GenericSearch from '../../Helper/Generics/GenericSearch';
+import GenericFilter from '../../Helper/Generics/GenericFilter';
 import GenericCard from '../../Helper/Generics/GenericCard';
 
 export default function RelatedProjects() {
-    // const { open, handleClick, handleClose } = useOpen();
+    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
 
     return (
         <>
             <TopNavBar />
             <div className="container">
 
-                {/* <div>
+                <div>
                     Related Projects
                 </div>
                 <p>Modal</p>
-                <Button variant="warning" onClick={handleClick}>Test Modal</Button>
-                <GenericModal show={open} title={"Test"} onHide={handleClose} >
+                <Button variant="warning" onClick={handleOpenDelete}>Delete Modal</Button>
+                <GenericModal show={deleteOpen} title={"Test"} onHide={handleCloseDelete} actionText={"Delete"}>
                     <>
-                        <h4>Centered Modal</h4>
+                        <h4>Delete Modal</h4>
+                        <p>
+                            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+                            consectetur ac, vestibulum at eros.
+                        </p>
+                        <GenericForm />
+                    </>
+                </GenericModal>
+                <br />
+                <br />
+                <Button variant="warning" onClick={handleOpenEdit}>Edit Modal</Button>
+                <GenericModal show={editOpen} title={"Test"} onHide={handleCloseEdit} actionText={"Edit"}>
+                    <>
+                        <h4>Edit Modal</h4>
                         <p>
                             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
                             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
@@ -37,7 +52,7 @@ export default function RelatedProjects() {
                 <p>Search Bar</p>
                 <GenericSearch />
                 <p>Filter</p>
-                <GenericFilter /> */}
+                <GenericFilter />
                 {/* <p>Card</p> */}
                 <GenericCard />
             </div>
