@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { ContentType, ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
+import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 
@@ -58,12 +58,13 @@ export default function ExperienceSection({userID}: Props) {
                 <div>
                     {response?.map((_result: ExperienceType) => (
                         <li key={_result.id}>
-                            <ExperienceCard 
+                            <ExperienceCard
+                                contentID={_result.id}
+                                isMyProfile={true} 
                                 contentName={_result.contentName} 
                                 description={_result.description}
                                 contentText={_result.contentText} 
-                                timestamp={_result.timestamp}
-                            />
+                                timestamp={_result.timestamp}/>
                         </li>
                     ))}
                 </div>

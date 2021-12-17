@@ -6,12 +6,12 @@ export type User = {
     username?: string;
     email?: string;
     isPublisher?: number;
-    userProfileId?: number;
+    userProfileID?: number;
 };
 
 export type ContentType = {
     id: number;
-    userId: string;
+    userID: string;
     imageFilePathArray?: object;
     contentText?: string;
     location?: string;
