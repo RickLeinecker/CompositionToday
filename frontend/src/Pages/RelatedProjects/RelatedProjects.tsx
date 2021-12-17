@@ -15,7 +15,7 @@ export default function RelatedProjects() {
     return (
         <>
             <TopNavBar />
-            <div className="container">
+            <div>
 
                 <div>
                     Related Projects
@@ -54,6 +54,8 @@ export default function RelatedProjects() {
                 <p>Filter</p>
                 <GenericFilter />
                 {/* <p>Card</p> */}
+                <p>Card</p>
+                <GenericCard />
                 <GenericCard />
             </div>
         </>
