@@ -62,8 +62,7 @@ export default function ExperienceSection({userID}: Props) {
                                 contentName={_result.contentName} 
                                 description={_result.description}
                                 contentText={_result.contentText} 
-                                timestamp={_result.timestamp}
-                            />
+                                timestamp={_result.timestamp}/>
                         </li>
                     ))}
                 </div>

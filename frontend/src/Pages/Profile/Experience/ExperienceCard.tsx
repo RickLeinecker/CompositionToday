@@ -9,7 +9,7 @@ type Props = {
 
 export default function ExperienceCard({contentName, contentText, timestamp, description}: Props) {
     return (
-        <div className="card">
+        <div className="card" style={{display: "flex"}}>
             <div className="card-body">
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
