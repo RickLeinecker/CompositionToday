@@ -1,5 +1,7 @@
-import React from 'react'
 import { Button } from 'react-bootstrap';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericForm from '../../../Helper/Generics/GenericForm';
+import GenericModal from '../../../Helper/Generics/GenericModal';
 
 type Props = {
     contentName: string;
@@ -13,13 +15,7 @@ type Props = {
 
 export default function ExperienceCard({contentName, contentText, timestamp, description, isMyProfile, contentID}: Props) {
 
-    function openEditModal(){
-        console.log("open edit here");
-    }
-
-    function openDeleteModal(){
-        console.log("open delete here");
-    }
+    const { open, handleClick, handleClose } = useOpen();
 
     return (
         <div className="card" style={{display: "flex"}}>
@@ -28,10 +24,21 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
+                <GenericModal show={open} title={"Test"} onHide={handleClose} >
+                <>
+                    <h4>Centered Modal</h4>
+                    <p>
+                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+                        consectetur ac, vestibulum at eros.
+                    </p>
+                    <GenericForm />
+                </>
+                </GenericModal>
                 {isMyProfile && 
                     <>
-                        <Button onClick={openEditModal}>Edit</Button>
-                        <Button onClick={openDeleteModal}>Delete</Button>
+                        <Button onClick={handleClick}>Edit</Button>
+                        <Button onClick={handleClick}>Delete</Button>
                     </>
                 }
             </div>

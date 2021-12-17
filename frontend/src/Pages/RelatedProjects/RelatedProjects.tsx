@@ -1,22 +1,22 @@
-// import { Button } from 'react-bootstrap'
-// import useOpen from '../../Helper/CustomHooks/useOpen';
+import { Button } from 'react-bootstrap'
+import useOpen from '../../Helper/CustomHooks/useOpen';
 import TopNavBar from '../TopNavBar';
-// import GenericModal from '../../Helper/Generics/GenericModal';
-// import GenericInput from '../../Helper/Generics/GenericInput';
-// import GenericForm from '../../Helper/Generics/GenericForm';
-// import GenericSearch from '../../Helper/Generics/GenericSearch';
-// import GenericFilter from '../../Helper/Generics/GenericFilter';
+import GenericModal from '../../Helper/Generics/GenericModal';
+import GenericInput from '../../Helper/Generics/GenericInput';
+import GenericForm from '../../Helper/Generics/GenericForm';
+import GenericSearch from '../../Helper/Generics/GenericSearch';
+import GenericFilter from '../../Helper/Generics/GenericFilter';
 import GenericCard from '../../Helper/Generics/GenericCard';
 
 export default function RelatedProjects() {
-    // const { open, handleClick, handleClose } = useOpen();
+    const { open, handleClick, handleClose } = useOpen();
 
     return (
         <>
             <TopNavBar />
             <div>
 
-                {/* <div>
+                <div>
                     Related Projects
                 </div>
                 <p>Modal</p>
@@ -37,8 +37,8 @@ export default function RelatedProjects() {
                 <p>Search Bar</p>
                 <GenericSearch />
                 <p>Filter</p>
-                <GenericFilter /> */}
-                {/* <p>Card</p> */}
+                <GenericFilter />
+                <p>Card</p>
                 <GenericCard />
                 <GenericCard />
             </div>
