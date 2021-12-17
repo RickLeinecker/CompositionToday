@@ -1,3 +1,4 @@
+import Button from '@restart/ui/esm/Button'
 import React from 'react'
 
 type Props = {
@@ -5,9 +6,21 @@ type Props = {
     contentText: string;
     timestamp: string;
     description?: string;
+    isMyProfile: boolean;
+    contentID: number;
 }
 
-export default function ExperienceCard({contentName, contentText, timestamp, description}: Props) {
+
+export default function ExperienceCard({contentName, contentText, timestamp, description, isMyProfile, contentID}: Props) {
+
+    function openEditModal(){
+        console.log("open edit here");
+    }
+
+    function openDeleteModal(){
+        console.log("open delete here");
+    }
+
     return (
         <div className="card" style={{display: "flex"}}>
             <div className="card-body">
@@ -15,6 +28,12 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
+                {isMyProfile && 
+                    <>
+                        <Button onClick={openEditModal}>Edit</Button>
+                        <Button onClick={openDeleteModal}>Delete</Button>
+                    </>
+                }
             </div>
         </div>
     )
