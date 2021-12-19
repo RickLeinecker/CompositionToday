@@ -1,7 +1,9 @@
 import { Button } from 'react-bootstrap';
+import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericForm from '../../../Helper/Generics/GenericForm';
 import GenericModal from '../../../Helper/Generics/GenericModal';
+import { GenericHandlerType } from '../../../ObjectInterface';
 
 type Props = {
     contentName: string;
@@ -18,8 +20,30 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
 
-    function confirmDeleteHandler(){
+    async function confirmDeleteHandler(){
         console.log("HERE WE DELETE");
+        const handlerObject: GenericHandlerType = {
+            data: JSON.stringify({contentID}),
+            methodType: "DELETE",
+            path: "deleteContent",
+        }
+                
+        try{
+            let answer = (await GenericHandler(handlerObject));
+            if(answer.error.length > 0){
+                // setError(answer.error);
+                return;
+            }
+            
+            // setError("");
+            // setResponse(await answer.result);
+            // setLoading(false);
+            
+
+        } catch(e: any){
+            console.error("Frontend Error: " + e);
+            // setError(DefaultValues.apiErrorMessage);
+        }
     }
 
 

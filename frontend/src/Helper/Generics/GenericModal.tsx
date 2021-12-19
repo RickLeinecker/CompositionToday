@@ -17,6 +17,9 @@ interface ModalProps {
  * @param show boolean on whether to open the modal
  * @param title [Optional] string that displays as large text in modal
  * @param children JSX children to display in modal
+ * @param onHide hides modal
+ * @param confirm calls a function that does the action when we click the action button
+ * @param actiontText sets the text of the action button (eg: Delete)
  * @returns JSX for usable modal
  */
 const GenericModal = (props: ModalProps): JSX.Element => {
