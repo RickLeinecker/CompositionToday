@@ -15,7 +15,8 @@ type Props = {
 
 export default function ExperienceCard({contentName, contentText, timestamp, description, isMyProfile, contentID}: Props) {
 
-    const { open, handleClick, handleClose } = useOpen();
+    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
 
     return (
         <div className="card" style={{display: "flex"}}>
@@ -24,21 +25,23 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
-                <GenericModal show={open} title={"Test"} onHide={handleClose} >
-                <>
-                    <h4>Centered Modal</h4>
-                    <p>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </p>
-                    <GenericForm />
-                </>
+                <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} actionText={"Delete"} >
+                    <>
+                        <p>
+                            Are you sure you want to delete this?
+                        </p>
+                    </>
+                </GenericModal>
+
+                <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} actionText={"Edit"}>
+                    <>
+                        <GenericForm />
+                    </>
                 </GenericModal>
                 {isMyProfile && 
                     <>
-                        <Button onClick={handleClick}>Edit</Button>
-                        <Button onClick={handleClick}>Delete</Button>
+                        <Button onClick={handleOpenEdit}>Edit</Button>
+                        <Button onClick={handleOpenDelete}>Delete</Button>
                     </>
                 }
             </div>
