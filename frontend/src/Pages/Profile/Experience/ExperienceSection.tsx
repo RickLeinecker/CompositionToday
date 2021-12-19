@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, FormControl, InputGroup } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
@@ -58,7 +58,34 @@ export default function ExperienceSection({userID}: Props) {
             <Button onClick={handleOpenCreate}>Add experience</Button>
             <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
                     <>
-                    
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="inputGroup-sizing-default">Experience title</InputGroup.Text>
+                            <FormControl
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                            />
+                            </InputGroup>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text id="inputGroup-sizing-default">Role</InputGroup.Text>
+                                <FormControl
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text id="inputGroup-sizing-default">Description</InputGroup.Text>
+                                <FormControl
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text id="inputGroup-sizing-default">Time period</InputGroup.Text>
+                                <FormControl
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                />
+                        </InputGroup>
                     </>
             </GenericModal>
             <div>

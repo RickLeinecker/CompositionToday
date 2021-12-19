@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import { Button, FormControl, InputGroup } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericForm from '../../../Helper/Generics/GenericForm';
@@ -59,6 +59,7 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
+                
                 <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Delete"} >
                     <>
                         <p>
@@ -69,7 +70,34 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
 
                 <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                     <>
-                        <GenericInput/>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="inputGroup-sizing-default">Experience title</InputGroup.Text>
+                            <FormControl
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="inputGroup-sizing-default">Role</InputGroup.Text>
+                            <FormControl
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="inputGroup-sizing-default">Description</InputGroup.Text>
+                            <FormControl
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="inputGroup-sizing-default">Time period</InputGroup.Text>
+                            <FormControl
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            />
+                        </InputGroup>
                     </>
                 </GenericModal>
                 {isMyProfile && 
