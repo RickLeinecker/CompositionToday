@@ -18,6 +18,15 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
 
+    function confirmDeleteHandler(){
+        console.log("HERE WE DELETE");
+    }
+
+
+    function confirmEditHandler(){
+        console.log("HERE WE EDIT");
+    }
+
     return (
         <div className="card" style={{display: "flex"}}>
             <div className="card-body">
@@ -25,7 +34,7 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
-                <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} actionText={"Delete"} >
+                <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Delete"} >
                     <>
                         <p>
                             Are you sure you want to delete this?
@@ -33,9 +42,9 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                     </>
                 </GenericModal>
 
-                <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} actionText={"Edit"}>
+                <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                     <>
-                        <GenericForm />
+                        <GenericForm/>
                     </>
                 </GenericModal>
                 {isMyProfile && 

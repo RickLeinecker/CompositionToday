@@ -7,6 +7,7 @@ interface ModalProps {
     show: boolean;
     actionText?: string | null | undefined;
     onHide: () => void;
+    confirm: () => void;
 }
 
 /**
@@ -21,7 +22,8 @@ interface ModalProps {
 const GenericModal = (props: ModalProps): JSX.Element => {
     return (
         <Modal
-            {...props}
+            show={props.show} 
+            onHide={props.onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
@@ -36,7 +38,7 @@ const GenericModal = (props: ModalProps): JSX.Element => {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
-                {!!props.actionText && <Button className="btn-danger" onClick={props.onHide}>{props.actionText}</Button>}
+                {!!props.actionText && <Button className="btn-danger" onClick={() => { props.onHide(); props.confirm();}}>{props.actionText}</Button>}
             </Modal.Footer>
         </Modal>
     );

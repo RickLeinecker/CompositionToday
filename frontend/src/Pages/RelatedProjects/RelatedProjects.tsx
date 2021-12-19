@@ -22,7 +22,7 @@ export default function RelatedProjects() {
                 </div>
                 <p>Modal</p>
                 <Button variant="warning" onClick={handleOpenDelete}>Delete Modal</Button>
-                <GenericModal show={deleteOpen} title={"Test"} onHide={handleCloseDelete} actionText={"Delete"}>
+                {/* <GenericModal show={deleteOpen} title={"Test"} onHide={handleCloseDelete} actionText={"Delete"}>
                     <>
                         <h4>Delete Modal</h4>
                         <p>
@@ -46,7 +46,7 @@ export default function RelatedProjects() {
                         </p>
                         <GenericForm />
                     </>
-                </GenericModal>
+                </GenericModal> */}
                 <p>Inputs</p>
                 <GenericInput />
                 <p>Search Bar</p>
