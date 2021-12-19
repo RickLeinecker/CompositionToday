@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericForm from '../../../Helper/Generics/GenericForm';
+import GenericInput from '../../../Helper/Generics/GenericInput';
 import GenericModal from '../../../Helper/Generics/GenericModal';
 import { GenericHandlerType } from '../../../ObjectInterface';
 
@@ -68,7 +69,7 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
 
                 <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                     <>
-                        <GenericForm/>
+                        <GenericInput/>
                     </>
                 </GenericModal>
                 {isMyProfile && 

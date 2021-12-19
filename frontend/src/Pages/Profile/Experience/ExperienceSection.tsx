@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericModal from '../../../Helper/Generics/GenericModal';
 
 type Props = {
     userID: number;
@@ -14,7 +16,11 @@ export default function ExperienceSection({userID}: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
 
+    function confirmCreateHandler(){
+        console.log("create");
+    }
 
     useEffect(() => {
         async function fetchData(){
@@ -49,6 +55,12 @@ export default function ExperienceSection({userID}: Props) {
         
     return (
         <>
+            <Button onClick={handleOpenCreate}>Add experience</Button>
+            <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
+                    <>
+                    
+                    </>
+            </GenericModal>
             <div>
                 {!error && loading ? <div>...loading</div> 
                 :
