@@ -33,7 +33,7 @@ exports.createUser = async (req, res) => {
         if (err) {
           error = "SQL Insert Error";
           responseCode = 500;
-          // console.log(err);
+          console.log(err);
         } else {
           results.push("Success");
           responseCode = 201;
@@ -46,6 +46,7 @@ exports.createUser = async (req, res) => {
         };
         // send data
         res.status(responseCode).json(ret);
+        connection.release();
       }
     );
   });
