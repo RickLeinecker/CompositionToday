@@ -65,7 +65,6 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
                 contentText: newContentText, 
                 description: newContentDescription,
                 // timestamp: newContentTimestamp,
-                timestamp: timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
