@@ -27,6 +27,7 @@ export type ContentType = {
 
 export type ExperienceType = {
     id: number;
+    userID: number;
     contentText: string;
     contentName: string;
     timestamp: string;
