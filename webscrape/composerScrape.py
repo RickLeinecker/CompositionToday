@@ -71,7 +71,7 @@ def find_alphabet(path):
     # print(interface_dict)
 
 def find_composer(path):
-    composer_response = requests.get(f'http://www.compositiontoday.com/composers/286.asp')
+    composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
     composer_page = composer_response.text
 
     soup_composer = BeautifulSoup(composer_page, 'lxml')
@@ -345,35 +345,61 @@ def month_to_date(month):
 # For audio, get it from side site
 # For list of works, get it from main page
 def get_music(html):
-    music_content_list = []
     music_content_list = get_audio(html)
+    music_content_list = [*music_content_list, *get_works(html)] # * will work like spread operator in js 
+    print(music_content_list)
 
 def get_audio(html):
     # print(html.find_all('div', class_ = "boxes")[0].find_next_sibling("div"))
     # print(html.find('b', string = "Audio").parent.parent.text)
     audio = html.find('b', string = "Audio").parent.next_sibling
     no_audio_text = 'No audio samples by this composer currently available.'
-    audioText = ""
-
-    music_dict = {
-        "contentName": "",
-        "contentText": "",
-        "contentType": "music",
-        # "location": "",
-        # "timestamp": "",
-        # "tag": ""
-    }
+    audio_list = []
 
     if no_audio_text not in audio:
+        for br in html.find_all('br'):
+            br.decompose()
+
         # audio = html.find('b', string = "Audio").parent.parent.get_text()
         audio = html.find('b', string = "Audio").parent.parent
+        
         audio.find('div').decompose()
         # audio = audio.text
-        print(audio)
+        # print(audio)
 
-    # print(type(audio))
-    # html = [dom.text for dom in html.find_all('div', class_ = "boxes")]
-    # print(html)
-    # audio = html.find()
+        # for loop using audio.find('audio')
+        for audio in html.find_all('audio'):
+
+            if audio is None:
+                break
+
+            audio_dict = {
+                "contentName": "",
+                "contentText": "",
+                "contentType": "music",
+                # "location": "",
+                # "timestamp": "",
+                # "tag": ""
+            }
+
+            audio = audio.parent.find('b')
+            # print(repr(audio.text.strip()))
+            next_audio = audio.next_sibling
+            # audio.decompose()
+            # print(repr(next_audio.strip()))
+            audio_dict.update({
+                "contentName": audio.text.strip(),
+                "contentText": next_audio.strip()
+            })
+            audio_list.append(audio_dict)
+            # print("==============")
+
+    # print(audio_list)
+    return audio_list
+
+def get_works(html):
+    # if has showcase, use that page for list of works
+    # else use the composer page and loop through each subpage
+    return [{"test": "works"}]
 
 start_scraping()
