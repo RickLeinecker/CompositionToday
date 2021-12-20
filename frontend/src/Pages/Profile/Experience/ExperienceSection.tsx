@@ -29,9 +29,10 @@ export default function ExperienceSection({userID}: Props) {
             data: JSON.stringify({
                 userID, 
                 contentName: newContentName, 
-                contentText: newContentText, 
+                contentText: newContentText,
+                contentType: "experience",
                 description: newContentDescription,
-                timestamp: newContentTimestamp,
+                // timestamp: newContentTimestamp,
             }),
             methodType: "POST",
             path: "createContent",

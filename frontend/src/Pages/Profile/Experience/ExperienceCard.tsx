@@ -60,10 +60,12 @@ export default function ExperienceCard({contentName, contentText, timestamp, des
             data: JSON.stringify({
                 contentID, 
                 userID, 
+                contentType: "experience",
                 contentName: newContentName, 
                 contentText: newContentText, 
                 description: newContentDescription,
-                timestamp: newContentTimestamp,
+                // timestamp: newContentTimestamp,
+                timestamp: timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
