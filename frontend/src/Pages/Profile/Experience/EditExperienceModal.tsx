@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 
@@ -14,6 +15,7 @@ type Props = {
     contentID: number;
     userID: number
 }
+
 export default function EditExperienceModal({contentName, contentText, timestamp, description, isMyProfile, contentID, userID}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     // const[newContentValue, setNewContentValue] = useState<ExperienceType>({id: contentID, userID, contentName: "hiii there", contentText, timestamp, description})
@@ -22,8 +24,18 @@ export default function EditExperienceModal({contentName, contentText, timestamp
     const[newContentDescription, setNewContentDescription] = useState(description);
     const[newContentTimestamp, setNewContentTimeStamp] = useState(timestamp);
 
-
-
+    function handleNameChange(newValue: string) {
+        setNewContentName(newValue);
+    }
+    function handleTextChange(newValue: string) {
+        setNewContentText(newValue);
+    }
+    function handleDescriptionChange(newValue: string) {
+        setNewContentDescription(newValue);
+    }
+    function handleTimestampChange(newValue: string) {
+        setNewContentTimeStamp(newValue);
+    }
 
     async function confirmEditHandler(){
         const handlerObject: GenericHandlerType = {
@@ -62,44 +74,14 @@ export default function EditExperienceModal({contentName, contentText, timestamp
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                 <>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="inputGroup-sizing-default">Experience title</InputGroup.Text>
-                        <FormControl
-                        aria-label="Default"
-                        value={newContentName}
-                        onChange={e => setNewContentName(e.target.value)}
-                        aria-describedby="inputGroup-sizing-default"
-                        />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="inputGroup-sizing-default">Role</InputGroup.Text>
-                        <FormControl
-                        aria-label="Default"
-                        value={newContentText}
-                        onChange={e => setNewContentText(e.target.value)}
-                        aria-describedby="inputGroup-sizing-default"
-                        />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="inputGroup-sizing-default">Description</InputGroup.Text>
-                        <FormControl
-                        aria-label="Default"
-                        onChange={e => setNewContentDescription(e.target.value)}
-                        value={newContentDescription}
-                        aria-describedby="inputGroup-sizing-default"
-                        />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="inputGroup-sizing-default">Time period</InputGroup.Text>
-                        <FormControl
-                        aria-label="Default"
-                        onChange={e => setNewContentTimeStamp(e.target.value)}
-                        value={newContentTimestamp}
-                        aria-describedby="inputGroup-sizing-default"
-                        />
-                    </InputGroup>
+                    <GenericInputField title="Experience Title" onChange={handleNameChange} value={newContentName}/>
+                    <GenericInputField title="Role" onChange={handleTextChange} value={newContentText}/>
+                    <GenericInputField title="Description" onChange={handleDescriptionChange} value={newContentDescription}/>
+                    <GenericInputField title="Time Period" onChange={handleTimestampChange} value={newContentTimestamp}/>
+        
                 </>
             </GenericModal>
+            
             {isMyProfile && 
                 <>
                     <Button onClick={handleOpenEdit}>Edit</Button>
