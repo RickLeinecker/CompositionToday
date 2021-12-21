@@ -3,11 +3,13 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateContent
 exports.updateContent = async (req, res) => {
-  // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators
+  // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
+  // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
   // outgoing: error
 
   var error = "";
   var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const {
@@ -22,51 +24,102 @@ exports.updateContent = async (req, res) => {
     contentName,
     websiteLink,
     contentID,
+    description,
     collaborators,
   } = req.body;
 
-  var sqlInsert =
-    "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilePath=?,sheetMusicFilePath=?,contentType=?,contentName=?,websiteLink=?,collaborators=? WHERE id=?";
+  // build update string with non null fields
+  var insertString = "UPDATE content SET ";
+  if (userID) {
+    insertString += "userID=?,";
+    insertArray.push(userID);
+  }
+
+  if (imageFilepathArray) {
+    insertString += "imageFilepathArray=?,";
+    insertArray.push(imageFilepathArray);
+  }
+
+  if (contentText) {
+    insertString += "contentText=?,";
+    insertArray.push(contentText);
+  }
+
+  if (location) {
+    insertString += "location=?,";
+    insertArray.push(location);
+  }
+
+  if (timestamp) {
+    insertString += "timestamp=?,";
+    insertArray.push(timestamp);
+  }
+
+  if (audioFilepath) {
+    insertString += "audioFilepath=?,";
+    insertArray.push(audioFilepath);
+  }
+
+  if (sheetMusicFilepath) {
+    insertString += "sheetMusicFilepath=?,";
+    insertArray.push(sheetMusicFilepath);
+  }
+
+  if (contentType) {
+    insertString += "contentType=?,";
+    insertArray.push(contentType);
+  }
+
+  if (contentName) {
+    insertString += "contentName=?,";
+    insertArray.push(contentName);
+  }
+
+  if (websiteLink) {
+    insertString += "websiteLink=?,";
+    insertArray.push(websiteLink);
+  }
+
+  if (collaborators) {
+    insertString += "collaborators=?,";
+    insertArray.push(collaborators);
+  }
+
+  if (description) {
+    insertString += "description=?,";
+    insertArray.push(description);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(contentID);
+
+  // var sqlInsert =
+  //   "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilepath=?,sheetMusicFilepath=?,contentType=?,contentName=?,websiteLink=?,collaborators=?,description=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
-    connection.query(
-      sqlInsert,
-      [
-        userID,
-        imageFilepathArray,
-        contentText,
-        location,
-        timestamp,
-        audioFilepath,
-        sheetMusicFilepath,
-        contentType,
-        contentName,
-        websiteLink,
-        collaborators,
-        contentID,
-      ],
-      function (err, result) {
-        if (err) {
-          error = "SQL Update Error";
-          responseCode = 500;
-          // console.log(err);
+    connection.query(insertString, insertArray, function (err, result) {
+      if (err) {
+        error = "SQL Update Error";
+        responseCode = 500;
+        console.log(err);
+      } else {
+        if (result.affectedRows > 0) {
+          results.push("Success");
+          responseCode = 200;
         } else {
-          if (result.affectedRows > 0) {
-            results.push("Success");
-            responseCode = 200;
-          } else {
-            error = "Content does not exist";
-            responseCode = 500;
-          }
-          // console.log(result);
+          error = "Content does not exist";
+          responseCode = 500;
         }
-        // package data
-        var ret = {
-          result: results,
-          error: error,
-        };
-        // send data
-        res.status(responseCode).json(ret);
+        // console.log(result);
       }
-    );
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+      connection.release();
+    });
   });
 };

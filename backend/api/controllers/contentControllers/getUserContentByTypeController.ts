@@ -7,7 +7,7 @@ exports.getUserContentByType = async (req, res) => {
   // outgoing: content, error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentType, userID } = req.body;
@@ -19,7 +19,7 @@ exports.getUserContentByType = async (req, res) => {
         if (err) {
           error = "SQL Search Error";
           responseCode = 500;
-          // console.log(err);
+          console.log(err);
         } else {
           if (result[0]) {
             results = result;
@@ -36,6 +36,7 @@ exports.getUserContentByType = async (req, res) => {
         };
         // send data
         res.status(responseCode).json(ret);
+        connection.release();
       }
     );
   });

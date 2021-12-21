@@ -19,10 +19,12 @@ exports.deleteUserProfile = async (req, res) => {
       function (err, result) {
         if (err) {
           error = "SQL Delete Error";
-          // console.log(err);
+          responseCode = 500;
+          console.log(err);
         } else {
           if (result.affectedRows > 0) {
             results.push("Success");
+            responseCode = 200;
           } else {
             error = "User Profile does not exist";
           }
@@ -35,6 +37,7 @@ exports.deleteUserProfile = async (req, res) => {
         };
         // send data
         res.status(responseCode).json(ret);
+        connection.release();
       }
     );
   });
