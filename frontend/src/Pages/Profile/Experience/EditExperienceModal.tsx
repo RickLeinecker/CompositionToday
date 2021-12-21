@@ -1,51 +1,65 @@
 import React, { useState } from 'react'
-import { InputGroup, FormControl, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 
 type Props = {
-    contentName: string;
-    contentText: string;
-    timestamp: string;
-    description?: string;
+    experience: ExperienceType;
+    // contentName: string;
+    // contentText: string;
+    // timestamp: string;
+    // description?: string;
+    // contentID: number;
+    // userID: number
     isMyProfile: boolean;
-    contentID: number;
-    userID: number
+
 }
 
-export default function EditExperienceModal({contentName, contentText, timestamp, description, isMyProfile, contentID, userID}: Props) {
+export default function EditExperienceModal({isMyProfile, experience}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
-    // const[newContentValue, setNewContentValue] = useState<ExperienceType>({id: contentID, userID, contentName: "hiii there", contentText, timestamp, description})
-    const[newContentName, setNewContentName] = useState(contentName);
-    const[newContentText, setNewContentText] = useState(contentText);
-    const[newContentDescription, setNewContentDescription] = useState(description);
-    const[newContentTimestamp, setNewContentTimeStamp] = useState(timestamp);
+    const[newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
+    // const[newContentName, setNewContentName] = useState(contentName);
+    // const[newContentText, setNewContentText] = useState(contentText);
+    // const[newContentDescription, setNewContentDescription] = useState(description);
+    // const[newContentTimestamp, setNewContentTimeStamp] = useState(timestamp);
 
     function handleNameChange(newValue: string) {
-        setNewContentName(newValue);
+        setNewContentValue(prevState => ({
+            ...prevState,
+            contentName: newValue
+        }));
     }
     function handleTextChange(newValue: string) {
-        setNewContentText(newValue);
+        setNewContentValue(prevState => ({
+            ...prevState,
+            contentText: newValue
+        }));
     }
     function handleDescriptionChange(newValue: string) {
-        setNewContentDescription(newValue);
+        setNewContentValue(prevState => ({
+            ...prevState,
+            description: newValue
+        }));
     }
     function handleTimestampChange(newValue: string) {
-        setNewContentTimeStamp(newValue);
+        setNewContentValue(prevState => ({
+            ...prevState,
+            timestamp: newValue
+        }));
     }
 
     async function confirmEditHandler(){
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                contentID, 
-                userID, 
+                contentID: newContentValue.id, 
+                userID: newContentValue.userID, 
                 contentType: "experience",
-                contentName: newContentName, 
-                contentText: newContentText, 
-                description: newContentDescription,
+                contentName: newContentValue.contentName,
+                contentText: newContentValue.contentText, 
+                description: newContentValue.description,
                 // timestamp: newContentTimestamp,
             }),
             methodType: "PATCH",
@@ -74,14 +88,14 @@ export default function EditExperienceModal({contentName, contentText, timestamp
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                 <>
-                    <GenericInputField title="Experience Title" onChange={handleNameChange} value={newContentName}/>
-                    <GenericInputField title="Role" onChange={handleTextChange} value={newContentText}/>
-                    <GenericInputField title="Description" onChange={handleDescriptionChange} value={newContentDescription}/>
-                    <GenericInputField title="Time Period" onChange={handleTimestampChange} value={newContentTimestamp}/>
+                    <GenericInputField title="Experience Title" onChange={handleNameChange} value={newContentValue.contentName}/>
+                    <GenericInputField title="Role" onChange={handleTextChange} value={newContentValue.contentText}/>
+                    <GenericInputField title="Description" onChange={handleDescriptionChange} value={newContentValue.description}/>
+                    <GenericInputField title="Time Period" onChange={handleTimestampChange} value={newContentValue.timestamp}/>
         
                 </>
             </GenericModal>
-            
+
             {isMyProfile && 
                 <>
                     <Button onClick={handleOpenEdit}>Edit</Button>

@@ -144,13 +144,9 @@ export default function ExperienceSection({userID}: Props) {
                     {response?.map((_result: ExperienceType) => (
                         <li key={_result.id}>
                             <ExperienceCard
-                                contentID={_result.id}
-                                userID={_result.userID}
+                                experience={_result}
                                 isMyProfile={true} 
-                                contentName={_result.contentName} 
-                                description={_result.description}
-                                contentText={_result.contentText} 
-                                timestamp={_result.timestamp}/>
+                            />   
                         </li>
                     ))}
                 </div>
