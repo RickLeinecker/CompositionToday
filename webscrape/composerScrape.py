@@ -71,7 +71,8 @@ def find_alphabet(path):
     # print(interface_dict)
 
 def find_composer(path):
-    composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
+    composer_response = requests.get(f'http://www.compositiontoday.com/composers/1034.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
     composer_page = composer_response.text
 
     soup_composer = BeautifulSoup(composer_page, 'lxml')
@@ -347,7 +348,7 @@ def month_to_date(month):
 def get_music(html):
     music_content_list = get_audio(html)
     music_content_list = [*music_content_list, *get_works(html)] # * will work like spread operator in js 
-    print(music_content_list)
+    # print(music_content_list)
 
 def get_audio(html):
     # print(html.find_all('div', class_ = "boxes")[0].find_next_sibling("div"))
@@ -400,6 +401,57 @@ def get_audio(html):
 def get_works(html):
     # if has showcase, use that page for list of works
     # else use the composer page and loop through each subpage
+    works = html.find('div', {'style' : "height:80px"})
+    work_list = []
+
+    if works is not None:
+        # print(works)
+        side_site_link = works.a
+        works_link = get_link_from_side_site(side_site_link["href"])
+        if works_link is None:
+            work_list = get_from_list(html)
+        else:
+            # print(works_link["onclick"])
+            result = re.search("'(.*)'", works_link["onclick"])
+            work_list = get_works_from_side_site(side_site_link["href"], result.group(1))
+    else:
+        work_list = get_from_list(html)
+
     return [{"test": "works"}]
 
+def get_link_from_side_site(path):
+    side_site_response = requests.get(f'http://www.compositiontoday.com{path}')
+    side_site = side_site_response.text
+    side_soup = BeautifulSoup(side_site, 'lxml')
+    # print(side_soup)
+
+    works_link = side_soup.find('td', {"class": "navMainSelected"}, string="List of Works")
+    # print(works_link)
+    return works_link
+
+def get_works_from_side_site(path, param):
+    site_response = requests.get(f'http://www.compositiontoday.com{path}/{param}')
+    site = site_response.text
+    site_soup = BeautifulSoup(site, 'lxml')
+    # print(site_soup)
+
+    works = site_soup.find('table', {'width':"95%"})
+    works = works.find('table', {'width': "100%"})
+
+    if works is None:
+        return []
+
+    works = works.find_all('table')
+    # print(works)
+
+    works_list = []
+    # We need to remove the first <br/>. Other br's after
+    # will need to be converted to \n
+    print(repr(works[0].a.text.strip()))
+    print(repr(works[4]))
+    # for work in works:
+
+
+def get_from_list(html):
+    print("TADA")
 start_scraping()
