@@ -9,6 +9,7 @@ exports.updateUser = async (req, res) => {
   // declaring variables for errors and results
   var error = "";
   var results = [];
+  var insertArray = [];
   var responseCode = 0;
   // reading data from frontend
   var {
@@ -21,46 +22,76 @@ exports.updateUser = async (req, res) => {
     isPublisher,
     userProfileID,
   } = req.body;
+
+  // build update string with non null fields
+  var insertString = "UPDATE user SET ";
+  if (firstName) {
+    insertString += "firstName=?,";
+    insertArray.push(firstName);
+  }
+
+  if (lastName) {
+    insertString += "lastName=?,";
+    insertArray.push(lastName);
+  }
+
+  if (username) {
+    insertString += "username=?,";
+    insertArray.push(username);
+  }
+
+  if (email) {
+    insertString += "email=?,";
+    insertArray.push(email);
+  }
+
+  if (uid) {
+    insertString += "uid=?,";
+    insertArray.push(uid);
+  }
+
+  if (isPublisher) {
+    insertString += "isPublisher=?,";
+    insertArray.push(isPublisher);
+  }
+
+  if (userProfileID) {
+    insertString += "userProfileID=?,";
+    insertArray.push(userProfileID);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(userID);
+
   mysql_pool.getConnection(function (err, connection) {
     // preparing MySQL string
-    var sqlInsert =
-      "UPDATE user SET firstName=?,lastName=?,username=?,email=?,uid=?,isPublisher=?,userProfileID=? WHERE id=?";
+    // var sqlInsert =
+    //   "UPDATE user SET firstName=?,lastName=?,username=?,email=?,uid=?,isPublisher=?,userProfileID=? WHERE id=?";
     // query database, handle errors, return JSON
-    connection.query(
-      sqlInsert,
-      [
-        firstName,
-        lastName,
-        username,
-        email,
-        uid,
-        isPublisher,
-        userProfileID,
-        userID,
-      ],
-      function (err, result) {
-        if (err) {
-          error = "SQL Update Error";
-          responseCode = 500;
-          // console.log(err);
+    connection.query(insertString, insertArray, function (err, result) {
+      if (err) {
+        error = "SQL Update Error";
+        responseCode = 500;
+        console.log(err);
+      } else {
+        if (result.affectedRows > 0) {
+          results.push("Success");
+          responseCode = 200;
         } else {
-          if (result.affectedRows > 0) {
-            results.push("Success");
-            responseCode = 200;
-          } else {
-            error = "User does not exist";
-            responseCode = 500;
-          }
-          // console.log(result);
+          error = "User does not exist";
+          responseCode = 500;
         }
-        // package data
-        var ret = {
-          result: results,
-          error: error,
-        };
-        // send data
-        res.status(responseCode).json(ret);
+        // console.log(result);
       }
-    );
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+      connection.release();
+    });
   });
 };

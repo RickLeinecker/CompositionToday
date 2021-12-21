@@ -8,17 +8,29 @@ exports.updateLikeType = async (req, res) => {
 
   var error = "";
   var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const { likeType, likeTypeID } = req.body;
 
+  // build update string with non null fields
+  var insertString = "UPDATE likeType SET ";
+  if (likeType) {
+    insertString += "likeType=?,";
+    insertArray.push(likeType);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(likeTypeID);
+
   var sqlInsert = "UPDATE likeType SET likeType=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
-    connection.query(sqlInsert, [likeType, likeTypeID], function (err, result) {
+    connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result.affectedRows > 0) {
           results.push("Success");
@@ -36,6 +48,7 @@ exports.updateLikeType = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
+      connection.release();
     });
   });
 };

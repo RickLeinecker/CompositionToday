@@ -34,6 +34,7 @@ exports.getUsers = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
+      connection.release();
     });
   });
 
