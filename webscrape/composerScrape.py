@@ -73,6 +73,11 @@ def find_alphabet(path):
 def find_composer(path):
     composer_response = requests.get(f'http://www.compositiontoday.com/composers/1034.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/172.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/635.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/258.asp')
+
     composer_page = composer_response.text
 
     soup_composer = BeautifulSoup(composer_page, 'lxml')
@@ -348,7 +353,7 @@ def month_to_date(month):
 def get_music(html):
     music_content_list = get_audio(html)
     music_content_list = [*music_content_list, *get_works(html)] # * will work like spread operator in js 
-    # print(music_content_list)
+    print(music_content_list)
 
 def get_audio(html):
     # print(html.find_all('div', class_ = "boxes")[0].find_next_sibling("div"))
@@ -402,22 +407,22 @@ def get_works(html):
     # if has showcase, use that page for list of works
     # else use the composer page and loop through each subpage
     works = html.find('div', {'style' : "height:80px"})
-    work_list = []
+    works_list = []
 
     if works is not None:
         # print(works)
         side_site_link = works.a
         works_link = get_link_from_side_site(side_site_link["href"])
         if works_link is None:
-            work_list = get_from_list(html)
+            works_list = get_from_list(html)
         else:
             # print(works_link["onclick"])
             result = re.search("'(.*)'", works_link["onclick"])
-            work_list = get_works_from_side_site(side_site_link["href"], result.group(1))
+            works_list = get_works_from_side_site(side_site_link["href"], result.group(1))
     else:
-        work_list = get_from_list(html)
+        works_list = get_from_list(html)
 
-    return [{"test": "works"}]
+    return works_list
 
 def get_link_from_side_site(path):
     side_site_response = requests.get(f'http://www.compositiontoday.com{path}')
@@ -447,11 +452,76 @@ def get_works_from_side_site(path, param):
     works_list = []
     # We need to remove the first <br/>. Other br's after
     # will need to be converted to \n
-    print(repr(works[0].a.text.strip()))
-    print(repr(works[4]))
-    # for work in works:
+    for work in works:
+        # print(repr(work))
+        work = str(work).replace('<br/>', '')
+        work = BeautifulSoup(work, 'lxml')
+
+        works_dict = {
+            "contentName": "",
+            "contentText": "",
+            "contentType": "music",
+            # "location": "",
+            # "timestamp": "",
+            # "tag": ""
+        }
+        # print(repr(work.a.text.strip()))
+        # print(repr(work.a.next_sibling.strip()))
+        # print("============================")
+        works_dict.update({
+            "contentName": work.a.text.strip(),
+            "contentText": work.a.next_sibling.strip()
+        })
+        works_list.append(works_dict)
+
+    return works_list
 
 
 def get_from_list(html):
+    list_of_works = html.find('div', string="List of Works").parent.ul
+    
     print("TADA")
+    if list_of_works.find('li') is None:
+        return []
+    
+    list_of_works = list_of_works.find_all('li')
+    works_list = []
+
+    for work in list_of_works:
+        if work.a is None:
+            continue
+        works_list.append(get_list_page(work.a['href']))
+
+    return works_list
+
+def get_list_page(path):
+    page_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
+    page = page_response.text
+
+    soup_page = BeautifulSoup(page, 'lxml')
+    # print(soup_page)
+
+    works_dict = {
+        "contentName": "",
+        "contentText": "",
+        "contentType": "music",
+        # "location": "",
+        # "timestamp": "",
+        # "tag": ""
+    }
+
+    title = soup_page.find('h1', {'style' : "font-size:16px"}).text
+    title = title.split('-')[0].strip()
+    works_dict.update({"contentName": title})
+    print(title)
+
+    desc = soup_page.find('b', string="Description").parent.parent
+    desc.div.decompose()
+    # print(repr(desc.text))
+
+    if 'Sorry!' not in desc.text:
+        works_dict.update({"contentText": desc.text.strip()})
+    
+    return works_dict
+
 start_scraping()
