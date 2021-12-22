@@ -15,28 +15,10 @@ export default function EditExperienceModal({isMyProfile, experience}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const[newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
-    function handleNameChange(newValue: string) {
+    const handleChange = (newValue: string, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
-            contentName: newValue
-        }));
-    }
-    function handleTextChange(newValue: string) {
-        setNewContentValue(prevState => ({
-            ...prevState,
-            contentText: newValue
-        }));
-    }
-    function handleDescriptionChange(newValue: string) {
-        setNewContentValue(prevState => ({
-            ...prevState,
-            description: newValue
-        }));
-    }
-    function handleTimestampChange(newValue: string) {
-        setNewContentValue(prevState => ({
-            ...prevState,
-            timestamp: newValue
+            [type]: newValue
         }));
     }
 
@@ -77,19 +59,13 @@ export default function EditExperienceModal({isMyProfile, experience}: Props) {
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                 <>
-                    <GenericInputField title="Experience Title" onChange={handleNameChange} value={newContentValue.contentName}/>
-                    <GenericInputField title="Role" onChange={handleTextChange} value={newContentValue.contentText}/>
-                    <GenericInputField title="Description" onChange={handleDescriptionChange} value={newContentValue.description}/>
-                    <GenericInputField title="Time Period" onChange={handleTimestampChange} value={newContentValue.timestamp}/>
-        
+                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName}/>
+                    <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText}/>
+                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description}/>
+                    <GenericInputField title="Time Period" type="timestamp" onChange={handleChange} value={newContentValue.timestamp}/>
                 </>
             </GenericModal>
-
-            {isMyProfile && 
-                <>
-                    <Button onClick={handleOpenEdit}>Edit</Button>
-                </>
-            }
+            {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
         </div>
     )
 }

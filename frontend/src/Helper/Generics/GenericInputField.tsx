@@ -3,11 +3,12 @@ import { InputGroup, FormControl } from 'react-bootstrap'
 
 type Props = {
     title: string
+    type: string
     value: string | undefined
-    onChange: (newValue: string) => void;
+    onChange: (type: string, newValue: string) => void;
 }
 
-export default function GenericInputField({title, value, onChange}: Props) {
+export default function GenericInputField({title, value, onChange, type}: Props) {
     return (
         <div>
             <InputGroup className="mb-3">
@@ -15,7 +16,7 @@ export default function GenericInputField({title, value, onChange}: Props) {
                 <FormControl
                 aria-label="Default"
                 value={value}
-                onChange={e => onChange(e.target.value)}
+                onChange={e => onChange(e.target.value, type)}
                 aria-describedby="inputGroup-sizing-default"
                 />
             </InputGroup>

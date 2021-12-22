@@ -41,11 +41,7 @@ export default function DeleteExperienceModal({contentID, isMyProfile}: Props) {
 
     return (
         <div>
-            {isMyProfile && 
-                <>
-                    <Button onClick={handleOpenDelete}>Delete</Button>
-                </>
-            }
+            {isMyProfile && <Button onClick={handleOpenDelete}>Delete</Button>}
             <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Delete"} >
                 <>
                     <p>
