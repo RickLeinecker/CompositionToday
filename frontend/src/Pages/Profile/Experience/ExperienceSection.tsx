@@ -13,7 +13,6 @@ type Props = {
 export default function ExperienceSection({userID}: Props) {
 
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
-    // const [newExperience, setNewExperience] = useState<ExperienceType | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
