@@ -9,16 +9,17 @@ type Props = {
 
 
 export default function ExperienceCard({isMyProfile, experience}: Props) {
+    const {id, contentName, contentText, description, timestamp} = experience;
 
     return (
         <div className="card" style={{display: "flex"}}>
             <div className="card-body">
-                <h5 className="card-title">{experience.contentName}</h5>
-                <p className="card-text">{experience.contentText}</p>
-                <p className="card-text">{experience.description}</p>
-                <p className="card-text">{experience.timestamp}</p>
+                <h5 className="card-title">{contentName}</h5>
+                <p className="card-text">{contentText}</p>
+                <p className="card-text">{description}</p>
+                <p className="card-text">{timestamp}</p>
 
-                <DeleteExperienceModal contentID={experience.id} isMyProfile={isMyProfile}/>
+                <DeleteExperienceModal contentID={id} isMyProfile={isMyProfile}/>
                 <EditExperienceModal 
                     experience={experience}
                     isMyProfile={isMyProfile}              
