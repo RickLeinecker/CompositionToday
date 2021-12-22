@@ -8,23 +8,12 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 
 type Props = {
     experience: ExperienceType;
-    // contentName: string;
-    // contentText: string;
-    // timestamp: string;
-    // description?: string;
-    // contentID: number;
-    // userID: number
     isMyProfile: boolean;
-
 }
 
 export default function EditExperienceModal({isMyProfile, experience}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const[newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
-    // const[newContentName, setNewContentName] = useState(contentName);
-    // const[newContentText, setNewContentText] = useState(contentText);
-    // const[newContentDescription, setNewContentDescription] = useState(description);
-    // const[newContentTimestamp, setNewContentTimeStamp] = useState(timestamp);
 
     function handleNameChange(newValue: string) {
         setNewContentValue(prevState => ({

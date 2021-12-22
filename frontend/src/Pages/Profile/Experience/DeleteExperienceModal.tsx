@@ -15,7 +15,6 @@ export default function DeleteExperienceModal({contentID, isMyProfile}: Props) {
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
     async function confirmDeleteHandler(){
-        console.log("HERE WE DELETE");
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({contentID}),
             methodType: "DELETE",

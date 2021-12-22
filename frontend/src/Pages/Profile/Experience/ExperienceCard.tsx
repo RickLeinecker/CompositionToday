@@ -3,14 +3,8 @@ import DeleteExperienceModal from './DeleteExperienceModal';
 import EditExperienceModal from './EditExperienceModal';
 
 type Props = {
-    // contentName: string;
-    // contentText: string;
-    // timestamp: string;
-    // description?: string;
     experience: ExperienceType
     isMyProfile: boolean;
-    // contentID: number;
-    // userID: number
 }
 
 
