@@ -8,38 +8,52 @@ exports.updateSpecializationTag = async (req, res) => {
 
   var error = "";
   var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const { userID, tagID, specializationTagID } = req.body;
 
-  var sqlInsert = "UPDATE specializationTag SET userID=?,tagID=? WHERE id=?";
+  // build update string with non null fields
+  var insertString = "UPDATE specializationTag SET ";
+  if (userID) {
+    insertString += "userID=?,";
+    insertArray.push(userID);
+  }
+
+  if (tagID) {
+    insertString += "tagID=?,";
+    insertArray.push(tagID);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(specializationTagID);
+
+  // var sqlInsert = "UPDATE specializationTag SET userID=?,tagID=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
-    connection.query(
-      sqlInsert,
-      [userID, tagID, specializationTagID],
-      function (err, result) {
-        if (err) {
-          error = "SQL Update Error";
-          responseCode = 500;
-          // console.log(err);
+    connection.query(insertString, insertArray, function (err, result) {
+      if (err) {
+        error = "SQL Update Error";
+        responseCode = 500;
+        console.log(err);
+      } else {
+        if (result.affectedRows > 0) {
+          results.push("Success");
+          responseCode = 200;
         } else {
-          if (result.affectedRows > 0) {
-            results.push("Success");
-            responseCode = 200;
-          } else {
-            error = "Specialization with this tag does not exist";
-            responseCode = 500;
-          }
-          // console.log(result);
+          error = "Specialization with this tag does not exist";
+          responseCode = 500;
         }
-        // package data
-        var ret = {
-          result: results,
-          error: error,
-        };
-        // send data
-        res.status(responseCode).json(ret);
+        // console.log(result);
       }
-    );
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+      connection.release();
+    });
   });
 };

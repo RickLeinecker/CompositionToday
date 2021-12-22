@@ -19,7 +19,7 @@ exports.readTag = async (req, res) => {
         if (err) {
           error = "SQL Search Error";
           responseCode = 500;
-          // console.log(err);
+          console.log(err);
         } else {
           if (result[0]) {
             results = result[0];
@@ -36,6 +36,7 @@ exports.readTag = async (req, res) => {
         };
         // send data
         res.status(responseCode).json(ret);
+        connection.release();
       }
     );
   });

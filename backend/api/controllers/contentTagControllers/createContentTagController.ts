@@ -11,13 +11,14 @@ exports.createContentTag = async (req, res) => {
   var responseCode = 0;
 
   const { contentID, tagID } = req.body;
+
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert = "INSERT INTO contentTag(contentID, tagID) VALUES (?,?)";
     connection.query(sqlInsert, [contentID, tagID], function (err, result) {
       if (err) {
         error = "SQL Insert Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         results.push("Success");
         responseCode = 201;
@@ -30,6 +31,7 @@ exports.createContentTag = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
+      connection.release();
     });
   });
 };
