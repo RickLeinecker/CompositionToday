@@ -28,55 +28,66 @@ def start_scraping():
     find_alphabet(alphabet_link["href"])
 
 def find_alphabet(path):
-    alpha_response = requests.get(f'http://www.compositiontoday.com/composers/s.asp')
+    alpha_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
     alpha_page = alpha_response.text
 
     soup_alpha = BeautifulSoup(alpha_page, 'lxml')
 
     # The 2nd parameter's True allows the bgcolor
     # attribute to have any value
-    composer_list = soup_alpha.find('tr', {'bgcolor' : True})
+    composer_list = soup_alpha.find_all('tr', {'bgcolor' : True})
     # print(composer_list)
 
-    composer = composer_list
+    all_composers = []
 
-    composer_link = composer.a
-    # print(composer_link)
+    for composer in composer_list:
+        print(composer)
+        # composer = composer_list
 
-    composer_name = composer_link.text
-    full_name = composer_name.split(",")
+        composer_link = composer.a
+        # print(composer_link)
 
-    # Strip any lead/trailing whitespace
-    full_name[:] = [name.strip() for name in full_name]
-    # print(full_name)
+        composer_name = composer_link.text
+        full_name = composer_name.split(",")
 
-    interface_dict = {
-        "composer": {},
-        "userProfile": {},
-        "content": {},
-    }
+        # Strip any lead/trailing whitespace
+        full_name[:] = [name.strip() for name in full_name]
+        # print(full_name)
 
-    composer_dict = {
-        "firstName": full_name[1],
-        "lastName": full_name[0],
-        "isPublisher": 0
-    }
-    # print(composer_dict)
+        interface_dict = {
+            "composer": {},
+            "userProfile": {},
+            "content": {},
+        }
 
-    user_profile, content = find_composer(composer_link["href"])
+        composer_dict = {
+            "firstName": full_name[1],
+            "lastName": full_name[0],
+            "isPublisher": 0
+        }
+        # print(composer_dict)
 
-    interface_dict.update({"composer": composer_dict})
-    interface_dict.update({"userProfile": user_profile})
-    interface_dict.update({"content": content})
-    # print(interface_dict)
+        user_profile, content = find_composer(composer_link["href"])
+
+        interface_dict.update({"composer": composer_dict})
+        interface_dict.update({"userProfile": user_profile})
+        interface_dict.update({"content": content})
+        # figure out why there is a random line break at Gene Pritsker
+        print(repr(json.dumps(interface_dict, default=str)))
+
+        all_composers.append(interface_dict)
+    print(all_composers)
 
 def find_composer(path):
-    composer_response = requests.get(f'http://www.compositiontoday.com/composers/1034.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
+
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1034.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/172.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/635.asp')
-    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/258.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/924.asp')
+    composer_response = requests.get(f'http://www.compositiontoday.com/composers/2420.asp')
 
     composer_page = composer_response.text
 
@@ -109,7 +120,7 @@ def get_user_profile(html):
     }
 
     if no_bio_text not in composer_profile.text:
-        user_profile_dict.update({"bio": composer_profile.text})
+        user_profile_dict.update({"bio": composer_profile.text.strip()})
     
     # print(user_profile_dict)
     return user_profile_dict
@@ -121,8 +132,8 @@ def get_content(html):
 
     content_list = []
 
-    # content_list = get_past_performances(composer_content)
-    get_music(composer_content)
+    content_list = get_past_performances(composer_content)
+    content_list = [*content_list, *get_music(composer_content)]
     # get_sheets()
 
     # print(content_list)
@@ -148,7 +159,7 @@ def get_past_performances(html):
     for performance in past_performances:
         concert = get_concert(performance.find('a'))
         if None not in concert.values():
-            # print("====================================")
+            print("====================================")
             performance_list.append(concert)
             # print(concert)
     
@@ -175,7 +186,7 @@ def get_concert(html):
     # print(contentText)
 
     timestamp = get_timestamp(concert_soup)
-    # print(timestamp)
+    print(timestamp)
 
     concert_dict.update({"contentName": contentName})
     concert_dict.update({"location": location})
@@ -212,7 +223,7 @@ def get_concert_info(concert_soup):
     contentText = contentText.text.strip()
     # print(contentText)
 
-    return (contentName, location, contentText)
+    return (contentName.text.strip(), location, contentText)
 
 def get_timestamp(concert_soup):
     date = concert_soup.find("span", {'style' : "background-color:AD3442;color:black"})
@@ -238,7 +249,8 @@ def to_24_hour(format_date):
         format_date = strip_am_pm(format_date)
         # print(format_date, "a")
     else:
-        format_date = format_date.replace('.', ':', 1)
+        format_date = format_date.replace('.', ':', 1).replace(',', ':', 1)
+        format_date = format_date.split('-')[0]
         # print(format_date, 'b')
 
     return to_datetime(format_date)
@@ -353,7 +365,9 @@ def month_to_date(month):
 def get_music(html):
     music_content_list = get_audio(html)
     music_content_list = [*music_content_list, *get_works(html)] # * will work like spread operator in js 
-    print(music_content_list)
+    # print(music_content_list)
+
+    return music_content_list
 
 def get_audio(html):
     # print(html.find_all('div', class_ = "boxes")[0].find_next_sibling("div"))
@@ -480,7 +494,6 @@ def get_works_from_side_site(path, param):
 def get_from_list(html):
     list_of_works = html.find('div', string="List of Works").parent.ul
     
-    print("TADA")
     if list_of_works.find('li') is None:
         return []
     
@@ -513,7 +526,7 @@ def get_list_page(path):
     title = soup_page.find('h1', {'style' : "font-size:16px"}).text
     title = title.split('-')[0].strip()
     works_dict.update({"contentName": title})
-    print(title)
+    # print(title)
 
     desc = soup_page.find('b', string="Description").parent.parent
     desc.div.decompose()
