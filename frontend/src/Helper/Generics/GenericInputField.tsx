@@ -5,7 +5,7 @@ type Props = {
     title: string
     type: string
     value: string | undefined
-    onChange: (type: string, newValue: string) => void;
+    onChange: (newValue: string, type: string) => void;
 }
 
 export default function GenericInputField({title, value, onChange, type}: Props) {
