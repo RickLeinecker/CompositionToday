@@ -36,10 +36,14 @@ def start_scraping():
         for alphabet_link in alphabet_pages:
             # print(alphabet_link["href"])
             alpha = find_alphabet(alphabet_link["href"])
-            f.write(f"{json.dumps(*alpha, default=str)}")
 
-            if alphabet_link["href"] != 'z.asp':
-                f.write(",")
+            for composer in alpha:
+                f.write(f"{json.dumps(composer, default=str)}")
+
+                # print(repr(composer))
+                if composer["composer"]["lastName"] != 'Zwicki':
+                    f.write(",")
+
             f.write("\n")
         f.write("]")
 
@@ -119,6 +123,7 @@ def find_composer(path):
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/2423.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/22.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1531.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/2800.asp')
 
     composer_page = composer_response.text
 
@@ -297,7 +302,7 @@ def to_24_hour(format_date):
             #     split_date[4] = '00:00'
             #     format_date = ' '.join(split_date)
             # print(format_date)
-        print(format_date, 'b')
+        # print(format_date, 'b')
 
     return to_datetime(format_date)
 
