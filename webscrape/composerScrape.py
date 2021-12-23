@@ -9,10 +9,18 @@ import json
 # pip install beautifulsoup4
 # pip install requests
 
+# To run the program, do:
+# python composerScrape.py
+
+# Output will be in scraped_data.json
+
 # There are three main pages that the scraper will use:
 # top_page      : http://www.compositiontoday.com/composers/default.asp
 # alpha_page    : ex. http://www.compositiontoday.com/composers/a.asp
 # composer_page : ex. http://www.compositiontoday.com/composers/1355.asp
+
+# Optionally, if there is a side page, the scraper
+# will utilize that to extract more data.
 
 def start_scraping():
     top_response = requests.get('http://www.compositiontoday.com/composers/default.asp')
@@ -20,12 +28,24 @@ def start_scraping():
 
     soup_top = BeautifulSoup(top_page, 'lxml')
 
-    # alphabet_pages = soup.find_all('a', class_ = 'alphabet')
+    alphabet_pages = soup_top.find_all('a', class_ = 'alphabet')
     # print(alphabet_pages)
 
-    alphabet_link = soup_top.find('a', class_ = 'alphabet')
+    with open(f'./scraped_data.json', 'w') as f:
+        f.write("[\n")
+        for alphabet_link in alphabet_pages:
+            # print(alphabet_link["href"])
+            alpha = find_alphabet(alphabet_link["href"])
+            f.write(f"{json.dumps(*alpha, default=str)}")
+
+            if alphabet_link["href"] != 'z.asp':
+                f.write(",")
+            f.write("\n")
+        f.write("]")
+
+    # alphabet_link = soup_top.find('a', class_ = 'alphabet')
     # print(alphabet_page)
-    find_alphabet(alphabet_link["href"])
+    # find_alphabet(alphabet_link["href"])
 
 def find_alphabet(path):
     alpha_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
@@ -41,7 +61,7 @@ def find_alphabet(path):
     all_composers = []
 
     for composer in composer_list:
-        print(composer)
+        print(composer.text)
         # composer = composer_list
 
         composer_link = composer.a
@@ -59,7 +79,7 @@ def find_alphabet(path):
             "userProfile": {},
             "content": {},
         }
-
+        # print(repr(full_name[1]))
         composer_dict = {
             "firstName": full_name[1],
             "lastName": full_name[0],
@@ -72,14 +92,15 @@ def find_alphabet(path):
         interface_dict.update({"composer": composer_dict})
         interface_dict.update({"userProfile": user_profile})
         interface_dict.update({"content": content})
-        # figure out why there is a random line break at Gene Pritsker
-        print(repr(json.dumps(interface_dict, default=str)))
+        # print(repr(json.dumps(interface_dict, default=str)))
 
         all_composers.append(interface_dict)
-    print(all_composers)
+
+    # print(all_composers)
+    return all_composers
 
 def find_composer(path):
-    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
+    composer_response = requests.get(f'http://www.compositiontoday.com/composers/{path}')
 
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1034.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1899.asp')
@@ -87,7 +108,17 @@ def find_composer(path):
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/635.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/258.asp')
     # composer_response = requests.get(f'http://www.compositiontoday.com/composers/924.asp')
-    composer_response = requests.get(f'http://www.compositiontoday.com/composers/2420.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/2420.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1327.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/135.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/129.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/191.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/352.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1530.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1645.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/2423.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/22.asp')
+    # composer_response = requests.get(f'http://www.compositiontoday.com/composers/1531.asp')
 
     composer_page = composer_response.text
 
@@ -119,7 +150,7 @@ def get_user_profile(html):
         "website": ""
     }
 
-    if no_bio_text not in composer_profile.text:
+    if (composer_profile is not None) and (no_bio_text not in composer_profile.text):
         user_profile_dict.update({"bio": composer_profile.text.strip()})
     
     # print(user_profile_dict)
@@ -161,7 +192,7 @@ def get_past_performances(html):
         if None not in concert.values():
             print("====================================")
             performance_list.append(concert)
-            # print(concert)
+            print(concert)
     
     return performance_list
 
@@ -186,7 +217,7 @@ def get_concert(html):
     # print(contentText)
 
     timestamp = get_timestamp(concert_soup)
-    print(timestamp)
+    # print(timestamp)
 
     concert_dict.update({"contentName": contentName})
     concert_dict.update({"location": location})
@@ -249,9 +280,24 @@ def to_24_hour(format_date):
         format_date = strip_am_pm(format_date)
         # print(format_date, "a")
     else:
-        format_date = format_date.replace('.', ':', 1).replace(',', ':', 1)
-        format_date = format_date.split('-')[0]
-        # print(format_date, 'b')
+        # print(format_date)
+        # Exception
+        if '17 march 2011 at 1930, doors open at 1900' in format_date:
+            format_date = '17 march 2011 at 19:30'
+        elif '13 november 2015 at 13\x9628 november 2015 7.30' in format_date:
+            format_date = '13 november 2015 7:30'
+        format_date = format_date.replace('.', ':', 1).replace(',', ':', 1).replace('_', ':', 1).replace(';', ':', 1)
+        format_date = format_date.split('-')[0].strip()
+
+        if ':' not in format_date:
+            if format_date[-2].isnumeric() and format_date[-3].isnumeric():
+                format_date = format_date[:-2] + ':' + format_date[-2:]
+            # else:
+            #     split_date = format_date.split()
+            #     split_date[4] = '00:00'
+            #     format_date = ' '.join(split_date)
+            # print(format_date)
+        print(format_date, 'b')
 
     return to_datetime(format_date)
 
@@ -262,15 +308,40 @@ def strip_am_pm(format_date):
     time = split_date[4]
     # print(time)
 
+    # Exception: Andrew Hall
+    if time == 'doors':
+        split_date[4] = '19:30'
+        return ' '.join(split_date)
+    # Exception: Peri Mauer
+    if time == 'sept.':
+        split_date[4] = '20:00'
+        return ' '.join(split_date)
+    # Exception: Olivier Messiaen
+    if time == 'activities':
+        split_date[4] = '16:00'
+        return ' '.join(split_date)
+    # Exception: Gene Pritsker
+    if time == '630pm':
+        split_date[4] = '18:30'
+        return ' '.join(split_date)
+    # A composer can't follow rules
+    if len(time) == 2 and int(time) > 24:
+        split_date[4] = '19:30'
+        return ' '.join(split_date)
+
     if 'am' in time:
         time = time[:time.index("am")]
+        time = time.split('-')[0].strip() # Another edge case
     elif 'a.m' in time:
         time = time[:time.index("a.m")]
+        time = time.split('-')[0].strip() # Another edge case
     elif ('pm' in format_date) or ('p.m' in format_date):
         if 'pm' in time:
             time = time[:time.index("pm")]
+            time = time.split('-')[0].strip() # Another edge case
         elif 'p.m' in time:
             time = time[:time.index("p.m")]
+            time = time.split('-')[0].strip() # Another edge case
 
         # print(time)
 
@@ -280,7 +351,11 @@ def strip_am_pm(format_date):
                 hours = hours + num
             else:
                 break
-        
+        # print(hours, "qwert")
+
+        # Another edge case
+        if hours == "":
+            hours = split_date[5]
         if hours != 12:
             hours = (int(hours) + 12) % 24
 
@@ -291,8 +366,8 @@ def strip_am_pm(format_date):
             if not h.isalnum():
                 time = hourText + time[index:]
                 break
-        
-    split_date[4] = time.replace('.', ':', 1)
+    time = time.split('-')[0] 
+    split_date[4] = time.replace('.', ':', 1).replace(',', ':', 1).replace('_', ':', 1).replace(';', ':', 1)
     # print(split_date[4])
 
     return ' '.join(split_date)
