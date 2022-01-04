@@ -10,62 +10,67 @@ type Props = {
     userID: number;
 }
 
-export default function ExperienceSection({userID}: Props) {
-
+export default function ExperienceSection({ userID }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [hasChanged, setHasChanged] = useState(false);
+
+    const notifyChange = () => {
+        setHasChanged(value => !value);
+    }
 
     useEffect(() => {
-        async function fetchData(){
+        async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "experience", userID}),
+                data: JSON.stringify({ contentType: "experience", userID }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
-            
-            try{
+
+            try {
                 let answer = (await GenericHandler(handlerObject));
-                if(answer.error.length > 0){
+                if (answer.error.length > 0) {
                     setError(answer.error);
                     return;
                 }
-                
-                setError("");
-                setResponse(await answer.result);
-                setLoading(false);
-                
 
-            } catch(e: any){
+                setError("");
+                setResponse(await answer.result.reverse());
+                setLoading(false);
+
+
+            } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 setError(DefaultValues.apiErrorMessage);
             }
-        
+
         }
         fetchData();
-    }, [userID])
+    }, [userID, hasChanged])
 
 
-        
+
     return (
         <>
-            <CreateExperienceModal userID={userID}/>
+            <CreateExperienceModal userID={userID} notifyChange={notifyChange}/>
             <div>
-                {!error && loading ? <div>...loading</div> 
-                :
-                error ? 
-                <Alert variant="danger">{error}</Alert>
-                : 
-                <div>
-                    {response?.map((_result: ExperienceType) => (
-                        <li key={_result.id}>
-                            <ExperienceCard
-                                experience={_result}
-                                isMyProfile={true} 
-                            />   
-                        </li>
-                    ))}
-                </div>
+                {!error && loading ? <div>...loading</div>
+                    :
+                    error ?
+                        <Alert variant="danger">{error}</Alert>
+                        :
+                        <div>
+                            {response?.map((_result: ExperienceType) => (
+                                <li key={_result.id}>
+                                    <ExperienceCard
+                                        experience={_result}
+                                        isMyProfile={true}
+                                        notifyChange={notifyChange}
+                                    />
+                                </li>
+                            ))}
+                        </div>
                 }
             </div>
         </>
