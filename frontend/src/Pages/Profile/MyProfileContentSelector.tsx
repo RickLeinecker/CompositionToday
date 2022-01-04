@@ -1,15 +1,17 @@
-import { getAuth } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Image } from 'react-bootstrap'
-import { User } from '../../ObjectInterface'
+import { User, UserProfile } from '../../ObjectInterface'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
+import BiographySection from './Biography/BiographySection'
+import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
 
 type Props = {
     user: User;
+    userProfile: UserProfile;
 }
 
-export default function MyProfileContentSelector({user}: Props) {
+export default function MyProfileContentSelector({user, userProfile}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
 
@@ -41,11 +43,8 @@ export default function MyProfileContentSelector({user}: Props) {
     }
 
     function getUser(){
-        var user = getAuth().currentUser;
-        var email = user?.email
-
         return(
-            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{email}</h1>
+            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{userProfile.displayName}</h1>
         )
     }
 
@@ -55,6 +54,8 @@ export default function MyProfileContentSelector({user}: Props) {
                 <div style={{ display: "flex", marginLeft: "5%" }}>
                     <Image style={{ width: "10%", height: "auto" }} src="img_avatar.png" roundedCircle />
                     {getUser()}
+                    <BiographySection userID={user.id} biography={userProfile.bio || "Hello! this is my bio"}/>
+                    <EditProfileModal userProfile={userProfile} isMyProfile={true}/>
                 </div>
                 <ButtonGroup className="buttonContainer" onClick={handleClick}>
                     <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
