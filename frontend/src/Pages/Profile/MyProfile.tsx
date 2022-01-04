@@ -15,6 +15,11 @@ export default function MyProfile(props: any) {
     const [user, setUser] = useState<User>();
     const [userProfile, setUserProfile] = useState<UserProfile>();
     const currentUid = getAuth().currentUser?.uid;
+    const [hasChanged, setHasChanged] = useState(false);
+
+    const notifyChange = () => {
+        setHasChanged(value => !value);
+    }
 
     // get user info
     useEffect(() => {
@@ -84,7 +89,7 @@ export default function MyProfile(props: any) {
 
         fetchUser();
         fetchUserProfile();
-    },[])
+    },[currentUid, hasChanged])
 
     return (
         <>
@@ -95,7 +100,7 @@ export default function MyProfile(props: any) {
                     <div>...loading</div> 
                 :
                 (user && userProfile && !error) ? 
-                    <MyProfileContentSelector user={user} userProfile={userProfile}/>
+                    <MyProfileContentSelector user={user} userProfile={userProfile} notifyChange={notifyChange}/>
                 :
                     <Alert variant="danger">{error}</Alert>
                 }

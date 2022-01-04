@@ -9,9 +9,10 @@ import MyProfileContent from './MyProfileContent'
 type Props = {
     user: User;
     userProfile: UserProfile;
+    notifyChange: () => void;
 }
 
-export default function MyProfileContentSelector({user, userProfile}: Props) {
+export default function MyProfileContentSelector({user, userProfile, notifyChange}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
 
@@ -55,7 +56,7 @@ export default function MyProfileContentSelector({user, userProfile}: Props) {
                     <Image style={{ width: "10%", height: "auto" }} src="img_avatar.png" roundedCircle />
                     {getUser()}
                     <BiographySection userID={user.id} biography={userProfile.bio || "Hello! this is my bio"}/>
-                    <EditProfileModal userProfile={userProfile} isMyProfile={true}/>
+                    <EditProfileModal userProfile={userProfile} isMyProfile={true} notifyChange={notifyChange}/>
                 </div>
                 <ButtonGroup className="buttonContainer" onClick={handleClick}>
                     <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}

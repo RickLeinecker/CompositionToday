@@ -9,9 +9,10 @@ import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 type Props = {
     userProfile: UserProfile;
     isMyProfile: boolean;
+    notifyChange: () => void;
 }
 
-export default function EditProfileModal({isMyProfile, userProfile}: Props) {
+export default function EditProfileModal({isMyProfile, userProfile, notifyChange}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
 
@@ -40,6 +41,7 @@ export default function EditProfileModal({isMyProfile, userProfile}: Props) {
                 return;
             }
             
+            notifyChange();
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
