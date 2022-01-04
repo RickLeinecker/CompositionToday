@@ -8,32 +8,32 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 type Props = {
     contentID: number;
     isMyProfile: boolean;
+    notifyChange: () => void;
 }
 
-export default function DeleteExperienceModal({contentID, isMyProfile}: Props) {
+export default function DeleteExperienceModal({ contentID, isMyProfile, notifyChange }: Props) {
 
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
-    async function confirmDeleteHandler(){
+    async function confirmDeleteHandler() {
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({contentID}),
+            data: JSON.stringify({ contentID }),
             methodType: "DELETE",
             path: "deleteContent",
         }
-                
-        try{
+
+        try {
             let answer = (await GenericHandler(handlerObject));
-            if(answer.error.length > 0){
+            if (answer.error.length > 0) {
                 // setError(answer.error);
                 return;
             }
-            
+
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
-            
-
-        } catch(e: any){
+            notifyChange();
+        } catch (e: any) {
             console.error("Frontend Error: " + e);
             // setError(DefaultValues.apiErrorMessage);
         }
