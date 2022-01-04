@@ -5,11 +5,11 @@ import EditExperienceModal from './EditExperienceModal';
 type Props = {
     experience: ExperienceType;
     isMyProfile: boolean;
-    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    notifyChange: () => void;
 }
 
 
-export default function ExperienceCard({ experience, isMyProfile, setHasChanged }: Props) {
+export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
     const { id, contentName, contentText, description, timestamp } = experience;
 
     return (
@@ -20,11 +20,11 @@ export default function ExperienceCard({ experience, isMyProfile, setHasChanged 
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
 
-                <DeleteExperienceModal contentID={id} isMyProfile={isMyProfile} setHasChanged={setHasChanged} />
+                <DeleteExperienceModal contentID={id} isMyProfile={isMyProfile} notifyChange={notifyChange} />
                 <EditExperienceModal
                     experience={experience}
                     isMyProfile={isMyProfile}
-                    setHasChanged={setHasChanged}
+                    notifyChange={notifyChange}
                 />
 
             </div>

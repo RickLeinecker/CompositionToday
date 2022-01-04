@@ -9,10 +9,10 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 type Props = {
     experience: ExperienceType;
     isMyProfile: boolean;
-    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    notifyChange: () => void;
 }
 
-export default function EditExperienceModal({ isMyProfile, experience, setHasChanged }: Props) {
+export default function EditExperienceModal({ isMyProfile, experience, notifyChange }: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
@@ -48,7 +48,7 @@ export default function EditExperienceModal({ isMyProfile, experience, setHasCha
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
-            setHasChanged(value => !value);
+            notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             // setError(DefaultValues.apiErrorMessage);

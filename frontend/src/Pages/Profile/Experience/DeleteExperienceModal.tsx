@@ -8,10 +8,10 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 type Props = {
     contentID: number;
     isMyProfile: boolean;
-    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    notifyChange: () => void;
 }
 
-export default function DeleteExperienceModal({ contentID, isMyProfile, setHasChanged }: Props) {
+export default function DeleteExperienceModal({ contentID, isMyProfile, notifyChange }: Props) {
 
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
@@ -32,7 +32,7 @@ export default function DeleteExperienceModal({ contentID, isMyProfile, setHasCh
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
-            setHasChanged(value => !value);
+            notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             // setError(DefaultValues.apiErrorMessage);

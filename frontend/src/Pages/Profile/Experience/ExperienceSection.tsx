@@ -16,6 +16,10 @@ export default function ExperienceSection({ userID }: Props) {
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
 
+    const notifyChange = () => {
+        setHasChanged(value => !value);
+    }
+
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
@@ -49,7 +53,7 @@ export default function ExperienceSection({ userID }: Props) {
 
     return (
         <>
-            <CreateExperienceModal userID={userID} setHasChanged={setHasChanged}/>
+            <CreateExperienceModal userID={userID} notifyChange={notifyChange}/>
             <div>
                 {!error && loading ? <div>...loading</div>
                     :
@@ -62,7 +66,7 @@ export default function ExperienceSection({ userID }: Props) {
                                     <ExperienceCard
                                         experience={_result}
                                         isMyProfile={true}
-                                        setHasChanged={setHasChanged}
+                                        notifyChange={notifyChange}
                                     />
                                 </li>
                             ))}

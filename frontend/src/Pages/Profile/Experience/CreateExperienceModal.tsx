@@ -8,10 +8,10 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 
 type Props = {
     userID: number;
-    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>;
+    notifyChange: () => void;
 }
 
-export default function CreateExperienceModal({ userID, setHasChanged }: Props) {
+export default function CreateExperienceModal({ userID, notifyChange }: Props) {
 
     const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");
@@ -43,7 +43,7 @@ export default function CreateExperienceModal({ userID, setHasChanged }: Props) 
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
-            setHasChanged(value => !value);
+            notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             // setError(DefaultValues.apiErrorMessage);
