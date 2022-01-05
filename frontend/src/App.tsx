@@ -11,8 +11,10 @@ import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
 import MyProfile from './Pages/Profile/MyProfile';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+
     return (
         <>
             <Router>
@@ -29,6 +31,18 @@ function App() {
                     </Switch>
                 </AuthProvider>
             </Router>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

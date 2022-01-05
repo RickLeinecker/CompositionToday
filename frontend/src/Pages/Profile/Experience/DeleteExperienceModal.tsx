@@ -4,6 +4,7 @@ import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
+import { toast } from 'react-toastify';
 
 type Props = {
     contentID: number;
@@ -25,17 +26,15 @@ export default function DeleteExperienceModal({ contentID, isMyProfile, notifyCh
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                // setError(answer.error);
+                toast.error('Failed to delete experience');
                 return;
             }
 
-            // setError("");
-            // setResponse(await answer.result);
-            // setLoading(false);
             notifyChange();
+            toast.success('Experience deleted');
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            // setError(DefaultValues.apiErrorMessage);
+            toast.error('Failed to delete experience');
         }
     }
 

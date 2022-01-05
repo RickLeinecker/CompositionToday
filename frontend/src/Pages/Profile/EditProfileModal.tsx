@@ -5,6 +5,8 @@ import useOpen from '../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     userProfile: UserProfile;
@@ -37,19 +39,16 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
         try{
             let answer = (await GenericHandler(handlerObject));
             if(answer.error.length > 0){
-                // setError(answer.error);
+                toast.error('Profile failed to update');
                 return;
             }
             
             notifyChange();
-            // setError("");
-            // setResponse(await answer.result);
-            // setLoading(false);
-            
+            toast.success('Profile updated');
 
         } catch(e: any){
             console.error("Frontend Error: " + e);
-            // setError(DefaultValues.apiErrorMessage);
+            toast.error('Profile failed to update');
         }
     }
 
