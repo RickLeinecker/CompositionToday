@@ -5,6 +5,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
+import { toast } from 'react-toastify';
 
 type Props = {
     userID: number;
@@ -36,17 +37,16 @@ export default function CreateExperienceModal({ userID, notifyChange }: Props) {
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                // setError(answer.error);
+                toast.error('Failed to create experience');
                 return;
             }
 
-            // setError("");
-            // setResponse(await answer.result);
-            // setLoading(false);
             notifyChange();
+            toast.success('Experience created');
+
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            // setError(DefaultValues.apiErrorMessage);
+            toast.error('Failed to create experience');
         }
     }
 

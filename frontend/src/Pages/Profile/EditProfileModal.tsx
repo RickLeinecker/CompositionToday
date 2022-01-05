@@ -39,27 +39,16 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
         try{
             let answer = (await GenericHandler(handlerObject));
             if(answer.error.length > 0){
-                // setError(answer.error);
+                toast.error('Profile failed to update');
+                return;
             }
             
             notifyChange();
-            toast.success('We did it!', {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            // setError("");
-            // setResponse(await answer.result);
-            // setLoading(false);
-            
+            toast.success('Profile updated');
 
         } catch(e: any){
             console.error("Frontend Error: " + e);
-            // setError(DefaultValues.apiErrorMessage);
+            toast.error('Profile failed to update');
         }
     }
 

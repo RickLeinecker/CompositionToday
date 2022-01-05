@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Toast } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
+import { toast } from 'react-toastify';
 
 type Props = {
     experience: ExperienceType;
@@ -41,17 +42,15 @@ export default function EditExperienceModal({ isMyProfile, experience, notifyCha
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                // setError(answer.error);
+                toast.error("Failed to update experience")
                 return;
             }
 
-            // setError("");
-            // setResponse(await answer.result);
-            // setLoading(false);
+            toast.success("Experience updated")
             notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            // setError(DefaultValues.apiErrorMessage);
+            toast.error("Failed to update experience")
         }
     }
 
