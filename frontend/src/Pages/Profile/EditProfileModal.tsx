@@ -6,6 +6,8 @@ import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal'
 import GenericSnackbar from '../../Helper/Generics/GenericSnackbar';
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     userProfile: UserProfile;
@@ -16,7 +18,11 @@ type Props = {
 export default function EditProfileModal({isMyProfile, userProfile, notifyChange}: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
-    const[toast, setToast] = useState<string>("")
+    const[toastt, setToast] = useState<string>("")
+
+    const notify = () => {
+        toast.success("YOU DID IT!!!")
+    }
 
     const handleChange = (newValue: string, type: string) => {
         setNewContentValue(prevState => ({
@@ -44,11 +50,21 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
             let answer = (await GenericHandler(handlerObject));
             if(answer.error.length > 0){
                 // setError(answer.error);
-                setToast("danger")
+                setToast("error")
             }
             
             notifyChange();
             setToast("success")
+            toast("Easy peasy")
+            toast.success('🦄 Wow so easy!', {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             // setError("");
             // setResponse(await answer.result);
             // setLoading(false);
@@ -69,7 +85,19 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
                 </>
             </GenericModal>
             {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
-            {toast === "success" && <GenericSnackbar toastType={"success"} resetToast={resetToast}/>}
+            {!!toastt && <GenericSnackbar toastType={toastt} resetToast={resetToast}/>}
+            <button onClick={notify}>notify</button>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     )
 }

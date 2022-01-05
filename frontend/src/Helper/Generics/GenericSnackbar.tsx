@@ -9,7 +9,6 @@ type Props = {
 export default function GenericSnackbar({toastType, resetToast}: Props) {
 
     const [open, setOpen] = React.useState(true);
-    
   
     const handleClose = () => {
       setOpen(false);
@@ -18,7 +17,7 @@ export default function GenericSnackbar({toastType, resetToast}: Props) {
     return (
         <div>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
                     This is a success message!
                 </Alert>
             </Snackbar>
