@@ -9,6 +9,16 @@ export type User = {
     userProfileID?: number;
 };
 
+export type UserProfile = {
+    userID: number;
+    displayName?: string;
+    bio?: string;
+    websiteLink?: string;
+    location?: string;
+    privacySetting?: number;
+    profilePicPath?: string;
+}
+
 export type ContentType = {
     id: number;
     userID: string;
