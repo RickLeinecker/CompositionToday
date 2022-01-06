@@ -4,6 +4,7 @@ var router = express.Router();
 
 const createUserController = require("../controllers/userControllers/createUserController.ts");
 const createComposerController = require("../controllers/userControllers/createComposerController.ts");
+const createScrapedComposerController = require("../controllers/userControllers/createScrapedComposerController.ts");
 const createPublisherController = require("../controllers/userControllers/createPublisherController.ts");
 const readUserController = require("../controllers/userControllers/readUserController.ts");
 const readUserByUIDController = require("../controllers/userControllers/readUserByUIDController.ts");
@@ -14,6 +15,10 @@ const getLoggedInUserController = require("../controllers/userControllers/getLog
 
 router.post("/api/createUser", createUserController.createUser);
 router.post("/api/createComposer", createComposerController.createComposer);
+router.post(
+  "/api/createScrapedComposer",
+  createScrapedComposerController.createScrapedComposer
+);
 router.post("/api/createPublisher", createPublisherController.createPublisher);
 router.post("/api/readUser", readUserController.readUser);
 router.post("/api/readUserByUID", readUserByUIDController.readUserByUID);
