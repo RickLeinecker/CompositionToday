@@ -14,7 +14,7 @@ exports.createPublisher = async (req, res) => {
   var responseCode = 0;
   var isPublisher = 1;
   var privacySetting = 0;
-  var userID = 0;
+  var userID = -1;
   // reading data from frontend
   const { uid } = req.body;
 
@@ -63,7 +63,7 @@ exports.createPublisher = async (req, res) => {
               } else {
                 if (result[0]) {
                   results = [];
-                  results = result[0];
+                  results = result;
                   responseCode = 200;
                 } else {
                   error = "User does not exist";
@@ -132,7 +132,7 @@ exports.createPublisher = async (req, res) => {
                               } else {
                                 if (result[0]) {
                                   results = [];
-                                  results = result[0];
+                                  results = result;
                                   responseCode = 200;
                                 } else {
                                   error = "User does not exist";
@@ -176,7 +176,7 @@ exports.createPublisher = async (req, res) => {
                                       } else {
                                         if (result.affectedRows > 0) {
                                           results = [];
-                                          results.push("Success");
+                                          results.push(userID);
                                           responseCode = 200;
                                         } else {
                                           error = "User does not exist";
