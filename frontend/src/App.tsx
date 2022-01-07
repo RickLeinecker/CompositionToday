@@ -11,8 +11,10 @@ import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
 import MyProfile from './Pages/Profile/MyProfile';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
+
     return (
         <>
             <Router>
@@ -25,10 +27,22 @@ function App() {
                         <PrivateRoute exact path="/blog" component={Blog} />
                         <PrivateRoute exact path="/showcase" component={Showcase} />
                         <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
-                        <PrivateRoute exact path="/my-profile" component={MyProfile} />
+                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={{userID: 0}}/>
                     </Switch>
                 </AuthProvider>
             </Router>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

@@ -1,64 +1,109 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Container, Image } from 'react-bootstrap'
+import { Alert, Container } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
-import ArticlesSection from './Articles/ArticlesSection'
-import EventsSection from './Events/EventsSection'
-import ExperienceSection from './Experience/ExperienceSection'
-import MusicSection from './Music/MusicSection'
-import './MyProfileStyle.css'
+import './MyProfileStyle.scss'
+import DefaultValues from '../../Styles/DefaultValues.module.scss'
+import { getAuth } from 'firebase/auth'
+import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface'
+import GenericHandler from '../../Handlers/GenericHandler'
+import MyProfileContentSelector from './MyProfileContentSelector'
 
-export default function MyProfile() {
+export default function MyProfile(props: any) {
 
-    const [currentSection, setCurrentSection] = useState<string>("Experience")
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User>();
+    const [userProfile, setUserProfile] = useState<UserProfile>();
+    const currentUid = getAuth().currentUser?.uid;
+    const [hasChanged, setHasChanged] = useState(false);
 
-    useEffect(() => {
-
-        // sets current section button color to selected 
-        let property = document.getElementById(currentSection)
-            if(property != null)
-                property.style.background = "#3981FF"
-
-        return () => {
-        }
-    }, [currentSection])
-
-    const handleClick=(event: any)=>{
-        event.preventDefault()
-        
-        // sets old section button color to selected
-        // and updates section 
-        if(event?.target?.value != null && event?.target?.value !== currentSection){
-            let oldProperty = document.getElementById(currentSection)
-            if(oldProperty != null){
-                oldProperty.style.background = "#FFFBFF"
-            }
-            setCurrentSection(event?.target?.value)
-        }
+    const notifyChange = () => {
+        setHasChanged(value => !value);
     }
+
+    // get user info
+    useEffect(() => {
+        async function fetchUser(){
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({uid: currentUid}),
+                methodType: "POST",
+                path: "getLoggedInUser",
+            }
+            
+            try{
+                let answer = (await GenericHandler(handlerObject));
+                if(answer.error.length > 0){
+                    setError(answer.error);
+                    return;
+                }
+                
+                setError("");
+                const result = await answer.result;
+                setUser({
+                    id: result.id,
+                    userProfileID: result.userProfileID,
+                    firstName: result.firstName,
+                    lastName: result.lastName,
+                    email: result.email,
+
+                });
+                setLoading(false);
+                
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+                setError(DefaultValues.apiErrorMessage);
+            }
+        
+        }
+        async function fetchUserProfile(){
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({uid: currentUid}),
+                methodType: "POST",
+                path: "readUserProfileByUID",
+            }
+            
+            try{
+                let answer = (await GenericHandler(handlerObject));
+                if(answer.error.length > 0){
+                    setError(answer.error);
+                    return;
+                }
+                
+                setError("");
+                const result = await answer.result;
+                setUserProfile({
+                    userID: result.userID,
+                    bio: result.bio,
+                    displayName: result.displayName,
+                });
+                setLoading(false);
+                
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+                setError(DefaultValues.apiErrorMessage);
+            }
+        
+        }
+
+        fetchUser();
+        fetchUserProfile();
+    },[currentUid, hasChanged])
 
     return (
         <>
             <TopNavBar/>
             <Container style = {{padding:"2%"}}>
-                <div id="container">
-                    <div style ={{display: "flex", marginLeft: "5%"}}>
-                        <Image style={{width: "10%", height: "auto"}} src="img_avatar.png" roundedCircle/>
-                        <h1 style = {{padding: "2%", fontSize: "3vw"}}>Username</h1>
-                    </div>
-                    <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                        <Button className="rounded-pill" id="Experience" variant="light" value="Experience">Experience</Button>{' '}
-                        <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
-                        <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
-                        <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
-                    </ButtonGroup>
-                    <div id="my-profile-box"></div>
-                </div>
-                <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection/>}
-                    {currentSection === "Music" && <MusicSection/>}
-                    {currentSection === "Events" && <EventsSection/>}
-                    {currentSection === "Articles" && <ArticlesSection/>}
-                </div>
+                { 
+                (loading && !error) ?
+                    <div>...loading</div> 
+                :
+                (user && userProfile && !error) ? 
+                    <MyProfileContentSelector user={user} userProfile={userProfile} notifyChange={notifyChange}/>
+                :
+                    <Alert variant="danger">{error}</Alert>
+                }
             </Container>
         </>
     )
