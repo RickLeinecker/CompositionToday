@@ -10,3 +10,6 @@ const textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.blue, width: 2.0),
   ),
 );
+
+const yellowColor = Color(0xffF7B41F);
+const blueColor = Color(0xff3981FF);
