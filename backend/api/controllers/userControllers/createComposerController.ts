@@ -14,7 +14,7 @@ exports.createComposer = async (req, res) => {
   var responseCode = 0;
   var isPublisher = 0;
   var privacySetting = 0;
-  var userID = 0;
+  var userID = -1;
   // reading data from frontend
   const { uid } = req.body;
 
@@ -28,7 +28,7 @@ exports.createComposer = async (req, res) => {
       if (err) {
         error = "Create User Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         results = [];
         results.push("Success");
@@ -44,10 +44,11 @@ exports.createComposer = async (req, res) => {
       // if an error occurred, then send error response
       if (createUserResponse.error.length > 0) {
         res.status(responseCode).json(createUserResponse);
+        connection.release();
         return;
       } else {
         // If the user was successfully created, then get user's id to create their profile
-
+        connection.release();
         // GET USER'S ID -- NOTE: could use SELECT LAST_INSERT_ID(); but it looks unreliable after local testing;
         // therefore, will proceed with selecting user with uid at this point to avoid bugs
         mysql_pool.getConnection(function (err, connection) {
@@ -59,11 +60,11 @@ exports.createComposer = async (req, res) => {
               if (err) {
                 error = "SQL Search Error";
                 responseCode = 500;
-                // console.log(err);
+                console.log(err);
               } else {
                 if (result[0]) {
                   results = [];
-                  results = result[0];
+                  results = result;
                   responseCode = 200;
                 } else {
                   error = "User does not exist";
@@ -79,8 +80,10 @@ exports.createComposer = async (req, res) => {
               // if an error occurred, then send error response
               if (readUserResponse.error.length > 0) {
                 res.status(responseCode).json(readUserResponse);
+                connection.release();
                 return;
               } else {
+                connection.release();
                 // ELSE, IF USER WAS SUCCESSFULLY RETRIEVED FROM THE DB, THEN CREATE PROFLILE
                 userID = readUserResponse.result[0].id;
                 // CREATE USER PROFILE WITH USER'S NEWLY CREATED ID
@@ -94,7 +97,7 @@ exports.createComposer = async (req, res) => {
                       if (err) {
                         error = "User Profile Creation Failed";
                         responseCode = 500;
-                        // console.log(err);
+                        console.log(err);
                       } else {
                         results = [];
                         results.push("Success");
@@ -111,8 +114,10 @@ exports.createComposer = async (req, res) => {
                         res
                           .status(responseCode)
                           .json(createUserProfileResponse);
+                        connection.release();
                         return;
                       } else {
+                        connection.release();
                         // IF USER PROFILE WAS SUCCESSFULLY CREATED, RETRIEVE USER'S PROFILE ID
                         // GET USER'S PROFILE ID
                         mysql_pool.getConnection(function (err, connection) {
@@ -124,11 +129,11 @@ exports.createComposer = async (req, res) => {
                               if (err) {
                                 error = "SQL Search Error";
                                 responseCode = 500;
-                                // console.log(err);
+                                console.log(err);
                               } else {
                                 if (result[0]) {
                                   results = [];
-                                  results = result[0];
+                                  results = result;
                                   responseCode = 200;
                                 } else {
                                   error = "User does not exist";
@@ -144,8 +149,10 @@ exports.createComposer = async (req, res) => {
                               // if an error occurred, then send error response
                               if (readUserResponse.error.length > 0) {
                                 res.status(responseCode).json(readUserResponse);
+                                connection.release();
                                 return;
                               } else {
+                                connection.release();
                                 // IF USER PROFILE IS LOCATED, UPDATE userProfileID IN USER'S RECORD
                                 // assign user profile id
                                 var userProfileID =
@@ -166,11 +173,11 @@ exports.createComposer = async (req, res) => {
                                       if (err) {
                                         error = "SQL Update Error";
                                         responseCode = 500;
-                                        // console.log(err);
+                                        console.log(err);
                                       } else {
                                         if (result.affectedRows > 0) {
                                           results = [];
-                                          results.push("Success");
+                                          results.push(userID);
                                           responseCode = 200;
                                         } else {
                                           error = "User does not exist";
@@ -189,6 +196,7 @@ exports.createComposer = async (req, res) => {
                                       res
                                         .status(responseCode)
                                         .json(insertUserProfileIDResponse);
+                                      connection.release();
                                       return;
                                     }
                                   );

@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
-  // incoming: userID, imageFilePathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators
+  // incoming: userID, imageFilepathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description, mapsEnabled
   // outgoing: error
 
   var error = "";
@@ -22,10 +22,12 @@ exports.createContent = async (req, res) => {
     contentType,
     websiteLink,
     collaborators,
+    description,
+    mapsEnabled,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
@@ -40,12 +42,14 @@ exports.createContent = async (req, res) => {
         contentType,
         websiteLink,
         collaborators,
+        description,
+        mapsEnabled,
       ],
       function (err, result) {
         if (err) {
-          error = "SQL Insert Error";
+          error = err;
           responseCode = 500;
-          // console.log(err);
+          console.log(err);
         } else {
           results.push("Success");
           responseCode = 201;
@@ -58,6 +62,7 @@ exports.createContent = async (req, res) => {
         };
         // send data
         res.status(responseCode).json(ret);
+        connection.release();
       }
     );
   });

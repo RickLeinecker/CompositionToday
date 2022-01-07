@@ -14,13 +14,13 @@ exports.getContentTags = async (req, res) => {
       if (err) {
         error = "SQL Search Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result[0]) {
           results = result;
           responseCode = 200;
         } else {
-          error = "Content with this genre does not exist";
+          error = "No content tags exist";
           responseCode = 500;
         }
       }
@@ -31,6 +31,7 @@ exports.getContentTags = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
+      connection.release();
     });
   });
 };
