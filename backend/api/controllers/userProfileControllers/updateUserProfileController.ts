@@ -60,7 +60,7 @@ exports.updateUserProfile = async (req, res) => {
   }
 
   insertString = insertString.slice(0, -1);
-  insertString += " WHERE id=?";
+  insertString += " WHERE userID=?";
   insertArray.push(userID);
 
   // var sqlInsert =
