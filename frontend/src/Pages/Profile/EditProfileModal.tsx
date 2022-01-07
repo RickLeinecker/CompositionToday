@@ -56,8 +56,8 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                 <>
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio}/>
-                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName}/>
+                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true}/>
+                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true}/>
                 </>
             </GenericModal>
             {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}

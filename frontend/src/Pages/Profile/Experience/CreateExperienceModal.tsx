@@ -55,10 +55,10 @@ export default function CreateExperienceModal({ userID, notifyChange }: Props) {
             <Button onClick={handleOpenCreate}>Add experience</Button>
             <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
                 <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} />
-                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} />
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} />
-                    <GenericInputField title="Time Period" type="timestamp" onChange={setNewContentTimeStamp} value={newContentTimestamp} />
+                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
+                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true}/>
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
+                    <GenericInputField title="Time Period" type="timestamp" onChange={setNewContentTimeStamp} value={newContentTimestamp} isRequired={false}/>
                 </>
             </GenericModal>
         </div>

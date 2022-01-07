@@ -5,10 +5,11 @@ type Props = {
     title: string
     type: string
     value: string | undefined
+    isRequired: boolean
     onChange: (newValue: string, type: string) => void;
 }
 
-export default function GenericInputField({title, value, onChange, type}: Props) {
+export default function GenericInputField({title, value, onChange, type, isRequired}: Props) {
     return (
         <div>
             <InputGroup className="mb-3">
@@ -18,6 +19,8 @@ export default function GenericInputField({title, value, onChange, type}: Props)
                 value={value}
                 onChange={e => onChange(e.target.value, type)}
                 aria-describedby="inputGroup-sizing-default"
+                required={isRequired}
+                isInvalid={isRequired && !value}
                 />
             </InputGroup>
         </div>
