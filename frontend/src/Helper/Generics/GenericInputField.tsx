@@ -1,4 +1,3 @@
-import { TextField } from '@mui/material'
 import React from 'react'
 import { InputGroup, FormControl } from 'react-bootstrap'
 
@@ -13,14 +12,6 @@ type Props = {
 export default function GenericInputField({title, value, onChange, type, isRequired}: Props) {
     return (
         <div>
-            {/* <TextField
-                onChange={e => onChange(e.target.value, type)}
-                label={title}
-                variant="outlined"
-                fullWidth
-                required={isRequired}
-                defaultValue={value}
-            /> */}
             <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">{title}</InputGroup.Text>
                 <FormControl
