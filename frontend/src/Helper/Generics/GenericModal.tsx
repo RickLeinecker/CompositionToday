@@ -22,26 +22,26 @@ interface ModalProps {
  * @param actiontText sets the text of the action button (eg: Delete)
  * @returns JSX for usable modal
  */
-const GenericModal = (props: ModalProps): JSX.Element => {
+const GenericModal = ({children, title, show, actionText, onHide, confirm}: ModalProps): JSX.Element => {
     return (
         <Modal
-            show={props.show} 
-            onHide={props.onHide}
+            show={show} 
+            onHide={onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {props.title}
+                    {title}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {props.children}
+                {children}
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={props.onHide}>Close</Button>
-                {!!props.actionText && <Button className="btn-danger" onClick={() => { props.onHide(); props.confirm();}}>{props.actionText}</Button>}
+                <Button onClick={onHide}>Close</Button>
+                {!!actionText && <Button className="btn-danger" onClick={() => { onHide(); confirm();}}>{actionText}</Button>}
             </Modal.Footer>
         </Modal>
     );
