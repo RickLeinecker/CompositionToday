@@ -1,0 +1,15 @@
+$paper-size: 14rem;
+
+.showcase-paper {
+    height: 9rem;
+    width: 9rem;
+    border-radius: 20px;
+}
+
+.color {
+    color: blue;
+}
+
+:export {
+    paperSize: $paper-size;
+}
