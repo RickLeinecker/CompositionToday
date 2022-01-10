@@ -10,12 +10,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     userProfile: UserProfile;
-    isMyProfile: boolean;
     notifyChange: () => void;
+    editOpen: boolean;
+    handleOpenEdit: () => void;
+    handleCloseEdit: () => void;
 }
 
-export default function EditProfileModal({isMyProfile, userProfile, notifyChange}: Props) {
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+export default function EditProfileModal({userProfile, notifyChange, editOpen, handleOpenEdit, handleCloseEdit}: Props) {
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
 
     const handleChange = (newValue: string, type: string) => {
@@ -60,7 +61,6 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
                     <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true}/>
                 </>
             </GenericModal>
-            {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
         </div>
     )
 }
