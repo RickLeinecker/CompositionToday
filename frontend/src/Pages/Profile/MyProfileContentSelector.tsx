@@ -49,7 +49,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
 
     function getUser(){
         return(
-            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{userProfile.displayName}</h1>
+            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
         )
     }
 
