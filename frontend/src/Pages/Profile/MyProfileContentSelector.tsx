@@ -6,6 +6,7 @@ import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import BiographySection from './Biography/BiographySection'
 import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
+import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     user: User;
@@ -62,7 +63,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                     {isMyProfile && 
                         <>
                             <div>
-                                <Button onClick={handleOpenEdit}>Edit</Button>
+                                <EditIcon onClick={handleOpenEdit}/>
                             </div>
 
                             <EditProfileModal 
