@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Image } from 'react-bootstrap'
+import useOpen from '../../Helper/CustomHooks/useOpen'
 import { User, UserProfile } from '../../ObjectInterface'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import BiographySection from './Biography/BiographySection'
 import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
+import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     user: User;
@@ -15,7 +17,9 @@ type Props = {
 export default function MyProfileContentSelector({user, userProfile, notifyChange}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
-
+    const [isMyProfile, setIsMyProfile] = useState<boolean>(true);
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    
     // sets current section button color to selected 
     useEffect(() => {
         let property = document.getElementById(currentSection)
@@ -45,7 +49,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
 
     function getUser(){
         return(
-            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{userProfile.displayName}</h1>
+            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
         )
     }
 
@@ -56,7 +60,21 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                     <Image style={{ width: "10%", height: "auto" }} src="img_avatar.png" roundedCircle />
                     {getUser()}
                     <BiographySection userID={user.id} biography={userProfile.bio || "Hello! this is my bio"}/>
-                    <EditProfileModal userProfile={userProfile} isMyProfile={true} notifyChange={notifyChange}/>
+                    {isMyProfile && 
+                        <>
+                            <div>
+                                <EditIcon onClick={handleOpenEdit}/>
+                            </div>
+
+                            <EditProfileModal 
+                                userProfile={userProfile} 
+                                notifyChange={notifyChange} 
+                                editOpen={editOpen}
+                                handleOpenEdit={handleOpenEdit}
+                                handleCloseEdit={handleCloseEdit}
+                            />
+                        </>
+                    }
                 </div>
                 <ButtonGroup className="buttonContainer" onClick={handleClick}>
                     <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}

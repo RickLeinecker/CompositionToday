@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../Handlers/GenericHandler';
-import useOpen from '../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
@@ -10,12 +8,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     userProfile: UserProfile;
-    isMyProfile: boolean;
     notifyChange: () => void;
+    editOpen: boolean;
+    handleOpenEdit: () => void;
+    handleCloseEdit: () => void;
 }
 
-export default function EditProfileModal({isMyProfile, userProfile, notifyChange}: Props) {
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+export default function EditProfileModal({userProfile, notifyChange, editOpen, handleOpenEdit, handleCloseEdit}: Props) {
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
 
     const handleChange = (newValue: string, type: string) => {
@@ -56,11 +55,10 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
                 <>
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true}/>
                     <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true}/>
+                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true}/>
                 </>
             </GenericModal>
-            {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
         </div>
     )
 }
