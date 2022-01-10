@@ -1,4 +1,12 @@
+@import "./DefaultValues.module.scss";
+
 li {
     list-style-type: none;
     padding: 1%;
+}
+
+.card {
+    display: flex;
+    position: relative;
+    background-color: $primary-color-semi;
 }

@@ -4,6 +4,7 @@ import EditExperienceModal from './EditExperienceModal';
 import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
+import './ExperienceSyle.scss';
 
 type Props = {
     experience: ExperienceType;
@@ -18,10 +19,10 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
     return (
-        <div className="card" style={{ display: "flex", position: "relative"}}>
+        <div className="card">
             {isMyProfile && 
                 <>
-                    <div style={{position: "absolute", top: "10px", right: "10px"}}>
+                    <div className="card-icons">
                         <EditIcon onClick={handleOpenEdit}/> 
                         <DeleteIcon onClick={handleOpenDelete}/>
                     </div>
