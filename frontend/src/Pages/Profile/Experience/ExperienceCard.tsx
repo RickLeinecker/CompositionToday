@@ -1,6 +1,9 @@
 import { ExperienceType } from '../../../ObjectInterface';
 import DeleteExperienceModal from './DeleteExperienceModal';
 import EditExperienceModal from './EditExperienceModal';
+import EditIcon from '@mui/icons-material/Edit';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
     experience: ExperienceType;
@@ -11,6 +14,8 @@ type Props = {
 
 export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
     const { id, contentName, contentText, description, timestamp } = experience;
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
     return (
         <div className="card" style={{ display: "flex" }}>
@@ -20,13 +25,30 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 <p className="card-text">{description}</p>
                 <p className="card-text">{timestamp}</p>
 
-                <DeleteExperienceModal contentID={id} isMyProfile={isMyProfile} notifyChange={notifyChange} />
-                <EditExperienceModal
-                    experience={experience}
-                    isMyProfile={isMyProfile}
-                    notifyChange={notifyChange}
-                />
+                {isMyProfile && 
+                    <>
+                        <div>
+                            <EditIcon onClick={handleOpenEdit}/> 
+                            <DeleteIcon onClick={handleOpenDelete}/>
+                        </div>
 
+                        <DeleteExperienceModal 
+                        contentID={id}
+                        notifyChange={notifyChange} 
+                        deleteOpen={deleteOpen}
+                        handleOpenDelete={handleOpenDelete}
+                        handleCloseDelete={handleCloseDelete}
+                        />
+                        
+                        <EditExperienceModal
+                            experience={experience}
+                            notifyChange={notifyChange}
+                            editOpen={editOpen}
+                            handleOpenEdit={handleOpenEdit}
+                            handleCloseEdit={handleCloseEdit}
+                        />
+                    </>
+                }
             </div>
         </div>
     )

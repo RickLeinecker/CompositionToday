@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
-import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
-import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     experience: ExperienceType;
-    isMyProfile: boolean;
     notifyChange: () => void;
+    editOpen: boolean;
+    handleOpenEdit: () => void;
+    handleCloseEdit: () => void;
 }
 
-export default function EditExperienceModal({ isMyProfile, experience, notifyChange }: Props) {
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+export default function EditExperienceModal({experience, notifyChange, editOpen, handleOpenEdit, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
     const handleChange = (newValue: string, type: string) => {
@@ -65,7 +63,6 @@ export default function EditExperienceModal({ isMyProfile, experience, notifyCha
                     <GenericInputField title="Time Period" type="timestamp" onChange={handleChange} value={newContentValue.timestamp} isRequired={false}/>
                 </>
             </GenericModal>
-            {isMyProfile && <EditIcon onClick={handleOpenEdit}/>}
         </div>
     )
 }
