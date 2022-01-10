@@ -6,6 +6,7 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     experience: ExperienceType;
@@ -64,7 +65,7 @@ export default function EditExperienceModal({ isMyProfile, experience, notifyCha
                     <GenericInputField title="Time Period" type="timestamp" onChange={handleChange} value={newContentValue.timestamp} isRequired={false}/>
                 </>
             </GenericModal>
-            {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
+            {isMyProfile && <EditIcon onClick={handleOpenEdit}/>}
         </div>
     )
 }

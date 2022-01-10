@@ -5,6 +5,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
     contentID: number;
@@ -40,7 +41,7 @@ export default function DeleteExperienceModal({ contentID, isMyProfile, notifyCh
 
     return (
         <div>
-            {isMyProfile && <Button onClick={handleOpenDelete}>Delete</Button>}
+            {isMyProfile && <DeleteIcon onClick={handleOpenDelete}/>}
             <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Delete"} >
                 <>
                     <p>
