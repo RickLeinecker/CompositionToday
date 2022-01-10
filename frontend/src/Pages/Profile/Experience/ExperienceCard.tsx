@@ -9,7 +9,7 @@ type Props = {
     experience: ExperienceType;
     isMyProfile: boolean;
     notifyChange: () => void;
-}
+}//
 
 
 export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
@@ -39,7 +39,7 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                         handleOpenDelete={handleOpenDelete}
                         handleCloseDelete={handleCloseDelete}
                         />
-                        
+
                         <EditExperienceModal
                             experience={experience}
                             notifyChange={notifyChange}
