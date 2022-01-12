@@ -8,9 +8,12 @@ import CreateExperienceModal from './CreateExperienceModal';
 
 type Props = {
     userID: number;
+    createOpen: boolean;
+    handleOpenCreate: () => void;
+    handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ userID }: Props) {
+export default function ExperienceSection({ userID, createOpen, handleOpenCreate, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -53,7 +56,7 @@ export default function ExperienceSection({ userID }: Props) {
 
     return (
         <>
-            <CreateExperienceModal userID={userID} notifyChange={notifyChange}/>
+            <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div>
                     :
