@@ -81,7 +81,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                                 </>
                         }
                     </div>
-                    <div style={{}}>
+                    <div style={{margin: "2% 0"}}>
                         <ButtonGroup className="buttonContainer" onClick={handleClick}>
                             <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
                             <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
