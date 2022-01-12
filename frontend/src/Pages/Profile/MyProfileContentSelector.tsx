@@ -49,42 +49,49 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
 
     function getUser(){
         return(
-            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
+            <h1 id="userDisplay" style = {{display: "inline", padding: "2%", fontSize: "3vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
         )
     }
 
     return (
-        <div>
+        <>
             <div id="container">
-                <div style={{ display: "flex", marginLeft: "5%" }}>
-                    <Image style={{ width: "10%", height: "auto" }} src="img_avatar.png" roundedCircle />
-                    {getUser()}
-                    <BiographySection userID={user.id} biography={userProfile.bio || "Hello! this is my bio"}/>
-                    {isMyProfile && 
-                        <>
-                            <div>
-                                <EditIcon onClick={handleOpenEdit}/>
+                <div id="my-profile-box">
+                    <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
+                        <div>
+                            <Image style={{ width: "20%", height: "auto", float: "left"}} src="img_avatar.png" roundedCircle />
+                            {getUser()}
+                            <div style = {{marginLeft: "25%"}}>
+                                <BiographySection userID={user.id} biography={userProfile.bio || ""}/>
                             </div>
+                        </div>
+                        {isMyProfile && 
+                                <>
+                                    <div>
+                                        <EditIcon onClick={handleOpenEdit}/>
+                                    </div>
 
-                            <EditProfileModal 
-                                userProfile={userProfile} 
-                                notifyChange={notifyChange} 
-                                editOpen={editOpen}
-                                handleOpenEdit={handleOpenEdit}
-                                handleCloseEdit={handleCloseEdit}
-                            />
-                        </>
-                    }
+                                    <EditProfileModal 
+                                        userProfile={userProfile} 
+                                        notifyChange={notifyChange} 
+                                        editOpen={editOpen}
+                                        handleOpenEdit={handleOpenEdit}
+                                        handleCloseEdit={handleCloseEdit}
+                                    />
+                                </>
+                        }
+                    </div>
+                    <div style={{}}>
+                        <ButtonGroup className="buttonContainer" onClick={handleClick}>
+                            <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
+                            <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
+                            <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
+                            <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
+                        </ButtonGroup>
+                    </div>
                 </div>
-                <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                    <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
-                    <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
-                    <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
-                    <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
-                </ButtonGroup>
-                <div id="my-profile-box"></div>
+                <MyProfileContent currentSection={currentSection} userID={user.id}/>
             </div>
-            <MyProfileContent currentSection={currentSection} userID={user.id}/>
-        </div>
+        </>
     )
 }
