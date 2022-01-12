@@ -3,7 +3,6 @@ import { Button, ButtonGroup, Image } from 'react-bootstrap'
 import useOpen from '../../Helper/CustomHooks/useOpen'
 import { User, UserProfile } from '../../ObjectInterface'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import BiographySection from './Biography/BiographySection'
 import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
 import EditIcon from '@mui/icons-material/Edit';
@@ -49,7 +48,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
 
     function getUser(){
         return(
-            <h1 id="userDisplay" style = {{display: "inline", padding: "2%", fontSize: "3vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
+            <h1 id="userDisplay" style = {{display: "inline", padding: "2%", fontSize: "4vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
         )
     }
 
@@ -59,15 +58,15 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                 <div id="my-profile-box">
                     <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
                         <div>
-                            <Image style={{ width: "20%", height: "auto", float: "left"}} src="img_avatar.png" roundedCircle />
+                            <Image style={{ width: "15%", height: "auto", float: "left"}} src="img_avatar.png" roundedCircle />
                             {getUser()}
-                            <div style = {{marginLeft: "25%"}}>
-                                <BiographySection userID={user.id} biography={userProfile.bio || ""}/>
+                            <div style = {{marginLeft: "20%"}}>
+                                <p style={{fontSize: "1.5vw"}}>{userProfile.bio}</p>
                             </div>
                         </div>
                         {isMyProfile && 
                                 <>
-                                    <div>
+                                    <div className='corner-icon'>
                                         <EditIcon onClick={handleOpenEdit}/>
                                     </div>
 
