@@ -94,7 +94,7 @@ export default function MyProfile(props: any) {
     return (
         <>
             <TopNavBar/>
-            <Container style = {{padding:"2%"}}>
+            <div>
                 { 
                 (loading && !error) ?
                     <div>...loading</div> 
@@ -104,7 +104,7 @@ export default function MyProfile(props: any) {
                 :
                     <Alert variant="danger">{error}</Alert>
                 }
-            </Container>
+            </div>
         </>
     )
 }
