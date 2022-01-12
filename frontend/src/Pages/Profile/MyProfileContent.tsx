@@ -15,10 +15,10 @@ type Props = {
 export default function MyProfileContent({currentSection, userID, createOpen, handleOpenCreate, handleCloseCreate}: Props) {
     return (
         <div id="sections">
-                {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>}
-                {currentSection === "Music" && <MusicSection />}
-                {currentSection === "Events" && <EventsSection />}
-                {currentSection === "Articles" && <ArticlesSection />}
+            {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Music" && <MusicSection />}
+            {currentSection === "Events" && <EventsSection />}
+            {currentSection === "Articles" && <ArticlesSection />}
         </div>
     )
 }

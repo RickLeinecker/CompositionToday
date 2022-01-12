@@ -28,7 +28,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.experience-box {
+.content-box {
     margin-top: 4%;
     background-color: $secondary-color-semi;
     border-radius: 3em;
@@ -40,7 +40,12 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.experience-box-mobile {
+.content-scroll {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.content-box-mobile {
     background-color: $secondary-color-semi;
     height: 100%;
     padding: 1%;
@@ -59,7 +64,7 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
-    .experience-box {
+    .content-box {
         background-color: $secondary-color-semi;
         height: 100%;
         padding: 1%;
@@ -70,7 +75,7 @@
     }
 }
 
-.experience-text-box { 
+.content-text-box { 
     margin-top: 4%;
     background-color: $white;
     border-radius: 1em;
