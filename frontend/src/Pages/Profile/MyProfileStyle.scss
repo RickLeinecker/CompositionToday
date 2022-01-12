@@ -48,6 +48,28 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+@media (max-width: 800px) {
+    #my-profile-box {
+        background-color: $primary-color-semi;
+        height: 100%;
+        padding: 2%;
+        margin: 0 0;
+        width: 100%;
+        border-radius: 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .experience-box {
+        background-color: $secondary-color-semi;
+        height: 100%;
+        padding: 1%;
+        width: 100%;
+        margin: 0 0;
+        border-radius: 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}
+
 .experience-text-box { 
     margin-top: 4%;
     background-color: $white;
