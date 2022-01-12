@@ -6,6 +6,7 @@ import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
 import EditIcon from '@mui/icons-material/Edit';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 type Props = {
     user: User;
@@ -18,6 +19,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
     const [currentSection, setCurrentSection] = useState<string>("Experience")
     const [isMyProfile, setIsMyProfile] = useState<boolean>(true);
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     
     // sets current section button color to selected 
     useEffect(() => {
@@ -61,7 +63,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                         {isMyProfile && 
                                 <>
                                     <div className='corner-icon'>
-                                        <EditIcon onClick={handleOpenEdit}/>
+                                        <EditIcon style={{fontSize: "3vw"}} onClick={handleOpenEdit}/>
                                     </div>
 
                                     <EditProfileModal 
@@ -83,7 +85,18 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                         </ButtonGroup>
                     </div>
                 </div>
-                <MyProfileContent currentSection={currentSection} userID={user.id}/>
+                <div className='experience-box'>
+                    <div style={{position: "relative", display: "flex"}}>
+                    <div className='experience-text-box'>
+                        <h1>Experience</h1>
+                    </div>
+                    
+                    <div style={{position: "absolute", top: "0.5em", right: "1%"}}>
+                        <AddCircleIcon style={{fontSize: "5vw"}} onClick={handleOpenCreate}/>
+                    </div>
+                    </div>
+                    <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>
+                </div>
             </div>
         </>
     )

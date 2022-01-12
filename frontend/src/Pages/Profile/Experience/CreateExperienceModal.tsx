@@ -16,11 +16,14 @@ import { TextField } from '@mui/material';
 type Props = {
     userID: number;
     notifyChange: () => void;
+    createOpen: boolean;
+    handleOpenCreate: () => void;
+    handleCloseCreate: () => void;
 }
 
-export default function CreateExperienceModal({ userID, notifyChange }: Props) {
+export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleOpenCreate, handleCloseCreate}: Props) {
 
-    const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
+    // const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
@@ -59,7 +62,6 @@ export default function CreateExperienceModal({ userID, notifyChange }: Props) {
 
     return (
         <div>
-            <Button onClick={handleOpenCreate}>Add experience</Button>
             <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
