@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Image } from 'react-bootstrap'
+import useOpen from '../../Helper/CustomHooks/useOpen'
 import { User, UserProfile } from '../../ObjectInterface'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import BiographySection from './Biography/BiographySection'
 import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
+import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     user: User;
@@ -15,7 +16,9 @@ type Props = {
 export default function MyProfileContentSelector({user, userProfile, notifyChange}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
-
+    const [isMyProfile, setIsMyProfile] = useState<boolean>(true);
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    
     // sets current section button color to selected 
     useEffect(() => {
         let property = document.getElementById(currentSection)
@@ -43,30 +46,45 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
         }
     }
 
-    function getUser(){
-        return(
-            <h1 id="userDisplay" style = {{padding: "2%", fontSize: "3vw"}}>{userProfile.displayName}</h1>
-        )
-    }
-
     return (
-        <div>
+        <>
             <div id="container">
-                <div style={{ display: "flex", marginLeft: "5%" }}>
-                    <Image style={{ width: "10%", height: "auto" }} src="img_avatar.png" roundedCircle />
-                    {getUser()}
-                    <BiographySection userID={user.id} biography={userProfile.bio || "Hello! this is my bio"}/>
-                    <EditProfileModal userProfile={userProfile} isMyProfile={true} notifyChange={notifyChange}/>
+                <div id="my-profile-box">
+                    <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
+                        <div>
+                            <Image className="profile-pic" src="img_avatar.png" roundedCircle />
+                            <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
+                            <div style = {{marginLeft: "20%"}}>
+                                <p style={{fontSize: "1.5vw"}}>{userProfile.bio}</p>
+                            </div>
+                        </div>
+                        {isMyProfile && 
+                                <>
+                                    <div className='corner-icon'>
+                                        <EditIcon onClick={handleOpenEdit}/>
+                                    </div>
+
+                                    <EditProfileModal 
+                                        userProfile={userProfile} 
+                                        notifyChange={notifyChange} 
+                                        editOpen={editOpen}
+                                        handleOpenEdit={handleOpenEdit}
+                                        handleCloseEdit={handleCloseEdit}
+                                    />
+                                </>
+                        }
+                    </div>
+                    <div style={{margin: "2% 0"}}>
+                        <ButtonGroup className="buttonContainer" onClick={handleClick}>
+                            <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
+                            <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
+                            <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
+                            <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
+                        </ButtonGroup>
+                    </div>
                 </div>
-                <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                    <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
-                    <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
-                    <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
-                    <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
-                </ButtonGroup>
-                <div id="my-profile-box"></div>
+                <MyProfileContent currentSection={currentSection} userID={user.id}/>
             </div>
-            <MyProfileContent currentSection={currentSection} userID={user.id}/>
-        </div>
+        </>
     )
 }

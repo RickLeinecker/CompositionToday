@@ -11,13 +11,11 @@ type Props = {
 
 export default function MyProfileContent({currentSection, userID}: Props) {
     return (
-        <div>
-            <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection userID={userID} />}
-                    {currentSection === "Music" && <MusicSection />}
-                    {currentSection === "Events" && <EventsSection />}
-                    {currentSection === "Articles" && <ArticlesSection />}
-            </div>
+        <div id="sections">
+                {currentSection === "Experience" && <ExperienceSection userID={userID} />}
+                {currentSection === "Music" && <MusicSection />}
+                {currentSection === "Events" && <EventsSection />}
+                {currentSection === "Articles" && <ArticlesSection />}
         </div>
     )
 }

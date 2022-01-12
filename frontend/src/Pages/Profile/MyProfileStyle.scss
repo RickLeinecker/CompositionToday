@@ -2,37 +2,59 @@
 @import "../../Styles/DefaultComponents.module.scss";
 
 #container {
-    position: relative;
-    width: 100%;
-    height: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%
 }
 
 #my-profile-box {
-    background-color: $primary-color;
-    opacity: 0.4;
+    margin-top: 4%;
+    background-color: $primary-color-semi;
     border-radius: 3em;
-    position: absolute;
-    top:0;
-    left:0;
     height: 100%;
-    width: 100%;
-    z-index: -1;
+    margin: 2% auto;
+    margin-top: 3%;
+    padding: 1%;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #sections {
-
+    margin: 0 auto;
+    top: 10%;
+    width: 80%;
 }
 
 .buttonContainer {
-    padding: 2%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .rounded-pill {
-    margin-right: 10%;
+    margin: 0 5%;
     display:inline-block;
     padding: 1%;
     width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.corner-icon{
+    position: absolute;
+    top: 2%;
+    right: 2%;
+}
+
+.user-name{
+    display: inline;
+    padding: 2%;
+    font-size: 4vw;
+    font-family: Work Sans;
+    font-weight: 900;
+}
+
+.profile-pic{
+    width: 15%;
+    height: auto;
+    float: left;
 }
