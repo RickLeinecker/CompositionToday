@@ -1,15 +1,42 @@
 $paper-size: 14rem;
 
 .showcase-paper {
-    height: 9rem;
-    width: 9rem;
-    border-radius: 20px;
+  height: 9rem;
+  width: 9rem;
+  border-radius: 20px;
 }
 
 .color {
-    color: blue;
+  color: blue;
+}
+
+.img-scale {
+  & {
+    overflow: hidden;
+  }
+
+  & img {
+    transition: transform 1s;
+    will-change: transform;
+  }
+
+  & img:hover {
+    transform: scale(1.2);
+  }
+}
+
+.blur {
+  & {
+    filter: blur(1px);
+    transition: filter 1s;
+  }
+
+  &:hover {
+    filter: blur(0px);
+  }
 }
 
 :export {
-    paperSize: $paper-size;
+  paperSize: $paper-size;
+  innerSize: $paper-size - 5rem;
 }
