@@ -17,11 +17,10 @@ type Props = {
     userID: number;
     notifyChange: () => void;
     createOpen: boolean;
-    handleOpenCreate: () => void;
     handleCloseCreate: () => void;
 }
 
-export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleOpenCreate, handleCloseCreate}: Props) {
+export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
 
     // const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");

@@ -96,7 +96,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                     </div>
                     </div>
                     <div className='content-scroll'>
-                        <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>
+                        <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
                     </div>
                 </div>
             </div>
