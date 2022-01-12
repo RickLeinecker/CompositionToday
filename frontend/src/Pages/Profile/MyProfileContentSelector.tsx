@@ -83,7 +83,12 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                         </ButtonGroup>
                     </div>
                 </div>
-                <MyProfileContent currentSection={currentSection} userID={user.id}/>
+                <div className='experience-box'>
+                    <div className='experience-text-box'>
+                        <h1>Experience</h1>
+                    </div>
+                    <MyProfileContent currentSection={currentSection} userID={user.id}/>
+                </div>
             </div>
         </>
     )
