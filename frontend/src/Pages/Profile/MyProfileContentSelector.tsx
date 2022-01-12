@@ -46,20 +46,14 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
         }
     }
 
-    function getUser(){
-        return(
-            <h1 id="userDisplay" style = {{display: "inline", padding: "2%", fontSize: "4vw", fontFamily: 'Work Sans', fontWeight: 900}}>{userProfile.displayName}</h1>
-        )
-    }
-
     return (
         <>
             <div id="container">
                 <div id="my-profile-box">
                     <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
                         <div>
-                            <Image style={{ width: "15%", height: "auto", float: "left"}} src="img_avatar.png" roundedCircle />
-                            {getUser()}
+                            <Image className="profile-pic" src="img_avatar.png" roundedCircle />
+                            <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div style = {{marginLeft: "20%"}}>
                                 <p style={{fontSize: "1.5vw"}}>{userProfile.bio}</p>
                             </div>
