@@ -8,17 +8,16 @@ type Props = {
     currentSection: string;
     userID: number;
     createOpen: boolean;
-    handleOpenCreate: () => void;
     handleCloseCreate: () => void;
 }
 
-export default function MyProfileContent({currentSection, userID, createOpen, handleOpenCreate, handleCloseCreate}: Props) {
+export default function MyProfileContent({currentSection, userID, createOpen, handleCloseCreate}: Props) {
     return (
         <div id="sections">
-                {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>}
-                {currentSection === "Music" && <MusicSection />}
-                {currentSection === "Events" && <EventsSection />}
-                {currentSection === "Articles" && <ArticlesSection />}
+            {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Music" && <MusicSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
+            {currentSection === "Events" && <EventsSection />}
+            {currentSection === "Articles" && <ArticlesSection />}
         </div>
     )
 }

@@ -1,31 +1,20 @@
+// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
+
+import 'package:composition_today/shared/appbar.dart';
+import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:composition_today/services/auth.dart';
 
 class Settings extends StatelessWidget {
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
+      appBar: MyAppBar(
         title: const Text('Settings'),
-        backgroundColor: const Color(0xffF7B41F),
-        elevation: 0.0,
-        actions: <Widget>[
-          TextButton.icon(
-            onPressed: () async {
-              await _auth.signOut();
-            },
-            label: const Text('logout'),
-            icon: const Icon(Icons.person),
-            style: TextButton.styleFrom(
-              primary: Colors.white,
-            ),
-          ),
-        ],
       ),
-      body: Center(
+      body: const Center(
         child: SettingsSwitch(),
       ),
     );
@@ -40,19 +29,19 @@ class SettingsSwitch extends StatefulWidget {
 }
 
 class _SettingsSwitchState extends State<SettingsSwitch> {
-  @override
   bool _enableNotifs = false;
   bool _specificNotifs = false;
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           SwitchListTile(
             title: const Text('Enable Push Notifications'),
             value: _enableNotifs,
-            tileColor: const Color(0xffF7B41F),
-            activeColor: const Color(0xff3981FF),
+            tileColor: yellowColor,
+            activeColor: blueColor,
             onChanged: (bool value) {
               setState(() {
                 _enableNotifs = value;
@@ -60,12 +49,12 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
             },
             secondary: const Icon(Icons.notifications),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           SwitchListTile(
             title: const Text('Only show notifications about your interests'),
             value: _specificNotifs,
-            tileColor: const Color(0xffF7B41F),
-            activeColor: const Color(0xff3981FF),
+            tileColor: yellowColor,
+            activeColor: blueColor,
             onChanged: (bool value) {
               setState(() {
                 _specificNotifs = value;
@@ -73,9 +62,9 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
             },
             secondary: const Icon(Icons.notifications),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
-            child: Text(
+            child: const Text(
               'Update Name',
               style: TextStyle(color: Colors.white),
             ),
@@ -83,12 +72,12 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
               // implement ability to change name
             },
             style: ElevatedButton.styleFrom(
-              primary: Color(0xff3981FF),
+              primary: blueColor,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
-            child: Text(
+            child: const Text(
               'Change Email',
               style: TextStyle(color: Colors.white),
             ),
@@ -96,12 +85,12 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
               // implement ability to change email
             },
             style: ElevatedButton.styleFrom(
-              primary: Color(0xff3981FF),
+              primary: blueColor,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
-            child: Text(
+            child: const Text(
               'Reset Password',
               style: TextStyle(color: Colors.white),
             ),
@@ -109,12 +98,12 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
               // implement ability to reset password
             },
             style: ElevatedButton.styleFrom(
-              primary: Color(0xff3981FF),
+              primary: blueColor,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
-            child: Text(
+            child: const Text(
               'Delete Account',
               style: TextStyle(color: Colors.white),
             ),

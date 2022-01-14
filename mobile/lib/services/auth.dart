@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:composition_today/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
