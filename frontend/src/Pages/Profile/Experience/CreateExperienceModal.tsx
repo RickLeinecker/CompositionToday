@@ -31,35 +31,22 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const checkForErrors = (): boolean => {
         let error = false;
         
-        if(!newContentName){
-            setNameError(true);
-            error = true;
-        } else{
-            setNameError(false)
-        }
-
-        if(!newContentText){
-            setTextError(true)
-            error = true;
-        } else{
-            setTextError(false)
-        }
-
-        if(!newContentFromDate){
-            setFromDateError(true)
-            error = true;
-        } else{
-            setFromDateError(false)
-        }
-
-        if(!newContentToDate){
-            setToDateError(true)
-            error = true;
-        } else{
-            setToDateError(false)
-        }
+        error = checkIfEmpty(newContentName, setNameError) || error;
+        error = checkIfEmpty(newContentText, setTextError) || error;
+        error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
+        error = checkIfEmpty(newContentToDate, setToDateError) || error;
 
         return(error)
+    }
+
+    function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if(!value){
+            setError(true);
+            return true;
+        } else{
+            setError(false);
+            return false;
+        }
     }
 
     async function confirmCreateHandler() {
@@ -142,3 +129,4 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         </div>
     )
 }
+
