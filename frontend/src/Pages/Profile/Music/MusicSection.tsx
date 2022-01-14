@@ -3,12 +3,24 @@ import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ContentType, GenericHandlerType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
+import CreateMusicModal from './CreateMusicModal';
 
-export default function MusicSection() {
+type Props = {
+    userID: number;
+    createOpen: boolean;
+    handleCloseCreate: () => void;
+}
+
+export default function MusicSection({createOpen, handleCloseCreate, userID}: Props) {
 
     const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [hasChanged, setHasChanged] = useState(false);
+
+    const notifyChange = () => {
+        setHasChanged(value => !value);
+    }
 
 
     useEffect(() => {
@@ -45,6 +57,7 @@ export default function MusicSection() {
         
     return (
         <>
+            <CreateMusicModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div> 
                 :

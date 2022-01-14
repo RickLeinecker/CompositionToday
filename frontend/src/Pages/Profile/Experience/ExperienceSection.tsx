@@ -5,12 +5,15 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
+import List from 'react-virtualized';
 
 type Props = {
     userID: number;
+    createOpen: boolean;
+    handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ userID }: Props) {
+export default function ExperienceSection({ userID, createOpen, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -53,7 +56,7 @@ export default function ExperienceSection({ userID }: Props) {
 
     return (
         <>
-            <CreateExperienceModal userID={userID} notifyChange={notifyChange}/>
+            <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div>
                     :
@@ -61,6 +64,17 @@ export default function ExperienceSection({ userID }: Props) {
                         <Alert variant="danger">{error}</Alert>
                         :
                         <div>
+                            {/* <List 
+                                width={600} 
+                                height={600} 
+                                rowHeight={50} 
+                                rowCount={response?.length}
+                                rowRendered={({key, index, style, parent}) => {
+                                    const result = response?[index];
+                                    return <div key={key} style={style}>Hello</div>
+                                }}
+                            /> */}
+
                             {response?.map((_result: ExperienceType) => (
                                 <li key={_result.id}>
                                     <ExperienceCard
