@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Container } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
 import './MyProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
