@@ -109,6 +109,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
                     <GenericDatePicker 
                         title={'Start date'} 
+                        type={"fromDate"}
                         value={newContentFromDate} 
                         isRequired={true} 
                         onChange={setNewContentFromDate}
@@ -116,6 +117,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                     />
                     <GenericDatePicker 
                         title={'End date'} 
+                        type={"toDate"}
                         value={newContentToDate} 
                         isRequired={true} 
                         onChange={setNewContentToDate}

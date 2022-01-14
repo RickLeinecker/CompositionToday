@@ -4,6 +4,7 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 
 type Props = {
     experience: ExperienceType;
@@ -23,6 +24,13 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         }));
     }
 
+    const handleDateChange = (newValue: Date | null, type: string) => {
+        setNewContentValue(prevState => ({
+            ...prevState,
+            [type]: newValue
+        }));
+    }
+
     async function confirmEditHandler() {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
@@ -32,7 +40,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
                 description: newContentValue.description,
-                // timestamp: newContentTimestamp,
+                fromDate: newContentValue.fromDate?.toISOString().slice(0, -1),
+                toDate: newContentValue.toDate?.toISOString().slice(0, -1),
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -60,6 +69,22 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true}/>
                     <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                    <GenericDatePicker 
+                        title={'Start date'} 
+                        type={"fromDate"}
+                        value={newContentValue.fromDate || null} 
+                        isRequired={true} 
+                        onChange={handleDateChange}
+                        // error={fromDateError}                    
+                    />
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        type={"toDate"}
+                        value={newContentValue.toDate || null}  
+                        isRequired={true} 
+                        onChange={handleDateChange}
+                        // error={toDateError}                    
+                    />
                 </>
             </GenericModal>
         </div>
