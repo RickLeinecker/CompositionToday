@@ -3,7 +3,10 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createContent
 exports.createContent = async (req, res) => {
-  // incoming: userID, imageFilepathArray, contentText, location, timestamp, audioFilepath, sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description, mapsEnabled
+  // incoming: userID, imageFilepathArray, contentText, location,
+  // timestamp, audioFilepath, sheetMusicFilepath, contentType,
+  // contentName, websiteLink, collaborators, description, mapsEnabled
+  // toDate, fromDate, isDateCurrent
   // outgoing: error
 
   var error = "";
@@ -24,10 +27,13 @@ exports.createContent = async (req, res) => {
     collaborators,
     description,
     mapsEnabled,
+    toDate,
+    fromDate,
+    isDateCurrent,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
@@ -44,6 +50,9 @@ exports.createContent = async (req, res) => {
         collaborators,
         description,
         mapsEnabled,
+        toDate,
+        fromDate,
+        isDateCurrent,
       ],
       function (err, result) {
         if (err) {

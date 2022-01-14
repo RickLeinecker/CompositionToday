@@ -12,6 +12,7 @@ const updateUserController = require("../controllers/userControllers/updateUserC
 const deleteUserController = require("../controllers/userControllers/deleteUserController.ts");
 const getUsersController = require("../controllers/userControllers/getUsersController.ts");
 const getLoggedInUserController = require("../controllers/userControllers/getLoggedInUserController.ts");
+const getComposersByGenreController = require("../controllers/userControllers/getComposersByGenreController.ts");
 
 router.post("/api/createUser", createUserController.createUser);
 router.post("/api/createComposer", createComposerController.createComposer);
@@ -26,5 +27,9 @@ router.patch("/api/updateUser", updateUserController.updateUser);
 router.delete("/api/deleteUser", deleteUserController.deleteUser);
 router.get("/api/getUsers", getUsersController.getUsers);
 router.post("/api/getLoggedInUser", getLoggedInUserController.getLoggedInUser);
+router.post(
+  "/api/getComposersByGenre",
+  getComposersByGenreController.getComposersByGenre
+);
 
 module.exports = router;

@@ -5,6 +5,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 exports.updateContent = async (req, res) => {
   // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
   // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
+  // toDate, fromDate, isDateCurrent
   // outgoing: error
 
   var error = "";
@@ -26,6 +27,9 @@ exports.updateContent = async (req, res) => {
     contentID,
     description,
     collaborators,
+    toDate,
+    fromDate,
+    isDateCurrent,
   } = req.body;
 
   // build update string with non null fields
@@ -89,13 +93,23 @@ exports.updateContent = async (req, res) => {
     insertString += "description=?,";
     insertArray.push(description);
   }
+  if (toDate) {
+    insertString += "toDate=?,";
+    insertArray.push(toDate);
+  }
+  if (fromDate) {
+    insertString += "fromDate=?,";
+    insertArray.push(fromDate);
+  }
+  if (isDateCurrent) {
+    insertString += "isDateCurrent=?,";
+    insertArray.push(isDateCurrent);
+  }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";
   insertArray.push(contentID);
 
-  // var sqlInsert =
-  //   "UPDATE content SET userID=?,imageFilepathArray=?,contentText=?,location=?,timestamp=?,audioFilepath=?,sheetMusicFilepath=?,contentType=?,contentName=?,websiteLink=?,collaborators=?,description=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
       if (err) {

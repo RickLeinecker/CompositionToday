@@ -7,10 +7,14 @@ const getSpecializationTagsForUserController = require("../controllers/specializ
 const updateSpecializationTagController = require("../controllers/specializationTagControllers/updateSpecializationTagController.ts");
 const deleteSpecializationTagController = require("../controllers/specializationTagControllers/deleteSpecializationTagController.ts");
 const getSpecializationTagsController = require("../controllers/specializationTagControllers/getSpecializationTagsController.ts");
-
+const getComposerGenresController = require("../controllers/specializationTagControllers/getComposerGenresController.ts");
 router.post(
   "/api/createSpecializationTag",
   createSpecializationTagController.createSpecializationTag
+);
+router.get(
+  "/api/getComposerGenres",
+  getComposerGenresController.getComposerGenres
 );
 router.post(
   "/api/getSpecializationTagsForUser",
