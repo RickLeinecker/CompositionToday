@@ -5,6 +5,7 @@ import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
+import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 
 type Props = {
     experience: ExperienceType;
@@ -40,8 +41,10 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
                 description: newContentValue.description,
-                fromDate: newContentValue.fromDate?.toISOString().slice(0, -1),
-                toDate: newContentValue.toDate?.toISOString().slice(0, -1),
+                // fromDate: newContentValue.fromDate?.toISOString().slice(0, -1),
+                fromDate: toSqlDatetime(newContentValue.fromDate),
+                toDate: toSqlDatetime(newContentValue.toDate),
+                // toDate: newContentValue.toDate?.toISOString().slice(0, -1),
             }),
             methodType: "PATCH",
             path: "updateContent",

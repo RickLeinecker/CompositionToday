@@ -5,6 +5,7 @@ import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
+import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 
 
 type Props = {
@@ -22,40 +23,40 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
 
-    const [nameError, setNameError] = useState(false)
-    const [textError, setTextError] = useState(false)
-    const [fromDateError, setFromDateError] = useState(false)
-    const [toDateError, setToDateError] = useState(false)
-    const [error, setError] = useState(false)
+    const [nameError, setNameError] = useState(false);
+    const [textError, setTextError] = useState(false);
+    const [fromDateError, setFromDateError] = useState(false);
+    const [toDateError, setToDateError] = useState(false);
 
     const checkForErrors = (): boolean => {
+        let error = false;
         
-        if(newContentName === ""){
-            setNameError(true)
+        if(!newContentName){
+            setNameError(true);
+            error = true;
         } else{
             setNameError(false)
         }
 
-        if(newContentText === ""){
+        if(!newContentText){
             setTextError(true)
+            error = true;
         } else{
             setTextError(false)
         }
 
-        if(newContentFromDate === null){
+        if(!newContentFromDate){
             setFromDateError(true)
+            error = true;
         } else{
             setFromDateError(false)
         }
 
-        if(newContentToDate === null){
+        if(!newContentToDate){
             setToDateError(true)
+            error = true;
         } else{
             setToDateError(false)
-        }
-
-        if(newContentName || newContentText || newContentFromDate || newContentToDate){
-            setError(true);
         }
 
         return(error)
@@ -70,8 +71,10 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 contentText: newContentText,
                 contentType: "experience",
                 description: newContentDescription,
-                fromDate: newContentFromDate?.toISOString().slice(0, -1),
-                toDate: newContentToDate?.toISOString().slice(0, -1),
+                // fromDate: newContentFromDate?.toISOString().slice(0, -1),
+                // toDate: newContentToDate?.toISOString().slice(0, -1),
+                fromDate: toSqlDatetime(newContentFromDate),
+                toDate: toSqlDatetime(newContentToDate),
             }),
             methodType: "POST",
             path: "createContent",
@@ -91,6 +94,17 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
             console.error("Frontend Error: " + e);
             toast.error('Failed to create experience');
         }
+
+        setNewContentName("")
+        setNewContentText("")
+        setNewContentDescription("")
+        setNewContentToDate(null)
+        setNewContentFromDate(null)
+
+        setNameError(false);
+        setTextError(false);
+        setToDateError(false);
+        setFromDateError(false);
     }
 
     return (

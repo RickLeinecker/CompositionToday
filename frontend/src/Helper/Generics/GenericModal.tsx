@@ -28,7 +28,7 @@ interface Props {
 const GenericModal = ({children, title, show, actionText, onHide, confirm, checkForErrors}: Props): JSX.Element => {
 
     const handleSubmit = async () => {
-        if(!checkForErrors || checkForErrors() === true){
+        if(!checkForErrors || await checkForErrors() === false){
             onHide(); 
             confirm();
         }
