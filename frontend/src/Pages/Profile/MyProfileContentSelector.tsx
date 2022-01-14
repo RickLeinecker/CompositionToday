@@ -70,7 +70,6 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                                         userProfile={userProfile} 
                                         notifyChange={notifyChange} 
                                         editOpen={editOpen}
-                                        handleOpenEdit={handleOpenEdit}
                                         handleCloseEdit={handleCloseEdit}
                                     />
                                 </>

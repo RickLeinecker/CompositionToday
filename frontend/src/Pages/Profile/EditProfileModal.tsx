@@ -10,7 +10,6 @@ type Props = {
     userProfile: UserProfile;
     notifyChange: () => void;
     editOpen: boolean;
-    handleOpenEdit: () => void;
     handleCloseEdit: () => void;
 }
 
