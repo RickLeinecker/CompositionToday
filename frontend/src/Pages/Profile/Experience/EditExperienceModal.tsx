@@ -18,6 +18,11 @@ type Props = {
 export default function EditExperienceModal({experience, notifyChange, editOpen, handleOpenEdit, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
+    const [nameError, setNameError] = useState(false);
+    const [textError, setTextError] = useState(false);
+    const [fromDateError, setFromDateError] = useState(false);
+    const [toDateError, setToDateError] = useState(false);
+
     const handleChange = (newValue: string, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
@@ -30,6 +35,27 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             ...prevState,
             [type]: newValue
         }));
+    }
+
+    const checkForErrors = (): boolean => {
+        let error = false;
+        
+        error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
+        error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
+        error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
+        error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
+
+        return(error)
+    }
+
+    function checkIfEmpty(value: string | Date | null | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if(!value){
+            setError(true);
+            return true;
+        } else{
+            setError(false);
+            return false;
+        }
     }
 
     async function confirmEditHandler() {
@@ -67,10 +93,10 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
+            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true}/>
-                    <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true}/>
+                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
                     <GenericDatePicker 
                         title={'Start date'} 
@@ -78,7 +104,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                         value={newContentValue.fromDate || null} 
                         isRequired={true} 
                         onChange={handleDateChange}
-                        // error={fromDateError}                    
+                        error={fromDateError}                    
                     />
                     <GenericDatePicker 
                         title={'End date'} 
@@ -86,7 +112,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                         value={newContentValue.toDate || null}  
                         isRequired={true} 
                         onChange={handleDateChange}
-                        // error={toDateError}                    
+                        error={toDateError}               
                     />
                 </>
             </GenericModal>
