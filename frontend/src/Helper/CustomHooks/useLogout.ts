@@ -14,7 +14,7 @@ export default function useLogout() {
         setError('');
         try {
             await logout();
-            history.push("/login");
+            history.push("/registration");
         } catch {
             setError("Failed to log out");
         }

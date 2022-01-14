@@ -5,10 +5,13 @@ import Card from "react-bootstrap/Card"
 import Alert from "react-bootstrap/Alert"
 import { useAuth } from '../../FirebaseAuth/AuthContext';
 import { Link, useHistory } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
+import { Container, Nav } from 'react-bootstrap'
+import React from 'react'
 
 export default function Login() {
 
+    const [loginEmail, setLoginEmail] = React.useState('');
+    const [loginPassword, setLoginPassword] = React.useState('');
     const [error, setError] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const emailRef = useRef<HTMLInputElement>(null);
@@ -22,6 +25,7 @@ export default function Login() {
         try {
             setError("")
             setLoading(true)
+            // if email is verified then, log them in
             await login(emailRef.current?.value, passwordRef.current?.value)
             history.push("/")
         } catch {
@@ -32,35 +36,18 @@ export default function Login() {
 
     return (
         <>
-            <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
-                <div className="w-100" style={{ maxWidth: "400px" }}>
-                    <Card>
-                        <Card.Body>
-                            <h2 className="text-center mb-4">Log in</h2>
-                            {error && <Alert variant="danger">{error}</Alert>}
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group id="email">
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" ref={emailRef} required />
-                                </Form.Group>
-                                <Form.Group id="password">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" ref={passwordRef} required />
-                                </Form.Group>
-                                <Button disabled={loading} className="w-100" type="submit">
-                                    Log in
-                                </Button>
-                            </Form>
-                            <div className="w-100 text-center mt-3">
-                                <Link to="/forgot-password">Forgot Password?</Link>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                    <div className="w-100 text-center mt-2">
-                        Need an account? <Link to="/signup">Sign up</Link>
-                    </div>
-                </div>
-            </Container>
+            <div className="form-container sign-in-container">
+                <form className="registration" onSubmit={handleSubmit}>
+                    <h1 className="registration">Sign in</h1>
+                    <input className="registration" type="email" placeholder="Email" 
+                    onChange={(e) => setLoginEmail(e.target.value)} value = {loginEmail}/>
+                    <input className="registration" type="password" placeholder="Password" 
+                    onChange={(e) => setLoginPassword(e.target.value)} value = {loginPassword}/>
+                    
+                    <a className = "registration" href="#">Forgot your password?</a>
+                    <button className="registration">Sign In</button>
+                </form>
+            </div>
         </>
     )
 }
