@@ -31,7 +31,6 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                     contentID={id}
                     notifyChange={notifyChange} 
                     deleteOpen={deleteOpen}
-                    handleOpenDelete={handleOpenDelete}
                     handleCloseDelete={handleCloseDelete}
                     />
 
@@ -39,7 +38,6 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                         experience={experience}
                         notifyChange={notifyChange}
                         editOpen={editOpen}
-                        handleOpenEdit={handleOpenEdit}
                         handleCloseEdit={handleCloseEdit}
                     />
                 </>

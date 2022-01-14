@@ -11,11 +11,10 @@ type Props = {
     experience: ExperienceType;
     notifyChange: () => void;
     editOpen: boolean;
-    handleOpenEdit: () => void;
     handleCloseEdit: () => void;
 }
 
-export default function EditExperienceModal({experience, notifyChange, editOpen, handleOpenEdit, handleCloseEdit}: Props) {
+export default function EditExperienceModal({experience, notifyChange, editOpen, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
     const [nameError, setNameError] = useState(false);
