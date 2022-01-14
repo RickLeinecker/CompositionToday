@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
-import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
