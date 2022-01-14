@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { SetStateAction } from 'react';
 import { TextField } from '@mui/material';
 
 
@@ -25,8 +24,48 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
-    
+
+    const [nameError, setNameError] = useState(false)
+    const [textError, setTextError] = useState(false)
+    const [fromDateError, setFromDateError] = useState(false)
+    const [toDateError, setToDateError] = useState(false)
+    const [error, setError] = useState(false)
+
+    const checkForErrors = (): boolean => {
+        
+        if(newContentName === ""){
+            setNameError(true)
+        } else{
+            setNameError(false)
+        }
+
+        if(newContentText === ""){
+            setTextError(true)
+        } else{
+            setTextError(false)
+        }
+
+        if(newContentFromDate === null){
+            setFromDateError(true)
+        } else{
+            setFromDateError(false)
+        }
+
+        if(newContentToDate === null){
+            setToDateError(true)
+        } else{
+            setToDateError(false)
+        }
+
+        if(newContentName || newContentText || newContentFromDate || newContentToDate){
+            setError(true);
+        }
+
+        return(error)
+    }
+
     async function confirmCreateHandler() {
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -59,17 +98,24 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
 
     return (
         <div>
-            <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
-                <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
-                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true}/>
+            <GenericModal 
+                show={createOpen} 
+                title={"Create"} 
+                onHide={handleCloseCreate} 
+                confirm={confirmCreateHandler} 
+                actionText={"Save"} 
+                checkForErrors={checkForErrors}
+            >
+                <form noValidate autoComplete='off'>
+                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Start date"
                             value={newContentFromDate}
                             onChange={setNewContentFromDate}
-                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
+                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} error={fromDateError} helperText={fromDateError && "This is required"} />}
                         />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -77,10 +123,10 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                             label="End date"
                             value={newContentToDate}
                             onChange={setNewContentToDate}
-                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
+                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} error={toDateError} helperText={toDateError && "This is required"}/>}
                         />
                     </LocalizationProvider>
-                </>
+                </form>
             </GenericModal>
         </div>
     )

@@ -48,8 +48,8 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
-                <p className="card-text">{fromDate}</p>
-                <p className="card-text">{toDate}</p>
+                <p className="card-text">{fromDate?.toString()}</p>
+                <p className="card-text">{toDate?.toString()}</p>
             </div>
         </div>
     )
