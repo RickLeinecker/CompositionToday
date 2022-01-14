@@ -8,11 +8,10 @@ type Props = {
     contentID: number;
     notifyChange: () => void;
     deleteOpen: boolean;
-    handleOpenDelete: () => void;
     handleCloseDelete: () => void;
 }
 
-export default function DeleteExperienceModal({ contentID, notifyChange, deleteOpen, handleOpenDelete, handleCloseDelete}: Props) {
+export default function DeleteExperienceModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
 
     async function confirmDeleteHandler() {
         const handlerObject: GenericHandlerType = {

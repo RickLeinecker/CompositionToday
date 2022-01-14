@@ -13,39 +13,25 @@
     background-color: $primary-color-semi;
     border-radius: 3em;
     height: 100%;
-    margin: 2% auto;
-    margin-top: 3%;
+    margin: 1% auto;
     padding: 1%;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#my-profile-box-mobile {
-    background-color: $primary-color-semi;
-    height: 100%;
-    padding: 2%;
-    width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.experience-box {
-    margin-top: 4%;
+.content-box {
     background-color: $secondary-color-semi;
     border-radius: 3em;
     height: 100%;
-    margin: 2% auto;
-    margin-top: 3%;
+    margin: 0.5% auto;
     padding: 1%;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.experience-box-mobile {
-    background-color: $secondary-color-semi;
-    height: 100%;
-    padding: 1%;
-    width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.content-scroll {
+    max-height: 35vh;
+    overflow-y: scroll;
 }
 
 @media (max-width: 800px) {
@@ -59,7 +45,7 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
-    .experience-box {
+    .content-box {
         background-color: $secondary-color-semi;
         height: 100%;
         padding: 1%;
@@ -70,7 +56,7 @@
     }
 }
 
-.experience-text-box { 
+.content-text-box { 
     margin-top: 4%;
     background-color: $white;
     border-radius: 1em;
