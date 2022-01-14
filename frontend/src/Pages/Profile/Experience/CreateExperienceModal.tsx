@@ -4,10 +4,7 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import { TextField } from '@mui/material';
+import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 
 
 type Props = {
@@ -107,35 +104,23 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <div className='modal-field'>
-                        <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    </div>
-                    <div className='modal-field'>
-                        <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
-                    </div>
-                    <div className='modal-field'>
-                        <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
-                    </div>
-                    <div className='modal-field'>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                label="Start date"
-                                value={newContentFromDate}
-                                onChange={setNewContentFromDate}
-                                renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} fullWidth required={true} error={fromDateError} helperText={fromDateError && "This is required"} />}
-                            />
-                        </LocalizationProvider>
-                    </div>
-                    <div className='modal-field'>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                label="End date"
-                                value={newContentToDate}
-                                onChange={setNewContentToDate}
-                                renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} fullWidth required={true} error={toDateError} helperText={toDateError && "This is required"}/>}
-                            />
-                        </LocalizationProvider>
-                    </div>
+                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
+                    <GenericDatePicker 
+                        title={'Start date'} 
+                        value={newContentFromDate} 
+                        isRequired={true} 
+                        onChange={setNewContentFromDate}
+                        error={fromDateError}                    
+                    />
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        value={newContentToDate} 
+                        isRequired={true} 
+                        onChange={setNewContentToDate}
+                        error={toDateError}                    
+                    />
                 </div>
             </GenericModal>
         </div>

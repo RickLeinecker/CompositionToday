@@ -12,7 +12,7 @@ type Props = {
 
 export default function GenericInputField({title, value, onChange, type, isRequired, error}: Props) {
     return (
-        <div>
+        <div className='modal-field'>
             <TextField
                 label={title}
                 variant="outlined"

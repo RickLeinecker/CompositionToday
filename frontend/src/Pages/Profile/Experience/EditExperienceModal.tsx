@@ -60,7 +60,6 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true}/>
                     <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
-                    <GenericInputField title="Time Period" type="timestamp" onChange={handleChange} value={newContentValue.timestamp} isRequired={false}/>
                 </>
             </GenericModal>
         </div>
