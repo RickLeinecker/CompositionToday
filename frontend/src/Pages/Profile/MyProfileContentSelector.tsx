@@ -70,7 +70,6 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                                         userProfile={userProfile} 
                                         notifyChange={notifyChange} 
                                         editOpen={editOpen}
-                                        handleOpenEdit={handleOpenEdit}
                                         handleCloseEdit={handleCloseEdit}
                                     />
                                 </>
@@ -85,17 +84,19 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                         </ButtonGroup>
                     </div>
                 </div>
-                <div className='experience-box'>
+                <div className='content-box'>
                     <div style={{position: "relative", display: "flex"}}>
-                    <div className='experience-text-box'>
-                        <h1>Experience</h1>
+                    <div className='content-text-box'>
+                        <h1>{currentSection}</h1>
                     </div>
                     
                     <div style={{position: "absolute", top: "0.5em", right: "1%"}}>
                         <AddCircleIcon style={{fontSize: "5vw"}} onClick={handleOpenCreate}/>
                     </div>
                     </div>
-                    <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleOpenCreate={handleOpenCreate} handleCloseCreate={handleCloseCreate}/>
+                    <div className='content-scroll'>
+                        <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
+                    </div>
                 </div>
             </div>
         </>

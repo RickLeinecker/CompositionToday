@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
+import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:composition_today/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:composition_today/services/auth.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -13,25 +17,29 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final List<String> roles = ['Select a role', 'Composer', 'Publisher'];
   bool loading = false;
   // text field state
-  String name = '';
+  String firstName = '';
+  String lastName = '';
+  String username = '';
   String email = '';
   String password = '';
   String error = '';
+  String role = '';
+
+  @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.grey[100],
-            appBar: AppBar(
-              backgroundColor: Color(0xffF7B41F),
-              elevation: 0.0,
-              title: Text('Member Registration'),
+            appBar: MyAppBar(
+              title: const Text('Member Registration'),
               actions: <Widget>[
                 TextButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Login here'),
+                  icon: const Icon(Icons.person),
+                  label: const Text('Login here'),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -42,60 +50,79 @@ class _RegisterState extends State<Register> {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    /*SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
-                        hintText: 'Name',
-                        labelText: 'Name',
-                        prefixIcon: Icon(
+                        hintText: 'First Name',
+                        labelText: 'First Name',
+                        prefixIcon: const Icon(
                           Icons.person,
                         ),
                       ),
-                      validator: (val) => val!.isEmpty ? 'Enter a name' : null,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter your first name' : null,
                       onChanged: (val) {
-                        setState(() => name = val);
+                        setState(() => firstName = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 15.0),
+                    TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Last Name',
+                        labelText: 'Last Name',
+                        prefixIcon: const Icon(
+                          Icons.person,
+                        ),
+                      ),
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter your last name' : null,
+                      onChanged: (val) {
+                        setState(() => lastName = val);
+                      },
+                    ),
+                    const SizedBox(height: 15.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Username',
                         labelText: 'Username',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.account_circle,
                         ),
                       ),
                       validator: (val) => val!.isEmpty ? 'Enter a name' : null,
                       onChanged: (val) {
-                        setState(() => name = val);
+                        setState(() => username = val);
                       },
-                    ),*/
-                    SizedBox(height: 20.0),
+                    ),
+                    const SizedBox(height: 15.0),
                     TextFormField(
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Email',
                         labelText: 'Email',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.mail,
                         ),
                       ),
                       validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
+                          EmailValidator.validate(email) == false
+                              ? 'Enter an email'
+                              : null,
                       onChanged: (val) {
                         setState(() => email = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 15.0),
                     TextFormField(
                         decoration: textInputDecoration.copyWith(
                           hintText: 'Password',
                           labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
+                          prefixIcon: const Icon(Icons.lock),
                         ),
                         validator: (val) => val!.length < 6
                             ? 'Enter a password 6+ chars long'
@@ -104,9 +131,29 @@ class _RegisterState extends State<Register> {
                         onChanged: (val) {
                           setState(() => password = val);
                         }),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 15.0),
+                    DropdownButtonFormField(
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Role',
+                        labelText: 'Role',
+                        prefixIcon: const Icon(Icons.info),
+                      ),
+                      value: roles[0],
+                      validator: (val) =>
+                          val == roles[0] ? 'Enter a valid role' : null,
+                      onChanged: (val) {
+                        setState(() => role = val.toString());
+                      },
+                      items: roles.map((role) {
+                        return DropdownMenuItem(
+                          child: Text(role),
+                          value: role,
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 10.0),
                     ElevatedButton(
-                      child: Text(
+                      child: const Text(
                         'Register',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -126,13 +173,13 @@ class _RegisterState extends State<Register> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xff3981FF),
+                        primary: blueColor,
                       ),
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     )
                   ],
                 ),

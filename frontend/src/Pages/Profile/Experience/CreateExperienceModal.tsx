@@ -1,36 +1,56 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
-import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import { SetStateAction } from 'react';
-import { TextField } from '@mui/material';
+import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
+import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 
 
 type Props = {
     userID: number;
     notifyChange: () => void;
     createOpen: boolean;
-    handleOpenCreate: () => void;
     handleCloseCreate: () => void;
 }
 
-export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleOpenCreate, handleCloseCreate}: Props) {
+export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
 
-    // const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentTimestamp, setNewContentTimeStamp] = useState("");
-    const [value, setValue] = useState(null);
-    
+    const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
+    const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
+
+    const [nameError, setNameError] = useState(false);
+    const [textError, setTextError] = useState(false);
+    const [fromDateError, setFromDateError] = useState(false);
+    const [toDateError, setToDateError] = useState(false);
+
+    const checkForErrors = (): boolean => {
+        let error = false;
+        
+        error = checkIfEmpty(newContentName, setNameError) || error;
+        error = checkIfEmpty(newContentText, setTextError) || error;
+        error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
+        error = checkIfEmpty(newContentToDate, setToDateError) || error;
+
+        return(error)
+    }
+
+    function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if(!value){
+            setError(true);
+            return true;
+        } else{
+            setError(false);
+            return false;
+        }
+    }
+
     async function confirmCreateHandler() {
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -38,7 +58,10 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 contentText: newContentText,
                 contentType: "experience",
                 description: newContentDescription,
-                // timestamp: newContentTimestamp,
+                // fromDate: newContentFromDate?.toISOString().slice(0, -1),
+                // toDate: newContentToDate?.toISOString().slice(0, -1),
+                fromDate: toSqlDatetime(newContentFromDate),
+                toDate: toSqlDatetime(newContentToDate),
             }),
             methodType: "POST",
             path: "createContent",
@@ -58,28 +81,52 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
             console.error("Frontend Error: " + e);
             toast.error('Failed to create experience');
         }
+
+        setNewContentName("")
+        setNewContentText("")
+        setNewContentDescription("")
+        setNewContentToDate(null)
+        setNewContentFromDate(null)
+
+        setNameError(false);
+        setTextError(false);
+        setToDateError(false);
+        setFromDateError(false);
     }
 
     return (
         <div>
-            <GenericModal show={createOpen} title={"Create"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
-                <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
-                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true}/>
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                    <GenericInputField title="Time Period" type="timestamp" onChange={setNewContentTimeStamp} value={newContentTimestamp} isRequired={false}/>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                            label="Basic example"
-                            value={value}
-                            onChange={(newValue: SetStateAction<null>) => {
-                            setValue(newValue);
-                            }}
-                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                </>
+            <GenericModal 
+                show={createOpen} 
+                title={"Create"} 
+                onHide={handleCloseCreate} 
+                confirm={confirmCreateHandler} 
+                actionText={"Save"} 
+                checkForErrors={checkForErrors}
+            >
+                <div>
+                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
+                    <GenericDatePicker 
+                        title={'Start date'} 
+                        type={"fromDate"}
+                        value={newContentFromDate} 
+                        isRequired={true} 
+                        onChange={setNewContentFromDate}
+                        error={fromDateError}                    
+                    />
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        type={"toDate"}
+                        value={newContentToDate} 
+                        isRequired={true} 
+                        onChange={setNewContentToDate}
+                        error={toDateError}                    
+                    />
+                </div>
             </GenericModal>
         </div>
     )
 }
+

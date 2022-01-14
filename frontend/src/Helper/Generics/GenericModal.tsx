@@ -1,13 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-interface ModalProps {
+interface Props {
     children: JSX.Element;
     title?: string | null | undefined;
     show: boolean;
     actionText?: string | null | undefined;
     onHide: () => void;
     confirm: () => void;
+    checkForErrors?: () => boolean;
 }
 
 /**
@@ -22,7 +23,17 @@ interface ModalProps {
  * @param actiontText sets the text of the action button (eg: Delete)
  * @returns JSX for usable modal
  */
-const GenericModal = ({children, title, show, actionText, onHide, confirm}: ModalProps): JSX.Element => {
+
+
+const GenericModal = ({children, title, show, actionText, onHide, confirm, checkForErrors}: Props): JSX.Element => {
+
+    const handleSubmit = async () => {
+        if(!checkForErrors || await checkForErrors() === false){
+            onHide(); 
+            confirm();
+        }
+    }
+
     return (
         <Modal
             show={show} 
@@ -41,7 +52,9 @@ const GenericModal = ({children, title, show, actionText, onHide, confirm}: Moda
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onHide}>Close</Button>
-                {!!actionText && <Button className="btn-danger" onClick={() => { onHide(); confirm();}}>{actionText}</Button>}
+                {!!actionText && actionText==="Save" && <Button className="btn-success" onClick={handleSubmit}>{actionText}</Button>}
+                {!!actionText && actionText==="Edit" && <Button className="btn-warning" onClick={handleSubmit}>{actionText}</Button>}
+                {!!actionText && actionText==="Delete" && <Button className="btn-danger" onClick={handleSubmit}>{actionText}</Button>}
             </Modal.Footer>
         </Modal>
     );

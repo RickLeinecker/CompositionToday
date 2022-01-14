@@ -14,7 +14,7 @@ type Props = {
 
 
 export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, contentText, description, timestamp } = experience;
+    const { id, contentName, contentText, description, fromDate, toDate } = experience;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
@@ -31,7 +31,6 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                     contentID={id}
                     notifyChange={notifyChange} 
                     deleteOpen={deleteOpen}
-                    handleOpenDelete={handleOpenDelete}
                     handleCloseDelete={handleCloseDelete}
                     />
 
@@ -39,7 +38,6 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                         experience={experience}
                         notifyChange={notifyChange}
                         editOpen={editOpen}
-                        handleOpenEdit={handleOpenEdit}
                         handleCloseEdit={handleCloseEdit}
                     />
                 </>
@@ -48,7 +46,8 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
-                <p className="card-text">{timestamp}</p>
+                <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
+                <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
             </div>
         </div>
     )
