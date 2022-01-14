@@ -5,6 +5,7 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
+import List from 'react-virtualized';
 
 type Props = {
     userID: number;
@@ -63,6 +64,17 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                         <Alert variant="danger">{error}</Alert>
                         :
                         <div>
+                            {/* <List 
+                                width={600} 
+                                height={600} 
+                                rowHeight={50} 
+                                rowCount={response?.length}
+                                rowRendered={({key, index, style, parent}) => {
+                                    const result = response?[index];
+                                    return <div key={key} style={style}>Hello</div>
+                                }}
+                            /> */}
+
                             {response?.map((_result: ExperienceType) => (
                                 <li key={_result.id}>
                                     <ExperienceCard

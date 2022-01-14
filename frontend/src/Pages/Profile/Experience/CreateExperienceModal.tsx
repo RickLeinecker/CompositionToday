@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../../Handlers/GenericHandler';
-import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
@@ -22,12 +20,11 @@ type Props = {
 
 export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
 
-    // const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentTimestamp, setNewContentTimeStamp] = useState("");
-    const [value, setValue] = useState(null);
+    const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
+    const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
     
     async function confirmCreateHandler() {
         const handlerObject: GenericHandlerType = {
@@ -37,7 +34,8 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 contentText: newContentText,
                 contentType: "experience",
                 description: newContentDescription,
-                // timestamp: newContentTimestamp,
+                fromDate: newContentFromDate?.toISOString().slice(0, -1),
+                toDate: newContentToDate?.toISOString().slice(0, -1),
             }),
             methodType: "POST",
             path: "createContent",
@@ -66,14 +64,19 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                     <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
                     <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true}/>
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                    <GenericInputField title="Time Period" type="timestamp" onChange={setNewContentTimeStamp} value={newContentTimestamp} isRequired={false}/>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
-                            label="Basic example"
-                            value={value}
-                            onChange={(newValue: SetStateAction<null>) => {
-                            setValue(newValue);
-                            }}
+                            label="Start date"
+                            value={newContentFromDate}
+                            onChange={setNewContentFromDate}
+                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            label="End date"
+                            value={newContentToDate}
+                            onChange={setNewContentToDate}
                             renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
                         />
                     </LocalizationProvider>

@@ -48,12 +48,6 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
         }
     }
 
-    const createContent = () => {
-        if(currentSection === 'experience'){
-            handleOpenCreate();
-        }
-    }
-
     return (
         <>
             <div id="container">
@@ -69,7 +63,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                         {isMyProfile && 
                                 <>
                                     <div className='corner-icon'>
-                                        <EditIcon style={{fontSize: "3vw"}} onClick={createContent}/>
+                                        <EditIcon style={{fontSize: "3vw"}} onClick={handleOpenEdit}/>
                                     </div>
 
                                     <EditProfileModal 

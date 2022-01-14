@@ -42,6 +42,8 @@ export type ExperienceType = {
     contentName: string;
     timestamp: string;
     description?: string;
+    fromDate?: string;
+    toDate?: string;
 }
 
 /**
