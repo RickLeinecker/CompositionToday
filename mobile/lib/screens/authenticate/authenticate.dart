@@ -1,3 +1,4 @@
+// ignore_for_file: use_key_in_widget_constructors
 import 'package:composition_today/screens/authenticate/register.dart';
 import 'package:composition_today/screens/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class _AuthenticateState extends State<Authenticate> {
     setState(() => showSignIn = !showSignIn);
   }
 
+  @override
   Widget build(BuildContext context) {
     if (showSignIn) {
       return SignIn(toggleView: toggleView);
