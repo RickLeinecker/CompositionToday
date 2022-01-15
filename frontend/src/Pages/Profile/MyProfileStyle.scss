@@ -30,8 +30,9 @@
 }
 
 .content-scroll {
-    max-height: 35vh;
-    overflow-y: scroll;
+    // max-height: 35vh;
+    // overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 800px) {
@@ -71,11 +72,11 @@
     flex-direction: row;
 }
 
-#sections {
-    margin: 0 auto;
-    top: 10%;
-    width: 80%;
-}
+// #sections {
+//     margin: 0 auto;
+//     top: 10%;
+//     width: 80%;
+// }
 
 .buttonContainer {
     width: 100%;

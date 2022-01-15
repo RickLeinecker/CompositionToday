@@ -18,6 +18,10 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
+    const startDate =  !fromDate ? undefined : new Date(fromDate);
+    const endDate = !toDate ? undefined : new Date(toDate);
+    // console.log(!!fromDate && new Date(fromDate))
+
     return (
         <div className="card">
             {isMyProfile && 
@@ -43,11 +47,11 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 </>
             }
             <div className="card-body">
-                <h5 className="card-title">{contentName}</h5>
+                <h1 className="card-title">{contentName}</h1>
                 <p className="card-text">{contentText}</p>
+                <p className="card-text">{"Start date: " + startDate?.toDateString()}</p>
+                <p className="card-text">{"End date: " + endDate?.toDateString()}</p>
                 <p className="card-text">{description}</p>
-                <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
-                <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
             </div>
         </div>
     )
