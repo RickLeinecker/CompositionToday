@@ -8,7 +8,7 @@ import { auth } from '../../FirebaseAuth/firebase'
 export default function Registration() {
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
-    const container = document.getElementById('container');
+    const container = document.getElementById('switch');
 
     const [currentUser, setCurrentUser] = useState({});
     onAuthStateChanged(auth,(currentUser) =>{
@@ -29,7 +29,7 @@ export default function Registration() {
     return(
         <>
             <main className="registration">
-                <div className="container registration" >
+                <div className="container registration" id="switch">
                     <SignIn/>
                     <Signup/>
                     <div className="overlay-container registration">
