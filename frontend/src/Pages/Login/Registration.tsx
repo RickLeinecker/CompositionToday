@@ -1,48 +1,44 @@
 import SignIn from "./SignIn";
 import Signup from "./Signup";
 import './RegistrationStyle.scss';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../FirebaseAuth/firebase'
 
 export default function Registration() {
-    const signUpButton = document.getElementById('signUp');
-    const signInButton = document.getElementById('signIn');
-    const container = document.getElementById('switch');
-
     const [currentUser, setCurrentUser] = useState({});
-    onAuthStateChanged(auth,(currentUser) =>{
-        if(currentUser != null)
+    const container = useRef<HTMLDivElement>(null);
+
+    onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser != null)
             setCurrentUser(currentUser);
     })
 
-    signUpButton?.addEventListener('click', () => {
-        container?.classList.add("right-panel-active");
-        console.log("first")
-    });
+    const handleSignIn = () => {
+        container?.current?.classList.remove("right-panel-active");
+    }
 
-    signInButton?.addEventListener('click', () => {
-        container?.classList.remove("right-panel-active");
-        console.log("second")
-    });
+    const handleSignUp = () => {
+        container?.current?.classList.add("right-panel-active");
+    }
 
-    return(
+    return (
         <>
             <main className="registration">
-                <div className="container registration" id="switch">
-                    <SignIn/>
-                    <Signup/>
+                <div className="container registration" id="switch" ref={container}>
+                    <SignIn />
+                    <Signup />
                     <div className="overlay-container registration">
                         <div className="overlay">
                             <div className="overlay-panel overlay-left">
                                 <h1 className="registration">Welcome Back!</h1>
                                 <p className="registration">To keep connected with us please login with your personal info</p>
-                                <button className="ghost registration" id="signIn">Sign In</button>
+                                <button className="ghost registration" id="signIn" onClick={handleSignIn}>Sign In</button>
                             </div>
                             <div className="overlay-panel overlay-right">
                                 <h1 className="registration">Hello, Friend!</h1>
                                 <p className="registration">Enter your personal details and start journey with us</p>
-                                <button className="ghost registration" id="signUp">Sign Up</button>
+                                <button className="ghost registration" id="signUp" onClick={handleSignUp}>Sign Up</button>
                             </div>
                         </div>
                     </div>
@@ -50,5 +46,4 @@ export default function Registration() {
             </main>
         </>
     )
-
 }
