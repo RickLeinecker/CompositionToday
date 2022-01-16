@@ -18,15 +18,9 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
-    const cache = useRef(new CellMeasurerCache({
-        fixedWidth: true,
-        // fixedHeight: true,
-        // defaultHeight: 200,
-    }))
+    const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
-    const notifyChange = () => {
-        setHasChanged(value => !value);
-    }
+    const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
         async function fetchData() {
@@ -57,7 +51,6 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
         fetchData();
         // This helps resize new/removed data for window
         cache.current.clearAll();
-        console.log("reloaded")
     }, [userID, hasChanged])
 
     interface virtualizedType {
@@ -70,16 +63,16 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     return (
         <>
             <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
-            {/* <div> */}
-                {!error && loading ? <div>...loading</div>
+            {
+                !error && loading ? <div>...loading</div>
                     :
-                    error ?
-                        <Alert variant="danger">{error}</Alert>
+                    error ? <Alert variant="danger">{error}</Alert>
                         :
                         <div style={{ width: "100%", height: "50vh" }}>
                             <AutoSizer>
                                 {({ width, height }) => (
                                     <List
+                                        style={{ scrollbarWidth: "none" }}
                                         width={width}
                                         height={height}
                                         rowHeight={cache.current.rowHeight}
@@ -87,10 +80,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                                         rowCount={!response ? 0 : response.length}
                                         rowRenderer={({ key, index, style, parent }: virtualizedType) => {
                                             const result = response?.[index]!;
-                                            // console.log(index)
-                                            // console.log(key)
-                                            // console.log(style)
-                                            console.log("list reload")
+
                                             return (
                                                 <CellMeasurer
                                                     key={key}
@@ -99,7 +89,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                                                     columnIndex={0}
                                                     rowIndex={index}
                                                 >
-                                                    <div style={{...style, paddingBottom: 20}}>
+                                                    <div style={{ ...style, padding: "1% 1% 20px" }}>
                                                         <ExperienceCard
                                                             experience={result}
                                                             isMyProfile={true}
@@ -111,21 +101,9 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                                         }}
                                     />
                                 )}
-
                             </AutoSizer>
-
-                            {/* {response?.map((_result: ExperienceType) => (
-                                <li key={_result.id}>
-                                    <ExperienceCard
-                                        experience={_result}
-                                        isMyProfile={true}
-                                        notifyChange={notifyChange}
-                                    />
-                                </li>
-                            ))} */}
                         </div>
-                }
-            {/* </div> */}
+            }
         </>
     )
 }
