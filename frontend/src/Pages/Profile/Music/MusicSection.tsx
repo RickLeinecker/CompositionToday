@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { ContentType, GenericHandlerType } from '../../../ObjectInterface';
+import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateMusicModal from './CreateMusicModal';
+import MusicCard from './MusicCard';
 
 type Props = {
     userID: number;
@@ -13,7 +14,7 @@ type Props = {
 
 export default function MusicSection({createOpen, handleCloseCreate, userID}: Props) {
 
-    const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
+    const [response, setResponse] = useState<Array<MusicType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
@@ -27,9 +28,9 @@ export default function MusicSection({createOpen, handleCloseCreate, userID}: Pr
         async function fetchData(){
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "music"}),
+                data: JSON.stringify({contentType: "music", userID}),
                 methodType: "POST",
-                path: "getContentByType",
+                path: "getUserContentByType",
             }
 
             try{
@@ -51,7 +52,7 @@ export default function MusicSection({createOpen, handleCloseCreate, userID}: Pr
         
         }
         fetchData();
-    }, [])
+    }, [userID, notifyChange])
 
 
         
@@ -65,11 +66,13 @@ export default function MusicSection({createOpen, handleCloseCreate, userID}: Pr
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: ContentType) => (
+                    {response?.map((_result: MusicType) => (
                         <li key={_result.id}>
-                            <div>
-                                <p>{_result.contentText}</p>
-                            </div>
+                            <MusicCard
+                                music={_result}
+                                isMyProfile={true}
+                                notifyChange={notifyChange}
+                            />
                         </li>
                     ))}
                 </div>

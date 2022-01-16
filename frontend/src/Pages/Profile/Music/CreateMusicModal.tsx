@@ -4,11 +4,6 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import { SetStateAction } from 'react';
-import { TextField } from '@mui/material';
 
 
 type Props = {
@@ -20,12 +15,31 @@ type Props = {
 
 export default function CreateMusicModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
 
-    // const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentTimestamp, setNewContentTimeStamp] = useState("");
-    const [value, setValue] = useState(null);
+
+    const [nameError, setNameError] = useState(false);
+    const [textError, setTextError] = useState(false);
+
+    const checkForErrors = (): boolean => {
+        let error = false;
+        
+        error = checkIfEmpty(newContentName, setNameError) || error;
+        error = checkIfEmpty(newContentText, setTextError) || error;
+
+        return(error)
+    }
+
+    function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if(!value){
+            setError(true);
+            return true;
+        } else{
+            setError(false);
+            return false;
+        }
+    }
     
     async function confirmCreateHandler() {
         const handlerObject: GenericHandlerType = {
@@ -33,7 +47,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 userID,
                 contentName: newContentName,
                 contentText: newContentText,
-                contentType: "experience",
+                contentType: "music",
                 description: newContentDescription,
                 // timestamp: newContentTimestamp,
             }),
@@ -44,39 +58,40 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to create experience');
+                toast.error('Failed to create music');
                 return;
             }
 
             notifyChange();
-            toast.success('Experience created');
+            toast.success('Music created');
 
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error('Failed to create experience');
+            toast.error('Failed to create music');
         }
+
+        setNewContentName("")
+        setNewContentText("")
+        setNewContentDescription("")
+
+        setNameError(false);
+        setTextError(false);
     }
 
     return (
-        <div>
-            <GenericModal show={createOpen} title={"please work1!!!"} onHide={handleCloseCreate} confirm={confirmCreateHandler} actionText={"Save"} >
-                <>
-                    <GenericInputField title="DID it work????" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true}/>
-                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true}/>
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                    <GenericInputField title="Time Period" type="timestamp" onChange={setNewContentTimeStamp} value={newContentTimestamp} isRequired={false}/>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                            label="Basic example"
-                            value={value}
-                            onChange={(newValue: SetStateAction<null>) => {
-                            setValue(newValue);
-                            }}
-                            renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                </>
-            </GenericModal>
-        </div>
+        <GenericModal 
+        show={createOpen} 
+        title={"Create"} 
+        onHide={handleCloseCreate} 
+        confirm={confirmCreateHandler} 
+        actionText={"Save"} 
+        checkForErrors={checkForErrors}
+        >
+            <>
+                <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
+                <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
+            </>
+        </GenericModal>
     )
 }
