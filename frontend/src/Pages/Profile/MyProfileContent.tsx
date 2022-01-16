@@ -1,6 +1,6 @@
 import React from 'react'
 import ArticlesSection from './Articles/ArticlesSection'
-import EventsSection from './Events/EventsSection'
+import EventSection from './Events/EventSection'
 import ExperienceSection from './Experience/ExperienceSection'
 import MusicSection from './Music/MusicSection'
 
@@ -16,7 +16,7 @@ export default function MyProfileContent({currentSection, userID, createOpen, ha
         <div id="sections">
             {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
             {currentSection === "Music" && <MusicSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
-            {currentSection === "Events" && <EventsSection />}
+            {currentSection === "Events" && <EventSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
             {currentSection === "Articles" && <ArticlesSection />}
         </div>
     )
