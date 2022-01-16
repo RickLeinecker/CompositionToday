@@ -11,7 +11,7 @@ type Props = {
     handleCloseDelete: () => void;
 }
 
-export default function DeleteMusicModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
+export default function DeleteEventModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
 
     async function confirmDeleteHandler() {
         const handlerObject: GenericHandlerType = {
