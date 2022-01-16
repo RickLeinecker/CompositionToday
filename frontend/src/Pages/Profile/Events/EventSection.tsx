@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { ContentType, GenericHandlerType } from '../../../ObjectInterface';
+import { GenericHandlerType, EventType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
+import CreateEventModal from './CreateEventModal';
+import EventCard from './EventCard';
 
-export default function EventsSection() {
+type Props = {
+    userID: number;
+    createOpen: boolean;
+    handleCloseCreate: () => void;
+}
 
-    const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
+export default function EventSection({createOpen, handleCloseCreate, userID}: Props) {
+
+    const [response, setResponse] = useState<Array<EventType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [hasChanged, setHasChanged] = useState(false);
+
+    const notifyChange = () => {
+        setHasChanged(value => !value);
+    }
 
 
     useEffect(() => {
         async function fetchData(){
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "events"}),
+                data: JSON.stringify({contentType: "event", userID}),
                 methodType: "POST",
-                path: "getContentByType",
+                path: "getUserContentByType",
             }
-            
+
             try{
                 let answer = (await GenericHandler(handlerObject));
                 if(answer.error.length > 0){
@@ -39,24 +52,27 @@ export default function EventsSection() {
         
         }
         fetchData();
-    }, [])
+    }, [userID, notifyChange])
 
 
         
     return (
         <>
+            <CreateEventModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div> 
                 :
                 error ? 
-                <Alert variant="danger">{error}</Alert> 
+                <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: ContentType) => (
+                    {response?.map((_result: EventType) => (
                         <li key={_result.id}>
-                            <div>
-                                <p>{_result.contentText}</p>
-                            </div>
+                            <EventCard
+                                event={_result}
+                                isMyProfile={true}
+                                notifyChange={notifyChange}
+                            />
                         </li>
                     ))}
                 </div>
