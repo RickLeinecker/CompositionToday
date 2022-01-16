@@ -4,6 +4,8 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { EventType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
+import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 
 type Props = {
     event: EventType;
@@ -12,11 +14,21 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
-export default function EditEventModal({event, notifyChange, editOpen, handleCloseEdit}: Props) {
+export default function EditEvent({event, notifyChange, editOpen, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<EventType>(event)
+
     const [nameError, setNameError] = useState(false);
+    const [fromDateError, setFromDateError] = useState(false);
+    const [toDateError, setToDateError] = useState(false);
 
     const handleChange = (newValue: string, type: string) => {
+        setNewContentValue(prevState => ({
+            ...prevState,
+            [type]: newValue
+        }));
+    }
+
+    const handleDateChange = (newValue: Date | null, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -27,11 +39,13 @@ export default function EditEventModal({event, notifyChange, editOpen, handleClo
         let error = false;
         
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
+        error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
+        error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
         return(error)
     }
 
-    function checkIfEmpty(value: string | null | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+    function checkIfEmpty(value: string | Date | null | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if(!value){
             setError(true);
             return true;
@@ -49,6 +63,8 @@ export default function EditEventModal({event, notifyChange, editOpen, handleClo
                 contentType: "event",
                 contentName: newContentValue.contentName,
                 description: newContentValue.description,
+                fromDate: toSqlDatetime(newContentValue.fromDate),
+                toDate: toSqlDatetime(newContentValue.toDate),
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -73,8 +89,24 @@ export default function EditEventModal({event, notifyChange, editOpen, handleClo
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                    <GenericDatePicker 
+                        title={'Start date'} 
+                        type={"fromDate"}
+                        value={newContentValue.fromDate || null} 
+                        isRequired={true} 
+                        onChange={handleDateChange}
+                        error={fromDateError}                    
+                    />
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        type={"toDate"}
+                        value={newContentValue.toDate || null}  
+                        isRequired={true} 
+                        onChange={handleDateChange}
+                        error={toDateError}               
+                    />
                 </>
             </GenericModal>
         </div>

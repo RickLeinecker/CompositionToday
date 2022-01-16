@@ -13,7 +13,7 @@ type Props = {
 
 
 export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description} = event;
+    const { id, contentName, description, fromDate, toDate} = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
@@ -44,6 +44,8 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
             <div className="card-body">
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{description}</p>
+                <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
+                <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
             </div>
         </div>
     )
