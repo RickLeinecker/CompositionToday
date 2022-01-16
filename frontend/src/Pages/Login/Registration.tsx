@@ -4,6 +4,7 @@ import './RegistrationStyle.scss';
 import { useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../FirebaseAuth/firebase'
+import SignUp from "./Signup";
 
 export default function Registration() {
     const [currentUser, setCurrentUser] = useState({});
@@ -13,21 +14,21 @@ export default function Registration() {
         if (currentUser != null)
             setCurrentUser(currentUser);
     })
+    const handleSignUp = () => {
+        container?.current?.classList.add("right-panel-active");
+    }
 
     const handleSignIn = () => {
         container?.current?.classList.remove("right-panel-active");
     }
 
-    const handleSignUp = () => {
-        container?.current?.classList.add("right-panel-active");
-    }
 
     return (
         <>
             <main className="registration">
-                <div className="container registration" id="switch" ref={container}>
+                <div className="container registration" ref={container}>
                     <SignIn />
-                    <Signup />
+                    <SignUp />
                     <div className="overlay-container registration">
                         <div className="overlay">
                             <div className="overlay-panel overlay-left">

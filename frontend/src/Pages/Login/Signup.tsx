@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 
-export default function Signup() {
+const SignUp = () => {
 
     const emailRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -13,7 +13,6 @@ export default function Signup() {
         const email = emailRef.current?.value;
         const name = nameRef.current?.value;
         const password = psdRef.current?.value;
-        // try catch here
         if (email && password && name) signUpUser(email, password, name);
       };
 
@@ -33,3 +32,4 @@ export default function Signup() {
     )
 }
 
+export default SignUp;
