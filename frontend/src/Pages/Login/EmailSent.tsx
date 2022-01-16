@@ -1,6 +1,10 @@
 import './RegistrationStyle.scss';
 
-export default function EmailSent() {
+type Props = {
+    registerEmail:string;
+}
+
+export default function EmailSent({registerEmail}: Props) {
 
     return (
         <>
@@ -14,7 +18,7 @@ export default function EmailSent() {
                         <div className="setup-text">
                             <p>To complete setup and log in, click the verification link in the email we've sent to:</p>
                         </div>
-                        <p className="confirm-email">uwu888@gmail.com</p> 
+                        <p className="confirm-email">{registerEmail}</p> 
                         {/* ^ change to be current user's email */}
                     </div>
                         <div className="">

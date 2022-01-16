@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import Alert from "react-bootstrap/Alert"
-import { useAuth } from '../../FirebaseAuth/AuthContext';
+import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 
@@ -13,7 +13,7 @@ export default function ForgotPassword() {
     const [message, setMessage] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const emailRef = useRef<HTMLInputElement>(null);
-    const { resetPassword } = useAuth()
+    const { resetPassword } = useAuthContext()
 
     async function handleSubmit(e: { preventDefault: () => void; }) {
         e.preventDefault()

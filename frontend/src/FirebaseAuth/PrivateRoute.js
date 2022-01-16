@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth } from "./AuthContext"
+import { useAuthContext } from "./AuthContext"
 import { Route, Redirect } from 'react-router-dom'
 
 /**
@@ -13,7 +13,7 @@ import { Route, Redirect } from 'react-router-dom'
  */
 export default function PrivateRoute({ component: Component, props: myProps = {}, ...rest }) {
 
-    const { currentUser } = useAuth()
+    const { currentUser } = useAuthContext()
     return (
         <Route {...rest} render={props => {
             console.log(myProps)

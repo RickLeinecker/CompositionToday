@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../../FirebaseAuth/AuthContext';
+import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 import { useHistory } from 'react-router-dom';
 
 export default function useLogout() {
@@ -7,13 +7,13 @@ export default function useLogout() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string>("");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logoutUser } = useAuthContext();
     const history = useHistory();
 
     async function handleLogout() {
         setError('');
         try {
-            await logout();
+            await logoutUser();
             history.push("/registration");
         } catch {
             setError("Failed to log out");

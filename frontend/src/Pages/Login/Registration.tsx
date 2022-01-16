@@ -1,16 +1,20 @@
-import Login from "./Login";
+import SignIn from "./SignIn";
 import Signup from "./Signup";
-import ForgotPassword from "./ForgotPassword";
 import './RegistrationStyle.scss';
-import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import { Container } from "react-bootstrap";
+import { useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../../FirebaseAuth/firebase'
 
 export default function Registration() {
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container');
 
-    
+    const [currentUser, setCurrentUser] = useState({});
+    onAuthStateChanged(auth,(currentUser) =>{
+        if(currentUser != null)
+            setCurrentUser(currentUser);
+    })
 
     signUpButton?.addEventListener('click', () => {
         container?.classList.add("right-panel-active");
@@ -25,8 +29,8 @@ export default function Registration() {
     return(
         <>
             <body className="registration">
-                <div className="container registration" id="container">
-                    <Login/>
+                <div className="container registration" >
+                    <SignIn/>
                     <Signup/>
                     <div className="overlay-container registration">
                         <div className="overlay">
