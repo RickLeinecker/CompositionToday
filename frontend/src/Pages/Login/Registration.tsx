@@ -28,7 +28,7 @@ export default function Registration() {
 
     return(
         <>
-            <body className="registration">
+            <main className="registration">
                 <div className="container registration" >
                     <SignIn/>
                     <Signup/>
@@ -47,7 +47,7 @@ export default function Registration() {
                         </div>
                     </div>
                 </div>
-            </body>
+            </main>
         </>
     )
 
