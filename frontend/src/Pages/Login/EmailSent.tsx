@@ -8,7 +8,7 @@ export default function EmailSent({registerEmail}: Props) {
 
     return (
         <>
-            <body className="registration">
+            <main className="registration">
                 <section className="email" role="main">
                     <div className="title">
                         <h5>Check your inbox to sign in</h5>
@@ -28,7 +28,7 @@ export default function EmailSent({registerEmail}: Props) {
                             {/* onsubmit ^ resend new verification, have to set timer for no spam */}
                         </div>
                 </section>
-            </body>
+            </main>
         </>
     )
 }

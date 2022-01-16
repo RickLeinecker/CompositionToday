@@ -1,63 +1,28 @@
-import { useRef, useState } from 'react'
-import Form from "react-bootstrap/Form"
-import Button from "react-bootstrap/Button"
-import Card from "react-bootstrap/Card"
-import Alert from "react-bootstrap/Alert"
-import { useAuthContext } from '../../FirebaseAuth/AuthContext';
-import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
+import './RegistrationStyle.scss';
 
-export default function ForgotPassword() {
+type Props = {
+    registerEmail:string;
+}
 
-    const [error, setError] = useState<string>("")
-    const [message, setMessage] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
-    const emailRef = useRef<HTMLInputElement>(null);
-    const { resetPassword } = useAuthContext()
-
-    async function handleSubmit(e: { preventDefault: () => void; }) {
-        e.preventDefault()
-
-        try {
-            setMessage("")
-            setError("")
-            setLoading(true)
-            await resetPassword(emailRef.current?.value)
-            setMessage("Check your inbox for further instructions")
-        } catch {
-            setError("Failed to reset password")
-        }
-        setLoading(false)
-    }
+export default function ForgotPassword({registerEmail}: Props) {
 
     return (
         <>
-            <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
-                <div className="w-100" style={{ maxWidth: "400px" }}>
-                    <Card>
-                        <Card.Body>
-                            <h2 className="text-center mb-4">Reset Password</h2>
-                            {error && <Alert variant="danger">{error}</Alert>}
-                            {message && <Alert variant="success">{message}</Alert>}
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group id="email">
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="email" ref={emailRef} required />
-                                </Form.Group>
-                                <Button disabled={loading} className="w-100" type="submit">
-                                    Reset Password
-                                </Button>
-                            </Form>
-                            <div className="w-100 text-center mt-3">
-                                <Link to="/login">Login</Link>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                    <div className="w-100 text-center mt-2">
-                        Need an account? <Link to="/signup">Sign up</Link>
+            <main className="registration">
+                <section className="forgot" role="main">
+                    <div className="title">
+                        <h5>Can't log in?</h5>
                     </div>
-                </div>
-            </Container>
+                    <form className="registration" id="form-reset-password-email">
+                    <label className="forgot-form-label">We'll send a recovery link to</label>
+                    <input name="email" id="email" type="email" placeholder="Enter email" className="registration" value=""/>
+                    </form>
+                    <button className="resend" type="button" >
+                        <span id="resend">Send recovery link</span>
+                    </button>
+                    {/* onsubmit ^ resend new verification, have to set timer for no spam */}
+                </section>
+            </main>
         </>
     )
 }

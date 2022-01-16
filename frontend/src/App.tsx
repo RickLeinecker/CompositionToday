@@ -12,6 +12,7 @@ import MyProfile from './Pages/Profile/MyProfile';
 import { ToastContainer } from 'react-toastify';
 import Registration from './Pages/Login/Registration';
 import EmailSent from './Pages/Login/EmailSent';
+import ForgotPassword from "./Pages/Login/ForgotPassword";
 
 function App() {
     
@@ -22,6 +23,7 @@ function App() {
                     <Switch>
                         <PrivateRoute exact path="/" component={Home} />
                         <Route path="/registration" component={Registration} />
+                        <Route path="/forgot-password" component={ForgotPassword} />
                         <Route path="/email-sent" component={EmailSent} />
                         <PrivateRoute exact path="/blog" component={Blog} />
                         <PrivateRoute exact path="/showcase" component={Showcase} />
