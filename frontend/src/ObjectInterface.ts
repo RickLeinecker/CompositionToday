@@ -57,6 +57,16 @@ export type MusicType = {
     description?: string;
 }
 
+export type EventType = {
+    id: number;
+    userID: number;
+    contentName: string;
+    timestamp?: string;
+    description?: string;
+    fromDate?: Date;
+    toDate?: Date;
+}
+
 /**
  * Example
  * @property data: JSON.stringify({contentType: "experience"})
