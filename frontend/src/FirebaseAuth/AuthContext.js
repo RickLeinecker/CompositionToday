@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState } from 'react'
 import {auth} from './firebase'
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
@@ -36,12 +36,18 @@ export const AuthProvider = ({children}) =>{
         return unsubscribe;
       }, []);
 
-      const signUpUser = (email, password, name) => {
+    const signUpUser = (email, password, name) => {
         setLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
         .then((res) => console.log(res))
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
+
+        history.push({
+            pathname: '/email-sent',
+            state: {text: email}
+        })
+        signOut(auth)
     }
 
     const signInUser = (email, password) => {

@@ -4,7 +4,7 @@ type Props = {
     registerEmail:string;
 }
 
-export default function EmailSent({registerEmail}: Props) {
+const EmailSent = (registerEmail: any) => {
 
     return (
         <>
@@ -18,7 +18,7 @@ export default function EmailSent({registerEmail}: Props) {
                         <div className="setup-text">
                             <p>To complete setup and log in, click the verification link in the email we've sent to:</p>
                         </div>
-                        <p className="confirm-email">{registerEmail}</p> 
+                        <p className="confirm-email"> {registerEmail} </p> 
                         {/* ^ change to be current user's email */}
                     </div>
                         <div className="">
@@ -32,3 +32,4 @@ export default function EmailSent({registerEmail}: Props) {
         </>
     )
 }
+export default EmailSent;

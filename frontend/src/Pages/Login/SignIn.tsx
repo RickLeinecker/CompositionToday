@@ -30,7 +30,7 @@ const SignIn = () => {
                     <h1 className="registration">Sign in</h1>
                     <input className="registration" type="email" placeholder="Email" ref={emailRef} />
                     <input className="registration" type="password" placeholder="Password"  ref={psdRef}/>
-                    <a className = "registration" href="#" >Forgot your password?</a>
+                    <a className="registration" href="/forgot-password">Forgot your password?</a>
                     <button className="registration" >Sign In</button>
                 </form>
             </div>

@@ -14,7 +14,7 @@ import Registration from './Pages/Login/Registration';
 import EmailSent from './Pages/Login/EmailSent';
 import ForgotPassword from "./Pages/Login/ForgotPassword";
 
-function App() {
+function App(this: any) {
     
     return (
         <>
