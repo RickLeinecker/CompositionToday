@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
-import List from 'react-virtualized';
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
 
 type Props = {
     userID: number;
@@ -18,10 +18,9 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
+    const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
-    const notifyChange = () => {
-        setHasChanged(value => !value);
-    }
+    const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
         async function fetchData() {
@@ -50,43 +49,61 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
 
         }
         fetchData();
+        // This helps resize new/removed data for window
+        cache.current.clearAll();
     }, [userID, hasChanged])
 
-
+    interface virtualizedType {
+        key: any;
+        index: number;
+        style: any;
+        parent: any;
+    }
 
     return (
         <>
             <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
-            <div>
-                {!error && loading ? <div>...loading</div>
+            {
+                !error && loading ? <div>...loading</div>
                     :
-                    error ?
-                        <Alert variant="danger">{error}</Alert>
+                    error ? <Alert variant="danger">{error}</Alert>
                         :
-                        <div>
-                            {/* <List 
-                                width={600} 
-                                height={600} 
-                                rowHeight={50} 
-                                rowCount={response?.length}
-                                rowRendered={({key, index, style, parent}) => {
-                                    const result = response?[index];
-                                    return <div key={key} style={style}>Hello</div>
-                                }}
-                            /> */}
+                        <div style={{ width: "100%", height: "50vh" }}>
+                            <AutoSizer>
+                                {({ width, height }) => (
+                                    <List
+                                        style={{ scrollbarWidth: "none" }}
+                                        width={width}
+                                        height={height}
+                                        rowHeight={cache.current.rowHeight}
+                                        deferredMeasurementCache={cache.current}
+                                        rowCount={!response ? 0 : response.length}
+                                        rowRenderer={({ key, index, style, parent }: virtualizedType) => {
+                                            const result = response?.[index]!;
 
-                            {response?.map((_result: ExperienceType) => (
-                                <li key={_result.id}>
-                                    <ExperienceCard
-                                        experience={_result}
-                                        isMyProfile={true}
-                                        notifyChange={notifyChange}
+                                            return (
+                                                <CellMeasurer
+                                                    key={key}
+                                                    cache={cache.current}
+                                                    parent={parent}
+                                                    columnIndex={0}
+                                                    rowIndex={index}
+                                                >
+                                                    <div style={{ ...style, padding: "1% 1% 20px" }}>
+                                                        <ExperienceCard
+                                                            experience={result}
+                                                            isMyProfile={true}
+                                                            notifyChange={notifyChange}
+                                                        />
+                                                    </div>
+                                                </CellMeasurer>
+                                            )
+                                        }}
                                     />
-                                </li>
-                            ))}
+                                )}
+                            </AutoSizer>
                         </div>
-                }
-            </div>
+            }
         </>
     )
 }
