@@ -6,7 +6,7 @@ exports.createContent = async (req, res) => {
   // incoming: userID, imageFilepathArray, contentText, location,
   // timestamp, audioFilepath, sheetMusicFilepath, contentType,
   // contentName, websiteLink, collaborators, description, mapsEnabled
-  // toDate, fromDate, isDateCurrent
+  // toDate, fromDate, isDateCurrent, price
   // outgoing: error
 
   var error = "";
@@ -30,10 +30,11 @@ exports.createContent = async (req, res) => {
     toDate,
     fromDate,
     isDateCurrent,
+    price,
   } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent,price) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     connection.query(
       sqlInsert,
       [
@@ -53,6 +54,7 @@ exports.createContent = async (req, res) => {
         toDate,
         fromDate,
         isDateCurrent,
+        price,
       ],
       function (err, result) {
         if (err) {

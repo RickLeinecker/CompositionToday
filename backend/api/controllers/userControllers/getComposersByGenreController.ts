@@ -27,7 +27,7 @@ exports.getComposersByGenre = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "No Users";
+            error = "No Composers Specialize In This Genre";
             responseCode = 500;
           }
         }

@@ -5,7 +5,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 exports.updateContent = async (req, res) => {
   // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
   // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
-  // toDate, fromDate, isDateCurrent
+  // toDate, fromDate, isDateCurrent, price
   // outgoing: error
 
   var error = "";
@@ -30,6 +30,7 @@ exports.updateContent = async (req, res) => {
     toDate,
     fromDate,
     isDateCurrent,
+    price,
   } = req.body;
 
   // build update string with non null fields
@@ -104,6 +105,10 @@ exports.updateContent = async (req, res) => {
   if (isDateCurrent) {
     insertString += "isDateCurrent=?,";
     insertArray.push(isDateCurrent);
+  }
+  if (price) {
+    insertString += "price=?,";
+    insertArray.push(price);
   }
 
   insertString = insertString.slice(0, -1);
