@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
-import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
-import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
+import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 
 type Props = {
     userID: number;
@@ -18,7 +17,6 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
-    const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
     const notifyChange = () => { setHasChanged(value => !value); }
 
@@ -41,7 +39,6 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                 setResponse(await answer.result.reverse());
                 setLoading(false);
 
-
             } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 setError(DefaultValues.apiErrorMessage);
@@ -49,16 +46,8 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
 
         }
         fetchData();
-        // This helps resize new/removed data for window
-        cache.current.clearAll();
-    }, [userID, hasChanged])
 
-    interface virtualizedType {
-        key: any;
-        index: number;
-        style: any;
-        parent: any;
-    }
+    }, [userID, hasChanged])
 
     return (
         <>
@@ -68,41 +57,13 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                     :
                     error ? <Alert variant="danger">{error}</Alert>
                         :
-                        <div style={{ width: "100%", height: "50vh" }}>
-                            <AutoSizer>
-                                {({ width, height }) => (
-                                    <List
-                                        style={{ scrollbarWidth: "none" }}
-                                        width={width}
-                                        height={height}
-                                        rowHeight={cache.current.rowHeight}
-                                        deferredMeasurementCache={cache.current}
-                                        rowCount={!response ? 0 : response.length}
-                                        rowRenderer={({ key, index, style, parent }: virtualizedType) => {
-                                            const result = response?.[index]!;
-
-                                            return (
-                                                <CellMeasurer
-                                                    key={key}
-                                                    cache={cache.current}
-                                                    parent={parent}
-                                                    columnIndex={0}
-                                                    rowIndex={index}
-                                                >
-                                                    <div style={{ ...style, padding: "1% 1% 20px" }}>
-                                                        <ExperienceCard
-                                                            experience={result}
-                                                            isMyProfile={true}
-                                                            notifyChange={notifyChange}
-                                                        />
-                                                    </div>
-                                                </CellMeasurer>
-                                            )
-                                        }}
-                                    />
-                                )}
-                            </AutoSizer>
-                        </div>
+                        <GenericVirtualizedList
+                            bodyStyle={{ width: "100%", height: "50vh" }}
+                            individualStyle={{ padding: "1% 1% 20px" }}
+                            items={response}
+                            notifyChange={notifyChange}
+                            type={"experience"}
+                        />
             }
         </>
     )
