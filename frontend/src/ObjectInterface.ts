@@ -29,7 +29,7 @@ export type ContentType = {
     audioFilePath?: string;
     sheetMusicFilePath?: string;
     websiteLink?: string;
-    conentTags?: object;
+    contentTags?: object;
     contentName?: string;
     timestamp?: string;
     description?: string;
