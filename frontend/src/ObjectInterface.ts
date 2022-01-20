@@ -74,7 +74,7 @@ export type EventType = {
  * @property path: "getContentByType"
  */
 export type GenericHandlerType = {
-    data: string;
+    data: string | FormData;
     methodType: string;
     path: string;
 }

@@ -45,6 +45,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
+                <p className="card-text">{sheetMusicFilepath}</p>
             </div>
         </div>
     )
