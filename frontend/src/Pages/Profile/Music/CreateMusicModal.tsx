@@ -5,6 +5,7 @@ import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericHandler from '../../../Handlers/GenericHandler';
+import { Button } from '@mui/material';
 
 
 type Props = {
@@ -134,7 +135,15 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                 <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
                 <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                <input type="file" accept=".pdf" onChange={fileSelectedHandler}/>
+                <Button
+                    variant="contained"
+                    component="label"
+                    >
+                    Upload File
+                    <input type="file" accept=".pdf" onChange={fileSelectedHandler} hidden/>
+                </Button>
+                <p>{newContentPDF?.name}</p>
+                
             </>
         </GenericModal>
     )
