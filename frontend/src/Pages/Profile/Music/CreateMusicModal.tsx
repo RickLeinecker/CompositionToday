@@ -20,7 +20,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentPDF, setNewContentPDF] = useState<File|null>(null);
+    const [newContentSheetMusic, setNewContentSheetMusic] = useState<File|null>(null);
+    const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -46,10 +47,10 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     async function confirmCreateHandler() {
 
-        let newContentPDFPath = null;
-        if(newContentPDF !== null){
-            newContentPDFPath = await fileUploadHandler();
-            if(newContentPDFPath === ''){
+        let newContentSheetMusicPath = null;
+        if(newContentSheetMusic !== null){
+            newContentSheetMusicPath = await fileUploadHandler();
+            if(newContentSheetMusicPath === ''){
                 toast.error('Failed to create music');
                 return;
             }
@@ -62,7 +63,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 contentText: newContentText,
                 contentType: "music",
                 description: newContentDescription,
-                sheetMusicFilepath: newContentPDFPath,
+                sheetMusicFilepath: newContentSheetMusicPath,
+                sheetMusicFilename: newContentSheetMusicFilename,
                 // timestamp: newContentTimestamp,
             }),
             methodType: "POST",
@@ -87,19 +89,21 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         setNewContentName("");
         setNewContentText("");
         setNewContentDescription("");
-        setNewContentPDF(null);
+        setNewContentSheetMusic(null);
+        setNewContentSheetMusicFilename("");
 
         setNameError(false);
         setTextError(false);
     }
 
     const fileSelectedHandler = (event: any) => {
-        setNewContentPDF(event.target.files[0])
+        setNewContentSheetMusic(event.target.files[0])
+        setNewContentSheetMusicFilename(event.target.files[0].name)
     }
 
     const fileUploadHandler = async (): Promise<string> => {
         const fd = new FormData()
-        fd.append("userFile", newContentPDF || "", newContentPDF?.name);
+        fd.append("userFile", newContentSheetMusic || "", newContentSheetMusicFilename);
         
 
         const handlerObject: GenericHandlerType = {
@@ -145,7 +149,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                     Upload File
                     <input type="file" accept=".pdf" onChange={fileSelectedHandler} hidden/>
                 </Button>
-                <p>{newContentPDF?.name}</p>
+                <p>{newContentSheetMusicFilename}</p>
                 
             </>
         </GenericModal>

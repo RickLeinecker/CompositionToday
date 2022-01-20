@@ -53,7 +53,9 @@ export type MusicType = {
     contentName: string;
     timestamp?: string;
     audioFilepath?: string;
+    audioFilename?: string;
     sheetMusicFilepath?: string;
+    sheetMusicFilename?: string;
     description?: string;
 }
 
