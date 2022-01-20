@@ -49,6 +49,10 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         let newContentPDFPath = null;
         if(newContentPDF !== null){
             newContentPDFPath = await fileUploadHandler();
+            if(newContentPDFPath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
         }
 
         const handlerObject: GenericHandlerType = {
@@ -112,7 +116,6 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
             }
 
             notifyChange();
-            toast.success('File uploaded');
             return(answer.result[0].filepath);
 
         } catch (e: any) {
