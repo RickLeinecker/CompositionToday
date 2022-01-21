@@ -22,8 +22,6 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
     const [textError, setTextError] = useState(false);
 
     const handleChange = (newValue: string, type: string) => {
-        console.log(newContentValue.sheetMusicFilename)
-        console.table(newContentValue)
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
