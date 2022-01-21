@@ -21,8 +21,7 @@ export default function MusicSection({createOpen, handleCloseCreate, userID}: Pr
 
     const notifyChange = () => {
         setHasChanged(value => !value);
-    }
-
+    } 
 
     useEffect(() => {
         async function fetchData(){

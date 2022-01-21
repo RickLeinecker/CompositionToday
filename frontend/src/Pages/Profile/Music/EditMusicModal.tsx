@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
+import GenericHandlerFile from '../../../Handlers/GenericHanderFile';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import { Button } from '@mui/material';
 
 type Props = {
     music: MusicType;
@@ -14,6 +16,7 @@ type Props = {
 
 export default function EditMusicModal({music, notifyChange, editOpen, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<MusicType>(music)
+    const [newContentSheetMusic, setNewContentSheetMusic] = useState<File|null>(null);
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -44,7 +47,49 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
         }
     }
 
+    const fileSelectedHandler = (event: any) => {
+        setNewContentSheetMusic(event.target.files[0])
+        handleChange(event.target.files[0].name, "sheetMusicFilename")
+    }
+
+    const fileUploadHandler = async (): Promise<string> => {
+        const fd = new FormData()
+        fd.append("userFile", newContentSheetMusic || "", newContentValue.sheetMusicFilename);
+        
+
+        const handlerObject: GenericHandlerType = {
+            data: fd,
+            methodType: "POST",
+            path: "uploadSheetMusic",
+        }
+
+        try {
+            let answer = (await GenericHandlerFile(handlerObject));
+            if (answer.error.length > 0) {
+                toast.error('Failed to upload file');
+                return "";
+            }
+
+            notifyChange();
+            return(answer.result[0].filepath);
+
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error('Failed to upload file');
+            return "";
+        }
+    }
+    
     async function confirmEditHandler() {
+        let newContentSheetMusicPath = newContentValue.audioFilepath;
+        if(newContentSheetMusic !== null){
+            newContentSheetMusicPath = await fileUploadHandler();
+            if(newContentSheetMusicPath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -53,6 +98,8 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
                 description: newContentValue.description,
+                sheetMusicFilepath: newContentSheetMusicPath,
+                sheetMusicFilename: newContentValue.sheetMusicFilename,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -80,6 +127,15 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
                     <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        >
+                        Upload File
+                        <input type="file" accept=".pdf" onChange={fileSelectedHandler} hidden/>
+                    </Button>
+                    <p>{newContentValue.sheetMusicFilename}</p>
+                    {/* <a href={newContentValue.sheetMusicFilepath}>{newContentValue.sheetMusicFilename}</a> */}
                 </>
             </GenericModal>
         </div>
