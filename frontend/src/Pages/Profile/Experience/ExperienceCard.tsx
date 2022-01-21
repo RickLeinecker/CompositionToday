@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './ExperienceSyle.scss';
+import { useState } from 'react';
 
 type Props = {
     experience: ExperienceType;
@@ -17,14 +18,16 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     const { id, contentName, contentText, description, fromDate, toDate } = experience;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const[showOptions, setShowOptions] = useState<boolean>(false);
+    
 
     const startDate =  !fromDate ? undefined : new Date(fromDate);
     const endDate = !toDate ? undefined : new Date(toDate);
     // console.log(!!fromDate && new Date(fromDate))
 
     return (
-        <div className="card">
-            {isMyProfile && 
+        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
+            {isMyProfile && showOptions && 
                 <>
                     <div className="card-icons">
                         <EditIcon onClick={handleOpenEdit}/> 

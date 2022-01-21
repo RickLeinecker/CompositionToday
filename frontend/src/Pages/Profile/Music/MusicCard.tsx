@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditMusicModal from './EditMusicModal';
 import DeleteMusicModal from './DeleteMusicModal';
 import ReactAudioPlayer from 'react-audio-player';
+import { useState } from 'react';
 
 type Props = {
     music: MusicType;
@@ -17,10 +18,11 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText } = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const[showOptions, setShowOptions] = useState<boolean>(false);
 
     return (
-        <div className="card">
-            {isMyProfile && 
+        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
+            {isMyProfile && showOptions &&
                 <>
                     <div className="card-icons">
                         <EditIcon onClick={handleOpenEdit}/> 
