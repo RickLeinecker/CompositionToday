@@ -19,10 +19,6 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
     const [displayNameError, setDisplayNameError] = useState(false);
     const [bioError, setBioError] = useState(false);
 
-    function onHideModal(){
-        handleCloseEdit();
-    }
-
     const checkForErrors = (): boolean => {
         let error = false;
         
@@ -78,7 +74,7 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHideModal} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
                     <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
