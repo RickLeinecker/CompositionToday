@@ -31,7 +31,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     function onHideModal(){
         handleCloseCreate();
     }
-    
+
     const checkForErrors = (): boolean => {
         let error = false;
         
@@ -80,6 +80,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 description: newContentDescription,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentSheetMusicFilename,
+                audioFilepath: newContentAudioPath,
+                audioFilename: newContentAudioFilename,
                 // timestamp: newContentTimestamp,
             }),
             methodType: "POST",

@@ -4,6 +4,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditMusicModal from './EditMusicModal';
 import DeleteMusicModal from './DeleteMusicModal';
+import ReactAudioPlayer from 'react-audio-player';
 
 type Props = {
     music: MusicType;
@@ -45,7 +46,18 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
-                {sheetMusicFilepath && <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">Open sheet music</a>}
+                {sheetMusicFilepath && 
+                    <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">
+                        Open sheet music
+                    </a>
+                }
+                {audioFilepath && 
+                    <ReactAudioPlayer
+                        src={audioFilepath}
+                        autoPlay={false}
+                        controls
+                    /> 
+                }
             </div>
         </div>
     )
