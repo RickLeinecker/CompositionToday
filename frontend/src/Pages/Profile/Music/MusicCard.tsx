@@ -46,7 +46,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
                 {/* <p className="card-text">{sheetMusicFilepath}</p> */}
-                {sheetMusicFilepath && <a href={sheetMusicFilepath}>Open sheet music</a>}
+                {sheetMusicFilepath && <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">Open sheet music</a>}
             </div>
         </div>
     )

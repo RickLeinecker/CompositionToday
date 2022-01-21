@@ -109,7 +109,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         const handlerObject: GenericHandlerType = {
             data: fd,
             methodType: "POST",
-            path: "upload",
+            path: "uploadSheetMusic",
         }
 
         try {

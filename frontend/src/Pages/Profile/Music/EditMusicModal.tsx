@@ -60,7 +60,7 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
         const handlerObject: GenericHandlerType = {
             data: fd,
             methodType: "POST",
-            path: "upload",
+            path: "uploadSheetMusic",
         }
 
         try {
