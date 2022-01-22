@@ -5,6 +5,8 @@ import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GenericHandlerFile from '../../Handlers/GenericHanderFile';
+import { Button } from '@mui/material';
 
 type Props = {
     userProfile: UserProfile;
@@ -15,13 +17,10 @@ type Props = {
 
 export default function EditProfileModal({userProfile, notifyChange, editOpen, handleCloseEdit}: Props) {
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
+    const[newProfilePic, setNewProfilePic] = useState<File | null>(null);
 
     const [displayNameError, setDisplayNameError] = useState(false);
     const [bioError, setBioError] = useState(false);
-
-    function onHideModal(){
-        handleCloseEdit();
-    }
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -50,11 +49,23 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
     }
 
     async function confirmEditHandler(){
+
+        let newProfilePicPath = userProfile.profilePicPath;
+        if(newProfilePic !== null){
+            newProfilePicPath = await fileUploadHandler();
+            if(newProfilePicPath === ''){
+                toast.error('Failed to update profile pic');
+                return;
+            }
+        }
+
+        console.log("here is the new profile pic path: " + newProfilePicPath);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID: newContentValue.userID,
                 bio: newContentValue.bio,
                 displayName: newContentValue.displayName,
+                profilePicPath: newProfilePicPath,
             }),
             methodType: "PATCH",
             path: "updateUserProfile",
@@ -76,12 +87,52 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
         }
     }
 
+    const fileSelectedHandler = (event: any) => {
+        setNewProfilePic(event.target.files[0])
+    }
+
+    const fileUploadHandler = async (): Promise<string> => {
+        const fd = new FormData()
+        fd.append("userFile", newProfilePic || "", newProfilePic?.name);
+        
+
+        const handlerObject: GenericHandlerType = {
+            data: fd,
+            methodType: "POST",
+            path: "uploadImage",
+        }
+
+        try {
+            let answer = (await GenericHandlerFile(handlerObject));
+            if (answer.error.length > 0) {
+                toast.error('Failed to upload picture');
+                console.log("here is error: " + answer.error);
+                return "";
+            }
+
+            notifyChange();
+            return(answer.result[0].filepath);
+
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error('Failed to upload picture');
+            return "";
+        }
+    }
+
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHideModal} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
                     <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        >
+                        Change profile picture
+                        <input type="file" accept="image/*" onChange={fileSelectedHandler} hidden/>
+                    </Button>
                 </>
             </GenericModal>
         </div>

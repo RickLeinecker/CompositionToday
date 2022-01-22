@@ -6,6 +6,7 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Button } from '@mui/material';
+import { Alert } from 'react-bootstrap';
 
 
 type Props = {
@@ -22,15 +23,28 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File|null>(null);
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
+    const [newContentAudio, setNewContentAudio] = useState<File|null>(null);
+    const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
+    
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
+    const [missingFileError, setMissingFileError] = useState(false);
+
+    function onHideModal(){
+        handleCloseCreate();
+    }
 
     const checkForErrors = (): boolean => {
         let error = false;
         
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
+
+        let isFileMissing = false;
+        isFileMissing = !newContentAudio && !newContentSheetMusic;
+        setMissingFileError(isFileMissing)
+        error = isFileMissing || error;
 
         return(error)
     }
@@ -56,6 +70,15 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
             }
         }
 
+        let newContentAudioPath = null;
+        if(newContentAudio !== null){
+            newContentAudioPath = await fileUploadHandlerAudio();
+            if(newContentAudioPath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -65,6 +88,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 description: newContentDescription,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentSheetMusicFilename,
+                audioFilepath: newContentAudioPath,
+                audioFilename: newContentAudioFilename,
                 // timestamp: newContentTimestamp,
             }),
             methodType: "POST",
@@ -91,6 +116,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         setNewContentDescription("");
         setNewContentSheetMusic(null);
         setNewContentSheetMusicFilename("");
+        setNewContentAudio(null);
+        setNewContentAudioFilename("");
 
         setNameError(false);
         setTextError(false);
@@ -99,6 +126,11 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     const fileSelectedHandler = (event: any) => {
         setNewContentSheetMusic(event.target.files[0])
         setNewContentSheetMusicFilename(event.target.files[0].name)
+    }
+
+    const fileSelectedHandlerAudio = (event: any) => {
+        setNewContentAudio(event.target.files[0])
+        setNewContentAudioFilename(event.target.files[0].name)
     }
 
     const fileUploadHandler = async (): Promise<string> => {
@@ -113,9 +145,9 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         }
 
         try {
-            let answer = (await GenericHandlerFile(handlerObject));
+            let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to upload file');
+                toast.error('Failed to upload pdf file');
                 return "";
             }
 
@@ -124,7 +156,36 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error('Failed to upload file');
+            toast.error('Failed to upload pdf file');
+            return "";
+        }
+    }
+
+    const fileUploadHandlerAudio = async (): Promise<string> => {
+
+        const fd = new FormData()
+        fd.append("userFile", newContentAudio || "", newContentAudioFilename);
+        
+        const handlerObject: GenericHandlerType = {
+            data: fd,
+            methodType: "POST",
+            path: "uploadAudio",
+        }
+
+        try {
+            let answer = (await GenericHandlerFile(handlerObject));
+            if (answer.error.length > 0) {
+                console.log("error is: " + answer.error);
+                toast.error('Failed to upload mp3 file');
+                return "";
+            }
+
+            notifyChange();
+            return(answer.result[0].filepath);
+
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error('Failed to upload mp3 file');
             return "";
         }
     }
@@ -133,7 +194,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         <GenericModal 
         show={createOpen} 
         title={"Create"} 
-        onHide={handleCloseCreate} 
+        onHide={onHideModal} 
         confirm={confirmCreateHandler} 
         actionText={"Save"} 
         checkForErrors={checkForErrors}
@@ -146,10 +207,19 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                     variant="contained"
                     component="label"
                     >
-                    Upload File
+                    Upload Sheet Music
                     <input type="file" accept=".pdf" onChange={fileSelectedHandler} hidden/>
                 </Button>
                 <p>{newContentSheetMusicFilename}</p>
+                <Button
+                    variant="contained"
+                    component="label"
+                    >
+                    Upload Audio
+                    <input type="file" accept=".mp3" onChange={fileSelectedHandlerAudio} hidden/>
+                </Button>
+                <p>{newContentAudioFilename}</p>
+                {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
                 
             </>
         </GenericModal>

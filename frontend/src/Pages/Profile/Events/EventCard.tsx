@@ -4,6 +4,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteEventModal from './DeleteEventModal';
 import EditEventModal from './EditEventModal';
+import { useState } from 'react';
 
 type Props = {
     event: EventType;
@@ -16,10 +17,11 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, fromDate, toDate} = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const[showOptions, setShowOptions] = useState<boolean>(false);
 
     return (
-        <div className="card">
-            {isMyProfile && 
+        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
+            {isMyProfile && showOptions &&
                 <>
                     <div className="card-icons">
                         <EditIcon onClick={handleOpenEdit}/> 
