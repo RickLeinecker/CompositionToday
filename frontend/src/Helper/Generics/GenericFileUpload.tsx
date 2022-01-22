@@ -1,5 +1,4 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
 
 type Props = {
     updateFile: (file: File) => void;
@@ -12,8 +11,6 @@ export default function GenericFileUpload({updateFile, type, name, filename}: Pr
 
     const fileSelectedHandler = (event: any) => {
         updateFile(event.target.files[0]);
-        // setNewContentSheetMusic(event.target.files[0])
-        // setNewContentSheetMusicFilename(event.target.files[0].name)
     }
 
     return(
