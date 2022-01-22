@@ -6,6 +6,7 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Button } from '@mui/material';
+import { Alert } from 'react-bootstrap';
 
 
 type Props = {
@@ -24,9 +25,11 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File|null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
+    
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
+    const [missingFileError, setMissingFileError] = useState(false);
 
     function onHideModal(){
         handleCloseCreate();
@@ -37,6 +40,11 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
+
+        let isFileMissing = false;
+        isFileMissing = !newContentAudio && !newContentSheetMusic;
+        setMissingFileError(isFileMissing)
+        error = isFileMissing || error;
 
         return(error)
     }
@@ -212,6 +220,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                     <input type="file" accept=".mp3" onChange={fileSelectedHandlerAudio} hidden/>
                 </Button>
                 <p>{newContentAudioFilename}</p>
+                {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
                 
             </>
         </GenericModal>
