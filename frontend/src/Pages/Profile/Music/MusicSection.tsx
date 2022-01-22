@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
+import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateMusicModal from './CreateMusicModal';
@@ -65,15 +66,13 @@ export default function MusicSection({createOpen, handleCloseCreate, userID}: Pr
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: MusicType) => (
-                        <li key={_result.id}>
-                            <MusicCard
-                                music={_result}
-                                isMyProfile={true}
-                                notifyChange={notifyChange}
-                            />
-                        </li>
-                    ))}
+                    <GenericVirtualizedList
+                        bodyStyle={{ width: "100%", height: "50vh" }}
+                        individualStyle={{ padding: "1% 1% 20px" }}
+                        items={response}
+                        notifyChange={notifyChange}
+                        type={"music"}
+                    />
                 </div>
                 }
             </div>
