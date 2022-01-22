@@ -145,7 +145,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         }
 
         try {
-            let answer = (await GenericHandlerFile(handlerObject));
+            let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
                 toast.error('Failed to upload pdf file');
                 return "";
