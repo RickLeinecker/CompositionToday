@@ -116,6 +116,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         setNewContentDescription("");
         setNewContentSheetMusic(null);
         setNewContentSheetMusicFilename("");
+        setNewContentAudio(null);
+        setNewContentAudioFilename("");
 
         setNameError(false);
         setTextError(false);
@@ -161,12 +163,9 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     const fileUploadHandlerAudio = async (): Promise<string> => {
 
-        console.log("audio is: " + newContentAudio);
-        console.log("audio name is: " + newContentAudioFilename);
         const fd = new FormData()
         fd.append("userFile", newContentAudio || "", newContentAudioFilename);
         
-
         const handlerObject: GenericHandlerType = {
             data: fd,
             methodType: "POST",

@@ -81,7 +81,7 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
     }
     
     async function confirmEditHandler() {
-        let newContentSheetMusicPath = newContentValue.audioFilepath;
+        let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
         if(newContentSheetMusic !== null){
             newContentSheetMusicPath = await fileUploadHandler();
             if(newContentSheetMusicPath === ''){
