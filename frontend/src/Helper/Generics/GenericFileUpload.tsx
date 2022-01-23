@@ -4,7 +4,7 @@ type Props = {
     updateFile: (file: File) => void;
     type: string;
     name: string;
-    filename: string 
+    filename: string | undefined; 
 }
 
 export default function GenericFileUpload({updateFile, type, name, filename}: Props) {
