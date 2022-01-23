@@ -5,8 +5,8 @@ import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GenericHandlerFile from '../../Handlers/GenericHanderFile';
-import { Button } from '@mui/material';
+import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
+import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
 
 type Props = {
     userProfile: UserProfile;
@@ -54,7 +54,7 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
 
         let newProfilePicPath = userProfile.profilePicPath;
         if(newProfilePic !== null){
-            newProfilePicPath = await fileUploadHandler();
+            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
             if(newProfilePicPath === ''){
                 toast.error('Failed to update profile pic');
                 return;
@@ -89,37 +89,8 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
         }
     }
 
-    const fileSelectedHandler = (event: any) => {
-        setNewProfilePic(event.target.files[0])
-    }
-
-    const fileUploadHandler = async (): Promise<string> => {
-        const fd = new FormData()
-        fd.append("userFile", newProfilePic || "", newProfilePic?.name);
-        
-
-        const handlerObject: GenericHandlerType = {
-            data: fd,
-            methodType: "POST",
-            path: "uploadImage",
-        }
-
-        try {
-            let answer = (await GenericHandlerFile(handlerObject));
-            if (answer.error.length > 0) {
-                toast.error('Failed to upload picture');
-                console.log("here is error: " + answer.error);
-                return "";
-            }
-
-            notifyChange();
-            return(answer.result[0].filepath);
-
-        } catch (e: any) {
-            console.error("Frontend Error: " + e);
-            toast.error('Failed to upload picture');
-            return "";
-        }
+    const updateProfilePic = (file: File) => {
+        setNewProfilePic(file)
     }
 
     return (
@@ -133,13 +104,7 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
             <>
                 <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
                 <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
-                <Button
-                    variant="contained"
-                    component="label"
-                    >
-                    Change profile picture
-                    <input type="file" accept="image/*" onChange={fileSelectedHandler} hidden/>
-                </Button>
+                <GenericFileUpload updateFile = {updateProfilePic} type = {"image/*"} name = "profile picture" filename = {""}/>
             </>
         </GenericModal>
     )
