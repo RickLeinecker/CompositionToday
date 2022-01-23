@@ -15,7 +15,9 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
+
 export default function EditProfileModal({userProfile, notifyChange, editOpen, handleCloseEdit}: Props) {
+
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
     const[newProfilePic, setNewProfilePic] = useState<File | null>(null);
 
@@ -121,20 +123,24 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
     }
 
     return (
-        <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
-                <>
-                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        >
-                        Change profile picture
-                        <input type="file" accept="image/*" onChange={fileSelectedHandler} hidden/>
-                    </Button>
-                </>
-            </GenericModal>
-        </div>
+        <GenericModal 
+        show={editOpen} 
+        title={"Edit"} 
+        onHide={handleCloseEdit} 
+        confirm={confirmEditHandler} 
+        actionText={"Edit"} 
+        checkForErrors={checkForErrors}>
+            <>
+                <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
+                <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
+                <Button
+                    variant="contained"
+                    component="label"
+                    >
+                    Change profile picture
+                    <input type="file" accept="image/*" onChange={fileSelectedHandler} hidden/>
+                </Button>
+            </>
+        </GenericModal>
     )
 }

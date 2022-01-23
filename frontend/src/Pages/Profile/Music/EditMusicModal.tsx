@@ -108,16 +108,20 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
     }
 
     return (
-        <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
-                <>
-                    <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
-                    <GenericFileUpload updateFile = {updateSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentValue.sheetMusicFilename}></GenericFileUpload>
-                    <GenericFileUpload updateFile = {updateAudio} type = {".mp3"} name = "audio" filename = {newContentValue.audioFilename}></GenericFileUpload>
-                </>
-            </GenericModal>
-        </div>
+        <GenericModal 
+        show={editOpen} 
+        title={"Edit"} 
+        onHide={handleCloseEdit} 
+        confirm={confirmEditHandler} 
+        actionText={"Edit"} 
+        checkForErrors={checkForErrors}>
+            <>
+                <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
+                <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
+                <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                <GenericFileUpload updateFile = {updateSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentValue.sheetMusicFilename}></GenericFileUpload>
+                <GenericFileUpload updateFile = {updateAudio} type = {".mp3"} name = "audio" filename = {newContentValue.audioFilename}></GenericFileUpload>
+            </>
+        </GenericModal>
     )
 }
