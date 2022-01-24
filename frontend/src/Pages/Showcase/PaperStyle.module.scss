@@ -1,0 +1,9 @@
+@import "../../Styles/DefaultComponents.module.scss";
+@import "../../Styles/DefaultValues.module.scss";
+
+$paper-size: 14rem;
+
+:export {
+  paperSize: $paper-size;
+  innerSize: $paper-size - 5rem;
+}

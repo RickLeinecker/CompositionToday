@@ -1,18 +1,12 @@
 import { useRef, useState } from 'react'
-import { Box, Grid, IconButton, Paper, Slide, Typography } from '@mui/material'
+import { Box, Grid, IconButton, Paper, Slide } from '@mui/material'
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import FastForwardIcon from '@mui/icons-material/FastForward';
-import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import showcaseStyle from './ShowcaseStyle.module.scss'
+import { style, style2, style3 } from './inlineStyles';
 
-const genreStyle = { backgroundColor: DefaultValues.secondaryColor + "4A", alignItems: "center", display: "flex", justifyContent: "center", verticalAlign: "middle" };
-const style = { backgroundColor: DefaultValues.secondaryColor + "4A", height: showcaseStyle.paperSize, width: showcaseStyle.paperSize, borderRadius: '25px' };
-const style2 = { height: showcaseStyle.innerSize, width: showcaseStyle.innerSize, borderRadius: '10px' };
-const style3 = { backgroundColor: "#151515CC", height: '3rem', borderRadius: '10px' };
-
-export function ComposerPaper() {
+export default function ComposerPaper() {
     const [hovering, setHovering] = useState(false);
     const [playing, setPlaying] = useState(false);
     const containerRef = useRef(null);
@@ -47,8 +41,6 @@ export function ComposerPaper() {
                         <Box overflow="hidden" ref={containerRef} >
                             <Slide direction="up" in={hovering} container={containerRef.current} >
                                 <Paper elevation={1} sx={style3} onClick={e => e.stopPropagation()}>
-                                    {/* <Typography fontSize={"60%"}>Play Featured Song</Typography>
-                                    <Typography fontSize={"60%"}>Song Title</Typography> */}
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
                                         <IconButton aria-label="previous">
                                             <FastRewindIcon sx={{ color: 'white', height: 20, width: 20 }} />
@@ -66,18 +58,6 @@ export function ComposerPaper() {
                     </Grid>
                 </Paper>
             </Grid>
-        </Paper>
-    );
-}
-
-interface GenreProps {
-    genre: string;
-}
-
-export function GenrePaper({ genre }: GenreProps) {
-    return (
-        <Paper elevation={3} sx={{ ...style, ...genreStyle }} onClick={() => console.log("tada")} >
-            <Typography>{genre}</Typography>
         </Paper>
     );
 }

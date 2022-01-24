@@ -1,6 +1,9 @@
 import useLogout from '../../Helper/CustomHooks/useLogout';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
+
 import TopNavBar from '../TopNavBar';
+import '../Showcase/ShowcaseStyle.scss';
+import { Button } from '@mui/material';
 
 export default function Home() {
     const { handleLogout } = useLogout();
@@ -10,7 +13,7 @@ export default function Home() {
             <TopNavBar />
             <div>
                 Homepage
-                <Button variant="link" onClick={handleLogout}>
+                <Button className='testbutton' style={{backgroundColor: 'red'}} onClick={handleLogout}>
                     Logout
                 </Button>
             </div>

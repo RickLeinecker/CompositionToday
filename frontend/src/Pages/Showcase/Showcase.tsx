@@ -1,8 +1,10 @@
-import { Grid, Typography } from '@mui/material'
-import { Container } from 'react-bootstrap'
-import GenericSearch from '../../Helper/Generics/GenericSearch'
-import TopNavBar from '../TopNavBar'
-import { ComposerPaper, GenrePaper } from './StackedPaper'
+import { Grid } from '@mui/material';
+import { Container } from 'react-bootstrap';
+import GenericSearch from '../../Helper/Generics/GenericSearch';
+import TopNavBar from '../TopNavBar';
+import ComposerPaper from './ComposerPaper';
+import GenrePaper from './GenrePaper';
+import './ShowcaseStyle.scss';
 
 export default function Showcase() {
 
@@ -10,9 +12,9 @@ export default function Showcase() {
         <>
             <TopNavBar />
             <Container>
-                <Typography>Showcase</Typography>
+                <h1>Showcase</h1>
                 <GenericSearch />
-                <Typography className="color">Featured Composers</Typography>
+                <h1 className="header" >Featured Composers</h1>
 
                 <Grid container>
                     <Grid item container xs={6} lg={3} justifyContent="center">
@@ -29,12 +31,14 @@ export default function Showcase() {
                     </Grid>
                 </Grid>
 
-                <Typography>Discover Composers By Genre</Typography>
+                
+
+                <h1 className="header">Discover Composers By Genre</h1>
 
                 {/* Use an API that randomly selects genre types */}
                 <Grid container>
                     <Grid item container xs={6} sm={3} justifyContent="center">
-                        <GenrePaper genre='Classical'/>
+                        <GenrePaper genre='Classical' />
                     </Grid>
                     <Grid item container xs={6} sm={3} justifyContent="center">
                         <GenrePaper genre='Film Score' />

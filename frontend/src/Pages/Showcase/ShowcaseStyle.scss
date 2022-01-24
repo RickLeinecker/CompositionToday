@@ -1,13 +1,14 @@
-$paper-size: 14rem;
+h1 {
+  &.header {
+      text-align: center;
+      font-weight: 900;
+  }
+}
 
 .showcase-paper {
   height: 9rem;
   width: 9rem;
   border-radius: 20px;
-}
-
-.color {
-  color: blue;
 }
 
 .img-scale {
@@ -36,7 +37,6 @@ $paper-size: 14rem;
   }
 }
 
-:export {
-  paperSize: $paper-size;
-  innerSize: $paper-size - 5rem;
+#testbutton {
+  background-color: 'red';
 }
