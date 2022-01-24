@@ -33,22 +33,23 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                         <EditIcon onClick={handleOpenEdit}/> 
                         <DeleteIcon onClick={handleOpenDelete}/>
                     </div>
-
-                    <DeleteExperienceModal 
-                    contentID={id}
-                    notifyChange={notifyChange} 
-                    deleteOpen={deleteOpen}
-                    handleCloseDelete={handleCloseDelete}
-                    />
-
-                    <EditExperienceModal
-                        experience={experience}
-                        notifyChange={notifyChange}
-                        editOpen={editOpen}
-                        handleCloseEdit={handleCloseEdit}
-                    />
                 </>
             }
+
+            <DeleteExperienceModal 
+                contentID={id}
+                notifyChange={notifyChange} 
+                deleteOpen={deleteOpen}
+                handleCloseDelete={handleCloseDelete}
+            />
+
+            <EditExperienceModal
+                experience={experience}
+                notifyChange={notifyChange}
+                editOpen={editOpen}
+                handleCloseEdit={handleCloseEdit}
+            />
+            
             <div className="card-body">
                 <h1 className="card-title">{contentName}</h1>
                 <p className="card-text">{contentText}</p>

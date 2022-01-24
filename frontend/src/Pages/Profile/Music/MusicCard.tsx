@@ -28,22 +28,23 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                         <EditIcon onClick={handleOpenEdit}/> 
                         <DeleteIcon onClick={handleOpenDelete}/>
                     </div>
-
-                    <DeleteMusicModal
-                    contentID={id}
-                    notifyChange={notifyChange} 
-                    deleteOpen={deleteOpen}
-                    handleCloseDelete={handleCloseDelete}
-                    />
-
-                    <EditMusicModal
-                        music={music}
-                        notifyChange={notifyChange}
-                        editOpen={editOpen}
-                        handleCloseEdit={handleCloseEdit}
-                    />
                 </>
             }
+
+            <DeleteMusicModal
+                contentID={id}
+                notifyChange={notifyChange} 
+                deleteOpen={deleteOpen}
+                handleCloseDelete={handleCloseDelete}
+            />
+
+            <EditMusicModal
+                music={music}
+                notifyChange={notifyChange}
+                editOpen={editOpen}
+                handleCloseEdit={handleCloseEdit}
+            />
+            
             <div className="card-body">
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
