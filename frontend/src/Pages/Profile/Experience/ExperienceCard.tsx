@@ -23,7 +23,6 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
 
     const startDate =  !fromDate ? undefined : new Date(fromDate);
     const endDate = !toDate ? undefined : new Date(toDate);
-    // console.log(!!fromDate && new Date(fromDate))
 
     return (
         <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>

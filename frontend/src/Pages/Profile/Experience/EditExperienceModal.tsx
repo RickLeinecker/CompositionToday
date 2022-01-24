@@ -6,6 +6,7 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
     experience: ExperienceType;
@@ -22,14 +23,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
 
-    const handleChange = (newValue: string, type: string) => {
-        setNewContentValue(prevState => ({
-            ...prevState,
-            [type]: newValue
-        }));
-    }
-
-    const handleDateChange = (newValue: Date | null, type: string) => {
+    const handleChange = (newValue: string | Date | null | boolean, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -42,7 +36,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
         error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
-        error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
+        error = (checkIfEmpty(newContentValue.toDate, setToDateError) && !newContentValue.isDateCurrent) || error;
 
         return(error)
     }
@@ -58,6 +52,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     }
 
     async function confirmEditHandler() {
+        console.log(newContentValue.isDateCurrent);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -69,6 +64,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 // fromDate: newContentValue.fromDate?.toISOString().slice(0, -1),
                 fromDate: toSqlDatetime(newContentValue.fromDate),
                 toDate: toSqlDatetime(newContentValue.toDate),
+                isDateCurrent: newContentValue.isDateCurrent,
                 // toDate: newContentValue.toDate?.toISOString().slice(0, -1),
             }),
             methodType: "PATCH",
@@ -102,16 +98,23 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                         type={"fromDate"}
                         value={newContentValue.fromDate || null} 
                         isRequired={true} 
-                        onChange={handleDateChange}
+                        onChange={handleChange}
                         error={fromDateError}                    
                     />
-                    <GenericDatePicker 
-                        title={'End date'} 
-                        type={"toDate"}
-                        value={newContentValue.toDate || null}  
-                        isRequired={true} 
-                        onChange={handleDateChange}
-                        error={toDateError}               
+                    {!newContentValue.isDateCurrent &&
+                        <GenericDatePicker 
+                            title={'End date'} 
+                            type={"toDate"}
+                            value={newContentValue.toDate || null}  
+                            isRequired={true} 
+                            onChange={handleChange}
+                            error={toDateError}               
+                        />
+                    }
+                    <FormControlLabel 
+                        control={<Checkbox checked={newContentValue.isDateCurrent} 
+                        onChange={() => handleChange(!newContentValue.isDateCurrent, "isDateCurrent")}/>} 
+                        label="I currently hold this position" 
                     />
                 </>
             </GenericModal>

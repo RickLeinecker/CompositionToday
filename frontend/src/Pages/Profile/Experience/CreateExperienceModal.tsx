@@ -36,7 +36,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
-        error = checkIfEmpty(newContentToDate, setToDateError) || error;
+        error = (checkIfEmpty(newContentToDate, setToDateError) && !newContentIsDateCurrent) || error;
 
         return(error)
     }
