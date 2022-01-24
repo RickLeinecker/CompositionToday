@@ -44,6 +44,7 @@ export type ExperienceType = {
     description?: string;
     fromDate?: Date;
     toDate?: Date;
+    isDateCurrent: boolean;
 }
 
 export type MusicType = {
