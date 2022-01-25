@@ -45,8 +45,8 @@ export const AuthProvider = ({children}) =>{
         .then((res) => console.log(res))
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
-
-        signOut(auth)
+        
+        return auth.currentUser.uid;
     }
 
     const signInUser = (email, password) => {
@@ -55,7 +55,7 @@ export const AuthProvider = ({children}) =>{
         .then((res) => console.log(res))
         .catch((err) => setError(err.code))
         .finally(() => setLoading(false));
-        navigate('/home');
+        navigate('/');
     }
 
     const logoutUser = () => {

@@ -1,4 +1,3 @@
-
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { Container } from 'react-bootstrap';
 import { AuthProvider, useAuthContext } from './FirebaseAuth/AuthContext';
@@ -29,6 +28,7 @@ function App(this: any) {
                     <Route path = '/' element={<Home/>}/>
                 </Route>
 
+                <Route path="*" element={<Registration/>} />
                 <Route path="/registration" element={<Registration/>} />
                 <Route path="/forgot-password" element={<ForgotPassword/>} />
                 <Route path="/email-sent" element={<EmailSent/>} />
@@ -46,7 +46,7 @@ function App(this: any) {
                 </Route>
 
                 <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/profile:username' element={<MyProfile/>}/>
+                    <Route path ='/profile/:userid' element={<MyProfile/>}/>
                 </Route>
             </Routes>
 
