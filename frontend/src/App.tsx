@@ -1,10 +1,9 @@
 
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { Container } from 'react-bootstrap';
-import { AuthProvider } from './FirebaseAuth/AuthContext';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { AuthProvider, useAuthContext } from './FirebaseAuth/AuthContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './Pages/Home/Home';
-import PrivateRoute from './FirebaseAuth/PrivateRoute'
 import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
@@ -13,25 +12,43 @@ import { ToastContainer } from 'react-toastify';
 import Registration from './Pages/Login/Registration';
 import EmailSent from './Pages/Login/EmailSent';
 import ForgotPassword from "./Pages/Login/ForgotPassword";
+import { useState } from "react";
+import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 
 function App(this: any) {
     
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
+    const { currentUser } = useAuthContext();
+
     return (
         <>
-            <Router>
-                <AuthProvider>
-                    <Switch>
-                        <PrivateRoute exact path="/" component={Home} />
-                        <Route path="/registration" component={Registration} />
-                        <Route path="/forgot-password" component={ForgotPassword} />
-                        <Route path="/email-sent" component={EmailSent} />
-                        <PrivateRoute exact path="/blog" component={Blog} />
-                        <PrivateRoute exact path="/showcase" component={Showcase} />
-                        <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
-                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={{userID: 0}}/>
-                    </Switch>
-                </AuthProvider>
-            </Router>
+            <Routes>
+                <Route element={<PrivateRoute isLogged={currentUser} />}>
+                    <Route path = '/home' element={<Home/>}/>
+                </Route>
+
+                <Route path="/registration" element={<Registration/>} />
+                <Route path="/forgot-password" element={<ForgotPassword/>} />
+                <Route path="/email-sent" element={<EmailSent/>} />
+
+                <Route element={<PrivateRoute isLogged={currentUser} />}>
+                    <Route path ='/blog' element={<Blog/>} />
+                </Route>
+
+                <Route element={<PrivateRoute isLogged={currentUser} />}>
+                    <Route path ='/showcase' element={<Showcase/>}/>
+                </Route>
+
+                <Route element={<PrivateRoute isLogged={currentUser} />}>
+                    <Route path ='/related-projects' element={<RelatedProjects/>}/>
+                </Route>
+
+                <Route element={<PrivateRoute isLogged={currentUser} />}>
+                    <Route path ='/profile:username' element={<MyProfile/>}/>
+                </Route>
+            </Routes>
 
             <ToastContainer
                 position="bottom-right"
@@ -47,5 +64,4 @@ function App(this: any) {
         </>
     )
 }
-
-export default App
+export default App;

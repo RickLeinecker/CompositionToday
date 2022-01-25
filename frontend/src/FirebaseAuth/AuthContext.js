@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState } from 'react'
 import {auth} from './firebase'
-import { Redirect, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword,
@@ -12,6 +13,7 @@ import {
 
 const AuthContext = React.createContext();
 
+
 export const useAuthContext = () =>{
     return useContext(AuthContext)
 }
@@ -20,7 +22,7 @@ export const AuthProvider = ({children}) =>{
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useState(() => {
         setLoading(true);
@@ -38,15 +40,12 @@ export const AuthProvider = ({children}) =>{
 
     const signUpUser = (email, password, name) => {
         setLoading(true);
+        // also logs them in
         createUserWithEmailAndPassword(auth, email, password)
         .then((res) => console.log(res))
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
 
-        history.push({
-            pathname: '/email-sent',
-            state: {text: email}
-        })
         signOut(auth)
     }
 
@@ -56,12 +55,12 @@ export const AuthProvider = ({children}) =>{
         .then((res) => console.log(res))
         .catch((err) => setError(err.code))
         .finally(() => setLoading(false));
-        history.push("/");
+        navigate('/');
     }
 
     const logoutUser = () => {
         signOut(auth)
-        history.push("/registration");
+        navigate('/registration');
     }
 
     const resetPassword = (email) => {

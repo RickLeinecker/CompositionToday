@@ -1,22 +1,29 @@
 import React, { useRef, useState } from 'react'
 import { useAuthContext } from '../../FirebaseAuth/AuthContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 const SignUp = () => {
 
     const emailRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
     const psdRef = useRef<HTMLInputElement>(null);
     const { signUpUser } = useAuthContext();
-    const history = useHistory();
+    const navigate = useNavigate();
         
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const email = emailRef.current?.value;
         const name = nameRef.current?.value;
         const password = psdRef.current?.value;
+        console.log(email)
+        console.log(name)
         if (email && password && name) {
-            // try here
+            // try here        
             signUpUser(email, password, name);
+            navigate('/email-sent', { state:{
+                email: email,
+                name: name
+            }})
             // catch
         }
             
