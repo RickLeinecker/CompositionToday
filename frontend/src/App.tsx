@@ -26,7 +26,7 @@ function App(this: any) {
         <>
             <Routes>
                 <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path = '/home' element={<Home/>}/>
+                    <Route path = '/' element={<Home/>}/>
                 </Route>
 
                 <Route path="/registration" element={<Registration/>} />

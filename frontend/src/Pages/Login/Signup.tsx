@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
 import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import {auth} from '../../FirebaseAuth/firebase';
 
 const SignUp = () => {
 
@@ -15,15 +17,14 @@ const SignUp = () => {
         const email = emailRef.current?.value;
         const name = nameRef.current?.value;
         const password = psdRef.current?.value;
-        console.log(email)
-        console.log(name)
         if (email && password && name) {
             // try here        
-            signUpUser(email, password, name);
+            signUpUser(email, password, name).then(sendPasswordResetEmail(auth, email))
             navigate('/email-sent', { state:{
                 email: email,
                 name: name
             }})
+
             // catch
         }
             

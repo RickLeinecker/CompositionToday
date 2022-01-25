@@ -55,7 +55,7 @@ export const AuthProvider = ({children}) =>{
         .then((res) => console.log(res))
         .catch((err) => setError(err.code))
         .finally(() => setLoading(false));
-        navigate('/');
+        navigate('/home');
     }
 
     const logoutUser = () => {

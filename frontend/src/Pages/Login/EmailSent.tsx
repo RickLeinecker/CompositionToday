@@ -1,11 +1,16 @@
 import { useLocation } from 'react-router-dom';
 import './RegistrationStyle.scss';
-
+import { sendPasswordResetEmail } from 'firebase/auth';
+import {auth} from '../../FirebaseAuth/firebase';
 
 export default function EmailSent(props:any){
     const location:any = useLocation();
     const email = location.state.email;
     const name = location.state.name;
+
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
+        sendPasswordResetEmail(auth, email)
+    }
     return (
         <>
             <main className="registration">
@@ -22,7 +27,7 @@ export default function EmailSent(props:any){
                         {/* ^ change to be current user's email */}
                     </div>
                         <div className="">
-                            <button className="resend" type="button" >
+                            <button className="resend" type="button" onClick={handleSubmit}>
                                 <span id="resend">Resend verification email</span>
                             </button>
                             {/* onsubmit ^ resend new verification, have to set timer for no spam */}

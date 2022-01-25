@@ -1,13 +1,30 @@
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { useRef } from 'react';
 import './RegistrationStyle.scss';
-
+import {auth} from '../../FirebaseAuth/firebase';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function ForgotPassword() {
     const emailRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
     
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+
+    const email = emailRef.current?.value;
+    if (email){
+
+          console.log(email)
+          sendPasswordResetEmail(auth, email).then(() => {
+                  if(emailRef.current)
+                    emailRef.current.value = "";
+            })
+            navigate('/email-sent', { state:{
+                email: email,
+                name: 'friend'
+            }})
+        }
     }
     return (
         <>
