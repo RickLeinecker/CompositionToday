@@ -8,7 +8,8 @@ import {
     onAuthStateChanged,
     signOut, 
     sendPasswordResetEmail,
-    updateProfile
+    updateProfile,
+    getAuth
 } from 'firebase/auth'
 
 const AuthContext = React.createContext();
@@ -38,14 +39,15 @@ export const AuthProvider = ({children}) =>{
         return unsubscribe;
       }, []);
 
-    const signUpUser = (email, password, name) => {
+    const signUpUser = async (email, password, name) => {
         setLoading(true);
         // also logs them in
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((res) => console.log(res))
-        .catch((err) => setError(err.message))
-        .finally(() => setLoading(false));
-        
+        await createUserWithEmailAndPassword(auth, email, password)
+        // .then((res) => console.log(res))
+        // .catch((err) => setError(err.message))
+        // .finally(() => setLoading(false));
+        setLoading(false);
+        console.log(auth.currentUser.uid + "auth here");
         return auth.currentUser.uid;
     }
 

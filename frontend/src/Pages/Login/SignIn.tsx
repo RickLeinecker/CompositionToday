@@ -13,16 +13,6 @@ const SignIn = () => {
       if (email && password) signInUser(email, password);
   };
 
-  // const forgotPasswordHandler = () => {
-  //   const email = emailRef.current?.value;
-  //   if (email)
-  //     console.log(email)
-  //     resetPassword(email).then(() => {
-  //         if(emailRef.current)
-  //           emailRef.current.value = "";
-  //     });
-  // };
-
     return (
         <>
             <div className="form-container sign-in-container">
