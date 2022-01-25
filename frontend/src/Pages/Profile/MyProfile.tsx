@@ -76,6 +76,7 @@ export default function MyProfile(props: any) {
                     userID: result.userID,
                     bio: result.bio,
                     displayName: result.displayName,
+                    profilePicPath: result.profilePicPath,
                 });
                 setLoading(false);
                 

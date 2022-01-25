@@ -29,7 +29,7 @@ export type ContentType = {
     audioFilePath?: string;
     sheetMusicFilePath?: string;
     websiteLink?: string;
-    conentTags?: object;
+    contentTags?: object;
     contentName?: string;
     timestamp?: string;
     description?: string;
@@ -53,7 +53,9 @@ export type MusicType = {
     contentName: string;
     timestamp?: string;
     audioFilepath?: string;
+    audioFilename?: string;
     sheetMusicFilepath?: string;
+    sheetMusicFilename?: string;
     description?: string;
 }
 
@@ -74,7 +76,7 @@ export type EventType = {
  * @property path: "getContentByType"
  */
 export type GenericHandlerType = {
-    data: string;
+    data: string | FormData;
     methodType: string;
     path: string;
 }

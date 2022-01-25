@@ -30,8 +30,9 @@
 }
 
 .content-scroll {
-    max-height: 35vh;
-    overflow-y: scroll;
+    // max-height: 35vh;
+    // overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 800px) {

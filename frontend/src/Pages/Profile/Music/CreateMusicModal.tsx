@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
+import GenericHandler from '../../../Handlers/GenericHandler';
+import { Alert } from 'react-bootstrap';
+import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
+import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 
 
 type Props = {
@@ -18,15 +21,36 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
+    const [newContentSheetMusic, setNewContentSheetMusic] = useState<File|null>(null);
+    const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
+    const [newContentAudio, setNewContentAudio] = useState<File|null>(null);
+    const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
+    
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
+    const [missingFileError, setMissingFileError] = useState(false);
+
+    const updateSheetMusic = (newFile: File) => {
+        setNewContentSheetMusic(newFile);
+        setNewContentSheetMusicFilename(newFile.name) 
+    }
+
+    const updateAudio = (newFile: File) => {
+        setNewContentAudio(newFile);
+        setNewContentAudioFilename(newFile.name) 
+    }
 
     const checkForErrors = (): boolean => {
         let error = false;
         
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
+
+        let isFileMissing = false;
+        isFileMissing = !newContentAudio && !newContentSheetMusic;
+        setMissingFileError(isFileMissing)
+        error = isFileMissing || error;
 
         return(error)
     }
@@ -40,8 +64,27 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
             return false;
         }
     }
-    
+
     async function confirmCreateHandler() {
+
+        let newContentSheetMusicPath = null;
+        if(newContentSheetMusic !== null){
+            newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentSheetMusicFilename, "sheet music", "uploadSheetMusic")
+            if(newContentSheetMusicPath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
+        let newContentAudioPath = null;
+        if(newContentAudio !== null){
+            newContentAudioPath = await uploadFile(newContentAudio, newContentAudioFilename, "audio", "uploadAudio")
+            if(newContentAudioPath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -49,6 +92,10 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 contentText: newContentText,
                 contentType: "music",
                 description: newContentDescription,
+                sheetMusicFilepath: newContentSheetMusicPath,
+                sheetMusicFilename: newContentSheetMusicFilename,
+                audioFilepath: newContentAudioPath,
+                audioFilename: newContentAudioFilename,
                 // timestamp: newContentTimestamp,
             }),
             methodType: "POST",
@@ -70,9 +117,13 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
             toast.error('Failed to create music');
         }
 
-        setNewContentName("")
-        setNewContentText("")
-        setNewContentDescription("")
+        setNewContentName("");
+        setNewContentText("");
+        setNewContentDescription("");
+        setNewContentSheetMusic(null);
+        setNewContentSheetMusicFilename("");
+        setNewContentAudio(null);
+        setNewContentAudioFilename("");
 
         setNameError(false);
         setTextError(false);
@@ -91,6 +142,10 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                 <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
                 <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
+                <GenericFileUpload updateFile = {updateSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentSheetMusicFilename} />
+                <GenericFileUpload updateFile = {updateAudio} type = {".mp3"} name = "audio" filename = {newContentAudioFilename}/>
+                {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
+                
             </>
         </GenericModal>
     )
