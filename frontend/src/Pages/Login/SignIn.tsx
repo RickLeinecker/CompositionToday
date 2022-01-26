@@ -4,7 +4,7 @@ import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 const SignIn = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const psdRef = useRef<HTMLInputElement>(null);
-    const { signInUser, resetPassword } = useAuthContext();
+    const { signInUser } = useAuthContext();
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
       e.preventDefault();

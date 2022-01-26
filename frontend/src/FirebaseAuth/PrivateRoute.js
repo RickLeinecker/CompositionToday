@@ -1,4 +1,3 @@
-import { useAuthContext } from "./AuthContext"
 import { Navigate, Outlet } from "react-router-dom";
 
 function PrivateRoute({isLogged}) {

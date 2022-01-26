@@ -7,9 +7,8 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut, 
-    sendPasswordResetEmail,
-    updateProfile,
-    getAuth
+    sendPasswordResetEmail
+    //, updateProfile,
 } from 'firebase/auth'
 
 const AuthContext = React.createContext();
@@ -25,7 +24,7 @@ export const AuthProvider = ({children}) =>{
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    useState(() => {
+    useEffect(() => {
         setLoading(true);
         const unsubscribe = onAuthStateChanged(auth, (res) => {
           if (res) {

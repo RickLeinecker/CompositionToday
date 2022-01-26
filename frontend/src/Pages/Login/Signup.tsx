@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../FirebaseAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, sendSignInLinkToEmail } from "firebase/auth";
 import { auth } from "../../FirebaseAuth/firebase";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from "../../Handlers/GenericHandler";
@@ -42,6 +42,14 @@ const SignUp = () => {
         }
     };
 
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be in the authorized domains list in the Firebase Console.
+      url: 'http://localhost:3000',
+      // This must be true.
+      handleCodeInApp: true
+    };
+
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const email = emailRef.current?.value;
@@ -53,7 +61,7 @@ const SignUp = () => {
             const uid = await signUpUser(email, password, name)
             console.log(typeof (uid) + uid + ":uid")
             registerUserProfile(uid);
-            sendPasswordResetEmail(auth, email);
+            sendSignInLinkToEmail(auth, email, actionCodeSettings);
 
             navigate("/email-sent", {
                 state: {
