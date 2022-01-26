@@ -92,5 +92,9 @@ export type GenericGetHandlerType = {
     path: string;
 }   
 
+export type TagType = {
+    id: number;
+    tagName: string;
+}
 
 

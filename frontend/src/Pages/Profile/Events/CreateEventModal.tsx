@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import { GenericGetHandlerType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
@@ -10,6 +10,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Autocomplete, TextField } from '@mui/material';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 
 
 type Props = {
@@ -27,11 +28,38 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
-    const [newContentTags, setNewContentTags] = useState<Array<string>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+
+        // get user info
+    useEffect(() => {
+        fetchTags();
+        async function fetchTags(){
+            
+            try{
+                let answer = (await GenericGetHandler("getTags"));
+                if(answer.error.length > 0){
+                    // setError(answer.error);
+                    return;
+                }
+                
+                // setError("");
+                const result = await answer.result;
+                setTagOptions(result);
+
+                // setLoading(false);
+                
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+                // setError(DefaultValues.apiErrorMessage);
+            }
+        }
+    });
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -147,9 +175,11 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 <Autocomplete
                     multiple
                     id="tags-standard"
-                    options={["California", "Florida", "Alabama", "Georgia", "Kentucky"]}
+                    // options={tagOptions?.map(tagType => tagType.tagName)!}
+                    options={tagOptions!}
                     onChange={(event, newValue) => setNewContentTags(newValue)}
-                    getOptionLabel={(option) => option}
+                    getOptionLabel={(option) => option.tagName}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
                     renderInput={(params) => (
                         <div className='modal-field'>
                             <TextField
