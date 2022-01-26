@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericGetHandlerType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
@@ -10,7 +9,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Autocomplete, TextField } from '@mui/material';
-import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 
 
 type Props = {
@@ -18,9 +17,10 @@ type Props = {
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
+    tagOptions: TagType[] | undefined;
 }
 
-export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
@@ -29,37 +29,10 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
-    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
-
-        // get user info
-    useEffect(() => {
-        fetchTags();
-        async function fetchTags(){
-            
-            try{
-                let answer = (await GenericGetHandler("getTags"));
-                if(answer.error.length > 0){
-                    // setError(answer.error);
-                    return;
-                }
-                
-                // setError("");
-                const result = await answer.result;
-                setTagOptions(result);
-
-                // setLoading(false);
-                
-
-            } catch(e: any){
-                console.error("Frontend Error: " + e);
-                // setError(DefaultValues.apiErrorMessage);
-            }
-        }
-    });
 
     const checkForErrors = (): boolean => {
         let error = false;
