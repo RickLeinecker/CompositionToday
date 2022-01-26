@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
@@ -8,6 +8,8 @@ import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { Autocomplete, TextField } from '@mui/material';
 
 
 type Props = {
@@ -25,6 +27,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
+    const [tags, setTags] = useState<string | Record<string, any>>();
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
@@ -39,6 +42,10 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
         return(error)
     }
+
+    useEffect(() => {
+        console.log(tags)
+    },[tags])
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if(!value){
@@ -141,7 +148,26 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                     onChange={setNewContentToDate}
                     error={toDateError}                    
                 />
+                <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={["California", "Florida"]}
+                    limitTags={3}
+                    getOptionLabel={(option) => option}
+                    renderInput={(params) => (
+                        <div className='modal-field'>
+                            <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Tags"
+                                placeholder="Tags"
+                                fullWidth
+                            />
+                        </div>
+                    )}
+                /> 
                 <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
+                
             </div>
         </GenericModal>
     )
