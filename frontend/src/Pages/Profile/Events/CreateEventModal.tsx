@@ -27,7 +27,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
-    const [tags, setTags] = useState<string | Record<string, any>>();
+    const [newContentTags, setNewContentTags] = useState<Array<string>>();
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
@@ -42,10 +42,6 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
         return(error)
     }
-
-    useEffect(() => {
-        console.log(tags)
-    },[tags])
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if(!value){
@@ -151,8 +147,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 <Autocomplete
                     multiple
                     id="tags-standard"
-                    options={["California", "Florida"]}
-                    limitTags={3}
+                    options={["California", "Florida", "Alabama", "Georgia", "Kentucky"]}
+                    onChange={(event, newValue) => setNewContentTags(newValue)}
                     getOptionLabel={(option) => option}
                     renderInput={(params) => (
                         <div className='modal-field'>
