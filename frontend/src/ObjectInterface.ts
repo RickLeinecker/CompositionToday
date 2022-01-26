@@ -68,6 +68,8 @@ export type EventType = {
     description?: string;
     fromDate?: Date;
     toDate?: Date;
+    imageFilepath?: string;
+    imageFilename?: string;
 }
 
 /**

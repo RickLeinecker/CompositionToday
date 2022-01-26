@@ -52,7 +52,6 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     }
 
     async function confirmCreateHandler() {
-
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,

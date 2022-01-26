@@ -52,7 +52,6 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     }
 
     async function confirmEditHandler() {
-        console.log(newContentValue.isDateCurrent);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
