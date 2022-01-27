@@ -6,6 +6,7 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 
 type Props = {
@@ -22,6 +23,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
+    const [newContentIsDateCurrent, setNewContentIsDateCurrent] = useState<boolean>(false);
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -34,7 +36,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
-        error = checkIfEmpty(newContentToDate, setToDateError) || error;
+        error = (checkIfEmpty(newContentToDate, setToDateError) && !newContentIsDateCurrent) || error;
 
         return(error)
     }
@@ -50,7 +52,6 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     }
 
     async function confirmCreateHandler() {
-
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -62,6 +63,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 // toDate: newContentToDate?.toISOString().slice(0, -1),
                 fromDate: toSqlDatetime(newContentFromDate),
                 toDate: toSqlDatetime(newContentToDate),
+                isDateCurrent: newContentIsDateCurrent,
             }),
             methodType: "POST",
             path: "createContent",
@@ -87,6 +89,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         setNewContentDescription("")
         setNewContentToDate(null)
         setNewContentFromDate(null)
+        setNewContentIsDateCurrent(false)
 
         setNameError(false);
         setTextError(false);
@@ -116,13 +119,20 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                         onChange={setNewContentFromDate}
                         error={fromDateError}                    
                     />
-                    <GenericDatePicker 
-                        title={'End date'} 
-                        type={"toDate"}
-                        value={newContentToDate} 
-                        isRequired={true} 
-                        onChange={setNewContentToDate}
-                        error={toDateError}                    
+                    {!newContentIsDateCurrent &&
+                        <GenericDatePicker 
+                            title={'End date'} 
+                            type={"toDate"}
+                            value={newContentToDate} 
+                            isRequired={true} 
+                            onChange={setNewContentToDate}
+                            error={toDateError}                    
+                        />
+                    }
+                    <FormControlLabel 
+                        control={<Checkbox checked={newContentIsDateCurrent} 
+                        onChange={() => setNewContentIsDateCurrent(!newContentIsDateCurrent)}/>} 
+                        label="I currently hold this position" 
                     />
                 </div>
             </GenericModal>

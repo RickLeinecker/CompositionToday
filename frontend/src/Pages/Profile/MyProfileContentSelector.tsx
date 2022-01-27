@@ -54,7 +54,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                 <div id="my-profile-box">
                     <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
                         <div>
-                            <Image className="profile-pic" src="img_avatar.png" roundedCircle />
+                            <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div style = {{marginLeft: "20%"}}>
                                 <p style={{fontSize: "1.5vw"}}>{userProfile.bio}</p>

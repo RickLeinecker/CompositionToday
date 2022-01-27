@@ -1,32 +1,28 @@
-import { ExperienceType } from '../../../ObjectInterface';
-import DeleteExperienceModal from './DeleteExperienceModal';
-import EditExperienceModal from './EditExperienceModal';
+import { EventType } from '../../../ObjectInterface';
 import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
-import './ExperienceSyle.scss';
+import DeleteEventModal from './DeleteEventModal';
+import EditEventModal from './EditEventModal';
 import { useState } from 'react';
+import { Image } from 'react-bootstrap'
 
 type Props = {
-    experience: ExperienceType;
+    event: EventType;
     isMyProfile: boolean;
     notifyChange: () => void;
 }
 
 
-export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, contentText, description, fromDate, toDate, isDateCurrent } = experience;
+export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
+    const { id, contentName, description, fromDate, toDate, imageFilepath} = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showOptions, setShowOptions] = useState<boolean>(false);
-    
-
-    const startDate =  !fromDate ? undefined : new Date(fromDate);
-    const endDate = !toDate ? undefined : new Date(toDate);
 
     return (
         <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions && 
+            {isMyProfile && showOptions &&
                 <>
                     <div className="card-icons">
                         <EditIcon onClick={handleOpenEdit}/> 
@@ -35,30 +31,26 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 </>
             }
 
-            <DeleteExperienceModal 
+            <DeleteEventModal
                 contentID={id}
                 notifyChange={notifyChange} 
                 deleteOpen={deleteOpen}
                 handleCloseDelete={handleCloseDelete}
             />
 
-            <EditExperienceModal
-                experience={experience}
+            <EditEventModal
+                event={event}
                 notifyChange={notifyChange}
                 editOpen={editOpen}
                 handleCloseEdit={handleCloseEdit}
             />
             
             <div className="card-body">
-                <h1 className="card-title">{contentName}</h1>
-                <p className="card-text">{contentText}</p>
-                <p className="card-text">{"Start date: " + startDate?.toDateString()}</p>
-                {isDateCurrent ? 
-                    <p>Current</p> 
-                    :
-                    <p className="card-text">{"End date: " + endDate?.toDateString()}</p>
-                }
+                <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{description}</p>
+                <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
+                <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
+                <Image className="profile-pic" src={imageFilepath} style={{height: "10%", width: "20%"}}/>
             </div>
         </div>
     )

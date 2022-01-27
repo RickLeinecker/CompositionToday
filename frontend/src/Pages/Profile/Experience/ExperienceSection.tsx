@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
-import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
-import List from 'react-virtualized';
+import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 
 type Props = {
     userID: number;
@@ -19,9 +18,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
 
-    const notifyChange = () => {
-        setHasChanged(value => !value);
-    }
+    const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
         async function fetchData() {
@@ -42,7 +39,6 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
                 setResponse(await answer.result.reverse());
                 setLoading(false);
 
-
             } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 setError(DefaultValues.apiErrorMessage);
@@ -50,43 +46,25 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
 
         }
         fetchData();
+
     }, [userID, hasChanged])
-
-
 
     return (
         <>
             <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
-            <div>
-                {!error && loading ? <div>...loading</div>
+            {
+                !error && loading ? <div>...loading</div>
                     :
-                    error ?
-                        <Alert variant="danger">{error}</Alert>
+                    error ? <Alert variant="danger">{error}</Alert>
                         :
-                        <div>
-                            {/* <List 
-                                width={600} 
-                                height={600} 
-                                rowHeight={50} 
-                                rowCount={response?.length}
-                                rowRendered={({key, index, style, parent}) => {
-                                    const result = response?[index];
-                                    return <div key={key} style={style}>Hello</div>
-                                }}
-                            /> */}
-
-                            {response?.map((_result: ExperienceType) => (
-                                <li key={_result.id}>
-                                    <ExperienceCard
-                                        experience={_result}
-                                        isMyProfile={true}
-                                        notifyChange={notifyChange}
-                                    />
-                                </li>
-                            ))}
-                        </div>
-                }
-            </div>
+                        <GenericVirtualizedList
+                            bodyStyle={{ width: "100%", height: "50vh" }}
+                            individualStyle={{ padding: "1% 1% 20px" }}
+                            items={response}
+                            notifyChange={notifyChange}
+                            type={"experience"}
+                        />
+            }
         </>
     )
 }

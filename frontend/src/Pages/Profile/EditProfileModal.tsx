@@ -5,6 +5,8 @@ import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
+import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
 
 type Props = {
     userProfile: UserProfile;
@@ -13,8 +15,11 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
+
 export default function EditProfileModal({userProfile, notifyChange, editOpen, handleCloseEdit}: Props) {
+
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
+    const[newProfilePic, setNewProfilePic] = useState<File | null>(null);
 
     const [displayNameError, setDisplayNameError] = useState(false);
     const [bioError, setBioError] = useState(false);
@@ -46,11 +51,23 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
     }
 
     async function confirmEditHandler(){
+
+        let newProfilePicPath = userProfile.profilePicPath;
+        if(newProfilePic !== null){
+            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
+            if(newProfilePicPath === ''){
+                toast.error('Failed to update profile pic');
+                return;
+            }
+        }
+
+        console.log("here is the new profile pic path: " + newProfilePicPath);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID: newContentValue.userID,
                 bio: newContentValue.bio,
                 displayName: newContentValue.displayName,
+                profilePicPath: newProfilePicPath,
             }),
             methodType: "PATCH",
             path: "updateUserProfile",
@@ -72,14 +89,23 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
         }
     }
 
+    const updateProfilePic = (file: File) => {
+        setNewProfilePic(file)
+    }
+
     return (
-        <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
-                <>
-                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
-                </>
-            </GenericModal>
-        </div>
+        <GenericModal 
+        show={editOpen} 
+        title={"Edit"} 
+        onHide={handleCloseEdit} 
+        confirm={confirmEditHandler} 
+        actionText={"Edit"} 
+        checkForErrors={checkForErrors}>
+            <>
+                <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
+                <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
+                <GenericFileUpload updateFile = {updateProfilePic} type = {"image/*"} name = "profile picture" filename = {""}/>
+            </>
+        </GenericModal>
     )
 }

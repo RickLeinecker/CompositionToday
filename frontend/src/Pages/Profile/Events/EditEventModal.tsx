@@ -2,28 +2,33 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
+import { EventType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
-import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
-    experience: ExperienceType;
+    event: EventType;
     notifyChange: () => void;
     editOpen: boolean;
     handleCloseEdit: () => void;
 }
 
-export default function EditExperienceModal({experience, notifyChange, editOpen, handleCloseEdit}: Props) {
-    const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
+export default function EditEvent({event, notifyChange, editOpen, handleCloseEdit}: Props) {
+    const [newContentValue, setNewContentValue] = useState<EventType>(event)
 
     const [nameError, setNameError] = useState(false);
-    const [textError, setTextError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
 
-    const handleChange = (newValue: string | Date | null | boolean, type: string) => {
+    const handleChange = (newValue: string, type: string) => {
+        setNewContentValue(prevState => ({
+            ...prevState,
+            [type]: newValue
+        }));
+    }
+
+    const handleDateChange = (newValue: Date | null, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -34,9 +39,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         let error = false;
         
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
-        error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
-        error = (checkIfEmpty(newContentValue.toDate, setToDateError) && !newContentValue.isDateCurrent) || error;
+        error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
         return(error)
     }
@@ -56,15 +60,11 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             data: JSON.stringify({
                 contentID: newContentValue.id,
                 userID: newContentValue.userID,
-                contentType: "experience",
+                contentType: "event",
                 contentName: newContentValue.contentName,
-                contentText: newContentValue.contentText,
                 description: newContentValue.description,
-                // fromDate: newContentValue.fromDate?.toISOString().slice(0, -1),
                 fromDate: toSqlDatetime(newContentValue.fromDate),
                 toDate: toSqlDatetime(newContentValue.toDate),
-                isDateCurrent: newContentValue.isDateCurrent,
-                // toDate: newContentValue.toDate?.toISOString().slice(0, -1),
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -73,15 +73,15 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error("Failed to update experience")
+                toast.error("Failed to update event")
                 return;
             }
 
-            toast.success("Experience updated")
+            toast.success("Event updated")
             notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error("Failed to update experience")
+            toast.error("Failed to update event")
         }
     }
 
@@ -90,30 +90,22 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
                     <GenericDatePicker 
                         title={'Start date'} 
                         type={"fromDate"}
                         value={newContentValue.fromDate || null} 
                         isRequired={true} 
-                        onChange={handleChange}
+                        onChange={handleDateChange}
                         error={fromDateError}                    
                     />
-                    {!newContentValue.isDateCurrent &&
-                        <GenericDatePicker 
-                            title={'End date'} 
-                            type={"toDate"}
-                            value={newContentValue.toDate || null}  
-                            isRequired={true} 
-                            onChange={handleChange}
-                            error={toDateError}               
-                        />
-                    }
-                    <FormControlLabel 
-                        control={<Checkbox checked={newContentValue.isDateCurrent} 
-                        onChange={() => handleChange(!newContentValue.isDateCurrent, "isDateCurrent")}/>} 
-                        label="I currently hold this position" 
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        type={"toDate"}
+                        value={newContentValue.toDate || null}  
+                        isRequired={true} 
+                        onChange={handleDateChange}
+                        error={toDateError}               
                     />
                 </>
             </GenericModal>
