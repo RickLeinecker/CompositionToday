@@ -8,7 +8,6 @@ import { Alert } from 'react-bootstrap';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 
-
 type Props = {
     userID: number;
     notifyChange: () => void;
@@ -33,12 +32,22 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     const updateSheetMusic = (newFile: File) => {
         setNewContentSheetMusic(newFile);
-        setNewContentSheetMusicFilename(newFile.name) 
+        setNewContentSheetMusicFilename(newFile?.name) 
     }
 
     const updateAudio = (newFile: File) => {
         setNewContentAudio(newFile);
         setNewContentAudioFilename(newFile.name) 
+    }
+
+    const deleteAudioFile = () => {
+        setNewContentAudio(null);
+        setNewContentAudioFilename(""); 
+    }
+
+    const deleteSheetMusicFile = () => {
+        setNewContentSheetMusic(null);
+        setNewContentSheetMusicFilename("");
     }
 
     const checkForErrors = (): boolean => {
@@ -142,10 +151,9 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                 <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
                 <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                <GenericFileUpload updateFile = {updateSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentSheetMusicFilename} />
-                <GenericFileUpload updateFile = {updateAudio} type = {".mp3"} name = "audio" filename = {newContentAudioFilename}/>
+                <GenericFileUpload updateFile = {updateSheetMusic} deleteFile = {deleteSheetMusicFile} type = {".pdf"} name = "sheet music" filename = {newContentSheetMusicFilename} />
+                <GenericFileUpload updateFile = {updateAudio} deleteFile = {deleteAudioFile} type = {".mp3"} name = "audio" filename = {newContentAudioFilename}/>
                 {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
-                
             </>
         </GenericModal>
     )
