@@ -50,7 +50,7 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
                 <p className="card-text">{description}</p>
                 <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
                 <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
-                <Image className="profile-pic" src={imageFilepath} roundedCircle />
+                <Image className="profile-pic" src={imageFilepath} style={{height: "10%", width: "20%"}}/>
             </div>
         </div>
     )

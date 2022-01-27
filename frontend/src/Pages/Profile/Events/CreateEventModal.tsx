@@ -7,7 +7,6 @@ import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Autocomplete, TextField } from '@mui/material';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 
@@ -148,7 +147,6 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 <Autocomplete
                     multiple
                     id="tags-standard"
-                    // options={tagOptions?.map(tagType => tagType.tagName)!}
                     options={tagOptions!}
                     onChange={(event, newValue) => setNewContentTags(newValue)}
                     getOptionLabel={(option) => option.tagName}
