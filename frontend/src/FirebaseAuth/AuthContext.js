@@ -37,16 +37,25 @@ export const AuthProvider = ({children}) =>{
         });
         return unsubscribe;
       }, []);
-
-    const signUpUser = async (email, password, name) => {
+    
+    const signUpUser = async (email, password) => {
+        console.log("sign up user")
         setLoading(true);
         // also logs them in
-        await createUserWithEmailAndPassword(auth, email, password)
-        // .then((res) => console.log(res))
-        // .catch((err) => setError(err.message))
-        // .finally(() => setLoading(false));
-        setLoading(false);
-        console.log(auth.currentUser.uid + "auth here");
+        // const check = await createUserWithEmailAndPassword(auth, email, password)
+        // .catch(err =>{
+        //     console.log(err.message)
+        //     return err.message;
+        // })
+        // console.table(check)
+        try{
+            const check = await createUserWithEmailAndPassword(auth, email, password)
+        }catch(err){
+            // const check = await createUserWithEmailAndPassword(auth, email, password)
+            // .catch()
+            console.log(err)
+            return err.code
+        }
         return auth.currentUser.uid;
     }
 

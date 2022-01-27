@@ -22,6 +22,7 @@ const SignIn = () => {
                     <input className="registration" type="password" placeholder="Password"  ref={psdRef}/>
                     <a className="registration" href="/forgot-password">Forgot your password?</a>
                     <button className="registration" >Sign In</button>
+                    <p className="registration-error pink-text center-align"></p>
                 </form>
             </div>
         </>

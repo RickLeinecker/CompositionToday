@@ -38,7 +38,7 @@ export default function Registration() {
                             </div>
                             <div className="overlay-panel overlay-right">
                                 <h1 className="registration">Hello, Friend!</h1>
-                                <p className="registration">Enter your personal details and start journey with us</p>
+                                <p className="registration">Enter your personal details and start your journey with us</p>
                                 <button className="ghost registration" id="signUp" onClick={handleSignUp}>Sign Up</button>
                             </div>
                         </div>
