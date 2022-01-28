@@ -32,6 +32,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const handleConfirmDiscard = (): void => {
         handleCloseEdit();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -130,6 +131,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
             console.error("Frontend Error: " + e);
             toast.error("Failed to update music")
         }
+
+        handleCloseEdit();
     }
 
     return (

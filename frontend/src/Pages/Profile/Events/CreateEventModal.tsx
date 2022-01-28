@@ -48,6 +48,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
     const handleConfirmDiscard = (): void => {
         handleCloseCreate();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -150,6 +151,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         }
 
         clearFields();
+        handleCloseCreate();
     }
 
     return (

@@ -40,6 +40,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
 
     const handleConfirmDiscard = (): void => {
         handleCloseCreate();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -112,6 +113,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         }
 
         clearFields()
+        handleCloseCreate();
     }
 
     return (

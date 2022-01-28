@@ -33,6 +33,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
     const handleConfirmDiscard = (): void => {
         handleCloseEdit();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -100,6 +101,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             console.error("Frontend Error: " + e);
             toast.error("Failed to update experience")
         }
+
+        handleCloseEdit();
     }
 
     return (
