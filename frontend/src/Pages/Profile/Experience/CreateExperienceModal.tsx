@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
 
 
 type Props = {
@@ -29,6 +31,31 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const [textError, setTextError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    const onHide = (): void => {
+        handleOpenDiscard()
+    }
+
+    const handleConfirmDiscard = (): void => {
+        handleCloseCreate();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentName("")
+        setNewContentText("")
+        setNewContentDescription("")
+        setNewContentToDate(null)
+        setNewContentFromDate(null)
+        setNewContentIsDateCurrent(false)
+
+        setNameError(false);
+        setTextError(false);
+        setToDateError(false);
+        setFromDateError(false);
+    }
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -84,17 +111,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
             toast.error('Failed to create experience');
         }
 
-        setNewContentName("")
-        setNewContentText("")
-        setNewContentDescription("")
-        setNewContentToDate(null)
-        setNewContentFromDate(null)
-        setNewContentIsDateCurrent(false)
-
-        setNameError(false);
-        setTextError(false);
-        setToDateError(false);
-        setFromDateError(false);
+        clearFields()
     }
 
     return (
@@ -102,7 +119,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
             <GenericModal 
                 show={createOpen} 
                 title={"Create"} 
-                onHide={handleCloseCreate} 
+                onHide={onHide} 
                 confirm={confirmCreateHandler} 
                 actionText={"Save"} 
                 checkForErrors={checkForErrors}
@@ -136,6 +153,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                     />
                 </div>
             </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
         </div>
     )
 }

@@ -8,6 +8,8 @@ class MyAppBar extends AppBar {
       : super(
           title: title,
           backgroundColor: yellowColor,
+          foregroundColor: background,
           elevation: 0.0,
+          actions: actions,
         );
 }

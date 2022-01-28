@@ -26,7 +26,7 @@ class RelatedProjects extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Center(child: Text(entries[index])),
-                  tileColor: yellowColor,
+                  tileColor: blueColorSemi,
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
