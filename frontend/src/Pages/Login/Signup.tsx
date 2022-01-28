@@ -13,11 +13,10 @@ import { toast } from "react-toastify";
 
 const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
   const psdRef = useRef<HTMLInputElement>(null);
-  const [errorText, setErrorText] = useState('');
-  let errorFlag = false
+  const [errorText, setErrorText] = useState("");
+  let errorFlag = false;
   const { signUpUser } = useAuthContext();
   const navigate = useNavigate();
 
@@ -25,19 +24,16 @@ const SignUp = () => {
     const handlerObject: GenericHandlerType = {
       data: JSON.stringify({
         uid: uid,
-        firstName: firstNameRef.current?.value!,
-        lastName: lastNameRef.current?.value!,
-        // userfirstName: '',
+        username: usernameRef.current?.value!,
         email: emailRef.current?.value!,
-        // isPublisher: true,
-        // userProfileID: 0
       }),
       methodType: "POST",
-      path: "create",
+      path: "createUser",
     };
 
     try {
       let answer = await GenericHandler(handlerObject);
+      console.log(answer.error);
       if (answer.error.length > 0) {
         toast.error("Failed to create profile");
         return;
@@ -57,55 +53,53 @@ const SignUp = () => {
     handleCodeInApp: true,
   };
 
-  console.log("anything random")
+  console.log("anything random");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = emailRef.current?.value;
-    const firstName = firstNameRef.current?.value;
-    const lastName = lastNameRef.current?.value;
+    const username = usernameRef.current?.value;
     const password = psdRef.current?.value;
 
-    console.log("enter 1")
-    if (email && password && firstName && lastName) {
-      
-      const res = await signUpUser(email, password)
-      console.log(res)
-      switch (res){
+    console.log("enter 1");
+    if (email && password && username) {
+      const res = await signUpUser(email, password);
+      console.log(res);
+
+      switch (res) {
         case "auth/email-already-in-use":
-          setErrorText(() => 'Email is already in use.')
+          setErrorText(() => "Email is already in use.");
           errorFlag = true;
           break;
-      case "auth/invalid-email":
-          setErrorText(() => 'Email is not valid.')
+        case "auth/invalid-email":
+          setErrorText(() => "Email is not valid.");
           errorFlag = true;
           break;
-      case "auth/weak-password":
-        //   setErrorText(() => 'Password is too weak.')
+        case "auth/weak-password":
+          setErrorText(() => "Password is too weak.");
           errorFlag = true;
           break;
-      default:
+        default:
           break;
       }
-      console.log("after switch")
-      
-      if(!errorFlag){
-        console.log("in if statement")
+      console.log("after switch");
+
+      if (!errorFlag) {
+        console.log("in flag statement");
 
         registerUserProfile(res);
         sendSignInLinkToEmail(auth, email, actionCodeSettings);
-        
+
         navigate("/email-sent", {
           state: {
             email: email,
-            firstName: firstName,
-            lastName: lastName,
+            username: username,
+            type: 'sign-up',
           },
         });
       }
-
-    }else{
-      console.log("empty fields")
+    } else {
+      console.log("empty fields");
       setErrorText("Error: Some field(s) are empty");
     }
   };
@@ -118,14 +112,8 @@ const SignUp = () => {
           <input
             className="registration"
             type="text"
-            placeholder="First Name"
-            ref={firstNameRef}
-          />
-          <input
-            className="registration"
-            type="text"
-            placeholder="Last Name"
-            ref={lastNameRef}
+            placeholder="Username"
+            ref={usernameRef}
           />
           <input
             className="registration"
@@ -141,7 +129,9 @@ const SignUp = () => {
             ref={psdRef}
           />
           <button className="registration">Sign Up</button>
-          <p className="registration-error pink-text center-align" >{errorText}</p>
+          <p className="registration-error pink-text center-align">
+            {errorText}
+          </p>
         </form>
       </div>
     </>

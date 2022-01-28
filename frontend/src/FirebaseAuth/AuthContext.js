@@ -10,6 +10,7 @@ import {
     sendPasswordResetEmail
     //, updateProfile,
 } from 'firebase/auth'
+import SignUpAuth from './SignUpAuth'
 
 const AuthContext = React.createContext();
 
@@ -39,24 +40,7 @@ export const AuthProvider = ({children}) =>{
       }, []);
     
     const signUpUser = async (email, password) => {
-        console.log("sign up user")
-        setLoading(true);
-        // also logs them in
-        const check = await createUserWithEmailAndPassword(auth, email, password)
-        .catch(err =>{
-            console.log(err.message)
-            return err.message;
-        })
-        console.table(check)
-        // try{
-        //     const check = await createUserWithEmailAndPassword(auth, email, password)
-        // }catch(err){
-        //     // const check = await createUserWithEmailAndPassword(auth, email, password)
-        //     // .catch()
-        //     console.log(err)
-        //     return err.code
-        // }
-        return auth.currentUser.uid;
+        return SignUpAuth(email, password);
     }
 
     const signInUser = (email, password) => {

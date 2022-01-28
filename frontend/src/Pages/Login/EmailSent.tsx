@@ -1,15 +1,27 @@
 import { useLocation } from 'react-router-dom';
 import './RegistrationStyle.scss';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail, sendSignInLinkToEmail } from 'firebase/auth';
 import {auth} from '../../FirebaseAuth/firebase';
 
 export default function EmailSent(props:any){
     const location:any = useLocation();
     const email = location.state.email;
-    const name = location.state.name;
+    const name = location.state.username;
+    const type = location.state.type;
+
+    const actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be in the authorized domains list in the Firebase Console.
+        url: "http://localhost:3000",
+        // This must be true.
+        handleCodeInApp: true,
+      };
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
-        sendPasswordResetEmail(auth, email)
+        if(type === "sign-up")
+            sendSignInLinkToEmail(auth, email, actionCodeSettings);
+        if(type === 'forgot-pass')
+            sendPasswordResetEmail(auth, email)
     }
     return (
         <>

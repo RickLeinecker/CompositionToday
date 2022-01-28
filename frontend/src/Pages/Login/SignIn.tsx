@@ -10,7 +10,8 @@ const SignIn = () => {
       e.preventDefault();
       const email = emailRef.current?.value;
       const password = psdRef.current?.value;
-      if (email && password) signInUser(email, password);
+      if (email && password) 
+        signInUser(email, password);
   };
 
     return (

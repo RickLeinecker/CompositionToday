@@ -16,8 +16,8 @@ import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 
 function App(this: any) {
     
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    // const [name, setName] = useState('');
+    // const [email, setEmail] = useState('');
 
     const { currentUser } = useAuthContext();
 

@@ -22,7 +22,8 @@ export default function ForgotPassword() {
             })
             navigate('/email-sent', { state:{
                 email: email,
-                name: 'friend'
+                name: 'friend',
+                type: 'forgot-pass'
             }})
         }
     }
