@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
+import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
+import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
+import { Autocomplete, TextField } from '@mui/material';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 
 
 type Props = {
@@ -13,14 +16,18 @@ type Props = {
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
+    tagOptions: TagType[] | undefined;
 }
 
-export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
+    const [newContentImage, setNewContentImage] = useState<File|null>(null);
+    const [newContentImageFilename, setNewContentImageFilename] = useState("");
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
@@ -45,8 +52,28 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
             return false;
         }
     }
+
+    const updateImage = (newFile: File) => {
+        setNewContentImage(newFile);
+        setNewContentImageFilename(newFile.name) 
+    }
+
+    const deleteImageFile = () => {
+        setNewContentImage(null);
+        setNewContentImageFilename(""); 
+    }
     
     async function confirmCreateHandler() {
+
+        let newContentImagePath = null;
+        if(newContentImage !== null){
+            newContentImagePath = await uploadFile(newContentImage, newContentImageFilename, "event image", "uploadImage")
+            if(newContentImagePath === ''){
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID,
@@ -55,6 +82,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 description: newContentDescription,
                 fromDate: toSqlDatetime(newContentFromDate),
                 toDate: toSqlDatetime(newContentToDate),
+                imageFilepath: newContentImagePath,
+                imageFilename: newContentImageFilename,
             }),
             methodType: "POST",
             path: "createContent",
@@ -75,10 +104,12 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
             toast.error('Failed to create event');
         }
 
-        setNewContentName("")
-        setNewContentDescription("")
-        setNewContentToDate(null)
-        setNewContentFromDate(null)
+        setNewContentName("");
+        setNewContentDescription("");
+        setNewContentToDate(null);
+        setNewContentFromDate(null);
+        setNewContentImage(null);
+        setNewContentImageFilename("");
 
         setNameError(false);
         setToDateError(false);
@@ -113,6 +144,27 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                     onChange={setNewContentToDate}
                     error={toDateError}                    
                 />
+                <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={tagOptions!}
+                    onChange={(event, newValue) => setNewContentTags(newValue)}
+                    getOptionLabel={(option) => option.tagName}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    renderInput={(params) => (
+                        <div className='modal-field'>
+                            <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Tags"
+                                placeholder="Tags"
+                                fullWidth
+                            />
+                        </div>
+                    )}
+                /> 
+                <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
+                
             </div>
         </GenericModal>
     )

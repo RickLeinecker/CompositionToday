@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteEventModal from './DeleteEventModal';
 import EditEventModal from './EditEventModal';
 import { useState } from 'react';
+import { Image } from 'react-bootstrap'
 
 type Props = {
     event: EventType;
@@ -14,7 +15,7 @@ type Props = {
 
 
 export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description, fromDate, toDate} = event;
+    const { id, contentName, description, fromDate, toDate, imageFilepath} = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showOptions, setShowOptions] = useState<boolean>(false);
@@ -49,6 +50,7 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
                 <p className="card-text">{description}</p>
                 <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
                 <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
+                <Image className="profile-pic" src={imageFilepath} style={{height: "10%", width: "20%"}}/>
             </div>
         </div>
     )

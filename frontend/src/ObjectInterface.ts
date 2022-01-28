@@ -44,6 +44,7 @@ export type ExperienceType = {
     description?: string;
     fromDate?: Date;
     toDate?: Date;
+    isDateCurrent: boolean;
 }
 
 export type MusicType = {
@@ -67,6 +68,8 @@ export type EventType = {
     description?: string;
     fromDate?: Date;
     toDate?: Date;
+    imageFilepath?: string;
+    imageFilename?: string;
 }
 
 /**
@@ -89,5 +92,9 @@ export type GenericGetHandlerType = {
     path: string;
 }   
 
+export type TagType = {
+    id: number;
+    tagName: string;
+}
 
 

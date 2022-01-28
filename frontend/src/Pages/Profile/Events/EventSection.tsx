@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import GenericHandler from '../../../Handlers/GenericHandler';
-import { GenericHandlerType, EventType } from '../../../ObjectInterface';
+import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
+import { GenericHandlerType, EventType, TagType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateEventModal from './CreateEventModal';
 import EventCard from './EventCard';
@@ -18,6 +20,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
+    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const notifyChange = () => {
         setHasChanged(value => !value);
@@ -55,10 +58,36 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
     }, [userID, notifyChange])
 
 
+    // get tags
+    useEffect(() => {
+        fetchTags();
+        async function fetchTags(){
+            
+            try{
+                let answer = (await GenericGetHandler("getTags"));
+                if(answer.error.length > 0){
+                    // setError(answer.error);
+                    return;
+                }
+                
+                // setError("");
+                const result = await answer.result;
+                setTagOptions(result);
+
+                // setLoading(false);
+                
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+                // setError(DefaultValues.apiErrorMessage);
+            }
+        }
+    },[]);
+
         
     return (
         <>
-            <CreateEventModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateEventModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} tagOptions={tagOptions}/>
             <div>
                 {!error && loading ? <div>...loading</div> 
                 :
@@ -66,15 +95,13 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
                 <Alert variant="danger">{error}</Alert>
                 : 
                 <div>
-                    {response?.map((_result: EventType) => (
-                        <li key={_result.id}>
-                            <EventCard
-                                event={_result}
-                                isMyProfile={true}
-                                notifyChange={notifyChange}
-                            />
-                        </li>
-                    ))}
+                    <GenericVirtualizedList
+                        bodyStyle={{ width: "100%", height: "50vh" }}
+                        individualStyle={{ padding: "1% 1% 20px" }}
+                        items={response}
+                        notifyChange={notifyChange}
+                        type={"event"}
+                    />
                 </div>
                 }
             </div>
