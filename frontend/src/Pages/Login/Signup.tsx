@@ -35,13 +35,13 @@ const SignUp = () => {
       let answer = await GenericHandler(handlerObject);
       console.log(answer.error);
       if (answer.error.length > 0) {
-        toast.error("Failed to create profile");
-        return;
+        toast.error("Failed to create user.");
+        return answer;
       }
-      toast.success("Profile created");
+      toast.success("User created");
     } catch (e: any) {
       console.error("Frontend Error: " + e);
-      toast.error("Failed to create experience");
+      toast.error("Failed to create user.");
     }
   };
 
@@ -87,9 +87,14 @@ const SignUp = () => {
       if (!errorFlag) {
         console.log("in flag statement");
 
-        registerUserProfile(res);
-        sendSignInLinkToEmail(auth, email, actionCodeSettings);
+        const answer = await registerUserProfile(res);
+        if(answer.error.length > 0)
+        {
+          setErrorText(() => "Failed to create user.");
+          errorFlag = true;
+        }
 
+        sendSignInLinkToEmail(auth, email, actionCodeSettings);
         navigate("/email-sent", {
           state: {
             email: email,
@@ -100,7 +105,7 @@ const SignUp = () => {
       }
     } else {
       console.log("empty fields");
-      setErrorText("Error: Some field(s) are empty");
+      setErrorText("Some field(s) are empty");
     }
   };
 

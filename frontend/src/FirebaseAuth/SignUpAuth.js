@@ -2,7 +2,6 @@ import {auth} from './firebase'
 
 import {
     createUserWithEmailAndPassword
-    //, updateProfile,
 } from 'firebase/auth'
 
 async function SignUpAuth (email, password){

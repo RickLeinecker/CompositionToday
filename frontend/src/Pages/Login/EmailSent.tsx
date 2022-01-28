@@ -19,9 +19,14 @@ export default function EmailSent(props:any){
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         if(type === "sign-up")
+        {
+            console.log(type + " = sign-up")
             sendSignInLinkToEmail(auth, email, actionCodeSettings);
-        if(type === 'forgot-pass')
+        }
+        if(type === 'forgot-pass'){
+            console.log(type + " = sign-in")
             sendPasswordResetEmail(auth, email)
+        }
     }
     return (
         <>
