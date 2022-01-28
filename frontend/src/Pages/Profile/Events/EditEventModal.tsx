@@ -40,6 +40,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     const handleConfirmDiscard = (): void => {
         handleCloseEdit();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -129,6 +130,8 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             console.error("Frontend Error: " + e);
             toast.error("Failed to update event")
         }
+
+        handleCloseEdit();
     }
 
     // get tags

@@ -29,7 +29,7 @@ const GenericModal = ({children, title, show, actionText, onHide, confirm, check
 
     const handleSubmit = async () => {
         if(!checkForErrors || await checkForErrors() === false){
-            onHide(); 
+            // onHide(); 
             confirm();
         }
     }
