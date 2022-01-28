@@ -7,7 +7,7 @@ import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import PlacesAutocomplete from './PlacesAutocomplete';
 
@@ -29,6 +29,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentLocation, setNewContentLocation] = useState("");
+    const [newContentMapsEnabled, setNewContentMapsEnabled] = useState(false);
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
@@ -63,6 +65,10 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         setNewContentImage(null);
         setNewContentImageFilename(""); 
     }
+
+    const updateLocation = (newLocation: string) => {
+        setNewContentLocation(newLocation);
+    }
     
     async function confirmCreateHandler() {
 
@@ -85,6 +91,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 toDate: toSqlDatetime(newContentToDate),
                 imageFilepath: newContentImagePath,
                 imageFilename: newContentImageFilename,
+                location: newContentLocation,
+                mapsEnabled: newContentMapsEnabled,
             }),
             methodType: "POST",
             path: "createContent",
@@ -111,6 +119,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         setNewContentFromDate(null);
         setNewContentImage(null);
         setNewContentImageFilename("");
+        setNewContentLocation("");
+        setNewContentMapsEnabled(false);
 
         setNameError(false);
         setToDateError(false);
@@ -164,7 +174,12 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         </div>
                     )}
                 />
-                <PlacesAutocomplete/> 
+                <PlacesAutocomplete updateLocation={updateLocation}/> 
+                <FormControlLabel 
+                        control={<Checkbox checked={newContentMapsEnabled} 
+                        onChange={() => setNewContentMapsEnabled(!newContentMapsEnabled)}/>} 
+                        label="Enable map" 
+                />
                 <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
             </div>
         </GenericModal>

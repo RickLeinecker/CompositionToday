@@ -22,7 +22,7 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-export default function PlacesAutocomplete() {
+export default function PlacesAutocomplete({updateLocation}) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
@@ -103,6 +103,7 @@ export default function PlacesAutocomplete() {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        updateLocation(newValue.description);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
