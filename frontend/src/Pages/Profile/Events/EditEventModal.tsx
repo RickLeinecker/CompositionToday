@@ -12,6 +12,8 @@ import { Alert } from 'react-bootstrap';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 
 type Props = {
     event: EventType;
@@ -30,15 +32,22 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
     const [tagOptions, setTagOptions] = useState<TagType[] | undefined>();
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-    const handleChange = (newValue: string | boolean | File, type: string) => {
-        setNewContentValue(prevState => ({
-            ...prevState,
-            [type]: newValue
-        }));
+    const onHide = (): void => {
+        handleOpenDiscard()
     }
 
-    const handleDateChange = (newValue: Date | null, type: string) => {
+    const handleConfirmDiscard = (): void => {
+        handleCloseEdit();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentValue(event);
+    }
+
+    const handleChange = (newValue: string | boolean | File | Date | null, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -150,7 +159,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
@@ -159,7 +168,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         type={"fromDate"}
                         value={newContentValue.fromDate || null}
                         isRequired={true}
-                        onChange={handleDateChange}
+                        onChange={handleChange}
                         error={fromDateError}
                     />
                     <GenericDatePicker
@@ -167,7 +176,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         type={"toDate"}
                         value={newContentValue.toDate || null}
                         isRequired={true}
-                        onChange={handleDateChange}
+                        onChange={handleChange}
                         error={toDateError}
                     />
                     <Autocomplete
@@ -199,6 +208,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                     {missingLocationError && <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert>}
                 </>
             </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
         </div>
     )
 }
