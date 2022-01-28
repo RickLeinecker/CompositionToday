@@ -59,7 +59,7 @@ const SignUp = () => {
 
   console.log("anything random")
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = emailRef.current?.value;
     const firstName = firstNameRef.current?.value;
@@ -73,15 +73,15 @@ const SignUp = () => {
       console.log(res)
       switch (res){
         case "auth/email-already-in-use":
-          setErrorText('Email is already in use.')
+          setErrorText(() => 'Email is already in use.')
           errorFlag = true;
           break;
       case "auth/invalid-email":
-          setErrorText('Email is not valid.')
+          setErrorText(() => 'Email is not valid.')
           errorFlag = true;
           break;
       case "auth/weak-password":
-          setErrorText('Password is too weak.')
+        //   setErrorText(() => 'Password is too weak.')
           errorFlag = true;
           break;
       default:
@@ -113,7 +113,7 @@ const SignUp = () => {
   return (
     <>
       <div className="form-container sign-up-container">
-        <form className="registration" onSubmit={(e) => {handleSubmit(e);return false}}>
+        <form className="registration" onSubmit={handleSubmit}>
           <h1 className="registration">Create Account</h1>
           <input
             className="registration"
