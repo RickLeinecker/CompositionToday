@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../FirebaseAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
-  getAuth,
-  sendPasswordResetEmail,
   sendSignInLinkToEmail,
 } from "firebase/auth";
 import { auth } from "../../FirebaseAuth/firebase";

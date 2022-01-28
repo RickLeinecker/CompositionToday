@@ -5,7 +5,6 @@ import {
 } from 'firebase/auth'
 
 async function SignUpAuth (email, password){
-    console.log("sign up user")
     
     // also logs them in
     // const check = await createUserWithEmailAndPassword(auth, email, password)
@@ -19,7 +18,6 @@ async function SignUpAuth (email, password){
         return check;
     }catch(err){
 
-        console.log(err)
         return err.code
     }
 }

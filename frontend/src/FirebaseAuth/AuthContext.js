@@ -3,14 +3,10 @@ import {auth} from './firebase'
 import { useNavigate } from 'react-router-dom';
 import SignUpAuth from './SignUpAuth'
 import SignInUserAuth from './SignInUserAuth'
-
+import ResetPasswordAuth from './ResetPasswordAuth';
 import {
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut, 
-    sendPasswordResetEmail
-    //, updateProfile,
 } from 'firebase/auth'
 
 const AuthContext = React.createContext();
@@ -53,8 +49,8 @@ export const AuthProvider = ({children}) =>{
         navigate('/registration');
     }
 
-    const resetPassword = (email) => {
-        return sendPasswordResetEmail(auth, email);
+    const resetPassword = (email, actionCodeSettings) => {
+        return ResetPasswordAuth(email, actionCodeSettings);
       };
 
     useEffect(() => {
