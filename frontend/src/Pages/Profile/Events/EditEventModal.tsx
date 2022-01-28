@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { EventType, GenericHandlerType } from '../../../ObjectInterface';
+import { EventType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import PlacesAutocomplete from './PlacesAutocomplete';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Alert } from 'react-bootstrap';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 
 type Props = {
     event: EventType;
@@ -18,13 +20,16 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
-export default function EditEvent({event, notifyChange, editOpen, handleCloseEdit}: Props) {
+export default function EditEvent({ event, notifyChange, editOpen, handleCloseEdit }: Props) {
     const [newContentValue, setNewContentValue] = useState<EventType>(event)
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
-    const [newContentImage, setNewContentImage] = useState<File|null>(null);
+    const [newContentImage, setNewContentImage] = useState<File | null>(null);
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [missingLocationError, setMissingLocationError] = useState(false);
+    const [tagOptions, setTagOptions] = useState<TagType[] | undefined>();
 
     const handleChange = (newValue: string | boolean | File, type: string) => {
         setNewContentValue(prevState => ({
@@ -51,19 +56,24 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
 
     const checkForErrors = (): boolean => {
         let error = false;
-        
+
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
-        return(error)
+        let isMissingLoc = false;
+        isMissingLoc = newContentValue.mapsEnabled && !newContentValue.location;
+        setMissingLocationError(isMissingLoc);
+        error = isMissingLoc || error;
+
+        return (error)
     }
 
     function checkIfEmpty(value: string | Date | null | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
-        if(!value){
+        if (!value) {
             setError(true);
             return true;
-        } else{
+        } else {
             setError(false);
             return false;
         }
@@ -71,14 +81,14 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
 
     async function confirmEditHandler() {
         let newContentImagePath = null;
-        if(newContentImage !== null){
+        if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
-            if(newContentImagePath === ''){
+            if (newContentImagePath === '') {
                 toast.error('Failed to create event');
                 return;
             }
         }
-        
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -112,35 +122,81 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
         }
     }
 
+    // get tags
+    useEffect(() => {
+        fetchTags();
+        async function fetchTags(){
+            
+            try{
+                let answer = (await GenericGetHandler("getTags"));
+                if(answer.error.length > 0){
+                    // setError(answer.error);
+                    return;
+                }
+                
+                // setError("");
+                const result = await answer.result;
+                setTagOptions(result);
+
+                // setLoading(false);
+                
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+                // setError(DefaultValues.apiErrorMessage);
+            }
+        }
+    },[]);
+
     return (
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
-                    <GenericDatePicker 
-                        title={'Start date'} 
+                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
+                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
+                    <GenericDatePicker
+                        title={'Start date'}
                         type={"fromDate"}
-                        value={newContentValue.fromDate || null} 
-                        isRequired={true} 
+                        value={newContentValue.fromDate || null}
+                        isRequired={true}
                         onChange={handleDateChange}
-                        error={fromDateError}                    
+                        error={fromDateError}
                     />
-                    <GenericDatePicker 
-                        title={'End date'} 
+                    <GenericDatePicker
+                        title={'End date'}
                         type={"toDate"}
-                        value={newContentValue.toDate || null}  
-                        isRequired={true} 
+                        value={newContentValue.toDate || null}
+                        isRequired={true}
                         onChange={handleDateChange}
-                        error={toDateError}               
+                        error={toDateError}
                     />
-                    <PlacesAutocomplete updateLocation={handleChange}/> 
-                    <FormControlLabel 
-                            control={<Checkbox checked={newContentValue.mapsEnabled} 
-                            onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")}/>} 
-                            label="Enable map" 
+                    <Autocomplete
+                        multiple
+                        id="tags-standard"
+                        options={tagOptions!}
+                        onChange={(event, newValue) => setNewContentTags(newValue)}
+                        getOptionLabel={(option) => option.tagName}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderInput={(params) => (
+                            <div className='modal-field'>
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label="Tags"
+                                    placeholder="Tags"
+                                    fullWidth
+                                />
+                            </div>
+                        )}
                     />
-                    <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentValue.imageFilename}/>
+                    <PlacesAutocomplete updateLocation={handleChange} />
+                    <FormControlLabel
+                        control={<Checkbox checked={newContentValue.mapsEnabled}
+                            onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")} />}
+                        label="Enable map"
+                    />
+                    <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
+                    {missingLocationError && <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert>}
                 </>
             </GenericModal>
         </div>

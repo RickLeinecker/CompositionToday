@@ -8,6 +8,7 @@ import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Alert } from 'react-bootstrap';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import PlacesAutocomplete from './PlacesAutocomplete';
 
@@ -35,6 +36,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    const [missingLocationError, setMissingLocationError] = useState(false);
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -42,6 +44,12 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentToDate, setToDateError) || error;
+
+
+        let isMissingLoc = false;
+        isMissingLoc = newContentMapsEnabled && !newContentLocation
+        setMissingLocationError(isMissingLoc);
+        error = isMissingLoc || error;
 
         return(error)
     }
@@ -181,6 +189,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         label="Enable map" 
                 />
                 <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
+                {missingLocationError && <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert>}
             </div>
         </GenericModal>
     )

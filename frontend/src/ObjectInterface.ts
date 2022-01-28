@@ -71,7 +71,7 @@ export type EventType = {
     imageFilepath?: string;
     imageFilename?: string;
     location?: string;
-    mapsEnabled?: boolean
+    mapsEnabled: boolean
 }
 
 /**
