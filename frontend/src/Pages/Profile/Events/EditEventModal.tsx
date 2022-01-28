@@ -6,6 +6,10 @@ import { EventType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
+import PlacesAutocomplete from './PlacesAutocomplete';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
+import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 
 type Props = {
     event: EventType;
@@ -20,8 +24,9 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    const [newContentImage, setNewContentImage] = useState<File|null>(null);
 
-    const handleChange = (newValue: string, type: string) => {
+    const handleChange = (newValue: string | boolean | File, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -33,6 +38,15 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
             ...prevState,
             [type]: newValue
         }));
+    }
+
+    const updateImage = (file: File) => {
+        setNewContentImage(file);
+        handleChange(file.name, "imageFilename")
+    }
+
+    const deleteImageFile = () => {
+        console.log("delete image");
     }
 
     const checkForErrors = (): boolean => {
@@ -56,6 +70,15 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
     }
 
     async function confirmEditHandler() {
+        let newContentImagePath = null;
+        if(newContentImage !== null){
+            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
+            if(newContentImagePath === ''){
+                toast.error('Failed to create event');
+                return;
+            }
+        }
+        
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -65,6 +88,10 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
                 description: newContentValue.description,
                 fromDate: toSqlDatetime(newContentValue.fromDate),
                 toDate: toSqlDatetime(newContentValue.toDate),
+                imageFilepath: newContentImagePath,
+                imageFilename: newContentValue.imageFilename,
+                location: newContentValue.location,
+                mapsEnabled: newContentValue.mapsEnabled,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -107,6 +134,13 @@ export default function EditEvent({event, notifyChange, editOpen, handleCloseEdi
                         onChange={handleDateChange}
                         error={toDateError}               
                     />
+                    <PlacesAutocomplete updateLocation={handleChange}/> 
+                    <FormControlLabel 
+                            control={<Checkbox checked={newContentValue.mapsEnabled} 
+                            onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")}/>} 
+                            label="Enable map" 
+                    />
+                    <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentValue.imageFilename}/>
                 </>
             </GenericModal>
         </div>

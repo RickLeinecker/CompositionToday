@@ -30,7 +30,6 @@ export default function PlacesAutocomplete({updateLocation}) {
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
-      console.log(process.env.REACT_APP_GOOGLE_PLACES_API);
       loadScript(
         'https://maps.googleapis.com/maps/api/js?libraries=places&key='+process.env.REACT_APP_GOOGLE_PLACES_API,
         document.querySelector('head'),
@@ -103,7 +102,7 @@ export default function PlacesAutocomplete({updateLocation}) {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        updateLocation(newValue.description);
+        updateLocation(newValue.description, "location");
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
