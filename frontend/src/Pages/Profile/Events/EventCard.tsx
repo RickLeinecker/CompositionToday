@@ -19,6 +19,7 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showOptions, setShowOptions] = useState<boolean>(false);
+    const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API +"&q=UCF"
 
     return (
         <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
@@ -51,6 +52,15 @@ export default function MusicCard({ event, isMyProfile, notifyChange }: Props) {
                 <p className="card-text">{"Start date: " + fromDate?.toString().substring(0,10)}</p>
                 <p className="card-text">{"End date: " + toDate?.toString().substring(0,10)}</p>
                 <Image className="profile-pic" src={imageFilepath} style={{height: "10%", width: "20%"}}/>
+                {/* <iframe
+                    title="hey"
+                    width="400"
+                    height="300"
+                    style={{border:"0"}}
+                    loading="lazy"
+                    allowFullScreen
+                    src={src}>
+                </iframe> */}
             </div>
         </div>
     )

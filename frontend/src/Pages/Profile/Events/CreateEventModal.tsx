@@ -9,6 +9,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Autocomplete, TextField } from '@mui/material';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
+import PlacesAutocomplete from './PlacesAutocomplete';
 
 
 type Props = {
@@ -162,9 +163,9 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                             />
                         </div>
                     )}
-                /> 
+                />
+                <PlacesAutocomplete/> 
                 <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
-                
             </div>
         </GenericModal>
     )
