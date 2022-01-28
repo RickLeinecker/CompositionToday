@@ -57,6 +57,14 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
         setNewContentAudio(file)
         handleChange(file.name, "audioFilename")
     }
+
+    const deleteSheetMusic = () => {
+        console.log("delete sheet music");
+    }
+
+    const deleteAudio = () => {
+        console.log("delete audio");
+    }
     
     async function confirmEditHandler() {
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
@@ -119,8 +127,8 @@ export default function EditMusicModal({music, notifyChange, editOpen, handleClo
                 <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                 <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
                 <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
-                <GenericFileUpload updateFile = {updateSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentValue.sheetMusicFilename}></GenericFileUpload>
-                <GenericFileUpload updateFile = {updateAudio} type = {".mp3"} name = "audio" filename = {newContentValue.audioFilename}></GenericFileUpload>
+                <GenericFileUpload updateFile = {updateSheetMusic} deleteFile = {deleteSheetMusic} type = {".pdf"} name = "sheet music" filename = {newContentValue.sheetMusicFilename}></GenericFileUpload>
+                <GenericFileUpload updateFile = {updateAudio} deleteFile = {deleteAudio} type = {".mp3"} name = "audio" filename = {newContentValue.audioFilename}></GenericFileUpload>
             </>
         </GenericModal>
     )
