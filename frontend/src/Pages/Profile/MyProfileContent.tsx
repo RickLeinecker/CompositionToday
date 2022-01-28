@@ -1,23 +1,23 @@
 import React from 'react'
 import ArticlesSection from './Articles/ArticlesSection'
-import EventsSection from './Events/EventsSection'
+import EventSection from './Events/EventSection'
 import ExperienceSection from './Experience/ExperienceSection'
 import MusicSection from './Music/MusicSection'
 
 type Props = {
     currentSection: string;
     userID: number;
+    createOpen: boolean;
+    handleCloseCreate: () => void;
 }
 
-export default function MyProfileContent({currentSection, userID}: Props) {
+export default function MyProfileContent({currentSection, userID, createOpen, handleCloseCreate}: Props) {
     return (
-        <div>
-            <div id="sections">
-                    {currentSection === "Experience" && <ExperienceSection userID={userID} />}
-                    {currentSection === "Music" && <MusicSection />}
-                    {currentSection === "Events" && <EventsSection />}
-                    {currentSection === "Articles" && <ArticlesSection />}
-            </div>
+        <div id="sections">
+            {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Music" && <MusicSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
+            {currentSection === "Events" && <EventSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Articles" && <ArticlesSection />}
         </div>
     )
 }

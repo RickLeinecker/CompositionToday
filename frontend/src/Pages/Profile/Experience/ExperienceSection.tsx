@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
-import ExperienceCard from './ExperienceCard';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
+import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 
 type Props = {
     userID: number;
+    createOpen: boolean;
+    handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ userID }: Props) {
+export default function ExperienceSection({ userID, createOpen, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
 
-    const notifyChange = () => {
-        setHasChanged(value => !value);
-    }
+    const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
         async function fetchData() {
@@ -39,7 +39,6 @@ export default function ExperienceSection({ userID }: Props) {
                 setResponse(await answer.result.reverse());
                 setLoading(false);
 
-
             } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 setError(DefaultValues.apiErrorMessage);
@@ -47,32 +46,25 @@ export default function ExperienceSection({ userID }: Props) {
 
         }
         fetchData();
+
     }, [userID, hasChanged])
-
-
 
     return (
         <>
-            <CreateExperienceModal userID={userID} notifyChange={notifyChange}/>
-            <div>
-                {!error && loading ? <div>...loading</div>
+            <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            {
+                !error && loading ? <div>...loading</div>
                     :
-                    error ?
-                        <Alert variant="danger">{error}</Alert>
+                    error ? <Alert variant="danger">{error}</Alert>
                         :
-                        <div>
-                            {response?.map((_result: ExperienceType) => (
-                                <li key={_result.id}>
-                                    <ExperienceCard
-                                        experience={_result}
-                                        isMyProfile={true}
-                                        notifyChange={notifyChange}
-                                    />
-                                </li>
-                            ))}
-                        </div>
-                }
-            </div>
+                        <GenericVirtualizedList
+                            bodyStyle={{ width: "100%", height: "50vh" }}
+                            individualStyle={{ padding: "1% 1% 20px" }}
+                            items={response}
+                            notifyChange={notifyChange}
+                            type={"experience"}
+                        />
+            }
         </>
     )
 }

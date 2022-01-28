@@ -11,7 +11,7 @@ type Props = {
     handleCloseDelete: () => void;
 }
 
-export default function DeleteExperienceModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
+export default function DeleteMusicModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
 
     async function confirmDeleteHandler() {
         const handlerObject: GenericHandlerType = {
@@ -23,15 +23,15 @@ export default function DeleteExperienceModal({ contentID, notifyChange, deleteO
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to delete experience');
+                toast.error('Failed to delete music');
                 return;
             }
 
             notifyChange();
-            toast.success('Experience deleted');
+            toast.success('Music deleted');
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error('Failed to delete experience');
+            toast.error('Failed to delete music');
         }
     }
 

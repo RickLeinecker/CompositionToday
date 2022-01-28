@@ -29,7 +29,7 @@ export type ContentType = {
     audioFilePath?: string;
     sheetMusicFilePath?: string;
     websiteLink?: string;
-    conentTags?: object;
+    contentTags?: object;
     contentName?: string;
     timestamp?: string;
     description?: string;
@@ -42,6 +42,36 @@ export type ExperienceType = {
     contentName: string;
     timestamp: string;
     description?: string;
+    fromDate?: Date;
+    toDate?: Date;
+    isDateCurrent: boolean;
+}
+
+export type MusicType = {
+    id: number;
+    userID: number;
+    contentText: string;
+    contentName: string;
+    timestamp?: string;
+    audioFilepath?: string;
+    audioFilename?: string;
+    sheetMusicFilepath?: string;
+    sheetMusicFilename?: string;
+    description?: string;
+}
+
+export type EventType = {
+    id: number;
+    userID: number;
+    contentName: string;
+    timestamp?: string;
+    description?: string;
+    fromDate?: Date;
+    toDate?: Date;
+    imageFilepath?: string;
+    imageFilename?: string;
+    location?: string;
+    mapsEnabled: boolean
 }
 
 /**
@@ -51,7 +81,7 @@ export type ExperienceType = {
  * @property path: "getContentByType"
  */
 export type GenericHandlerType = {
-    data: string;
+    data: string | FormData;
     methodType: string;
     path: string;
 }
@@ -64,5 +94,9 @@ export type GenericGetHandlerType = {
     path: string;
 }   
 
+export type TagType = {
+    id: number;
+    tagName: string;
+}
 
 

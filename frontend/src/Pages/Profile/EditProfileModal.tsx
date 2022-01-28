@@ -1,22 +1,47 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import GenericHandler from '../../Handlers/GenericHandler';
-import useOpen from '../../Helper/CustomHooks/useOpen';
 import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal'
 import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
+import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
 
 type Props = {
     userProfile: UserProfile;
-    isMyProfile: boolean;
     notifyChange: () => void;
+    editOpen: boolean;
+    handleCloseEdit: () => void;
 }
 
-export default function EditProfileModal({isMyProfile, userProfile, notifyChange}: Props) {
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+
+export default function EditProfileModal({userProfile, notifyChange, editOpen, handleCloseEdit}: Props) {
+
     const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
+    const[newProfilePic, setNewProfilePic] = useState<File | null>(null);
+
+    const [displayNameError, setDisplayNameError] = useState(false);
+    const [bioError, setBioError] = useState(false);
+
+    const checkForErrors = (): boolean => {
+        let error = false;
+        
+        error = checkIfEmpty(newContentValue.displayName, setDisplayNameError) || error;
+        error = checkIfEmpty(newContentValue.bio, setBioError) || error;
+
+        return(error)
+    }
+
+    function checkIfEmpty(value: string | undefined , setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if(!value){
+            setError(true);
+            return true;
+        } else{
+            setError(false);
+            return false;
+        }
+    }
 
     const handleChange = (newValue: string, type: string) => {
         setNewContentValue(prevState => ({
@@ -26,11 +51,23 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
     }
 
     async function confirmEditHandler(){
+
+        let newProfilePicPath = userProfile.profilePicPath;
+        if(newProfilePic !== null){
+            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
+            if(newProfilePicPath === ''){
+                toast.error('Failed to update profile pic');
+                return;
+            }
+        }
+
+        console.log("here is the new profile pic path: " + newProfilePicPath);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 userID: newContentValue.userID,
                 bio: newContentValue.bio,
                 displayName: newContentValue.displayName,
+                profilePicPath: newProfilePicPath,
             }),
             methodType: "PATCH",
             path: "updateUserProfile",
@@ -52,15 +89,23 @@ export default function EditProfileModal({isMyProfile, userProfile, notifyChange
         }
     }
 
+    const updateProfilePic = (file: File) => {
+        setNewProfilePic(file)
+    }
+
     return (
-        <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"}>
-                <>
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true}/>
-                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true}/>
-                </>
-            </GenericModal>
-            {isMyProfile && <Button onClick={handleOpenEdit}>Edit</Button>}
-        </div>
+        <GenericModal 
+        show={editOpen} 
+        title={"Edit"} 
+        onHide={handleCloseEdit} 
+        confirm={confirmEditHandler} 
+        actionText={"Edit"} 
+        checkForErrors={checkForErrors}>
+            <>
+                <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
+                <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
+                <GenericFileUpload updateFile = {updateProfilePic} type = {"image/*"} name = "profile picture" filename = {""}/>
+            </>
+        </GenericModal>
     )
 }
