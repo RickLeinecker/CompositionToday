@@ -6,31 +6,36 @@ import ComposerPaper from './ComposerPaper';
 import GenrePaper from './GenrePaper';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import './ShowcaseStyle.scss';
-import { GenericHandlerType } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Showcase() {
+    const [genres, setGenres] = useState(['Classical', 'Film Score', 'Opera', 'Symphony']);
+
+    const shuffleArray = (array: string[]) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
 
     const getGenres = async () => {
         try {
             let answer = await GenericGetHandler("getComposerGenres");
-            // if (answer.error.length > 0) {
-            //     toast.error('Failed to get data');
-            //     return;
-            // }
-            console.log(answer.result.map((obj:any) => obj.tagName));
+            let list: string[] = answer.result.map((obj: any) => obj.tagName);
+            shuffleArray(list);
+
+            setGenres(list.slice(0, 4));
         } catch (e: any) {
-            console.error("Frontend Error: " + e);
-            toast.error('Failed to create experience');
+            toast.error('Failed to retrieve data');
         }
     }
 
     useEffect(() => {
         getGenres();
     }, [])
-
-    // GenericGetHandler('getComposerGenres').then(res => { JSON.parse(res).then((ans: any) => { console.log(ans) }) });
 
     return (
         <>
@@ -64,18 +69,15 @@ export default function Showcase() {
                 {/* Use an API that randomly selects genre types */}
                 <div className="container">
                     <Grid container>
-                        <Grid item container xs={6} sm={3} justifyContent="center">
-                            <GenrePaper genre='Classical' />
-                        </Grid>
-                        <Grid item container xs={6} sm={3} justifyContent="center">
-                            <GenrePaper genre='Film Score' />
-                        </Grid>
-                        <Grid item container xs={6} sm={3} justifyContent="center">
-                            <GenrePaper genre='Opera' />
-                        </Grid>
-                        <Grid item container xs={6} sm={3} justifyContent="center">
-                            <GenrePaper genre='Symphony' />
-                        </Grid>
+                        {
+                            genres.map((genre) => {
+                                return (
+                                    <Grid item container xs={6} sm={3} justifyContent="center">
+                                        <GenrePaper genre={genre} />
+                                    </Grid>
+                                )
+                            })
+                        }
                     </Grid>
                 </div>
             </Container>

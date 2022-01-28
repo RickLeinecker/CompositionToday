@@ -5,7 +5,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import Marquee from "react-fast-marquee";
-import { style, style2, style3 } from './inlineStyles';
+import { style, style2, style3, marqueeStyle } from './inlineStyles';
 
 export default function ComposerPaper() {
     const [hovering, setHovering] = useState(false);
@@ -36,10 +36,10 @@ export default function ComposerPaper() {
 
     return (
         <Paper elevation={3} sx={style} onClick={() => console.log("tada")} >
-                <Marquee gradient={false} gradientColor={[57, 129, 255]}>
-                    good night test apple roar new words mores
-                </Marquee>
             <Grid container item minHeight='100%' alignItems="center" justifyContent="center" >
+                <Marquee style={{...marqueeStyle, top: '10px'}} delay={2} pauseOnHover gradientWidth={"30%"} gradientColor={[197, 218, 255]}>
+                    {`Do not go gentle into that good night`}
+                </Marquee>
                 <Paper elevation={1} sx={style2} onClick={handleClick} onMouseEnter={handleEnter} onMouseLeave={handleLeave} >
                     <Grid container direction="column" item minHeight='100%' alignItems="stretch" justifyContent="flex-end" >
                         <Box overflow="hidden" ref={containerRef} >
@@ -61,6 +61,9 @@ export default function ComposerPaper() {
                         </Box>
                     </Grid>
                 </Paper>
+                <Marquee style={{...marqueeStyle, bottom: '10px'}} delay={2} pauseOnHover gradientWidth={"20%"} gradientColor={[197, 218, 255]}>
+                    {`Do not go gentle into that good night`}
+                </Marquee>
             </Grid>
         </Paper>
     );
