@@ -1,6 +1,4 @@
-// ignore_for_file: avoid_print
-
-import 'package:composition_today/models/generic_handler.dart';
+// ignore_for_file: avoid_print, unnecessary_null_comparison
 import 'package:composition_today/models/user.dart';
 import 'package:composition_today/services/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,8 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // create user object based on User
-  UserData? _userFromFirebase(User user) {
-    // ignore: unnecessary_null_comparison
+  UserData? _userFromFirebase(User? user) {
     return user != null ? UserData(uid: user.uid) : null;
   }
 
@@ -17,7 +14,7 @@ class AuthService {
   Stream<UserData?> get user {
     return _auth
         .authStateChanges()
-        .map((User? user) => _userFromFirebase(user!));
+        .map((User? user) => _userFromFirebase(user));
   }
 
   //sign in with email and password
@@ -35,12 +32,13 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String username, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user!;
-
+      createUser(user.uid, username, email);
       // create a new document for the user with the uid
       return _userFromFirebase(user);
     } catch (e) {
