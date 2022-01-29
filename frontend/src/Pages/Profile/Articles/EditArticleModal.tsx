@@ -97,7 +97,7 @@ export default function EditArticleModal({article, notifyChange, editOpen, handl
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
+                    <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} isMultiline={true}/>
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
