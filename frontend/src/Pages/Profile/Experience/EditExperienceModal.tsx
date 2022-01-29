@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 
 type Props = {
     experience: ExperienceType;
@@ -22,6 +24,22 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     const [textError, setTextError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+    
+    const onHide = (): void => {
+        handleOpenDiscard()
+    }
+
+    const handleConfirmDiscard = (): void => {
+        handleCloseEdit();
+        handleCloseDiscard();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentValue(experience);
+    }
 
     const handleChange = (newValue: string | Date | null | boolean, type: string) => {
         setNewContentValue(prevState => ({
@@ -83,11 +101,13 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             console.error("Frontend Error: " + e);
             toast.error("Failed to update experience")
         }
+
+        handleCloseEdit();
     }
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={handleCloseEdit} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
@@ -117,6 +137,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                     />
                 </>
             </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
         </div>
     )
 }

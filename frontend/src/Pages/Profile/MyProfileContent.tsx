@@ -17,7 +17,7 @@ export default function MyProfileContent({currentSection, userID, createOpen, ha
             {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
             {currentSection === "Music" && <MusicSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
             {currentSection === "Events" && <EventSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
-            {currentSection === "Articles" && <ArticlesSection />}
+            {currentSection === "Articles" && <ArticlesSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
         </div>
     )
 }

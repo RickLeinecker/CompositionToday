@@ -7,8 +7,12 @@ import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Alert } from 'react-bootstrap';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
+import PlacesAutocomplete from './PlacesAutocomplete';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 
 
 type Props = {
@@ -28,10 +32,40 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
     const [newContentImage, setNewContentImage] = useState<File|null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentLocation, setNewContentLocation] = useState("");
+    const [newContentMapsEnabled, setNewContentMapsEnabled] = useState(false);
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    const [missingLocationError, setMissingLocationError] = useState(false);
+
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    const onHide = (): void => {
+        handleOpenDiscard()
+    }
+
+    const handleConfirmDiscard = (): void => {
+        handleCloseCreate();
+        handleCloseDiscard();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentName("");
+        setNewContentDescription("");
+        setNewContentToDate(null);
+        setNewContentFromDate(null);
+        setNewContentImage(null);
+        setNewContentImageFilename("");
+        setNewContentLocation("");
+        setNewContentMapsEnabled(false);
+
+        setNameError(false);
+        setToDateError(false);
+        setFromDateError(false);
+    }
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -39,6 +73,12 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentToDate, setToDateError) || error;
+
+
+        let isMissingLoc = false;
+        isMissingLoc = newContentMapsEnabled && !newContentLocation
+        setMissingLocationError(isMissingLoc);
+        error = isMissingLoc || error;
 
         return(error)
     }
@@ -62,6 +102,10 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         setNewContentImage(null);
         setNewContentImageFilename(""); 
     }
+
+    const updateLocation = (newLocation: string) => {
+        setNewContentLocation(newLocation);
+    }
     
     async function confirmCreateHandler() {
 
@@ -84,6 +128,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 toDate: toSqlDatetime(newContentToDate),
                 imageFilepath: newContentImagePath,
                 imageFilename: newContentImageFilename,
+                location: newContentLocation,
+                mapsEnabled: newContentMapsEnabled,
             }),
             methodType: "POST",
             path: "createContent",
@@ -104,68 +150,69 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
             toast.error('Failed to create event');
         }
 
-        setNewContentName("");
-        setNewContentDescription("");
-        setNewContentToDate(null);
-        setNewContentFromDate(null);
-        setNewContentImage(null);
-        setNewContentImageFilename("");
-
-        setNameError(false);
-        setToDateError(false);
-        setFromDateError(false);
+        clearFields();
+        handleCloseCreate();
     }
 
     return (
-        <GenericModal 
-        show={createOpen} 
-        title={"Create"} 
-        onHide={handleCloseCreate} 
-        confirm={confirmCreateHandler} 
-        actionText={"Save"} 
-        checkForErrors={checkForErrors}
-        >
-            <div>
-                <GenericInputField title="Event Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
-                <GenericDatePicker 
-                    title={'Start date'} 
-                    type={"fromDate"}
-                    value={newContentFromDate} 
-                    isRequired={true} 
-                    onChange={setNewContentFromDate}
-                    error={fromDateError}                    
-                />
-                <GenericDatePicker 
-                    title={'End date'} 
-                    type={"toDate"}
-                    value={newContentToDate} 
-                    isRequired={true} 
-                    onChange={setNewContentToDate}
-                    error={toDateError}                    
-                />
-                <Autocomplete
-                    multiple
-                    id="tags-standard"
-                    options={tagOptions!}
-                    onChange={(event, newValue) => setNewContentTags(newValue)}
-                    getOptionLabel={(option) => option.tagName}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                    renderInput={(params) => (
-                        <div className='modal-field'>
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Tags"
-                                placeholder="Tags"
-                                fullWidth
-                            />
-                        </div>
-                    )}
-                /> 
-                <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
-                
-            </div>
-        </GenericModal>
+        <>
+            <GenericModal 
+            show={createOpen} 
+            title={"Create"} 
+            onHide={onHide} 
+            confirm={confirmCreateHandler} 
+            actionText={"Save"} 
+            checkForErrors={checkForErrors}
+            >
+                <div>
+                    <GenericInputField title="Event Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
+                    <GenericDatePicker 
+                        title={'Start date'} 
+                        type={"fromDate"}
+                        value={newContentFromDate} 
+                        isRequired={true} 
+                        onChange={setNewContentFromDate}
+                        error={fromDateError}                    
+                    />
+                    <GenericDatePicker 
+                        title={'End date'} 
+                        type={"toDate"}
+                        value={newContentToDate} 
+                        isRequired={true} 
+                        onChange={setNewContentToDate}
+                        error={toDateError}                    
+                    />
+                    <Autocomplete
+                        multiple
+                        id="tags-standard"
+                        options={tagOptions!}
+                        onChange={(event, newValue) => setNewContentTags(newValue)}
+                        getOptionLabel={(option) => option.tagName}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderInput={(params) => (
+                            <div className='modal-field'>
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label="Tags"
+                                    placeholder="Tags"
+                                    fullWidth
+                                />
+                            </div>
+                        )}
+                    />
+                    <PlacesAutocomplete updateLocation={updateLocation} location={""}/> 
+                    <FormControlLabel 
+                            control={<Checkbox checked={newContentMapsEnabled} 
+                            onChange={() => setNewContentMapsEnabled(!newContentMapsEnabled)}/>} 
+                            label="Enable map" 
+                    />
+                    <GenericFileUpload updateFile = {updateImage} deleteFile = {deleteImageFile} type = {"image/*"} name = "image" filename = {newContentImageFilename}/>
+                    {missingLocationError && <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert>}
+                </div>
+            </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
+        </>
     )
 }

@@ -7,6 +7,8 @@ import GenericHandler from '../../../Handlers/GenericHandler';
 import { Alert } from 'react-bootstrap';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 
 type Props = {
     userID: number;
@@ -15,16 +17,41 @@ type Props = {
     handleCloseCreate: () => void;
 }
 
-export default function CreateMusicModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateMusicModal({ userID, notifyChange, createOpen, handleCloseCreate }: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentSheetMusic, setNewContentSheetMusic] = useState<File|null>(null);
+    const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
-    const [newContentAudio, setNewContentAudio] = useState<File|null>(null);
+    const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
-    
+
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    const onHide = (): void => {
+        handleOpenDiscard()
+    }
+
+    const handleConfirmDiscard = (): void => {
+        handleCloseCreate();
+        handleCloseDiscard();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentName("");
+        setNewContentText("");
+        setNewContentDescription("");
+        setNewContentSheetMusic(null);
+        setNewContentSheetMusicFilename("");
+        setNewContentAudio(null);
+        setNewContentAudioFilename("");
+
+        setNameError(false);
+        setTextError(false);
+    }
+
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -32,17 +59,17 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     const updateSheetMusic = (newFile: File) => {
         setNewContentSheetMusic(newFile);
-        setNewContentSheetMusicFilename(newFile?.name) 
+        setNewContentSheetMusicFilename(newFile?.name)
     }
 
     const updateAudio = (newFile: File) => {
         setNewContentAudio(newFile);
-        setNewContentAudioFilename(newFile.name) 
+        setNewContentAudioFilename(newFile.name)
     }
 
     const deleteAudioFile = () => {
         setNewContentAudio(null);
-        setNewContentAudioFilename(""); 
+        setNewContentAudioFilename("");
     }
 
     const deleteSheetMusicFile = () => {
@@ -52,7 +79,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     const checkForErrors = (): boolean => {
         let error = false;
-        
+
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
 
@@ -61,14 +88,14 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
 
-        return(error)
+        return (error)
     }
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
-        if(!value){
+        if (!value) {
             setError(true);
             return true;
-        } else{
+        } else {
             setError(false);
             return false;
         }
@@ -77,18 +104,18 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
     async function confirmCreateHandler() {
 
         let newContentSheetMusicPath = null;
-        if(newContentSheetMusic !== null){
+        if (newContentSheetMusic !== null) {
             newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentSheetMusicFilename, "sheet music", "uploadSheetMusic")
-            if(newContentSheetMusicPath === ''){
+            if (newContentSheetMusicPath === '') {
                 toast.error('Failed to create music');
                 return;
             }
         }
 
         let newContentAudioPath = null;
-        if(newContentAudio !== null){
+        if (newContentAudio !== null) {
             newContentAudioPath = await uploadFile(newContentAudio, newContentAudioFilename, "audio", "uploadAudio")
-            if(newContentAudioPath === ''){
+            if (newContentAudioPath === '') {
                 toast.error('Failed to create music');
                 return;
             }
@@ -126,35 +153,31 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
             toast.error('Failed to create music');
         }
 
-        setNewContentName("");
-        setNewContentText("");
-        setNewContentDescription("");
-        setNewContentSheetMusic(null);
-        setNewContentSheetMusicFilename("");
-        setNewContentAudio(null);
-        setNewContentAudioFilename("");
-
-        setNameError(false);
-        setTextError(false);
+        clearFields();
+        handleCloseCreate();
+        
     }
 
     return (
-        <GenericModal 
-        show={createOpen} 
-        title={"Create"} 
-        onHide={handleCloseCreate} 
-        confirm={confirmCreateHandler} 
-        actionText={"Save"} 
-        checkForErrors={checkForErrors}
-        >
-            <>
-                <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
-                <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>
-                <GenericFileUpload updateFile = {updateSheetMusic} deleteFile = {deleteSheetMusicFile} type = {".pdf"} name = "sheet music" filename = {newContentSheetMusicFilename} />
-                <GenericFileUpload updateFile = {updateAudio} deleteFile = {deleteAudioFile} type = {".mp3"} name = "audio" filename = {newContentAudioFilename}/>
-                {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
-            </>
-        </GenericModal>
+        <div>
+            <GenericModal
+                show={createOpen}
+                title={"Create"}
+                onHide={onHide}
+                confirm={confirmCreateHandler}
+                actionText={"Save"}
+                checkForErrors={checkForErrors}
+            >
+                <>
+                    <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} />
+                    <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} />
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} />
+                    <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
+                    <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
+                    {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
+                </>
+            </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
+        </div>
     )
 }

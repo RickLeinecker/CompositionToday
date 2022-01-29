@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
 import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
+import useOpen from '../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../Helper/Generics/GenericDiscardModal';
 
 type Props = {
     userProfile: UserProfile;
@@ -16,28 +18,43 @@ type Props = {
 }
 
 
-export default function EditProfileModal({userProfile, notifyChange, editOpen, handleCloseEdit}: Props) {
+export default function EditProfileModal({ userProfile, notifyChange, editOpen, handleCloseEdit }: Props) {
 
-    const[newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
-    const[newProfilePic, setNewProfilePic] = useState<File | null>(null);
+    const [newContentValue, setNewContentValue] = useState<UserProfile>(userProfile)
+    const [newProfilePic, setNewProfilePic] = useState<File | null>(null);
 
     const [displayNameError, setDisplayNameError] = useState(false);
     const [bioError, setBioError] = useState(false);
+    const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    const onHide = (): void => {
+        handleOpenDiscard()
+    }
+
+    const handleConfirmDiscard = (): void => {
+        handleCloseEdit();
+        handleCloseDiscard();
+        clearFields();
+    }
+
+    const clearFields = (): void => {
+        setNewContentValue(userProfile);
+    }
 
     const checkForErrors = (): boolean => {
         let error = false;
-        
+
         error = checkIfEmpty(newContentValue.displayName, setDisplayNameError) || error;
         error = checkIfEmpty(newContentValue.bio, setBioError) || error;
 
-        return(error)
+        return (error)
     }
 
-    function checkIfEmpty(value: string | undefined , setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
-        if(!value){
+    function checkIfEmpty(value: string | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+        if (!value) {
             setError(true);
             return true;
-        } else{
+        } else {
             setError(false);
             return false;
         }
@@ -50,12 +67,12 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
         }));
     }
 
-    async function confirmEditHandler(){
+    async function confirmEditHandler() {
 
         let newProfilePicPath = userProfile.profilePicPath;
-        if(newProfilePic !== null){
+        if (newProfilePic !== null) {
             newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
-            if(newProfilePicPath === ''){
+            if (newProfilePicPath === '') {
                 toast.error('Failed to update profile pic');
                 return;
             }
@@ -72,21 +89,23 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
             methodType: "PATCH",
             path: "updateUserProfile",
         }
-        
-        try{
+
+        try {
             let answer = (await GenericHandler(handlerObject));
-            if(answer.error.length > 0){
+            if (answer.error.length > 0) {
                 toast.error('Profile failed to update');
                 return;
             }
-            
+
             notifyChange();
             toast.success('Profile updated');
 
-        } catch(e: any){
+        } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error('Profile failed to update');
         }
+
+        handleCloseEdit();
     }
 
     const updateProfilePic = (file: File) => {
@@ -94,18 +113,21 @@ export default function EditProfileModal({userProfile, notifyChange, editOpen, h
     }
 
     return (
-        <GenericModal 
-        show={editOpen} 
-        title={"Edit"} 
-        onHide={handleCloseEdit} 
-        confirm={confirmEditHandler} 
-        actionText={"Edit"} 
-        checkForErrors={checkForErrors}>
-            <>
-                <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError}/>
-                <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError}/>
-                <GenericFileUpload updateFile = {updateProfilePic} type = {"image/*"} name = "profile picture" filename = {""}/>
-            </>
-        </GenericModal>
+        <>
+            <GenericModal
+                show={editOpen}
+                title={"Edit"}
+                onHide={onHide}
+                confirm={confirmEditHandler}
+                actionText={"Edit"}
+                checkForErrors={checkForErrors}>
+                <>
+                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError} />
+                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError} />
+                    <GenericFileUpload updateFile={updateProfilePic} type={"image/*"} name="profile picture" filename={""} />
+                </>
+            </GenericModal>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
+        </>
     )
 }

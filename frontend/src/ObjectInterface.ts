@@ -47,6 +47,14 @@ export type ExperienceType = {
     isDateCurrent: boolean;
 }
 
+export type ArticleType = {
+    id: number;
+    userID: number;
+    contentText: string;
+    contentName: string;
+    timestamp: string;
+}
+
 export type MusicType = {
     id: number;
     userID: number;
@@ -70,6 +78,8 @@ export type EventType = {
     toDate?: Date;
     imageFilepath?: string;
     imageFilename?: string;
+    location?: string;
+    mapsEnabled: boolean
 }
 
 /**

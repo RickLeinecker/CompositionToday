@@ -1,13 +1,19 @@
-$paper-size: 14rem;
+h1 {
+  &.header {
+      text-align: center;
+      font-weight: 900;
+      margin-bottom: 2rem;
+  }
+}
+
+.container {
+  margin-bottom: 3rem;
+}
 
 .showcase-paper {
   height: 9rem;
   width: 9rem;
   border-radius: 20px;
-}
-
-.color {
-  color: blue;
 }
 
 .img-scale {
@@ -36,7 +42,11 @@ $paper-size: 14rem;
   }
 }
 
-:export {
-  paperSize: $paper-size;
-  innerSize: $paper-size - 5rem;
+.marquee-placement {
+  position: absolute;
+  top: 10px;
+}
+
+#testbutton {
+  background-color: 'red';
 }

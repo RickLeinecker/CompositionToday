@@ -29,7 +29,6 @@ const GenericModal = ({children, title, show, actionText, onHide, confirm, check
 
     const handleSubmit = async () => {
         if(!checkForErrors || await checkForErrors() === false){
-            onHide(); 
             confirm();
         }
     }
@@ -54,7 +53,7 @@ const GenericModal = ({children, title, show, actionText, onHide, confirm, check
                 <Button onClick={onHide}>Close</Button>
                 {!!actionText && actionText==="Save" && <Button className="btn-success" onClick={handleSubmit}>{actionText}</Button>}
                 {!!actionText && actionText==="Edit" && <Button className="btn-warning" onClick={handleSubmit}>{actionText}</Button>}
-                {!!actionText && actionText==="Delete" && <Button className="btn-danger" onClick={handleSubmit}>{actionText}</Button>}
+                {!!actionText && (actionText==="Delete" || actionText==="Discard") && <Button className="btn-danger" onClick={handleSubmit}>{actionText}</Button>}
             </Modal.Footer>
         </Modal>
     );
