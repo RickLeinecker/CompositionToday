@@ -201,7 +201,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                             </div>
                         )}
                     />
-                    <PlacesAutocomplete updateLocation={handleChange} />
+                    <PlacesAutocomplete location={newContentValue.location} updateLocation={handleChange} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentValue.mapsEnabled}
                             onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")} />}
