@@ -38,6 +38,7 @@ const SignUp = () => {
                 return answer;
             }
             toast.success("User created");
+            return answer;
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to create user.");
@@ -48,7 +49,7 @@ const SignUp = () => {
     const actionCodeSettings = {
         // URL you want to redirect back to. The domain (www.example.com) for this
         // URL must be in the authorized domains list in the Firebase Console.
-        url: "http://localhost:3000",
+        url: "http://localhost:3000/registration",
         // This must be true.
         handleCodeInApp: true,
     };
@@ -88,8 +89,8 @@ const SignUp = () => {
                 console.log("in flag statement");
 
                 // auth will get a user from signUpUser iff correct
-                if (!errorFlag) 
-                    await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+                  await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+
                   const answer = await registerUserProfile(res.user.uid);
                   if (answer.error.length > 0) {
                     setErrorText(() => "Failed to create user.");
