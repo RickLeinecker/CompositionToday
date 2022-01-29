@@ -24,10 +24,18 @@ function App() {
                         <Route path="/signup" component={Signup} />
                         <Route path="/login" component={Login} />
                         <Route path="/forgot-password" component={ForgotPassword} />
-                        <PrivateRoute exact path="/blog" component={Blog} />
+                        <PrivateRoute
+                            path="/blog"
+                            component={() => {
+                                window.location.replace(
+                                    "http://compositiontoday.net/comptodayblog"
+                                );
+                                return null;
+                            }}
+                        />
                         <PrivateRoute exact path="/showcase" component={Showcase} />
                         <PrivateRoute exact path="/related-projects" component={RelatedProjects} />
-                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={{userID: 0}}/>
+                        <PrivateRoute exact path="/my-profile" component={MyProfile} props={{ userID: 0 }} />
                     </Switch>
                 </AuthProvider>
             </Router>
