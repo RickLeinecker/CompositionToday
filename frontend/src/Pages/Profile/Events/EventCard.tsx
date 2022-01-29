@@ -2,10 +2,10 @@ import { EventType } from '../../../ObjectInterface';
 import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteEventModal from './DeleteEventModal';
 import EditEventModal from './EditEventModal';
 import { useState } from 'react';
 import { Image } from 'react-bootstrap'
+import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 
 type Props = {
     event: EventType;
@@ -32,11 +32,12 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 </>
             }
 
-            <DeleteEventModal
+            <GenericDeleteModal
                 contentID={id}
                 notifyChange={notifyChange}
                 deleteOpen={deleteOpen}
                 handleCloseDelete={handleCloseDelete}
+                type={"Event"}
             />
 
             <EditEventModal

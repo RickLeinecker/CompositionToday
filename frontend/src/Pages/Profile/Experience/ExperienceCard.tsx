@@ -1,11 +1,11 @@
 import { ExperienceType } from '../../../ObjectInterface';
-import DeleteExperienceModal from './DeleteExperienceModal';
 import EditExperienceModal from './EditExperienceModal';
 import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './ExperienceStyle.scss';
 import { useState } from 'react';
+import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 
 type Props = {
     experience: ExperienceType;
@@ -34,12 +34,13 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                     </div>
                 </>
             }
-
-            <DeleteExperienceModal 
+            
+            <GenericDeleteModal
                 contentID={id}
-                notifyChange={notifyChange} 
+                notifyChange={notifyChange}
                 deleteOpen={deleteOpen}
                 handleCloseDelete={handleCloseDelete}
+                type={"Experience"}
             />
 
             <EditExperienceModal

@@ -3,9 +3,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditMusicModal from './EditMusicModal';
-import DeleteMusicModal from './DeleteMusicModal';
 import ReactAudioPlayer from 'react-audio-player';
 import { useState } from 'react';
+import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 
 type Props = {
     music: MusicType;
@@ -30,12 +30,13 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                     </div>
                 </>
             }
-
-            <DeleteMusicModal
+   
+            <GenericDeleteModal
                 contentID={id}
-                notifyChange={notifyChange} 
+                notifyChange={notifyChange}
                 deleteOpen={deleteOpen}
                 handleCloseDelete={handleCloseDelete}
+                type={"Music"}
             />
 
             <EditMusicModal

@@ -1,7 +1,7 @@
 import React from 'react'
-import GenericHandler from '../../../Handlers/GenericHandler';
-import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import GenericHandler from '../../Handlers/GenericHandler';
+import GenericModal from './GenericModal';
+import { GenericHandlerType } from '../../ObjectInterface';
 import { toast } from 'react-toastify';
 
 type Props = {
@@ -9,9 +9,10 @@ type Props = {
     notifyChange: () => void;
     deleteOpen: boolean;
     handleCloseDelete: () => void;
+    type: string;
 }
 
-export default function DeleteMusicModal({ contentID, notifyChange, deleteOpen, handleCloseDelete}: Props) {
+export default function DeleteEventModal({ contentID, notifyChange, deleteOpen, handleCloseDelete, type}: Props) {
 
     async function confirmDeleteHandler() {
         const handlerObject: GenericHandlerType = {
@@ -23,15 +24,15 @@ export default function DeleteMusicModal({ contentID, notifyChange, deleteOpen, 
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to delete music');
+                toast.error('Failed to delete ' + type);
                 return;
             }
 
             notifyChange();
-            toast.success('Music deleted');
+            toast.success(type + ' deleted');
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error('Failed to delete music');
+            toast.error('Failed to delete ' + type);
         }
     }
 
