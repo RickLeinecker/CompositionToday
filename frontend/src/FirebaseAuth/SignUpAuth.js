@@ -1,11 +1,11 @@
-import {auth} from './firebase'
+import { auth } from './firebase'
 
 import {
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
 } from 'firebase/auth'
 
-async function SignUpAuth (email, password){
-    
+async function SignUpAuth(email, password) {
+
     // also logs them in
     // const check = await createUserWithEmailAndPassword(auth, email, password)
     // .catch(err =>{
@@ -13,10 +13,10 @@ async function SignUpAuth (email, password){
     //     return err.message;
     // })
     // console.table(check)
-    try{
-        const check = await createUserWithEmailAndPassword(auth, email, password)
-        return check;
-    }catch(err){
+    try {
+        const userAuth = await createUserWithEmailAndPassword(auth, email, password);
+        return userAuth;
+    } catch (err) {
 
         return err.code
     }
