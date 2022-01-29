@@ -7,10 +7,11 @@ type Props = {
     value: string | undefined
     error?: boolean
     isRequired: boolean
+    isMultiline?: boolean
     onChange: (newValue: string, type: string) => void;
 }
 
-export default function GenericInputField({title, value, onChange, type, isRequired, error}: Props) {
+export default function GenericInputField({title, value, onChange, type, isRequired, error, isMultiline}: Props) {
     return (
         <div className='modal-field'>
             <TextField
@@ -22,6 +23,7 @@ export default function GenericInputField({title, value, onChange, type, isRequi
                 value={value}
                 error={error}
                 helperText={(error && isRequired && !value) && "This is required"}
+                multiline={isMultiline}
             />
         </div>
     )
