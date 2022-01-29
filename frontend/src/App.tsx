@@ -28,7 +28,6 @@ function App(this: any) {
                     <Route path = '/' element={<Home/>}/>
                 </Route>
 
-                {/* <Route path="*" element={<Registration/>} /> */}
                 <Route path="/registration" element={<Registration/>} />
                 <Route path="/forgot-password" element={<ForgotPassword/>} />
                 <Route path="/email-sent" element={<EmailSent/>} />
@@ -48,6 +47,7 @@ function App(this: any) {
                 <Route element={<PrivateRoute isLogged={currentUser} />}>
                     <Route path ='/my-profile' element={<MyProfile/>}/>
                 </Route>
+                <Route path="*" element={<Registration/>} />
             </Routes>
 
             <ToastContainer
