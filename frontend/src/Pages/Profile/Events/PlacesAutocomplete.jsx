@@ -51,7 +51,7 @@ export default function PlacesAutocomplete({updateLocation, location}) {
 
   React.useEffect(() => {
 
-    if(!used.current){
+    if(!used.current && location){
       setValue(prevValue => {return {...prevValue, description: location}});
       used.current = true;
     }
@@ -109,7 +109,7 @@ export default function PlacesAutocomplete({updateLocation, location}) {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        updateLocation(newValue.description, "location");
+        updateLocation(newValue?.description, "location");
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
