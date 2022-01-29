@@ -31,7 +31,7 @@ exports.createUser = async (req, res) => {
       [uid, isPublisher, username, email],
       function (err, result) {
         if (err) {
-          error = "Create User Error";
+          error = "User Already Exists";
           responseCode = 500;
           console.log(err);
         } else {

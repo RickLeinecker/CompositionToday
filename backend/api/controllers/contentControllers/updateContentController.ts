@@ -183,9 +183,9 @@ exports.updateContent = async (req, res) => {
         // then delete file and let the
         // following query handle the
         // updated filename and filepath
-        if (result.audioFilepath != audioFilepath) {
+        if (result.audioFilepath && result.audioFilepath != audioFilepath) {
           // delete file
-          let modifiedFilepath = audioFilepath.split("/");
+          let modifiedFilepath = result.audioFilepath.split("/");
           modifiedFilepath =
             "/var/www/assets/" +
             modifiedFilepath[3] +
@@ -196,21 +196,14 @@ exports.updateContent = async (req, res) => {
             if (err) {
               error = "Error Updating File";
               console.log(err);
-              // package data
-              var ret = {
-                result: results,
-                error: error,
-              };
-              // send data
-              res.status(responseCode).json(ret);
             } else {
               responseCode = 200;
             }
           });
         }
-        if (result.imageFilepath != imageFilepath) {
+        if (result.imageFilepath && result.imageFilepath != imageFilepath) {
           // delete file
-          let modifiedFilepath = imageFilepath.split("/");
+          let modifiedFilepath = result.imageFilepath.split("/");
           modifiedFilepath =
             "/var/www/assets/" +
             modifiedFilepath[3] +
@@ -221,21 +214,17 @@ exports.updateContent = async (req, res) => {
             if (err) {
               error = "Error Updating File";
               console.log(err);
-              // package data
-              var ret = {
-                result: results,
-                error: error,
-              };
-              // send data
-              res.status(responseCode).json(ret);
             } else {
               responseCode = 200;
             }
           });
         }
-        if (result.sheetMusicFilepath != sheetMusicFilepath) {
+        if (
+          result.sheetMusicFilepath &&
+          result.sheetMusicFilepath != sheetMusicFilepath
+        ) {
           // delete file
-          let modifiedFilepath = sheetMusicFilepath.split("/");
+          let modifiedFilepath = result.sheetMusicFilepath.split("/");
           modifiedFilepath =
             "/var/www/assets/" +
             modifiedFilepath[3] +
@@ -246,14 +235,6 @@ exports.updateContent = async (req, res) => {
             if (err) {
               error = "Error Updating File";
               console.log(err);
-              // package data
-              var ret = {
-                result: results,
-                error: error,
-              };
-              // send data
-              res.status(responseCode).json(ret);
-              return;
             } else {
               responseCode = 200;
             }
