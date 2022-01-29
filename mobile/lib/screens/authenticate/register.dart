@@ -19,14 +19,10 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   // text field state
-  String firstName = '';
-  String lastName = '';
   String username = '';
   String email = '';
   String password = '';
   String error = '';
-  String role = '';
-  int isPublisher = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +110,9 @@ class _RegisterState extends State<Register> {
                             setState(() {
                               loading = true;
                             });
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    username, email, password);
                             if (result == null) {
                               setState(() {
                                 error = 'please supply a valid email';

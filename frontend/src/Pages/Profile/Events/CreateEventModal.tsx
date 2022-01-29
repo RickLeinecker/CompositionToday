@@ -48,6 +48,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
     const handleConfirmDiscard = (): void => {
         handleCloseCreate();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -150,6 +151,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         }
 
         clearFields();
+        handleCloseCreate();
     }
 
     return (
@@ -200,7 +202,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                             </div>
                         )}
                     />
-                    <PlacesAutocomplete updateLocation={updateLocation}/> 
+                    <PlacesAutocomplete updateLocation={updateLocation} location={""}/> 
                     <FormControlLabel 
                             control={<Checkbox checked={newContentMapsEnabled} 
                             onChange={() => setNewContentMapsEnabled(!newContentMapsEnabled)}/>} 

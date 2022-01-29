@@ -1,6 +1,5 @@
 import { Button } from 'react-bootstrap';
 import TopNavBar from '../TopNavBar';
-import useLogout from '../../Helper/CustomHooks/useLogout';
 import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 
 export default function Home() {
@@ -10,7 +9,7 @@ export default function Home() {
             <TopNavBar />
             <div>
                 Homepage
-                <Button variant="link" onClick={logoutUser}>
+                <Button className='testbutton' style={{backgroundColor: 'red'}} variant="link" onClick={logoutUser}>
                     Logout
                 </Button>
             </div>

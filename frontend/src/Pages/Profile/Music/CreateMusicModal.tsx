@@ -35,6 +35,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
     const handleConfirmDiscard = (): void => {
         handleCloseCreate();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -153,6 +154,8 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
         }
 
         clearFields();
+        handleCloseCreate();
+        
     }
 
     return (

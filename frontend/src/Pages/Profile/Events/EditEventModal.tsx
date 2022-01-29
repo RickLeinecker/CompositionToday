@@ -40,6 +40,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     const handleConfirmDiscard = (): void => {
         handleCloseEdit();
+        handleCloseDiscard();
         clearFields();
     }
 
@@ -129,6 +130,8 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             console.error("Frontend Error: " + e);
             toast.error("Failed to update event")
         }
+
+        handleCloseEdit();
     }
 
     // get tags
@@ -198,7 +201,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                             </div>
                         )}
                     />
-                    <PlacesAutocomplete updateLocation={handleChange} />
+                    <PlacesAutocomplete location={newContentValue.location} updateLocation={handleChange} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentValue.mapsEnabled}
                             onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")} />}

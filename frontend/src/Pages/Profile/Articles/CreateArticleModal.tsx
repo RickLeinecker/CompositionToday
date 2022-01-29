@@ -18,19 +18,13 @@ type Props = {
     handleCloseCreate: () => void;
 }
 
-export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateArticleModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
-    const [newContentDescription, setNewContentDescription] = useState("");
-    const [newContentFromDate, setNewContentFromDate] = useState<Date | null>(null);
-    const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
-    const [newContentIsDateCurrent, setNewContentIsDateCurrent] = useState<boolean>(false);
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
-    const [fromDateError, setFromDateError] = useState(false);
-    const [toDateError, setToDateError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -47,15 +41,9 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const clearFields = (): void => {
         setNewContentName("")
         setNewContentText("")
-        setNewContentDescription("")
-        setNewContentToDate(null)
-        setNewContentFromDate(null)
-        setNewContentIsDateCurrent(false)
 
         setNameError(false);
         setTextError(false);
-        setToDateError(false);
-        setFromDateError(false);
     }
 
     const checkForErrors = (): boolean => {
@@ -63,8 +51,6 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         
         error = checkIfEmpty(newContentName, setNameError) || error;
         error = checkIfEmpty(newContentText, setTextError) || error;
-        error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
-        error = (checkIfEmpty(newContentToDate, setToDateError) && !newContentIsDateCurrent) || error;
 
         return(error)
     }
@@ -85,13 +71,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 userID,
                 contentName: newContentName,
                 contentText: newContentText,
-                contentType: "experience",
-                description: newContentDescription,
-                // fromDate: newContentFromDate?.toISOString().slice(0, -1),
-                // toDate: newContentToDate?.toISOString().slice(0, -1),
-                fromDate: toSqlDatetime(newContentFromDate),
-                toDate: toSqlDatetime(newContentToDate),
-                isDateCurrent: newContentIsDateCurrent,
+                contentType: "article",
             }),
             methodType: "POST",
             path: "createContent",
@@ -100,16 +80,16 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to create experience');
+                toast.error('Failed to create article');
                 return;
             }
 
             notifyChange();
-            toast.success('Experience created');
+            toast.success('Article created');
 
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error('Failed to create experience');
+            toast.error('Failed to create article');
         }
 
         clearFields()
@@ -127,32 +107,8 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
-                    <GenericDatePicker 
-                        title={'Start date'} 
-                        type={"fromDate"}
-                        value={newContentFromDate} 
-                        isRequired={true} 
-                        onChange={setNewContentFromDate}
-                        error={fromDateError}                    
-                    />
-                    {!newContentIsDateCurrent &&
-                        <GenericDatePicker 
-                            title={'End date'} 
-                            type={"toDate"}
-                            value={newContentToDate} 
-                            isRequired={true} 
-                            onChange={setNewContentToDate}
-                            error={toDateError}                    
-                        />
-                    }
-                    <FormControlLabel 
-                        control={<Checkbox checked={newContentIsDateCurrent} 
-                        onChange={() => setNewContentIsDateCurrent(!newContentIsDateCurrent)}/>} 
-                        label="I currently hold this position" 
-                    />
+                    <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
