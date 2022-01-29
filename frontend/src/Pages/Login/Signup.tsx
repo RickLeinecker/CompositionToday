@@ -92,14 +92,17 @@ const SignUp = () => {
           errorFlag = true;
         }
 
-        sendSignInLinkToEmail(auth, email, actionCodeSettings);
-        navigate("/email-sent", {
-          state: {
-            email: email,
-            username: username,
-            type: 'sign-up',
-          },
-        });
+        if(!errorFlag)
+        {
+          sendSignInLinkToEmail(auth, email, actionCodeSettings);
+          navigate("/email-sent", {
+            state: {
+              email: email,
+              username: username,
+              type: 'sign-up',
+            },
+          });
+        }
       }
     } else {
       console.log("empty fields");
