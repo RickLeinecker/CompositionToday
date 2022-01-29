@@ -3,13 +3,16 @@ var express = require("express");
 var router = express.Router();
 var multer = require("multer");
 var path = require("path");
+const fs = require("fs");
 
 // uploading a file
 var randomizeFilename;
 const MEGABYTE = 1000000;
-var storage = multer.diskStorage({
+
+// upload audio
+var audioStorage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, "/var/www/assets/test");
+    callback(null, "/var/www/assets/audio");
   },
   filename: function (req, file, callback) {
     randomizeFilename = Date.now() + path.extname(file.originalname);
@@ -17,17 +20,87 @@ var storage = multer.diskStorage({
     callback(null, file.fieldname + "-" + randomizeFilename);
   },
 });
-var desiredNumberOfMegabytes = 5;
-var upload = multer({
-  storage: storage,
-  limits: { fileSize: MEGABYTE * desiredNumberOfMegabytes },
+var desiredNumberOfMegabytesForAudio = 5;
+var uploadAudio = multer({
+  storage: audioStorage,
+  limits: { fileSize: MEGABYTE * desiredNumberOfMegabytesForAudio },
   fileFilter: function (_req, file, cb) {
-    checkFileType(file, cb);
+    checkAudioFileType(file, cb);
   },
 }).single("userFile");
-function checkFileType(file, cb) {
+
+// upload sheetmusic
+var sheetMusicStorage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "/var/www/assets/sheetMusic");
+  },
+  filename: function (req, file, callback) {
+    randomizeFilename = Date.now() + path.extname(file.originalname);
+
+    callback(null, file.fieldname + "-" + randomizeFilename);
+  },
+});
+var desiredNumberOfMegabytesForSheetMusic = 5;
+var uploadSheetMusic = multer({
+  storage: sheetMusicStorage,
+  limits: { fileSize: MEGABYTE * desiredNumberOfMegabytesForSheetMusic },
+  fileFilter: function (_req, file, cb) {
+    checkSheetMusicFileType(file, cb);
+  },
+}).single("userFile");
+
+// upload image
+var imageStorage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "/var/www/assets/images");
+  },
+  filename: function (req, file, callback) {
+    randomizeFilename = Date.now() + path.extname(file.originalname);
+
+    callback(null, file.fieldname + "-" + randomizeFilename);
+  },
+});
+
+var desiredNumberOfMegabytesForImages = 5;
+var uploadImage = multer({
+  storage: imageStorage,
+  limits: { fileSize: MEGABYTE * desiredNumberOfMegabytesForImages },
+  fileFilter: function (_req, file, cb) {
+    checkImageFileType(file, cb);
+  },
+}).single("userFile");
+
+function checkAudioFileType(file, cb) {
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif|mpeg|mp3|pdf/;
+  const filetypes = /mpeg|mp3/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb("Unsupported File Type");
+  }
+}
+function checkImageFileType(file, cb) {
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png|gif/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb("Unsupported File Type");
+  }
+}
+function checkSheetMusicFileType(file, cb) {
+  // Allowed ext
+  const filetypes = /pdf/;
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime
@@ -67,25 +140,28 @@ function checkFileType(file, cb) {
 //   ps.pipe(res); // <---- this makes a trick with stream error handling
 // });
 
-// upload
-router.post("/api/upload", function (req, res) {
+// uploadAudio
+router.post("/api/uploadAudio", function (req, res) {
   var error = "";
   var results = [];
-  var responseCode = 404;
-  upload(req, res, function (err) {
+  var responseCode;
+  uploadAudio(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
       error = err.message;
+      responseCode = 500;
     } else if (err) {
       // An unknown error occurred when uploading.
       error = err;
+      responseCode = 500;
     } else {
       // Everything went fine.
+      responseCode = 200;
       console.log(req.file);
       console.log(req.file.path);
       let fileInfo = {
         filename: req.file.filename,
-        filepath: req.file.path,
+        filepath: "http://compositiontoday.net/audio/" + req.file.filename,
       };
       results.push(fileInfo);
     }
@@ -96,6 +172,117 @@ router.post("/api/upload", function (req, res) {
     };
     // send data
     res.status(responseCode).json(ret);
+  });
+});
+
+// uploadSheetMusic
+router.post("/api/uploadSheetMusic", function (req, res) {
+  var error = "";
+  var results = [];
+  var responseCode;
+  uploadSheetMusic(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      error = err.message;
+      responseCode = 500;
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      error = err;
+      responseCode = 500;
+    } else {
+      // Everything went fine.
+      responseCode = 200;
+      console.log(req.file);
+      console.log(req.file.path);
+      let fileInfo = {
+        filename: req.file.filename,
+        filepath: "http://compositiontoday.net/sheetMusic/" + req.file.filename,
+      };
+      results.push(fileInfo);
+    }
+    // package data
+    var ret = {
+      result: results,
+      error: error,
+    };
+    // send data
+    res.status(responseCode).json(ret);
+  });
+});
+
+// uploadImage
+router.post("/api/uploadImage", function (req, res) {
+  var error = "";
+  var results = [];
+  var responseCode;
+  uploadImage(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      error = err.message;
+      responseCode = 500;
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      error = err;
+      responseCode = 500;
+    } else {
+      // Everything went fine.
+      responseCode = 200;
+      console.log(req.file);
+      console.log(req.file.path);
+      let fileInfo = {
+        filename: req.file.filename,
+        filepath: "http://compositiontoday.net/images/" + req.file.filename,
+      };
+      results.push(fileInfo);
+    }
+    // package data
+    var ret = {
+      result: results,
+      error: error,
+    };
+    // send data
+    res.status(responseCode).json(ret);
+  });
+});
+
+// delete file
+router.delete("/api/deleteFile", async (req, res) => {
+  // incoming: filepath
+  // outgoing: success or error
+
+  let error = "";
+  let results = [];
+  var responseCode = 500;
+
+  const { filepath } = req.body;
+
+  let modifiedFilepath = filepath.split("/");
+  modifiedFilepath =
+    "/var/www/assets/" + modifiedFilepath[3] + "/" + modifiedFilepath[4];
+
+  // delete a file
+  fs.unlink(modifiedFilepath, (err) => {
+    if (err) {
+      error = "Error Deleting File";
+      console.log(err);
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+    } else {
+      responseCode = 200;
+      results.push("File Successfully Deleted");
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+    }
   });
 });
 

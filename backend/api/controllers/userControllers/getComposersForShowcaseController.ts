@@ -1,20 +1,23 @@
 // mysql connection
+
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getComposerGenresController
-exports.getComposerGenres = async (req, res) => {
+// getComposersForShowcase - gets all users from the database
+exports.getComposersForShowcase = async (req, res) => {
   // incoming: nothing
-  // outgoing: tags, error
+  // outgoing: users, error
 
+  // declaring variables for errors and results
   var error = "";
   var results = [];
   var responseCode = 0;
+
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT tag.tagName FROM tag WHERE approvedGenre=1;",
+      "SELECT user.id,user.firstName,user.lastName FROM user WHERE isPublisher=0",
       function (err, result) {
         if (err) {
-          error = "SQL Search Error";
+          error = err;
           responseCode = 500;
           console.log(err);
         } else {
@@ -22,7 +25,7 @@ exports.getComposerGenres = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "No specialization tags exist";
+            error = "No Composers Found";
             responseCode = 500;
           }
         }
@@ -37,5 +40,6 @@ exports.getComposerGenres = async (req, res) => {
       }
     );
   });
+
+  // query database, handle errors, return JSON
 };
-// "SELECT DISTINCT tag.tagName FROM tag INNER JOIN specializationTag ON tag.id=specializationTag.tagID;"

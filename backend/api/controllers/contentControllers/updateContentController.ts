@@ -1,11 +1,13 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
+const fs2 = require("fs");
 
 // updateContent
 exports.updateContent = async (req, res) => {
   // incoming: userID, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
   // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
-  // toDate, fromDate, isDateCurrent, price
+  // toDate, fromDate, isDateCurrent, price, audioFilename, sheetMusicFilename, mapsEnabled
+  // imageFilepath, imageFilename
   // outgoing: error
 
   var error = "";
@@ -31,6 +33,11 @@ exports.updateContent = async (req, res) => {
     fromDate,
     isDateCurrent,
     price,
+    audioFilename,
+    sheetMusicFilename,
+    mapsEnabled,
+    imageFilepath,
+    imageFilename,
   } = req.body;
 
   // build update string with non null fields
@@ -102,7 +109,7 @@ exports.updateContent = async (req, res) => {
     insertString += "fromDate=?,";
     insertArray.push(fromDate);
   }
-  if (isDateCurrent) {
+  if (isDateCurrent == true || isDateCurrent == false) {
     insertString += "isDateCurrent=?,";
     insertArray.push(isDateCurrent);
   }
@@ -110,11 +117,153 @@ exports.updateContent = async (req, res) => {
     insertString += "price=?,";
     insertArray.push(price);
   }
+  if (audioFilename) {
+    insertString += "audioFilename=?,";
+    insertArray.push(audioFilename);
+  }
+  if (sheetMusicFilename) {
+    insertString += "sheetMusicFilename=?,";
+    insertArray.push(sheetMusicFilename);
+  }
+  if (mapsEnabled == true || mapsEnabled == false) {
+    insertString += "mapsEnabled=?,";
+    insertArray.push(mapsEnabled);
+  }
+  if (imageFilepath) {
+    insertString += "imageFilepath=?,";
+    insertArray.push(imageFilepath);
+  }
+  if (imageFilename) {
+    insertString += "imageFilename=?,";
+    insertArray.push(imageFilename);
+  }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";
   insertArray.push(contentID);
 
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      "SELECT content.imageFilepath, content.sheetMusicFilepath, content.audioFilepath FROM content WHERE id=?",
+      [contentID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Search Error";
+          responseCode = 500;
+          console.log(err);
+          // package data
+          var ret = {
+            result: results,
+            error: error,
+          };
+          // send data
+          res.status(responseCode).json(ret);
+          connection.release();
+          return;
+        } else {
+          if (result[0]) {
+            results.push(result[0]);
+            responseCode = 200;
+          } else {
+            error = "Content does not exist";
+            responseCode = 500;
+
+            // package data
+            var ret = {
+              result: results,
+              error: error,
+            };
+            // send data
+            res.status(responseCode).json(ret);
+            connection.release();
+            return;
+          }
+        }
+        // if the filepath does not match,
+        // then delete file and let the
+        // following query handle the
+        // updated filename and filepath
+        if (result.audioFilepath != audioFilepath) {
+          // delete file
+          let modifiedFilepath = audioFilepath.split("/");
+          modifiedFilepath =
+            "/var/www/assets/" +
+            modifiedFilepath[3] +
+            "/" +
+            modifiedFilepath[4];
+          // delete a file
+          fs2.unlink(modifiedFilepath, (err) => {
+            if (err) {
+              error = "Error Updating File";
+              console.log(err);
+              // package data
+              var ret = {
+                result: results,
+                error: error,
+              };
+              // send data
+              res.status(responseCode).json(ret);
+            } else {
+              responseCode = 200;
+            }
+          });
+        }
+        if (result.imageFilepath != imageFilepath) {
+          // delete file
+          let modifiedFilepath = imageFilepath.split("/");
+          modifiedFilepath =
+            "/var/www/assets/" +
+            modifiedFilepath[3] +
+            "/" +
+            modifiedFilepath[4];
+          // delete a file
+          fs2.unlink(modifiedFilepath, (err) => {
+            if (err) {
+              error = "Error Updating File";
+              console.log(err);
+              // package data
+              var ret = {
+                result: results,
+                error: error,
+              };
+              // send data
+              res.status(responseCode).json(ret);
+            } else {
+              responseCode = 200;
+            }
+          });
+        }
+        if (result.sheetMusicFilepath != sheetMusicFilepath) {
+          // delete file
+          let modifiedFilepath = sheetMusicFilepath.split("/");
+          modifiedFilepath =
+            "/var/www/assets/" +
+            modifiedFilepath[3] +
+            "/" +
+            modifiedFilepath[4];
+          // delete a file
+          fs2.unlink(modifiedFilepath, (err) => {
+            if (err) {
+              error = "Error Updating File";
+              console.log(err);
+              // package data
+              var ret = {
+                result: results,
+                error: error,
+              };
+              // send data
+              res.status(responseCode).json(ret);
+              return;
+            } else {
+              responseCode = 200;
+            }
+          });
+        }
+        connection.release();
+      }
+    );
+  });
+  results = [];
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
       if (err) {
@@ -129,6 +278,7 @@ exports.updateContent = async (req, res) => {
           error = "Content does not exist";
           responseCode = 500;
         }
+        // log result
         // console.log(result);
       }
       // package data
