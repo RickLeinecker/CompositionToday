@@ -87,23 +87,25 @@ const SignUp = () => {
             if (!errorFlag) {
                 console.log("in flag statement");
 
-                const answer = await registerUserProfile(res.user.uid);
-                if (answer.error.length > 0) {
+                // auth will get a user from signUpUser iff correct
+                if (!errorFlag) 
+                    await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+                  const answer = await registerUserProfile(res.user.uid);
+                  if (answer.error.length > 0) {
                     setErrorText(() => "Failed to create user.");
                     errorFlag = true;
-                }
+                  }
 
-                // auth will get a user from signUpUser iff correct
-                if (!errorFlag) {
-                    await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+                  if(!errorFlag){
                     navigate("/email-sent", {
-                        state: {
-                            email: email,
-                            username: username,
-                            type: 'sign-up',
-                        },
+                      state: {
+                        email: email,
+                        username: username,
+                        type: 'sign-up',
+                      },
                     });
-                }
+                  }
+
             }
         } else {
             console.log("empty fields");
