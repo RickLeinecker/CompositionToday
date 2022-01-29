@@ -34,6 +34,8 @@ export default function DeleteEventModal({ contentID, notifyChange, deleteOpen, 
             console.error("Frontend Error: " + e);
             toast.error('Failed to delete ' + type);
         }
+
+        handleCloseDelete();
     }
 
     return (
