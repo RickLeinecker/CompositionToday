@@ -202,7 +202,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                             </div>
                         )}
                     />
-                    <PlacesAutocomplete updateLocation={updateLocation}/> 
+                    <PlacesAutocomplete updateLocation={updateLocation} location={""}/> 
                     <FormControlLabel 
                             control={<Checkbox checked={newContentMapsEnabled} 
                             onChange={() => setNewContentMapsEnabled(!newContentMapsEnabled)}/>} 
