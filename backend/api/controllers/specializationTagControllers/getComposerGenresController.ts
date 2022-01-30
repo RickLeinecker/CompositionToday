@@ -11,7 +11,7 @@ exports.getComposerGenres = async (req, res) => {
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT tag.tagName FROM tag WHERE approvedGenre=1;",
+      "SELECT tag.id,tag.tagName,tag.imageFilepath FROM tag WHERE approvedGenre=1;",
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
