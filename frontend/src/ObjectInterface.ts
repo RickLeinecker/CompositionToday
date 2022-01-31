@@ -107,4 +107,7 @@ export type TagType = {
     tagName: string;
 }
 
-
+export type genreType = {
+    tagName: string;
+    imageFilepath: string;
+}

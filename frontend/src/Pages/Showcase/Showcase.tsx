@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { Container } from 'react-bootstrap';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
@@ -7,12 +8,19 @@ import GenrePaper from './GenrePaper';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import './ShowcaseStyle.scss';
 import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { genreType } from '../../ObjectInterface';
+
+const defaultGenres: genreType[] = [
+    { tagName: 'Classical', imageFilepath: 'http://compositiontoday.net/images/pexels-ylanite-koppens-697672.jpg' },
+    { tagName: 'Film Score', imageFilepath: 'http://compositiontoday.net/images/pexels-kyle-loftus-2510428.jpg' },
+    { tagName: 'Opera', imageFilepath: 'http://compositiontoday.net/images/pexels-pixabay-63328.jpg' },
+    { tagName: 'Symphony', imageFilepath: 'http://compositiontoday.net/images/pexels-afroromanzo-4028878.jpg' },
+]
 
 export default function Showcase() {
-    const [genres, setGenres] = useState(['Classical', 'Film Score', 'Opera', 'Symphony']);
+    const [genres, setGenres] = useState<genreType[]>(defaultGenres);
 
-    const shuffleArray = (array: string[]) => {
+    const shuffleArray = (array: object[]) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             const temp = array[i];
@@ -24,8 +32,10 @@ export default function Showcase() {
     const getGenres = async () => {
         try {
             let answer = await GenericGetHandler("getComposerGenres");
-            let list: string[] = answer.result.map((obj: any) => obj.tagName);
+            let list: genreType[] = answer.result;
+            console.log(list)
             shuffleArray(list);
+            console.log(list)
 
             setGenres(list.slice(0, 4));
         } catch (e: any) {
@@ -72,7 +82,7 @@ export default function Showcase() {
                         {
                             genres.map((genre) => {
                                 return (
-                                    <Grid item container xs={6} sm={3} justifyContent="center">
+                                    <Grid key={genre.tagName} item container xs={6} sm={3} justifyContent="center">
                                         <GenrePaper genre={genre} />
                                     </Grid>
                                 )
