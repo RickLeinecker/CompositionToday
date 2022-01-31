@@ -8,9 +8,9 @@ import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
 import MyProfile from './Pages/Profile/MyProfile';
 import { ToastContainer } from 'react-toastify';
-import Registration from './Pages/Login/Registration';
-import EmailSent from './Pages/Login/EmailSent';
-import ForgotPassword from "./Pages/Login/ForgotPassword";
+import Registration from './Pages/Registration/Registration';
+import EmailSent from './Pages/Registration/EmailSent';
+import ForgotPassword from "./Pages/Registration/ForgotPassword";
 import { useState } from "react";
 import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 
