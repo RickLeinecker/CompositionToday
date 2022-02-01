@@ -11,5 +11,5 @@ const app = initializeApp({
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 })
 
-export const auth = getAuth(app)
-export default app
+export const auth = getAuth(app);
+export default app;
