@@ -1,21 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
 import { Container } from 'react-bootstrap';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
 import TopNavBar from '../TopNavBar';
-import ComposerPaper from './ComposerPaper';
-import GenrePaper from './GenrePaper';
-// import GenericHandler from '../../Handlers/GenericHandler';
+import GenericHandler from '../../Handlers/GenericHandler';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import { toast } from 'react-toastify';
-import { genreType } from '../../ObjectInterface';
-import { gridStyle } from './inlineStyles';
+import { GenericHandlerType, genreType } from '../../ObjectInterface';
+import { PlayerContext } from './PlayerContext';
+import ComposerSection from './ComposerSection';
+import GenreSection from './GenreSection';
 import './ShowcaseStyle.scss';
 
 export default function Showcase() {
     const [genres, setGenres] = useState<genreType[]>([]);
+    const [genreClicked, setGenreClicked] = useState<string>("");
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
+    const [stopAllPlayers, setStopAllPlayers] = useState<boolean>(false);
 
+    console.log("Parent Showcase")
+    console.log(genreClicked + !genreClicked);
+
+    useEffect(() => {
+        getFeaturedComposers();
+        getGenres();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        getComposersByGenre(genreClicked);
+        console.log("Changed")
+    }, [genreClicked])
 
     const shuffleArray = (array: object[]) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -43,82 +57,53 @@ export default function Showcase() {
     const getFeaturedComposers = async () => {
         try {
             let answer = await GenericGetHandler("getComposersForShowcase");
-            let list: any[] = answer.result;
-            console.log(list)
-            shuffleArray(list);
-            console.log(list)
 
-            setFeaturedComposers(list.slice(0, 4));
+            setFeaturedComposers(answer.result);
         } catch (e: any) {
             toast.error('Failed to retrieve data');
         }
     }
 
-    useEffect(() => {
-        getFeaturedComposers();
-        getGenres();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const getComposersByGenre = async (genre: string) => {
+        if (!genre)
+            return;
+
+        try {
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({ genre: genre }),
+                methodType: "POST",
+                path: "getComposersByGenre",
+            };
+
+            console.log(genre)
+            let answer = await GenericHandler(handlerObject);
+            console.log(answer);
+            // let list: any[] = answer.result;
+            // console.log(list)
+            // shuffleArray(list);
+            // console.log(list)
+
+            // setFeaturedComposers(list.slice(0, 4));
+        } catch (e: any) {
+            toast.error('Failed to retrieve data');
+        }
+    }
 
     return (
         <>
             <TopNavBar />
-            <Container>
-                <h1>Showcase</h1>
-                <GenericSearch />
-                <h1 className="header" >Featured Composers</h1>
+            <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
+                <Container>
+                    <h1>Showcase</h1>
+                    <GenericSearch />
 
-                <div className="container">
-                    <Grid container>
-                        {
-                            featuredComposers?.map((featuredComposer) => {
-                                return (
-                                    <Grid
-                                        key={featuredComposer.id}
-                                        sx={gridStyle}
-                                        item
-                                        container
-                                        xs={12}
-                                        sm={6}
-                                        lg={3}
-                                        justifyContent="center"
-                                    >
-                                        <ComposerPaper composer={featuredComposer} />
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
-                </div>
+                    <ComposerSection featuredComposers={featuredComposers} />
 
+                    <GenreSection genres={genres} setGenreClicked={setGenreClicked} />
 
-
-                <h1 className="header">Discover Composers By Genre</h1>
-
-                {/* Use an API that randomly selects genre types */}
-                <div className="container">
-                    <Grid container>
-                        {
-                            genres?.map((genre) => {
-                                return (
-                                    <Grid
-                                        key={genre.tagName}
-                                        sx={gridStyle}
-                                        item
-                                        container
-                                        xs={12}
-                                        sm={6}
-                                        lg={3}
-                                        justifyContent="center"
-                                    >
-                                        <GenrePaper genre={genre} />
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
-                </div>
-            </Container>
+                    {!!genreClicked && <h1 className='header'>Composers of {genreClicked}</h1>}
+                </Container>
+            </PlayerContext.Provider>
         </>
     )
 }
