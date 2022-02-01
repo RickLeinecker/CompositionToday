@@ -107,6 +107,11 @@ export type TagType = {
     tagName: string;
 }
 
+export type composerType = {
+    firstName: string;
+    lastName: string;
+}
+
 export type genreType = {
     tagName: string;
     imageFilepath: string;

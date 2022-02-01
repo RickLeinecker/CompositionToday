@@ -5,6 +5,7 @@ import GenericSearch from '../../Helper/Generics/GenericSearch';
 import TopNavBar from '../TopNavBar';
 import ComposerPaper from './ComposerPaper';
 import GenrePaper from './GenrePaper';
+import GenericHandler from '../../Handlers/GenericHandler';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import './ShowcaseStyle.scss';
 import { toast } from 'react-toastify';
@@ -19,6 +20,8 @@ const defaultGenres: genreType[] = [
 
 export default function Showcase() {
     const [genres, setGenres] = useState<genreType[]>(defaultGenres);
+    const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
+
 
     const shuffleArray = (array: object[]) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -33,9 +36,9 @@ export default function Showcase() {
         try {
             let answer = await GenericGetHandler("getComposerGenres");
             let list: genreType[] = answer.result;
-            console.log(list)
+            // console.log(list)
             shuffleArray(list);
-            console.log(list)
+            // console.log(list)
 
             setGenres(list.slice(0, 4));
         } catch (e: any) {
@@ -43,7 +46,22 @@ export default function Showcase() {
         }
     }
 
+    const getFeaturedComposers = async () => {
+        try {
+            let answer = await GenericGetHandler("getComposersForShowcase");
+            let list: any[] = answer.result;
+            console.log(list)
+            shuffleArray(list);
+            console.log(list)
+
+            setFeaturedComposers(list.slice(0, 4));
+        } catch (e: any) {
+            toast.error('Failed to retrieve data');
+        }
+    }
+
     useEffect(() => {
+        getFeaturedComposers();
         getGenres();
     }, [])
 
@@ -57,18 +75,15 @@ export default function Showcase() {
 
                 <div className="container">
                     <Grid container>
-                        <Grid item container xs={6} lg={3} justifyContent="center">
-                            <ComposerPaper />
-                        </Grid>
-                        <Grid item container xs={6} lg={3} justifyContent="center">
-                            <ComposerPaper />
-                        </Grid>
-                        <Grid item container xs={6} lg={3} justifyContent="center">
-                            <ComposerPaper />
-                        </Grid>
-                        <Grid item container xs={6} lg={3} justifyContent="center">
-                            <ComposerPaper />
-                        </Grid>
+                        {
+                            featuredComposers?.map((featuredComposer) => {
+                                return (
+                                    <Grid key={featuredComposer.id} item container xs={6} sm={3} justifyContent="center">
+                                        <ComposerPaper composer={featuredComposer} />
+                                    </Grid>
+                                )
+                            })
+                        }
                     </Grid>
                 </div>
 
@@ -80,7 +95,7 @@ export default function Showcase() {
                 <div className="container">
                     <Grid container>
                         {
-                            genres.map((genre) => {
+                            genres?.map((genre) => {
                                 return (
                                     <Grid key={genre.tagName} item container xs={6} sm={3} justifyContent="center">
                                         <GenrePaper genre={genre} />

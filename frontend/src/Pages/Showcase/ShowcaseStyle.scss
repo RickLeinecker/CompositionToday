@@ -6,6 +6,18 @@ h1 {
   }
 }
 
+.genre-text {
+  margin: 0;
+  color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: extra-condensed;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
 .container {
   margin-bottom: 3rem;
 }
