@@ -7,7 +7,6 @@ import Home from './Pages/Home/Home';
 import PrivateRoute from './FirebaseAuth/PrivateRoute'
 import Login from './Pages/Login/Login';
 import ForgotPassword from './Pages/Login/ForgotPassword';
-import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
 import Showcase from './Pages/Showcase/Showcase';
 import MyProfile from './Pages/Profile/MyProfile';

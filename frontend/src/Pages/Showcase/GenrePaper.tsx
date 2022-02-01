@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 import { style, genreStyle } from './inlineStyles';
 import { genreType } from '../../ObjectInterface';
 

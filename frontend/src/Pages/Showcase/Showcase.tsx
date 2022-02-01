@@ -5,21 +5,15 @@ import GenericSearch from '../../Helper/Generics/GenericSearch';
 import TopNavBar from '../TopNavBar';
 import ComposerPaper from './ComposerPaper';
 import GenrePaper from './GenrePaper';
-import GenericHandler from '../../Handlers/GenericHandler';
+// import GenericHandler from '../../Handlers/GenericHandler';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import './ShowcaseStyle.scss';
 import { toast } from 'react-toastify';
 import { genreType } from '../../ObjectInterface';
-
-const defaultGenres: genreType[] = [
-    { tagName: 'Classical', imageFilepath: 'http://compositiontoday.net/images/pexels-ylanite-koppens-697672.jpg' },
-    { tagName: 'Film Score', imageFilepath: 'http://compositiontoday.net/images/pexels-kyle-loftus-2510428.jpg' },
-    { tagName: 'Opera', imageFilepath: 'http://compositiontoday.net/images/pexels-pixabay-63328.jpg' },
-    { tagName: 'Symphony', imageFilepath: 'http://compositiontoday.net/images/pexels-afroromanzo-4028878.jpg' },
-]
+import { gridStyle } from './inlineStyles';
+import './ShowcaseStyle.scss';
 
 export default function Showcase() {
-    const [genres, setGenres] = useState<genreType[]>(defaultGenres);
+    const [genres, setGenres] = useState<genreType[]>([]);
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
 
 
@@ -63,6 +57,7 @@ export default function Showcase() {
     useEffect(() => {
         getFeaturedComposers();
         getGenres();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -78,7 +73,16 @@ export default function Showcase() {
                         {
                             featuredComposers?.map((featuredComposer) => {
                                 return (
-                                    <Grid key={featuredComposer.id} item container xs={6} sm={3} justifyContent="center">
+                                    <Grid
+                                        key={featuredComposer.id}
+                                        sx={gridStyle}
+                                        item
+                                        container
+                                        xs={12}
+                                        sm={6}
+                                        lg={3}
+                                        justifyContent="center"
+                                    >
                                         <ComposerPaper composer={featuredComposer} />
                                     </Grid>
                                 )
@@ -97,7 +101,16 @@ export default function Showcase() {
                         {
                             genres?.map((genre) => {
                                 return (
-                                    <Grid key={genre.tagName} item container xs={6} sm={3} justifyContent="center">
+                                    <Grid
+                                        key={genre.tagName}
+                                        sx={gridStyle}
+                                        item
+                                        container
+                                        xs={12}
+                                        sm={6}
+                                        lg={3}
+                                        justifyContent="center"
+                                    >
                                         <GenrePaper genre={genre} />
                                     </Grid>
                                 )
