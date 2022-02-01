@@ -17,9 +17,6 @@ export default function Showcase() {
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
     const [stopAllPlayers, setStopAllPlayers] = useState<boolean>(false);
 
-    console.log("Parent Showcase")
-    console.log(genreClicked + !genreClicked);
-
     useEffect(() => {
         getFeaturedComposers();
         getGenres();
@@ -28,7 +25,7 @@ export default function Showcase() {
 
     useEffect(() => {
         getComposersByGenre(genreClicked);
-        console.log("Changed")
+        // console.log("Changed")
     }, [genreClicked])
 
     const shuffleArray = (array: object[]) => {
@@ -75,9 +72,7 @@ export default function Showcase() {
                 path: "getComposersByGenre",
             };
 
-            console.log(genre)
             let answer = await GenericHandler(handlerObject);
-            console.log(answer);
             // let list: any[] = answer.result;
             // console.log(list)
             // shuffleArray(list);

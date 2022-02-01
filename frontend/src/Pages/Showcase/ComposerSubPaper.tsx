@@ -14,8 +14,6 @@ export default function ComposerSubPaper() {
     const containerRef = useRef(null);
     const { stopAllPlayers, setStopAllPlayers } = useContext(PlayerContext);
 
-    console.log("Child Composer");
-
     useEffect(() => {
         setPlaying(false);
 
