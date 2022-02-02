@@ -25,9 +25,9 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
         async function fetchData(){
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "article"}),
+                data: JSON.stringify({contentType: "article", userID}),
                 methodType: "POST",
-                path: "getContentByType",
+                path: "getUserContentByType",
             }
 
             try{

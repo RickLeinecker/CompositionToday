@@ -28,9 +28,9 @@ export default function Profile(props: any) {
     useEffect(() => {
         async function fetchUser(){
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({uid: currentUid}),
+                data: JSON.stringify({username: username}),
                 methodType: "POST",
-                path: "getLoggedInUser",
+                path: "readUserByUsername",
             }
             
             try{
@@ -48,66 +48,8 @@ export default function Profile(props: any) {
                     firstName: result.firstName,
                     lastName: result.lastName,
                     email: result.email,
-                    uid: currentUid,
+                    uid: result.uid,
                 });
-                setLoading(false);
-                
-
-            } catch(e: any){
-                console.error("Frontend Error: " + e);
-                setError(DefaultValues.apiErrorMessage);
-            }
-        
-        }
-        // async function fetchUser(){
-        //     const handlerObject: GenericHandlerType = {
-        //         data: JSON.stringify({username: username}),
-        //         methodType: "POST",
-        //         path: "readUserByUsername",
-        //     }
-            
-        //     try{
-        //         let answer = (await GenericHandler(handlerObject));
-        //         if(answer.error.length > 0){
-        //             setError(answer.error);
-        //             return;
-        //         }
-                
-        //         setError("");
-        //         const result = await answer.result;
-        //         setUser({
-        //             id: result.id,
-        //             userProfileID: result.userProfileID,
-        //             firstName: result.firstName,
-        //             lastName: result.lastName,
-        //             email: result.email,
-
-        //         });
-        //         setLoading(false);
-                
-
-        //     } catch(e: any){
-        //         console.error("Frontend Error: " + e);
-        //         setError(DefaultValues.apiErrorMessage);
-        //     }
-        
-        // }
-        async function fetchUserProfile(){
-            const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({username: username}),
-                methodType: "POST",
-                path: "getUserProfileByUsername",
-            }
-            
-            try{
-                let answer = (await GenericHandler(handlerObject));
-                if(answer.error.length > 0){
-                    setError(answer.error);
-                    return;
-                }
-                
-                setError("");
-                const result = await answer.result;
                 setUserProfile({
                     userID: result.userID,
                     bio: result.bio,
@@ -125,8 +67,7 @@ export default function Profile(props: any) {
         }
 
         fetchUser();
-        fetchUserProfile();
-    },[currentUid, hasChanged])
+    },[currentUid, hasChanged, username])
 
     return (
         <>
