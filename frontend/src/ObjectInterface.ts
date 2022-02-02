@@ -111,4 +111,20 @@ export type TagType = {
     tagName: string;
 }
 
+export type composerType = {
+    id: number;
+    uid: string | null;
+    firstName: string;
+    lastName: string;
+    username: string | null;
+    email: string | null;
+    isPublisher: number;
+    profilePicPath: string | null;
+    audioFilename: string | null;
+    audioFilepath: string | null;
+}
 
+export type genreType = {
+    tagName: string;
+    imageFilepath: string;
+}
