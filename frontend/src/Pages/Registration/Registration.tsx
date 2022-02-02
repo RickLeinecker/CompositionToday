@@ -1,10 +1,9 @@
 import SignIn from "./SignIn";
-import Signup from "./Signup";
+import SignUp from "./Signup";
 import './RegistrationStyle.scss';
 import { useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../FirebaseAuth/firebase'
-import SignUp from "./Signup";
 
 export default function Registration() {
     const [currentUser, setCurrentUser] = useState({});
@@ -29,14 +28,14 @@ export default function Registration() {
                 <div className="container registration" ref={container}>
                     <SignIn />
                     <SignUp />
-                    <div className="overlay-container registration">
-                        <div className="overlay">
-                            <div className="overlay-panel overlay-left">
+                    <div className="overlayer-container registration">
+                        <div className="overlayer">
+                            <div className="overlayer-panel overlayer-left">
                                 <h1 className="registration">Welcome Back!</h1>
                                 <p className="registration">To keep connected with us please login with your personal info</p>
                                 <button className="ghost registration" id="signIn" onClick={handleSignIn}>Sign In</button>
                             </div>
-                            <div className="overlay-panel overlay-right">
+                            <div className="overlayer-panel overlayer-right">
                                 <h1 className="registration">Hello, Friend!</h1>
                                 <p className="registration">Enter your personal details and start your journey with us</p>
                                 <button className="ghost registration" id="signUp" onClick={handleSignUp}>Sign Up</button>
