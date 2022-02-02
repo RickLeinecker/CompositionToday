@@ -4,7 +4,7 @@ import useOpen from '../../Helper/CustomHooks/useOpen'
 import { User, UserProfile } from '../../ObjectInterface'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import EditProfileModal from './EditProfileModal'
-import MyProfileContent from './MyProfileContent'
+import ProfileContent from './ProfileContent'
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { auth } from '../../FirebaseAuth/firebase'
@@ -15,7 +15,7 @@ type Props = {
     notifyChange: () => void;
 }
 
-export default function MyProfileContentSelector({user, userProfile, notifyChange}: Props) {
+export default function ProfileContentSelector({user, userProfile, notifyChange}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
     const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
@@ -103,7 +103,7 @@ export default function MyProfileContentSelector({user, userProfile, notifyChang
                     </div>
                     </div>
                     <div className='content-scroll'>
-                        <MyProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
+                        <ProfileContent currentSection={currentSection} userID={user.id} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
                     </div>
                 </div>
             </div>

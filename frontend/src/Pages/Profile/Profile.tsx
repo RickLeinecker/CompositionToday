@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import TopNavBar from '../TopNavBar'
-import './MyProfileStyle.scss'
+import './ProfileStyle.scss'
 import DefaultValues from '../../Styles/DefaultValues.module.scss'
 import { getAuth } from 'firebase/auth'
 import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface'
 import GenericHandler from '../../Handlers/GenericHandler'
-import MyProfileContentSelector from './MyProfileContentSelector'
-import { useNavigate, useParams } from 'react-router-dom'
+import ProfileContentSelector from './ProfileContentSelector'
+import { useParams } from 'react-router-dom'
 
-export default function MyProfile(props: any) {
+export default function Profile(props: any) {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -137,7 +137,7 @@ export default function MyProfile(props: any) {
                     <div>...loading</div> 
                 :
                 (user && userProfile && !error) ? 
-                    <MyProfileContentSelector user={user} userProfile={userProfile} notifyChange={notifyChange}/>
+                    <ProfileContentSelector user={user} userProfile={userProfile} notifyChange={notifyChange}/>
                 :
                     <Alert variant="danger">{error}</Alert>
                 }

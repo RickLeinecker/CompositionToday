@@ -11,7 +11,7 @@ type Props = {
     handleCloseCreate: () => void;
 }
 
-export default function MyProfileContent({currentSection, userID, createOpen, handleCloseCreate}: Props) {
+export default function ProfileContent({currentSection, userID, createOpen, handleCloseCreate}: Props) {
     return (
         <div id="sections">
             {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}

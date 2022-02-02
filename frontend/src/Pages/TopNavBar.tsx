@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Nav, Navbar, Image, NavDropdown } from 'react-bootstrap';
 import useLogout from "../Helper/CustomHooks/useLogout";
 import GenericSearch from '../Helper/Generics/GenericSearch';
+import { useAuthContext } from "../FirebaseAuth/AuthContext";
 
 export default function TopNavBar() {
     const { handleLogout } = useLogout();
+    const { currentUser } = useAuthContext()
     return (
         <Navbar className="px-5" bg="light" expand="lg">
             <Navbar.Brand as={Link} to="/">Composition Today</Navbar.Brand>
@@ -21,7 +23,7 @@ export default function TopNavBar() {
                 </Nav>
 
                 <Nav className="ms-auto">
-                    <Nav.Link as={Link} to="/my-profile">
+                    <Nav.Link as={Link} to={`/profile/${currentUser.username}`}>
                         <Image
                             className={"d-inline-block align-top me-2"}
                             src="img_avatar.png"
@@ -31,7 +33,7 @@ export default function TopNavBar() {
                         />
                     </Nav.Link>
                     <NavDropdown align="end" title="[Username]">
-                        <NavDropdown.Item as={Link} to="/my-profile">My Profile</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to={`/profile/${currentUser.username}`}>My Profile</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                     </NavDropdown>
