@@ -1,5 +1,6 @@
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {useAuthContext } from './FirebaseAuth/AuthContext';
+import { useAuthContext } from './FirebaseAuth/AuthContext';
 import { Routes, Route } from 'react-router-dom'
 import Home from './Pages/Home/Home';
 import Blog from './Pages/Blog/Blog';
@@ -11,51 +12,58 @@ import EmailSent from './Pages/Registration/EmailSent';
 import ForgotPassword from "./Pages/Registration/ForgotPassword";
 import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 import Profile from "./Pages/Profile/Profile";
+import { UsernameContext } from "./FirebaseAuth/UsernameContext";
 
 function App(this: any) {
-
+    const [username, setUsername] = useState<string>("");
     const { currentUser } = useAuthContext();
 
+    function updateUsername(newUsername: string){
+        setUsername(newUsername);
+    }
     return (
         <>
-            <Routes>
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path = '/' element={<Home/>}/>
-                </Route>
+            <UsernameContext.Provider value={{username, updateUsername}}>
 
-                <Route path="/registration" element={<Registration/>} />
-                <Route path="/forgot-password" element={<ForgotPassword/>} />
-                <Route path="/email-sent" element={<EmailSent/>} />
+                <Routes>
+                    <Route element={<PrivateRoute isLogged={currentUser} />}>
+                        <Route path='/' element={<Home />} />
+                    </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/blog' element={<Blog/>} />
-                </Route>
+                    <Route path="/registration" element={<Registration />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/email-sent" element={<EmailSent />} />
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/showcase' element={<Showcase/>}/>
-                </Route>
+                    <Route element={<PrivateRoute isLogged={currentUser} />}>
+                        <Route path='/blog' element={<Blog />} />
+                    </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/related-projects' element={<RelatedProjects/>}/>
-                </Route>
+                    <Route element={<PrivateRoute isLogged={currentUser} />}>
+                        <Route path='/showcase' element={<Showcase />} />
+                    </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/profile/:username' element={<Profile/>}/>
-                </Route>
-                <Route path="*" element={<Registration/>} />
-            </Routes>
+                    <Route element={<PrivateRoute isLogged={currentUser} />}>
+                        <Route path='/related-projects' element={<RelatedProjects />} />
+                    </Route>
 
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+                    <Route element={<PrivateRoute isLogged={currentUser} />}>
+                        <Route path='/profile/:username' element={<Profile />} />
+                    </Route>
+                    <Route path="*" element={<Registration />} />
+                </Routes>
+
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
+            </UsernameContext.Provider>
         </>
     )
 }
