@@ -98,9 +98,11 @@ export default function ProfileContentSelector({user, userProfile, notifyChange}
                         <h1>{currentSection}</h1>
                     </div>
                     
-                    <div style={{position: "absolute", top: "0.5em", right: "1%"}}>
-                        <AddCircleIcon style={{fontSize: "5vw"}} onClick={handleOpenCreate}/>
-                    </div>
+                    {isMyProfile &&
+                        <div style={{position: "absolute", top: "0.5em", right: "1%"}}>
+                            <AddCircleIcon style={{fontSize: "5vw"}} onClick={handleOpenCreate}/>
+                        </div>
+                    }   
                     </div>
                     <div className='content-scroll'>
                         <ProfileContent currentSection={currentSection} userID={userProfile.userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
