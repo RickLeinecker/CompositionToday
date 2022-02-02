@@ -1,19 +1,15 @@
-import useLogout from '../../Helper/CustomHooks/useLogout';
-// import { Button } from 'react-bootstrap';
-
+import { Button } from 'react-bootstrap';
 import TopNavBar from '../TopNavBar';
-import '../Showcase/ShowcaseStyle.scss';
-import { Button } from '@mui/material';
+import { useAuthContext } from '../../FirebaseAuth/AuthContext';
 
 export default function Home() {
-    const { handleLogout } = useLogout();
-
+    const { logoutUser} = useAuthContext();
     return (
         <>
             <TopNavBar />
             <div>
                 Homepage
-                <Button className='testbutton' style={{backgroundColor: 'red'}} onClick={handleLogout}>
+                <Button className='testbutton' style={{backgroundColor: 'red'}} variant="link" onClick={logoutUser}>
                     Logout
                 </Button>
             </div>

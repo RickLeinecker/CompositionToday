@@ -12,7 +12,7 @@ export default function ComposerPaper({ composer }: ComposerProps) {
     return (
         <Paper elevation={3} sx={style} onClick={() => console.log("tada")} >
             <Grid container item minHeight='100%' alignItems="center" justifyContent="center" >
-                <Marquee style={{ ...marqueeStyle, top: '10px' }} delay={2} pauseOnHover gradientWidth={"30%"} gradientColor={[197, 218, 255]}>
+                <Marquee style={{ ...marqueeStyle, top: '10px' }} delay={2} pauseOnHover gradientWidth={"20%"} gradientColor={[197, 218, 255]}>
                     {composer.audioFilename !== null ? composer.audioFilename : "Composer has no featured piece"}
                 </Marquee>
                 <ComposerSubPaper />

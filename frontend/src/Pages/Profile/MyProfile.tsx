@@ -7,6 +7,7 @@ import { getAuth } from 'firebase/auth'
 import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface'
 import GenericHandler from '../../Handlers/GenericHandler'
 import MyProfileContentSelector from './MyProfileContentSelector'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function MyProfile(props: any) {
 

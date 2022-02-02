@@ -1,32 +1,57 @@
 import React, {useContext, useEffect, useState } from 'react'
 import {auth} from './firebase'
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail} from 'firebase/auth'
+import { useNavigate } from 'react-router-dom';
+import SignUpAuth from './SignUpAuth'
+import SignInUserAuth from './SignInUserAuth'
+import ResetPasswordAuth from './ResetPasswordAuth';
+import {
+    onAuthStateChanged,
+    signOut, 
+} from 'firebase/auth'
 
 const AuthContext = React.createContext();
 
-export function useAuth(){
+
+export const useAuthContext = () =>{
     return useContext(AuthContext)
 }
 
-export function AuthProvider({children}){
-    const [currentUser, setCurrentUser] = useState();
+export const AuthProvider = ({children}) =>{
+    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    function signup(email, password){
-        createUserWithEmailAndPassword(auth, email, password)
+    useEffect(() => {
+        setLoading(true);
+        const unsubscribe = onAuthStateChanged(auth, (res) => {
+          if (res) {
+            setCurrentUser(res);
+          } else {
+            setCurrentUser(null);
+          }
+          setError("");
+          setLoading(false);
+        });
+        return unsubscribe;
+      }, []);
+    
+    const signUpUser = async (email, password) => {
+        return SignUpAuth(email, password);
     }
 
-    function login(email, password){
-        signInWithEmailAndPassword(auth, email, password)
+    const signInUser = (email, password) => {
+        return SignInUserAuth(email, password);
     }
 
-    function logout(){
+    const logoutUser = () => {
         signOut(auth)
+        navigate('/registration');
     }
 
-    function resetPassword(email){
-        sendPasswordResetEmail(auth, email)
-    }
+    const resetPassword = (email, actionCodeSettings) => {
+        return ResetPasswordAuth(email, actionCodeSettings);
+      };
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -39,15 +64,15 @@ export function AuthProvider({children}){
 
     const value = {
         currentUser,
-        signup, 
-        login,
-        logout,
+        loading,
+        error,
+        signUpUser, 
+        signInUser,
+        logoutUser,
         resetPassword
     }
 
     return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
+        <AuthContext.Provider value={value}> {!loading && children} </AuthContext.Provider>
     )
 }
