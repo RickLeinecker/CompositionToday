@@ -7,7 +7,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 type Props = {
     music: MusicType;
@@ -50,7 +50,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
             
             <div className="card-body">
                 
-                <Link to="/my-profile">
+                <Link to={`/my-profile/${username}`}>
                     <div style={{marginBottom: "3%", display: "flex", alignItems: "center"}}>
                         <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
                         <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>

@@ -18,6 +18,8 @@ export default function MyProfile(props: any) {
     const currentUid = getAuth().currentUser?.uid;
     const [hasChanged, setHasChanged] = useState(false);
 
+    const {username} = useParams();
+
     const notifyChange = () => {
         setHasChanged(value => !value);
     }
@@ -46,7 +48,7 @@ export default function MyProfile(props: any) {
                     firstName: result.firstName,
                     lastName: result.lastName,
                     email: result.email,
-
+                    uid: currentUid,
                 });
                 setLoading(false);
                 
@@ -57,11 +59,44 @@ export default function MyProfile(props: any) {
             }
         
         }
+        // async function fetchUser(){
+        //     const handlerObject: GenericHandlerType = {
+        //         data: JSON.stringify({username: username}),
+        //         methodType: "POST",
+        //         path: "readUserByUsername",
+        //     }
+            
+        //     try{
+        //         let answer = (await GenericHandler(handlerObject));
+        //         if(answer.error.length > 0){
+        //             setError(answer.error);
+        //             return;
+        //         }
+                
+        //         setError("");
+        //         const result = await answer.result;
+        //         setUser({
+        //             id: result.id,
+        //             userProfileID: result.userProfileID,
+        //             firstName: result.firstName,
+        //             lastName: result.lastName,
+        //             email: result.email,
+
+        //         });
+        //         setLoading(false);
+                
+
+        //     } catch(e: any){
+        //         console.error("Frontend Error: " + e);
+        //         setError(DefaultValues.apiErrorMessage);
+        //     }
+        
+        // }
         async function fetchUserProfile(){
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({uid: currentUid}),
+                data: JSON.stringify({username: username}),
                 methodType: "POST",
-                path: "readUserProfileByUID",
+                path: "getUserProfileByUsername",
             }
             
             try{

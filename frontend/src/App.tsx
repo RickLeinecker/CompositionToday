@@ -45,7 +45,7 @@ function App(this: any) {
                 </Route>
 
                 <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path ='/my-profile' element={<MyProfile/>}/>
+                    <Route path ='/my-profile/:username' element={<MyProfile/>}/>
                 </Route>
                 <Route path="*" element={<Registration/>} />
             </Routes>

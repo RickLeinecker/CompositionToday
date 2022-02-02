@@ -7,6 +7,7 @@ import EditProfileModal from './EditProfileModal'
 import MyProfileContent from './MyProfileContent'
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { auth } from '../../FirebaseAuth/firebase'
 
 type Props = {
     user: User;
@@ -17,17 +18,24 @@ type Props = {
 export default function MyProfileContentSelector({user, userProfile, notifyChange}: Props) {
 
     const [currentSection, setCurrentSection] = useState<string>("Experience")
-    const [isMyProfile, setIsMyProfile] = useState<boolean>(true);
+    const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     
     // sets current section button color to selected 
     useEffect(() => {
+        setIsMyProfile(false);
+        if(user.uid === auth.currentUser?.uid){
+            setIsMyProfile(true);
+        }
+    }, [user])
+
+    // sets current section button color to selected 
+    useEffect(() => {
         let property = document.getElementById(currentSection)
 
-        if(property != null)
+        if(property !== null)
             property.style.background = DefaultValues.secondaryColor
-        console.log(property + " this is property")
 
         return () => {
         }
