@@ -56,6 +56,10 @@ export type ArticleType = {
 }
 
 export type MusicType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentText: string;

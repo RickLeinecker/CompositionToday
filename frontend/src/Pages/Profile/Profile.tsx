@@ -1,34 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { Alert } from 'react-bootstrap'
-import TopNavBar from '../TopNavBar'
-import './MyProfileStyle.scss'
-import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import { getAuth } from 'firebase/auth'
-import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface'
-import GenericHandler from '../../Handlers/GenericHandler'
-import MyProfileContentSelector from './MyProfileContentSelector'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { Alert } from 'react-bootstrap';
+import TopNavBar from '../TopNavBar';
+import './ProfileStyle.scss';
+import DefaultValues from '../../Styles/DefaultValues.module.scss';
+import { getAuth } from 'firebase/auth';
+import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface';
+import GenericHandler from '../../Handlers/GenericHandler';
+import ProfileContentSelector from './ProfileContentSelector';
+import { useParams } from 'react-router-dom';
+import { ProfileContext } from './ProfileContext';
+import { auth } from '../../FirebaseAuth/firebase';
 
-export default function MyProfile(props: any) {
-
+export default function Profile(props: any) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User>();
     const [userProfile, setUserProfile] = useState<UserProfile>();
     const currentUid = getAuth().currentUser?.uid;
     const [hasChanged, setHasChanged] = useState(false);
+    const [isMyProfile, setIsMyProfile] = useState(false);
+
+    const {username} = useParams();
 
     const notifyChange = () => {
         setHasChanged(value => !value);
     }
 
+    // sets current section button color to selected 
+    useEffect(() => {
+        setIsMyProfile(false);
+        if(user?.uid === auth.currentUser?.uid)
+            setIsMyProfile(true);
+
+    }, [user])
+
     // get user info
     useEffect(() => {
         async function fetchUser(){
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({uid: currentUid}),
+                data: JSON.stringify({username: username}),
                 methodType: "POST",
-                path: "getLoggedInUser",
+                path: "readUserByUsername",
             }
             
             try{
@@ -46,33 +58,8 @@ export default function MyProfile(props: any) {
                     firstName: result.firstName,
                     lastName: result.lastName,
                     email: result.email,
-
+                    uid: result.uid,
                 });
-                setLoading(false);
-                
-
-            } catch(e: any){
-                console.error("Frontend Error: " + e);
-                setError(DefaultValues.apiErrorMessage);
-            }
-        
-        }
-        async function fetchUserProfile(){
-            const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({uid: currentUid}),
-                methodType: "POST",
-                path: "readUserProfileByUID",
-            }
-            
-            try{
-                let answer = (await GenericHandler(handlerObject));
-                if(answer.error.length > 0){
-                    setError(answer.error);
-                    return;
-                }
-                
-                setError("");
-                const result = await answer.result;
                 setUserProfile({
                     userID: result.userID,
                     bio: result.bio,
@@ -90,23 +77,24 @@ export default function MyProfile(props: any) {
         }
 
         fetchUser();
-        fetchUserProfile();
-    },[currentUid, hasChanged])
+    },[currentUid, hasChanged, username])
 
     return (
         <>
             <TopNavBar/>
+            <ProfileContext.Provider value={{ isMyProfile }} >
             <div>
                 { 
                 (loading && !error) ?
                     <div>...loading</div> 
                 :
                 (user && userProfile && !error) ? 
-                    <MyProfileContentSelector user={user} userProfile={userProfile} notifyChange={notifyChange}/>
+                    <ProfileContentSelector userProfile={userProfile} notifyChange={notifyChange}/>
                 :
                     <Alert variant="danger">{error}</Alert>
                 }
             </div>
+            </ProfileContext.Provider>
         </>
     )
 }
