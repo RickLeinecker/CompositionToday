@@ -73,6 +73,10 @@ export type MusicType = {
 }
 
 export type EventType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentName: string;
