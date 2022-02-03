@@ -17,7 +17,7 @@ li {
 
 p {
     font-family: 'Work Sans';
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .modal-field{
@@ -28,4 +28,8 @@ p {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.card-text-secondary{
+    color: $secondary-text
 }

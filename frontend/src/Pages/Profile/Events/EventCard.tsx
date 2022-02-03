@@ -50,18 +50,16 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
             />
 
             <div className="card-body">
-
                 <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
                         <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                     </div>
                 </Link>
-
                 <hr/>
-                <Image className="profile-pic" src={imageFilepath} style={{ height: "20%", width: "30%", float:"right" }} />
+                <Image src={imageFilepath} style={{ height: "100%", width: "30%", float:"right"}} />
                 <h5 className="card-title">{contentName}</h5>
-                <p className="card-text">{description}</p>
+                <p className="card-text-secondary">{description}</p>
                 <p className="card-text">{"Start date: " + fromDate?.toString().substring(0, 10)}</p>
                 <p className="card-text">{"End date: " + toDate?.toString().substring(0, 10)}</p>
                 {location && <p className="card-text">{"Location: " + location}</p>}
