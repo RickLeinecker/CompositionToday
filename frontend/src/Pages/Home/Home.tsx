@@ -3,9 +3,12 @@ import '../Showcase/ShowcaseStyle.scss';
 import { Button } from 'react-bootstrap'
 import MusicCard from '../Profile/Music/MusicCard';
 import { useAuthContext } from '../../FirebaseAuth/AuthContext';
+import { ProfileContext } from '../Profile/ProfileContext';
+import { useContext } from 'react';
 
 export default function Home() {
     const { logoutUser} = useAuthContext();
+    const { isMyProfile } = useContext(ProfileContext); 
     return (
         <>
             <TopNavBar />
@@ -22,10 +25,10 @@ export default function Home() {
                     sheetMusicFilepath: undefined,
                     sheetMusicFilename: undefined,
                     description: undefined,
-                    username: '',
+                    username: 'neo',
                     profilePicPath: '',
                     displayName: ''
-                }} isMyProfile={false} notifyChange={() => null}/>
+                }} isMyProfile={isMyProfile} notifyChange={() => null}/>
 
                 <Button className='testbutton' style={{backgroundColor: 'red'}} variant="link" onClick={logoutUser}>
                     Logout

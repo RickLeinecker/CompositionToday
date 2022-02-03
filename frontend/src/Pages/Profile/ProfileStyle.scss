@@ -13,8 +13,8 @@
     background-color: $primary-color-semi;
     border-radius: 3em;
     height: 100%;
-    margin: 1% auto;
-    padding: 1%;
+    margin: 0.5% auto;
+    padding: 0.5%;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -24,7 +24,7 @@
     border-radius: 3em;
     height: 100%;
     margin: 0.5% auto;
-    padding: 1%;
+    padding: 0.5%;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -58,12 +58,10 @@
 }
 
 .content-text-box { 
-    margin-top: 4%;
     background-color: $white;
     border-radius: 1em;
     height: 100%;
-    margin: 2% auto;
-    margin-top: 3%;
+    margin: 1% auto;
     text-align: center;
     padding: 1%;
     position: relative;
@@ -100,13 +98,13 @@
 .user-name{
     display: inline;
     padding: 2%;
-    font-size: 4vw;
+    font-size: 3vw;
     font-family: Work Sans;
     font-weight: 900;
 }
 
 .profile-pic{
-    width: 15%;
+    width: 12%;
     height: auto;
     float: left;
 }
