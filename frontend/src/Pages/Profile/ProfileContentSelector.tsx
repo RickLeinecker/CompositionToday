@@ -1,55 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Image } from 'react-bootstrap'
-import useOpen from '../../Helper/CustomHooks/useOpen'
-import { User, UserProfile } from '../../ObjectInterface'
-import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import EditProfileModal from './EditProfileModal'
-import ProfileContent from './ProfileContent'
+import { useEffect, useState, useContext } from 'react';
+import { Button, ButtonGroup, Image } from 'react-bootstrap';
+import useOpen from '../../Helper/CustomHooks/useOpen';
+import { UserProfile } from '../../ObjectInterface';
+import DefaultValues from '../../Styles/DefaultValues.module.scss';
+import EditProfileModal from './EditProfileModal';
+import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { auth } from '../../FirebaseAuth/firebase'
+import { ProfileContext } from './ProfileContext';
 
 type Props = {
-    user: User;
     userProfile: UserProfile;
     notifyChange: () => void;
 }
 
-export default function ProfileContentSelector({user, userProfile, notifyChange}: Props) {
-
+export default function ProfileContentSelector({ userProfile, notifyChange }: Props) {
     const [currentSection, setCurrentSection] = useState<string>("Experience")
-    const [isMyProfile, setIsMyProfile] = useState<boolean>(false);
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
-    
-    // sets current section button color to selected 
-    useEffect(() => {
-        setIsMyProfile(false);
-        if(user.uid === auth.currentUser?.uid){
-            setIsMyProfile(true);
-        }
-    }, [user])
+    const { isMyProfile } = useContext(ProfileContext);
 
     // sets current section button color to selected 
     useEffect(() => {
         let property = document.getElementById(currentSection)
 
-        if(property !== null)
+        if (property !== null)
             property.style.background = DefaultValues.secondaryColor
 
         return () => {
         }
     }, [currentSection])
 
-    const handleClick = async (event: any)=>{
+    const handleClick = async (event: any) => {
 
         event.preventDefault()
-        
+
         // sets old section button color to selected
         // and updates section 
-        if(event?.target?.value != null && event?.target?.value !== currentSection){
+        if (event?.target?.value != null && event?.target?.value !== currentSection) {
             let oldProperty = document.getElementById(currentSection)
-            if(oldProperty != null){
+            if (oldProperty != null) {
                 oldProperty.style.background = DefaultValues.white
             }
             setCurrentSection(event?.target?.value)
@@ -60,32 +50,32 @@ export default function ProfileContentSelector({user, userProfile, notifyChange}
         <>
             <div id="container">
                 <div id="my-profile-box">
-                    <div style={{position: "relative", display: "flex", marginLeft: "5%"}}>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "5%" }}>
                         <div>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
-                            <div style = {{marginLeft: "20%"}}>
-                                <p style={{fontSize: "1.5vw"}}>{userProfile.bio}</p>
+                            <div style={{ marginLeft: "20%" }}>
+                                <p style={{ fontSize: "1.5vw" }}>{userProfile.bio}</p>
                             </div>
                         </div>
-                        {isMyProfile && 
-                                <>
-                                    <div className='corner-icon'>
-                                        <EditIcon style={{fontSize: "3vw"}} onClick={handleOpenEdit}/>
-                                    </div>
+                        {isMyProfile &&
+                            <>
+                                <div className='corner-icon'>
+                                    <EditIcon style={{ fontSize: "3vw" }} onClick={handleOpenEdit} />
+                                </div>
 
-                                    <EditProfileModal 
-                                        userProfile={userProfile} 
-                                        notifyChange={notifyChange} 
-                                        editOpen={editOpen}
-                                        handleCloseEdit={handleCloseEdit}
-                                    />
-                                </>
+                                <EditProfileModal
+                                    userProfile={userProfile}
+                                    notifyChange={notifyChange}
+                                    editOpen={editOpen}
+                                    handleCloseEdit={handleCloseEdit}
+                                />
+                            </>
                         }
                     </div>
-                    <div style={{margin: "2% 0"}}>
+                    <div style={{ margin: "2% 0" }}>
                         <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                            <Button className="rounded-pill" id="Experience" style={{background: DefaultValues.secondaryColor}} variant="light" value="Experience">Experience</Button>{' '}
+                            <Button className="rounded-pill" id="Experience" style={{ background: DefaultValues.secondaryColor }} variant="light" value="Experience">Experience</Button>{' '}
                             <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
                             <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
                             <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
@@ -93,19 +83,19 @@ export default function ProfileContentSelector({user, userProfile, notifyChange}
                     </div>
                 </div>
                 <div className='content-box'>
-                    <div style={{position: "relative", display: "flex"}}>
-                    <div className='content-text-box'>
-                        <h1>{currentSection}</h1>
-                    </div>
-                    
-                    {isMyProfile &&
-                        <div style={{position: "absolute", top: "0.5em", right: "1%"}}>
-                            <AddCircleIcon style={{fontSize: "5vw"}} onClick={handleOpenCreate}/>
+                    <div style={{ position: "relative", display: "flex" }}>
+                        <div className='content-text-box'>
+                            <h1>{currentSection}</h1>
                         </div>
-                    }   
+
+                        {isMyProfile &&
+                            <div style={{ position: "absolute", top: "0.5em", right: "1%" }}>
+                                <AddCircleIcon style={{ fontSize: "5vw" }} onClick={handleOpenCreate} />
+                            </div>
+                        }
                     </div>
                     <div className='content-scroll'>
-                        <ProfileContent currentSection={currentSection} userID={userProfile.userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
+                        <ProfileContent currentSection={currentSection} userID={userProfile.userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                     </div>
                 </div>
             </div>

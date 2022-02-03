@@ -1,14 +1,18 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navbar, Image, NavDropdown } from 'react-bootstrap';
 import useLogout from "../Helper/CustomHooks/useLogout";
 import GenericSearch from '../Helper/Generics/GenericSearch';
-import { UsernameContext } from "../FirebaseAuth/UsernameContext";
+import { useEffect, useState } from "react";
 
 export default function TopNavBar() {
     const { handleLogout } = useLogout();
-    const { username } = useContext(UsernameContext);
-    console.log(username);
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+        let temp = window.sessionStorage.getItem("username");
+
+        setUsername(!temp ? "" : temp);
+    }, [])
 
     return (
         <Navbar className="px-5" bg="light" expand="lg">

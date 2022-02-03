@@ -1,9 +1,10 @@
-import { useRef } from 'react'
+import { useContext, useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
 import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
+import { ProfileContext } from '../../Pages/Profile/ProfileContext';
 
 interface Props {
     bodyStyle?: object;
@@ -15,6 +16,7 @@ interface Props {
 
 export default function GenericVirtualizedList({ bodyStyle, individualStyle, items, notifyChange, type }: Props) {
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
+    const { isMyProfile } = useContext(ProfileContext);
 
     // This helps resize new/removed data for window
     cache.current.clearAll();
@@ -50,10 +52,10 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         rowIndex={index}
                                     >
                                         <div style={{ ...style, ...individualStyle }}>
-                                            {type === "experience" && <ExperienceCard experience={result} isMyProfile={true} notifyChange={notifyChange} />}
-                                            {type === "music" && <MusicCard music={result} isMyProfile={true} notifyChange={notifyChange} />}
-                                            {type === "event" && <EventCard event={result} isMyProfile={true} notifyChange={notifyChange} />}
-                                            {type === "article" && <ArticleCard article={result} isMyProfile={true} notifyChange={notifyChange} />}
+                                            {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                         </div>
                                     </CellMeasurer>
                                 )

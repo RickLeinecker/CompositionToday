@@ -1,8 +1,7 @@
-import React from 'react'
-import ArticlesSection from './Articles/ArticlesSection'
-import EventSection from './Events/EventSection'
-import ExperienceSection from './Experience/ExperienceSection'
-import MusicSection from './Music/MusicSection'
+import ArticlesSection from './Articles/ArticlesSection';
+import EventSection from './Events/EventSection';
+import ExperienceSection from './Experience/ExperienceSection';
+import MusicSection from './Music/MusicSection';
 
 type Props = {
     currentSection: string;

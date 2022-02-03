@@ -1,16 +1,14 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAuthContext } from "../../FirebaseAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from '../../Handlers/GenericHandler'
-import { UsernameContext } from "../../FirebaseAuth/UsernameContext";
 
 const SignIn = () => {
 	const emailRef = useRef<HTMLInputElement>(null);
 	const psdRef = useRef<HTMLInputElement>(null);
 	const { signInUser } = useAuthContext();
 	const navigate = useNavigate();
-	const { updateUsername } = useContext(UsernameContext);
 
 	const [errorText, setErrorText] = useState("");
 	let errorFlag = false;
@@ -29,8 +27,7 @@ const SignIn = () => {
 			}
 
 			const result = await answer.result;
-
-			updateUsername(result.username);
+			window.sessionStorage.setItem('username', result.username);
 
 		} catch (e: any) {
 			console.error("Frontend Error: " + e);
