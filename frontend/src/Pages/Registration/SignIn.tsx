@@ -70,7 +70,7 @@ const SignIn = () => {
 			}
 
 			if (!errorFlag) {
-				fetchUser(res.user.uid);
+				await fetchUser(res.user.uid);
 				navigate("/");
 			}
 		} else {
