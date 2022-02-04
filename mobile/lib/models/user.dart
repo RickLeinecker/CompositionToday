@@ -1,9 +1,3 @@
-class MyUser {
-  final String? uid;
-
-  MyUser({this.uid});
-}
-
 class UserData {
   final int? id;
   final String? uid;
