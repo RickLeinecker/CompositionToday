@@ -93,9 +93,11 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                             <></>
                     }
                 </div>
-                <GenericLike/>
             </div>
 
+            <div>
+                <GenericLike/>
+            </div>
         </div>
     )
 }
