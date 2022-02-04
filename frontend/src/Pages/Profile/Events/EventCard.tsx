@@ -68,8 +68,8 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                     mapsEnabled && showMap ?
                         <iframe
                             title="map"
-                            width="400"
-                            height="300"
+                            width="100%"
+                            height="300px"
                             style={{ border: "0" }}
                             loading="lazy"
                             allowFullScreen
