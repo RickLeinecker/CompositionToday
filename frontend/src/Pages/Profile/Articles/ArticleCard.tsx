@@ -5,6 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import EditArticleModal from './EditArticleModal';
+import { Link } from 'react-router-dom';
+import { Image } from 'react-bootstrap'
 
 type Props = {
     article: ArticleType;
@@ -14,7 +16,7 @@ type Props = {
 
 
 export default function ArticleCard({ article, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, contentText} = article;
+    const { id, contentName, contentText, username, profilePicPath, displayName} = article;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showOptions, setShowOptions] = useState<boolean>(false);
@@ -46,6 +48,13 @@ export default function ArticleCard({ article, isMyProfile, notifyChange }: Prop
             />
             
             <div className="card-body">
+                <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
+                        <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
+                    </div>
+                </Link>
+                <hr/>
                 <h1 className="card-title">{contentName}</h1>
                 <p className="card-text">{contentText}</p>
             </div>

@@ -51,12 +51,12 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
             <div className="card-body">
                 
                 <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
-                    <div style={{marginBottom: "3%", display: "flex", alignItems: "center"}}>
+                    <div style={{display: "flex", alignItems: "center"}}>
                         <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
                         <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                     </div>
                 </Link>
-                
+                <hr/>
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>

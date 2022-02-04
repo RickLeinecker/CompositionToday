@@ -48,6 +48,10 @@ export type ExperienceType = {
 }
 
 export type ArticleType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentText: string;
