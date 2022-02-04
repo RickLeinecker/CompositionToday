@@ -51,15 +51,16 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
             />
             
             <div className="card-body">
-                <h1 className="card-title">{contentName}</h1>
-                <p className="card-text">{contentText}</p>
-                <p className="card-text">{"Start date: " + startDate?.toDateString()}</p>
-                {isDateCurrent ? 
-                    <p>Current</p> 
-                    :
-                    <p className="card-text">{"End date: " + endDate?.toDateString()}</p>
-                }
-                <p className="card-text">{description}</p>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <h1 style={{marginRight: "2%"}}>{contentName}</h1>
+                    <h2 className="card-text-secondary">{"(" + contentText + ")"}</h2>
+                </div>
+                
+                <p className="card-text-secondary">
+                    {startDate?.getUTCMonth().toString() + "/" + startDate?.getUTCFullYear().toString() + "-" + 
+                     (isDateCurrent ? "Current" : endDate?.getUTCMonth().toString() + "/" + endDate?.getUTCFullYear().toString())}
+                </p>
+                <p className="card-text-secondary">{description}</p>
             </div>
         </div>
     )
