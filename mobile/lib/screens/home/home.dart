@@ -3,14 +3,26 @@
 import 'package:composition_today/models/user.dart';
 import 'package:composition_today/screens/home/related_projects.dart';
 import 'package:composition_today/screens/home/settings.dart';
+import 'package:composition_today/services/api.dart';
 import 'package:composition_today/services/auth.dart';
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() {
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  final TextEditingController _controller = TextEditingController();
+  Future<UserData>? _futureUser;
 
   void initState() {}
   @override
@@ -23,7 +35,9 @@ class Home extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-          child: Text("${Provider.of<UserData?>(context)!.uid}"),
+          child: Text(
+              getLoggedInUser(Provider.of<UserData?>(context)!.toString())
+                  .toString()),
         ),
       ),
       drawer: Drawer(
