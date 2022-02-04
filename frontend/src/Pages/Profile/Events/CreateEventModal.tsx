@@ -13,6 +13,7 @@ import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import { getDate } from 'date-fns';
 
 
 type Props = {
@@ -130,6 +131,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 imageFilename: newContentImageFilename,
                 location: newContentLocation,
                 mapsEnabled: newContentMapsEnabled,
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
             }),
             methodType: "POST",
             path: "createContent",

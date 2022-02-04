@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { Divider } from '@mui/material';
 
 type Props = {
     event: EventType;
@@ -16,7 +18,7 @@ type Props = {
 
 
 export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName } = event;
+    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const [showOptions, setShowOptions] = useState<boolean>(false);
@@ -50,14 +52,20 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
             />
 
             <div className="card-body">
-                <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
-                        <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
-                    </div>
-                </Link>
-                <hr/>
-
+                <div style={{display: "flex"}}>
+                    <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
+                            <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
+                        </div>
+                    </Link>
+                    {!showOptions && 
+                        <p className="card-text-secondary" style={{float: "right", whiteSpace:"nowrap"}}>
+                            {moment(new Date(timestamp!).toUTCString()).fromNow()}
+                        </p>
+                    }
+                </div>
+                <Divider variant="fullWidth" component="div" sx={{margin:"2% 0"}}/>
                 <div style={{display: "flex", margin: "0 0"}}>
                     <div style={{flex: "1 0 0"}}>
                         <h5 className="card-title">{contentName}</h5>

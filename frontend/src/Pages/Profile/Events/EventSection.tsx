@@ -6,7 +6,6 @@ import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedL
 import { GenericHandlerType, EventType, TagType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateEventModal from './CreateEventModal';
-import EventCard from './EventCard';
 
 type Props = {
     userID: number;
