@@ -1,13 +1,12 @@
 import { MusicType } from '../../../ObjectInterface';
-import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditMusicModal from './EditMusicModal';
 import ReactAudioPlayer from 'react-audio-player';
-import { useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
+import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
+import moment from 'moment';
 
 type Props = {
     music: MusicType;
@@ -20,18 +19,17 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName} = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const[showOptions, setShowOptions] = useState<boolean>(false);
 
     return (
-        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions &&
-                <>
-                    <div className="card-icons">
-                        <EditIcon onClick={handleOpenEdit}/> 
-                        <DeleteIcon onClick={handleOpenDelete}/>
-                    </div>
-                </>
-            }
+        <div className="card">
+            <div className="card-icons" style={{display: "flex"}}>
+                <p className="card-text-secondary">
+                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                </p>
+                {isMyProfile &&
+                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                }
+            </div>
    
             <GenericDeleteModal
                 contentID={id}

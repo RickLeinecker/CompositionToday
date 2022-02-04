@@ -1,7 +1,5 @@
 import { EventType } from '../../../ObjectInterface';
-import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditEventModal from './EditEventModal';
 import { useState } from 'react';
 import { Image } from 'react-bootstrap'
@@ -9,6 +7,7 @@ import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Divider } from '@mui/material';
+import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 
 type Props = {
     event: EventType;
@@ -21,20 +20,19 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const [showOptions, setShowOptions] = useState<boolean>(false);
     const[showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
 
     return (
-        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions &&
-                <>
-                    <div className="card-icons">
-                        <EditIcon onClick={handleOpenEdit} />
-                        <DeleteIcon onClick={handleOpenDelete} />
-                    </div>
-                </>
-            }
+        <div className="card">
+            <div className="card-icons" style={{display: "flex"}}>
+                <p className="card-text-secondary">
+                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                </p>
+                {isMyProfile &&
+                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                }
+            </div>
 
             <GenericDeleteModal
                 contentID={id}
@@ -59,11 +57,6 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                             <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                         </div>
                     </Link>
-                    {!showOptions && 
-                        <p className="card-text-secondary" style={{float: "right", whiteSpace:"nowrap"}}>
-                            {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                        </p>
-                    }
                 </div>
                 <Divider variant="fullWidth" component="div" sx={{margin:"2% 0"}}/>
                 <div style={{display: "flex", margin: "0 0"}}>

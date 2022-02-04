@@ -4,8 +4,6 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { EventType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
-import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
-import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { Alert } from 'react-bootstrap';
@@ -14,6 +12,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 
 type Props = {
     event: EventType;
@@ -106,8 +105,10 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 contentType: "event",
                 contentName: newContentValue.contentName,
                 description: newContentValue.description,
-                fromDate: toSqlDatetime(newContentValue.fromDate),
-                toDate: toSqlDatetime(newContentValue.toDate),
+                // fromDate: newContentValue.fromDate?.toISOString().slice(0, 19).replace('T', ' '),
+                // toDate: newContentValue.toDate?.toISOString().slice(0, 19).replace('T', ' '),
+                fromDate: new Date(newContentValue?.fromDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
+                toDate: new Date(newContentValue?.toDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
                 imageFilepath: newContentImagePath,
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
@@ -166,7 +167,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
-                    <GenericDatePicker
+                    <GenericDateTimePicker
                         title={'Start date'}
                         type={"fromDate"}
                         value={newContentValue.fromDate || null}
@@ -174,7 +175,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         onChange={handleChange}
                         error={fromDateError}
                     />
-                    <GenericDatePicker
+                    <GenericDateTimePicker
                         title={'End date'}
                         type={"toDate"}
                         value={newContentValue.toDate || null}
