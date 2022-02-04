@@ -3,12 +3,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditEventModal from './EditEventModal';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Divider } from '@mui/material';
+import { Divider, ListItemIcon, ListItemText, MenuItem, MenuList, Popover } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     event: EventType;
@@ -21,20 +23,46 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const [showOptions, setShowOptions] = useState<boolean>(false);
     const[showMap, setShowMap] = useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
 
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+    
+    const handleClose = () => {
+    setAnchorEl(null);
+    };
+
     return (
-        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions &&
-                <>
-                    <div className="card-icons">
-                        <EditIcon onClick={handleOpenEdit} />
-                        <DeleteIcon onClick={handleOpenDelete} />
-                    </div>
-                </>
+        <div className="card">
+            {isMyProfile &&
+            <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
+                <MenuList>
+                    <MenuItem onClick={() => {handleOpenEdit(); handleClose(); }}>
+                        <ListItemIcon>
+                            <EditIcon/>
+                        </ListItemIcon>
+                        <ListItemText>Edit</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={() => {handleOpenDelete(); handleClose(); }}>
+                        <ListItemIcon>
+                            <DeleteIcon/>
+                        </ListItemIcon>
+                        <ListItemText>Delete</ListItemText>
+                    </MenuItem>
+                </MenuList>
+            </Popover>
             }
+            <div className="card-icons" style={{display: "flex"}}>
+                <p className="card-text-secondary">
+                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                </p>
+                <MoreVertIcon onClick={handleClick} fontSize="medium" style={{color: DefaultValues.secondaryText}}/>
+            </div>
+            
 
             <GenericDeleteModal
                 contentID={id}
@@ -59,11 +87,10 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                             <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                         </div>
                     </Link>
-                    {!showOptions && 
-                        <p className="card-text-secondary" style={{float: "right", whiteSpace:"nowrap"}}>
-                            {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                        </p>
-                    }
+                    {/* {
+                    // !showOptions && 
+
+                    } */}
                 </div>
                 <Divider variant="fullWidth" component="div" sx={{margin:"2% 0"}}/>
                 <div style={{display: "flex", margin: "0 0"}}>

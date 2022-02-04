@@ -3,7 +3,6 @@ import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { toast } from 'react-toastify';
-import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
@@ -13,7 +12,6 @@ import PlacesAutocomplete from './PlacesAutocomplete';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
-
 
 type Props = {
     userID: number;
