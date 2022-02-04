@@ -55,7 +55,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div style={{ marginLeft: "20%" }}>
-                                <p style={{ fontSize: "1.5vw" }}>{userProfile.bio}</p>
+                                <p style={{ fontSize: "calc(10px + 1vw)" }}>{userProfile.bio}</p>
                             </div>
                         </div>
                         {isMyProfile &&

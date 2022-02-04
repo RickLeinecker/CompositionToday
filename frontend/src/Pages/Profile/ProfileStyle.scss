@@ -98,7 +98,7 @@
 .user-name{
     display: inline;
     padding: 2%;
-    font-size: 3vw;
+    font-size: calc(10px + 3vw);
     font-family: Work Sans;
     font-weight: 900;
 }
@@ -110,7 +110,7 @@
 }
 
 .profile-pic-card{
-    width: 6%;
+    width: calc(12px + 6%);
     height: auto;
     float: left;
 }
