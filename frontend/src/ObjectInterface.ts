@@ -48,6 +48,10 @@ export type ExperienceType = {
 }
 
 export type ArticleType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentText: string;
@@ -73,13 +77,17 @@ export type MusicType = {
 }
 
 export type EventType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentName: string;
     timestamp?: string;
     description?: string;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate: Date;
+    toDate: Date;
     imageFilepath?: string;
     imageFilename?: string;
     location?: string;

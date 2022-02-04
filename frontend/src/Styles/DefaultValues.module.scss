@@ -4,7 +4,7 @@ $secondary-color: #3981FF;
 $secondary-color-semi: #3982ffc9;
 $background-color: #FFFBFF;
 $white: #FFFBFF;
-$secondary-text:rgb(168, 168, 168);
+$secondary-text:#7F7F7F;
 $apiErrorMessage: "Could not process this request, please reload the page";
 
 
@@ -13,6 +13,7 @@ $apiErrorMessage: "Could not process this request, please reload the page";
     primaryColor: $primary-color;
     primaryColorSemi: $primary-color-semi;
     secondaryColor: $secondary-color;
+    secondaryText: $secondary-text;
     backgroundColor: $background-color;
     white: $white;
     apiErrorMessage: $apiErrorMessage;
