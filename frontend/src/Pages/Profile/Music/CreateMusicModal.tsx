@@ -132,7 +132,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                 sheetMusicFilename: newContentSheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentAudioFilename,
-                // timestamp: newContentTimestamp,
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
             }),
             methodType: "POST",
             path: "createContent",

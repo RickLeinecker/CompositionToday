@@ -69,6 +69,7 @@ export default function CreateArticleModal({ userID, notifyChange, createOpen, h
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "article",
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
             }),
             methodType: "POST",
             path: "createContent",

@@ -3,14 +3,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditEventModal from './EditEventModal';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Divider, ListItemIcon, ListItemText, MenuItem, MenuList, Popover } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DefaultValues from '../../../Styles/DefaultValues.module.scss'
+import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 
 type Props = {
     event: EventType;
@@ -24,45 +23,18 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showMap, setShowMap] = useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
-
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-    
-    const handleClose = () => {
-    setAnchorEl(null);
-    };
 
     return (
         <div className="card">
-            {isMyProfile &&
-            <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
-                <MenuList>
-                    <MenuItem onClick={() => {handleOpenEdit(); handleClose(); }}>
-                        <ListItemIcon>
-                            <EditIcon/>
-                        </ListItemIcon>
-                        <ListItemText>Edit</ListItemText>
-                    </MenuItem>
-                    <MenuItem onClick={() => {handleOpenDelete(); handleClose(); }}>
-                        <ListItemIcon>
-                            <DeleteIcon/>
-                        </ListItemIcon>
-                        <ListItemText>Delete</ListItemText>
-                    </MenuItem>
-                </MenuList>
-            </Popover>
-            }
             <div className="card-icons" style={{display: "flex"}}>
                 <p className="card-text-secondary">
                     {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                 </p>
-                <MoreVertIcon onClick={handleClick} fontSize="medium" style={{color: DefaultValues.secondaryText}}/>
+                {isMyProfile &&
+                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                }
             </div>
-            
 
             <GenericDeleteModal
                 contentID={id}
