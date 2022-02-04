@@ -86,7 +86,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "experience",
-                description: newContentDescription,
+                description: newContentDescription,       
                 fromDate: newContentFromDate?.toISOString().slice(0, 19).replace('T', ' '),
                 toDate: newContentToDate?.toISOString().slice(0, 19).replace('T', ' '),
                 isDateCurrent: newContentIsDateCurrent,

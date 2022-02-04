@@ -57,8 +57,9 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                 </div>
                 
                 <p className="card-text-secondary">
-                    {startDate?.getUTCMonth().toString() + "/" + startDate?.getUTCFullYear().toString() + "-" + 
-                     (isDateCurrent ? "Current" : endDate?.getUTCMonth().toString() + "/" + endDate?.getUTCFullYear().toString())}
+                    {startDate && ((startDate.getUTCMonth() + 1).toString() + "/" + startDate.getUTCFullYear().toString()) + "-" 
+                    + (isDateCurrent ? "Current" : (endDate && ((endDate.getUTCMonth() + 1).toString() 
+                    + "/" + endDate.getUTCFullYear().toString())))}
                 </p>
                 <p className="card-text-secondary">{description}</p>
             </div>
