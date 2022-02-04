@@ -61,7 +61,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         {isMyProfile &&
                             <>
                                 <div className='corner-icon'>
-                                    <EditIcon style={{ fontSize: "3vw" }} onClick={handleOpenEdit} />
+                                    <EditIcon style={{ fontSize: "calc(12px + 2.5vw)" }} onClick={handleOpenEdit} />
                                 </div>
 
                                 <EditProfileModal
