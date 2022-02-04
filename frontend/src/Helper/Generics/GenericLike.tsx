@@ -5,7 +5,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 export default function GenericLike() {
 
     // we will replace userID with username
-    const [userID, setUserID] = useState<number>();
+    const [username, setUsername] = useState<string>("");
     const [isLiked, setIsLiked] = useState<boolean>();
     const [likeID, setLikeID] = useState<number>();
     const [likeCount, setLikeCount] = useState<number>(0);
@@ -27,11 +27,12 @@ export default function GenericLike() {
             console.log("fetch if we liked this, and the likeID")
         }
         fetchIsLiked();
-    },[userID])
+    },[username])
 
     useEffect(() => {
-        let temp = parseInt(window.sessionStorage.getItem("userID")!);
-        setUserID(!temp ? 0 : temp);
+        let temp = window.sessionStorage.getItem("username");
+        setUsername(!temp ? "" : temp);
+        console.log(temp);
     }, [])
 
     return(
