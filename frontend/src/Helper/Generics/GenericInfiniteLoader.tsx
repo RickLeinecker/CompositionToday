@@ -27,7 +27,7 @@ export default function GenericInfiniteLoader() {
     const loadMoreItems = async ({ startIndex, stopIndex }: loadParam) => {
         // return promise from api
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({ contentType: "event", startIndex: startIndex, endIndex: stopIndex }),
+            data: JSON.stringify({ contentType: "music", startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
             path: "getContentByTypeInBatches",
         }
@@ -39,7 +39,7 @@ export default function GenericInfiniteLoader() {
             // answer.then(res => { setItems(res.result) }).catch(err => err);
             console.log(answer);
             setItems(answer.result);
-            return new Promise(answer.result);
+            return answer.result;
         } catch (e: any) {
             console.error("Frontend Error: " + e);
         }
@@ -58,29 +58,35 @@ export default function GenericInfiniteLoader() {
     }
 
     return (
-        <InfiniteLoader
-            isRowLoaded={isItemLoaded}
-            rowCount={items.length}
-            loadMoreRows={loadMoreItems}
-        // isItemLoaded={isItemLoaded}
-        // itemCount={items.length}
-        // loadMoreItems={loadMoreItems}
-        >
-            {({ onRowsRendered, registerChild }) => {let res = onRowsRendered({startIndex: 0, stopIndex: 0}); console.log(res); return <div>al</div>}}
-            {/* {({ onRowsRendered, registerChild }) => (
-                <AutoSizer>
-                    {({ height, width }) => (
+        <AutoSizer>
+            {({ height, width }) => (
+                <InfiniteLoader
+                    isRowLoaded={isItemLoaded}
+                    rowCount={items.length}
+                    loadMoreRows={loadMoreItems}
+                // isItemLoaded={isItemLoaded}
+                // itemCount={items.length}
+                // loadMoreItems={loadMoreItems}
+                >
+                    {({ onRowsRendered, registerChild }) => (
                         <List
                             ref={registerChild}
                             style={{ scrollbarWidth: "none" }}
                             width={width}
-                            height={height}
+                            height={700}
                             rowHeight={cache.current.rowHeight}
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
                             onRowsRendered={onRowsRendered}
                             rowRenderer={({ key, index, style, parent }: virtualizedType) => {
                                 const result = items?.[index]!;
+                                const type = "music";
+                                const individualStyle = { padding: "1% 1% 20px" };
+                                const isMyProfile = false;
+                                const notifyChange = () => { };
+                                console.log(result)
+                                // console.log(style)
+                                // console.log(cache.current.rowHeight)
 
                                 return (
                                     <CellMeasurer
@@ -91,18 +97,18 @@ export default function GenericInfiniteLoader() {
                                         rowIndex={index}
                                     >
                                         <div style={{ ...style, ...individualStyle }}>
-                                            {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                            {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                            {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                         </div>
                                     </CellMeasurer>
                                 )
                             }}
                         />
                     )}
-                </AutoSizer>
-            )} */}
-        </InfiniteLoader>
+                </InfiniteLoader>
+            )}
+        </AutoSizer>
     );
 };
