@@ -1,11 +1,9 @@
 import { ExperienceType } from '../../../ObjectInterface';
 import EditExperienceModal from './EditExperienceModal';
-import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import DeleteIcon from '@mui/icons-material/Delete';
 import './ExperienceStyle.scss';
-import { useState } from 'react';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
+import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 
 type Props = {
     experience: ExperienceType;
@@ -18,23 +16,19 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     const { id, contentName, contentText, description, fromDate, toDate, isDateCurrent } = experience;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const[showOptions, setShowOptions] = useState<boolean>(false);
     
 
     const startDate =  !fromDate ? undefined : new Date(fromDate);
     const endDate = !toDate ? undefined : new Date(toDate);
 
     return (
-        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions && 
-                <>
-                    <div className="card-icons">
-                        <EditIcon onClick={handleOpenEdit}/> 
-                        <DeleteIcon onClick={handleOpenDelete}/>
-                    </div>
-                </>
-            }
-            
+        <div className="card">
+            <div className="card-icons" style={{display: "flex"}}>
+                {isMyProfile &&
+                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                }
+            </div>
+
             <GenericDeleteModal
                 contentID={id}
                 notifyChange={notifyChange}

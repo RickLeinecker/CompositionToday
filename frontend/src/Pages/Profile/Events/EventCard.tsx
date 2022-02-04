@@ -1,14 +1,12 @@
 import { EventType } from '../../../ObjectInterface';
-import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditEventModal from './EditEventModal';
 import { useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Divider, ListItemIcon, ListItemText, MenuItem, MenuList, Popover } from '@mui/material';
+import { Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 
 type Props = {
@@ -59,10 +57,6 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                             <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                         </div>
                     </Link>
-                    {/* {
-                    // !showOptions && 
-
-                    } */}
                 </div>
                 <Divider variant="fullWidth" component="div" sx={{margin:"2% 0"}}/>
                 <div style={{display: "flex", margin: "0 0"}}>
