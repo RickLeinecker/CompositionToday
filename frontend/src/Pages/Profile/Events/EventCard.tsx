@@ -57,29 +57,42 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                     </div>
                 </Link>
                 <hr/>
-                <Image src={imageFilepath} style={{ height: "100%", width: "30%", float:"right"}} />
-                <h5 className="card-title">{contentName}</h5>
-                <p className="card-text-secondary">{description}</p>
-                <p className="card-text">{"Start date: " + fromDate?.toString().substring(0, 10)}</p>
-                <p className="card-text">{"End date: " + toDate?.toString().substring(0, 10)}</p>
-                {location && <p className="card-text">{"Location: " + location}</p>}
-                {mapsEnabled ? <p className="card-text" style={{textDecoration:"underline"}} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
-                {
-                    mapsEnabled && showMap ?
-                        <iframe
-                            title="map"
-                            width="100%"
-                            height="300px"
-                            style={{ border: "0" }}
-                            loading="lazy"
-                            allowFullScreen
-                            src={src}
-                        /> 
-                        : 
-                        <></>
-                }
 
+                <div style={{display: "flex", margin: "0 0"}}>
+                    <div style={{flex: "1 0 0"}}>
+                        <h5 className="card-title">{contentName}</h5>
+                        <p className="card-text-secondary">{description}</p>
+                        <p className="card-text">{"Start date: " + fromDate?.toString().substring(0, 10)}</p>
+                        <p className="card-text">{"End date: " + toDate?.toString().substring(0, 10)}</p>
+                        {location && <p className="card-text">{"Location: " + location}</p>}
+                        {mapsEnabled ? <p className="card-text" style={{textDecoration:"underline"}} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
+                    </div>
+                    {imageFilepath ?
+                        <div style={{flex: "1 0 0"}}>
+                            <Image src={imageFilepath} style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%",float:"right", overflow: "hidden"}} />
+                        </div>
+                        :
+                        <></>
+                    }
+                </div>
+                <div style={{marginTop: "2%"}}>
+                    {
+                        mapsEnabled && showMap ?
+                            <iframe
+                                title="map"
+                                width="100%"
+                                height="300em"
+                                style={{ border: "0" }}
+                                loading="lazy"
+                                allowFullScreen
+                                src={src}
+                            /> 
+                            : 
+                            <></>
+                    }
+                </div>
             </div>
+
         </div>
     )
 }
