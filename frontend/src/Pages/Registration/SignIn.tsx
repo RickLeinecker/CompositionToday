@@ -28,6 +28,7 @@ const SignIn = () => {
 
 			const result = await answer.result;
 			window.sessionStorage.setItem('username', result.username);
+			window.sessionStorage.setItem('userID', result.userID);
 
 		} catch (e: any) {
 			console.error("Frontend Error: " + e);
