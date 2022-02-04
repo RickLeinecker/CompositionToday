@@ -61,7 +61,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                     </Link>
                     {!showOptions && 
                         <p className="card-text-secondary" style={{float: "right", whiteSpace:"nowrap"}}>
-                            {moment(new Date(timestamp!).toUTCString()).fromNow()}
+                            {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                         </p>
                     }
                 </div>
@@ -70,8 +70,8 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                     <div style={{flex: "1 0 0"}}>
                         <h5 className="card-title">{contentName}</h5>
                         <p className="card-text-secondary">{description}</p>
-                        <p className="card-text">{"Start date: " + fromDate?.toString().substring(0, 10)}</p>
-                        <p className="card-text">{"End date: " + toDate?.toString().substring(0, 10)}</p>
+                        <p className="card-text">{"From: " + moment(new Date(fromDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                        <p className="card-text">{"To: " + moment(new Date(toDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
                         {location && <p className="card-text">{"Location: " + location}</p>}
                         {mapsEnabled ? <p className="card-text" style={{textDecoration:"underline"}} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
                     </div>

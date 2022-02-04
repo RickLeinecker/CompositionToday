@@ -86,8 +86,8 @@ export type EventType = {
     contentName: string;
     timestamp?: string;
     description?: string;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate: Date;
+    toDate: Date;
     imageFilepath?: string;
     imageFilename?: string;
     location?: string;

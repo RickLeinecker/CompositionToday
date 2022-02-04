@@ -4,7 +4,6 @@ import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { toast } from 'react-toastify';
 import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
-import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
@@ -13,7 +12,7 @@ import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
-import { getDate } from 'date-fns';
+import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 
 
 type Props = {
@@ -125,8 +124,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 contentName: newContentName,
                 contentType: "event",
                 description: newContentDescription,
-                fromDate: toSqlDatetime(newContentFromDate),
-                toDate: toSqlDatetime(newContentToDate),
+                fromDate: newContentFromDate?.toISOString().slice(0, 19).replace('T', ' '),
+                toDate: newContentToDate?.toISOString().slice(0, 19).replace('T', ' '),
                 imageFilepath: newContentImagePath,
                 imageFilename: newContentImageFilename,
                 location: newContentLocation,
@@ -169,7 +168,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                 <div>
                     <GenericInputField title="Event Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
-                    <GenericDatePicker 
+                    <GenericDateTimePicker 
                         title={'Start date'} 
                         type={"fromDate"}
                         value={newContentFromDate} 
@@ -177,7 +176,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         onChange={setNewContentFromDate}
                         error={fromDateError}                    
                     />
-                    <GenericDatePicker 
+                    <GenericDateTimePicker 
                         title={'End date'} 
                         type={"toDate"}
                         value={newContentToDate} 
