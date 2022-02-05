@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
 import TopNavBar from '../TopNavBar';
@@ -16,6 +16,11 @@ export default function Showcase() {
     const [genreClicked, setGenreClicked] = useState<string>("");
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
     const [stopAllPlayers, setStopAllPlayers] = useState<boolean>(false);
+    const bottomRef = useRef<HTMLHeadingElement>(null);
+
+    const scrollToBottom = () => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
 
     useEffect(() => {
         getFeaturedComposers();
@@ -25,6 +30,7 @@ export default function Showcase() {
 
     useEffect(() => {
         getComposersByGenre(genreClicked);
+        scrollToBottom();
         // console.log("Changed")
     }, [genreClicked])
 
@@ -96,7 +102,7 @@ export default function Showcase() {
 
                     <GenreSection genres={genres} setGenreClicked={setGenreClicked} />
 
-                    {!!genreClicked && <h1 className='header'>Composers of {genreClicked}</h1>}
+                    {!!genreClicked && <h1 ref={bottomRef} className='header'>Composers of {genreClicked}</h1>}
                 </Container>
             </PlayerContext.Provider>
         </>
