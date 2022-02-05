@@ -9,7 +9,7 @@ import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
 export default function GenericInfiniteLoader() {
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<any[]>([null]);
 
     if (items.length === 0) {
         setItems(Array.from({ length: 500 }).map(_ => null));
@@ -18,7 +18,7 @@ export default function GenericInfiniteLoader() {
     type loadedParam = {
         index: number
     };
-    const isItemLoaded = ({ index }: loadedParam): boolean => index < items.length && items[index] !== null;
+    const isItemLoaded = ({ index }: loadedParam): boolean => { console.log(!!items[index], index); return !!items[index] };
 
     type loadParam = {
         startIndex: number;
@@ -38,12 +38,18 @@ export default function GenericInfiniteLoader() {
             console.log("Api Call", startIndex, stopIndex);
             // answer.then(res => { setItems(res.result) }).catch(err => err);
             console.log(answer);
-            setItems(answer.result);
-            return answer.result;
+            setItems(prev => [...prev, ...answer.result]);
+            return new Promise(answer.result);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
         }
     };
+
+    const noRowsRenderer = () => (
+        <div>
+            No more items found
+        </div>
+    );
 
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
@@ -56,13 +62,14 @@ export default function GenericInfiniteLoader() {
         style: any;
         parent: any;
     }
+    console.log(items.length);
 
     return (
         <AutoSizer>
             {({ height, width }) => (
                 <InfiniteLoader
                     isRowLoaded={isItemLoaded}
-                    rowCount={items.length}
+                    rowCount={items.length + 50}
                     loadMoreRows={loadMoreItems}
                 // isItemLoaded={isItemLoaded}
                 // itemCount={items.length}
@@ -78,13 +85,15 @@ export default function GenericInfiniteLoader() {
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
                             onRowsRendered={onRowsRendered}
+                            noRowsRenderer={noRowsRenderer}
                             rowRenderer={({ key, index, style, parent }: virtualizedType) => {
                                 const result = items?.[index]!;
                                 const type = "music";
-                                const individualStyle = { padding: "1% 1% 20px" };
+                                const individualStyle = { padding: "1% 20% 20px" };
                                 const isMyProfile = false;
                                 const notifyChange = () => { };
-                                console.log(result)
+                                // console.log(result)
+                                console.log(index)
                                 // console.log(style)
                                 // console.log(cache.current.rowHeight)
 
