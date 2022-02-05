@@ -54,7 +54,7 @@ export default function GenericInfiniteLoader() {
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
     // This helps resize new/removed items for window
-    cache.current.clearAll();
+    // cache.current.clearAll();
 
     interface virtualizedType {
         key: any;
@@ -65,6 +65,8 @@ export default function GenericInfiniteLoader() {
     console.log(items.length);
 
     return (
+        <div style={{width: "100%", height: "90vh"}}>
+
         <AutoSizer>
             {({ height, width }) => (
                 <InfiniteLoader
@@ -80,7 +82,7 @@ export default function GenericInfiniteLoader() {
                             ref={registerChild}
                             style={{ scrollbarWidth: "none" }}
                             width={width}
-                            height={700}
+                            height={height}
                             rowHeight={cache.current.rowHeight}
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
@@ -119,5 +121,6 @@ export default function GenericInfiniteLoader() {
                 </InfiniteLoader>
             )}
         </AutoSizer>
+        </div>
     );
 };
