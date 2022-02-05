@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import GenericLikeMenu from './GenericLikeMenu';
 
 export default function GenericLike() {
 
@@ -9,6 +10,17 @@ export default function GenericLike() {
     const [isLiked, setIsLiked] = useState<boolean>();
     const [likeID, setLikeID] = useState<number>();
     const [likeCount, setLikeCount] = useState<number>(0);
+    const [openMenu, setOpenMenu] = useState(false);
+    const [menuTarget, setMenuTarget] = useState(null);
+
+    function handleClick(event: any){
+        console.log("handle click")
+        setMenuTarget(event.currentTarget);
+    }
+
+    function updateOpenMenu(){
+        setOpenMenu(!openMenu)
+    }
 
     function handleLike(){
         console.log("like");
@@ -21,6 +33,11 @@ export default function GenericLike() {
         setIsLiked(false);
         setLikeCount(likeCount - 1);
     }
+
+    useEffect(() => {
+        console.log("set open menu");
+        setOpenMenu(true);
+    },[menuTarget])
 
     useEffect(() => {
         async function fetchIsLiked(){
@@ -38,8 +55,9 @@ export default function GenericLike() {
     return(
         <div style={{float: "right", display: "flex", marginRight: "3%"}}>
             <p>{likeCount}</p>
-            {isLiked && <FavoriteIcon style={{marginLeft:"10%"}} onClick={handleUnlike}></FavoriteIcon>}
-            {!isLiked && <FavoriteBorderIcon style={{marginLeft:"10%"}} onClick={handleLike}></FavoriteBorderIcon>}
+            {isLiked && <FavoriteIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteIcon>}
+            {!isLiked && <FavoriteBorderIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteBorderIcon>}
+            {openMenu && <GenericLikeMenu menuTarget={menuTarget} updateOpenMenu={updateOpenMenu}/>}
         </div>
     );
 }
