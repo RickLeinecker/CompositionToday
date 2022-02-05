@@ -10,34 +10,15 @@ export default function GenericLike() {
     const [isLiked, setIsLiked] = useState<boolean>();
     const [likeID, setLikeID] = useState<number>();
     const [likeCount, setLikeCount] = useState<number>(0);
-    const [openMenu, setOpenMenu] = useState(false);
-    const [menuTarget, setMenuTarget] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     function handleClick(event: any){
-        console.log("handle click")
-        setMenuTarget(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     }
 
-    function updateOpenMenu(){
-        setOpenMenu(!openMenu)
+    function closeMenu(){
+        setAnchorEl(null)
     }
-
-    function handleLike(){
-        console.log("like");
-        setIsLiked(true);
-        setLikeCount(likeCount + 1);
-    }
-
-    function handleUnlike(){
-        console.log("unlike");
-        setIsLiked(false);
-        setLikeCount(likeCount - 1);
-    }
-
-    useEffect(() => {
-        console.log("set open menu");
-        setOpenMenu(true);
-    },[menuTarget])
 
     useEffect(() => {
         async function fetchIsLiked(){
@@ -57,7 +38,7 @@ export default function GenericLike() {
             <p>{likeCount}</p>
             {isLiked && <FavoriteIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteIcon>}
             {!isLiked && <FavoriteBorderIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteBorderIcon>}
-            {openMenu && <GenericLikeMenu menuTarget={menuTarget} updateOpenMenu={updateOpenMenu}/>}
+            {anchorEl && <GenericLikeMenu anchorEl={anchorEl} closeMenu={closeMenu}/>}
         </div>
     );
 }

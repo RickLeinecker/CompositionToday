@@ -1,28 +1,19 @@
 import { Popover, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 type Props = {
-    menuTarget: any;
-    updateOpenMenu: () => void
+    closeMenu: () => void
+    anchorEl: any;
 }
 
-export default function GenericLikeMenu({ menuTarget, updateOpenMenu}: Props) {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [alignment, setAlignment] = React.useState('like');
+export default function GenericLikeMenu({ closeMenu, anchorEl}: Props) {
+    const [alignment, setAlignment] = useState('like');
     const open = Boolean(anchorEl);
     
-    useEffect(() => {
-        console.log("we in useeffect");
-        handleClick(menuTarget);
-    }, [menuTarget])
-
-    const handleClick = (menuTarget: any) => {
-        setAnchorEl(menuTarget);
-    };
-    
     const handleClose = () => {
-        setAnchorEl(null);
-        updateOpenMenu();
+        closeMenu();
     };
 
     const handleChange = (event: any, newAlignment: string) => {
@@ -38,9 +29,14 @@ export default function GenericLikeMenu({ menuTarget, updateOpenMenu}: Props) {
             exclusive
             onChange={handleChange}
             >
-            <ToggleButton value="like">Like</ToggleButton>
-            <ToggleButton value="love">Love</ToggleButton>
-            <ToggleButton value="celebrate">Celebrate</ToggleButton>
+            <ToggleButton value="like">
+                <p>0</p>
+                <FavoriteIcon></FavoriteIcon>
+            </ToggleButton>
+            <ToggleButton value="love">
+                <p>0</p>
+                <ThumbUpIcon></ThumbUpIcon>
+            </ToggleButton>
         </ToggleButtonGroup>
     </Popover>
     </>
