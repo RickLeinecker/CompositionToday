@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
+import GenericLike from '../../../Helper/Generics/GenericLike';
 
 type Props = {
     event: EventType;
@@ -94,6 +95,9 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 </div>
             </div>
 
+            <div>
+                <GenericLike/>
+            </div>
         </div>
     )
 }
