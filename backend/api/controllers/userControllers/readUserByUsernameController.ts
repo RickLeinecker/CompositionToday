@@ -1,17 +1,23 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getTags
-exports.getTags = async (req, res) => {
-  // incoming: nothing
-  // outgoing: tags, error
+// readUserByUsername - read user and user profile from database
+exports.readUserByUsername = async (req, res) => {
+  // incoming: username
+  // outgoing: user or error
 
+  // declaring variables for errors and results
   var error = "";
   var results = [];
   var responseCode = 0;
+  // reading data from frontend
+  const { username } = req.body;
+
   mysql_pool.getConnection(function (err, connection) {
+    // query database, handle errors, return JSON
     connection.query(
-      "SELECT tag.id,tag.tagName FROM tag",
+      "SELECT * FROM user INNER JOIN userProfile ON user.userProfileID=userProfile.id AND user.username=?",
+      [username],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
@@ -19,10 +25,10 @@ exports.getTags = async (req, res) => {
           console.log(err);
         } else {
           if (result[0]) {
-            results = result;
+            results = result[0];
             responseCode = 200;
           } else {
-            error = "No tags exist";
+            error = "User does not exist";
             responseCode = 500;
           }
         }
