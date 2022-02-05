@@ -1,28 +1,23 @@
 // mysql connection
-
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getComposersForShowcase
-exports.getComposersForShowcase = async (req, res) => {
-  // incoming: genre
-  // outgoing: users, error
+// assignComposerGenre
+exports.assignComposerGenre = async (req, res) => {
+  // incoming: userID, tagName
+  // outgoing: error
 
-  // declaring variables for errors and results
   var error = "";
   var results = [];
   var responseCode = 0;
-  const { genre } = req.body;
-  //Give batches to frontend — getComposersByGenre (new input: genre, startIndex, endIndex)
-  // (new output: userID, firstName, lastName, username, profilePicPath, audioFilepath, audioFilename — only fetch featured song)
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-  }
+  const { userID, tagName } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT COUNT(*) as count FROM user;",
+      "SELECT * FROM tag WHERE tagName=?",
+      [tagName],
       function (err, result) {
         if (err) {
-          error = err;
+          error =
+            "Valid Genres: Opera, Classical, Jazz, Symphony, Film Score, Chamber, EDM";
           responseCode = 500;
           console.log(err);
           // package data
@@ -37,27 +32,23 @@ exports.getComposersForShowcase = async (req, res) => {
         } else {
           if (result[0]) {
             responseCode = 200;
-            console.log(result[0].count);
-            var num1 = getRandomInt(result[0].count - 4);
+            connection.release();
             mysql_pool.getConnection(function (err, connection) {
+              var tagID = result[0].id;
+              const sqlInsert =
+                "INSERT INTO specializationTag(userID, tagID) VALUES (?,?)";
               connection.query(
-                `SELECT DISTINCT user.id,user.uid,user.firstName,user.lastName,user.username,user.email,user.isPublisher,userProfile.profilePicPath,content.audioFilename,content.audioFilepath
-                FROM user INNER JOIN userProfile ON user.id=userProfile.userID
-                LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE isFeaturedSong=1) content ON user.id=content.userID LIMIT ?,?`,
-                [num1, 4],
+                sqlInsert,
+                [userID, tagID],
                 function (err, result) {
                   if (err) {
-                    error = err;
+                    error = "SQL Insert Error";
                     responseCode = 500;
                     console.log(err);
                   } else {
-                    if (result[0]) {
-                      results = result;
-                      responseCode = 200;
-                    } else {
-                      error = "No Composers Found";
-                      responseCode = 500;
-                    }
+                    results.push("Success");
+                    responseCode = 201;
+                    // console.log(result);
                   }
                   // package data
                   var ret = {
@@ -71,8 +62,10 @@ exports.getComposersForShowcase = async (req, res) => {
               );
             });
           } else {
-            error = "No Composers Found";
+            error =
+              "Valid Genres: Opera, Classical, Jazz, Symphony, Film Score, Chamber, EDM";
             responseCode = 500;
+            console.log(err);
             // package data
             var ret = {
               result: results,
@@ -87,6 +80,4 @@ exports.getComposersForShowcase = async (req, res) => {
       }
     );
   });
-
-  // query database, handle errors, return JSON
 };

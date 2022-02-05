@@ -116,7 +116,7 @@ function checkSheetMusicFileType(file, cb) {
 // router.get("/download", function (req, res) {
 //   const file =
 //     "/Users/brianmoon/Desktop/test upload/userFile-1642368955802.jpg";
-//   // res.set({ "Content-Type": "image/png" });
+//   // res.set({ "Content-Type": "audio/mp3" });
 //   res.send(file); // Set disposition and send it.
 // });
 // const fs = require("fs");

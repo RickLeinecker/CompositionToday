@@ -142,108 +142,115 @@ exports.updateContent = async (req, res) => {
   insertString += " WHERE id=?";
   insertArray.push(contentID);
 
-  mysql_pool.getConnection(function (err, connection) {
-    connection.query(
-      "SELECT content.imageFilepath, content.sheetMusicFilepath, content.audioFilepath FROM content WHERE id=?",
-      [contentID],
-      function (err, result) {
-        if (err) {
-          error = "SQL Search Error";
-          responseCode = 500;
-          console.log(err);
-          // package data
-          var ret = {
-            result: results,
-            error: error,
-          };
-          // send data
-          res.status(responseCode).json(ret);
-          connection.release();
-          return;
-        } else {
-          if (result[0]) {
-            results.push(result[0]);
-            responseCode = 200;
-          } else {
-            error = "Content does not exist";
-            responseCode = 500;
+  // mysql_pool.getConnection(function (err, connection) {
+  //   connection.query(
+  //     "SELECT content.imageFilepath, content.sheetMusicFilepath, content.audioFilepath FROM content WHERE id=?",
+  //     [contentID],
+  //     function (err, result) {
+  //       if (err) {
+  //         error = "SQL Search Error";
+  //         responseCode = 500;
+  //         console.log(err);
+  //         // package data
+  //         // var ret = {
+  //         //   result: results,
+  //         //   error: error,
+  //         // };
+  //         // // send data
+  //         // res.status(responseCode).json(ret);
+  //         // connection.release();
+  //         // return;
+  //       } else {
+  //         if (result[0]) {
+  //           responseCode = 200;
+  //         } else {
+  //           error = "Content does not exist";
+  //           responseCode = 500;
+  //           console.log(error);
+  //           // package data
+  //           // var ret = {
+  //           //   result: results,
+  //           //   error: error,
+  //           // };
+  //           // // send data
+  //           // res.status(responseCode).json(ret);
+  //           // connection.release();
+  //           // return;
+  //         }
+  //       }
+  //       // if the filepath does not match,
+  //       // then delete file and let the
+  //       // following query handle the
+  //       // updated filename and filepath
+  //       // console.log(result[0].audioFilepath);
+  //       // if (
+  //       //   result[0].audioFilepath &&
+  //       //   result[0].audioFilepath != audioFilepath
+  //       // ) {
+  //       //   // delete file
+  //       //   let modifiedFilepath = result[0].audioFilepath.split("/");
+  //       //   modifiedFilepath =
+  //       //     "/var/www/assets/" +
+  //       //     modifiedFilepath[3] +
+  //       //     "/" +
+  //       //     modifiedFilepath[4];
 
-            // package data
-            var ret = {
-              result: results,
-              error: error,
-            };
-            // send data
-            res.status(responseCode).json(ret);
-            connection.release();
-            return;
-          }
-        }
-        // if the filepath does not match,
-        // then delete file and let the
-        // following query handle the
-        // updated filename and filepath
-        if (result.audioFilepath && result.audioFilepath != audioFilepath) {
-          // delete file
-          let modifiedFilepath = result.audioFilepath.split("/");
-          modifiedFilepath =
-            "/var/www/assets/" +
-            modifiedFilepath[3] +
-            "/" +
-            modifiedFilepath[4];
-          // delete a file
-          fs2.unlink(modifiedFilepath, (err) => {
-            if (err) {
-              error = "Error Updating File";
-              console.log(err);
-            } else {
-              responseCode = 200;
-            }
-          });
-        }
-        if (result.imageFilepath && result.imageFilepath != imageFilepath) {
-          // delete file
-          let modifiedFilepath = result.imageFilepath.split("/");
-          modifiedFilepath =
-            "/var/www/assets/" +
-            modifiedFilepath[3] +
-            "/" +
-            modifiedFilepath[4];
-          // delete a file
-          fs2.unlink(modifiedFilepath, (err) => {
-            if (err) {
-              error = "Error Updating File";
-              console.log(err);
-            } else {
-              responseCode = 200;
-            }
-          });
-        }
-        if (
-          result.sheetMusicFilepath &&
-          result.sheetMusicFilepath != sheetMusicFilepath
-        ) {
-          // delete file
-          let modifiedFilepath = result.sheetMusicFilepath.split("/");
-          modifiedFilepath =
-            "/var/www/assets/" +
-            modifiedFilepath[3] +
-            "/" +
-            modifiedFilepath[4];
-          // delete a file
-          fs2.unlink(modifiedFilepath, (err) => {
-            if (err) {
-              error = "Error Updating File";
-              console.log(err);
-            } else {
-              responseCode = 200;
-            }
-          });
-        }
-        connection.release();
-      }
-    );
-  });
+  //       //   // delete a file
+  //       //   fs2.unlink(modifiedFilepath, (err) => {
+  //       //     if (err) {
+  //       //       error = "Error Updating File";
+  //       //       console.log(err);
+  //       //     } else {
+  //       //       responseCode = 200;
+  //       //     }
+  //       //   });
+  //       // }
+  //       // if (
+  //       //   result[0].imageFilepath &&
+  //       //   result[0].imageFilepath != imageFilepath
+  //       // ) {
+  //       //   // delete file
+  //       //   let modifiedFilepath = result[0].imageFilepath.split("/");
+  //       //   modifiedFilepath =
+  //       //     "/var/www/assets/" +
+  //       //     modifiedFilepath[3] +
+  //       //     "/" +
+  //       //     modifiedFilepath[4];
+  //       //   // delete a file
+  //       //   fs2.unlink(modifiedFilepath, (err) => {
+  //       //     if (err) {
+  //       //       error = "Error Updating File";
+  //       //       console.log(err);
+  //       //     } else {
+  //       //       responseCode = 200;
+  //       //     }
+  //       //   });
+  //       // }
+  //       // if (
+  //       //   result[0].sheetMusicFilepath &&
+  //       //   result[0].sheetMusicFilepath != sheetMusicFilepath
+  //       // ) {
+  //       //   // delete file
+  //       //   let modifiedFilepath = result[0].sheetMusicFilepath.split("/");
+  //       //   modifiedFilepath =
+  //       //     "/var/www/assets/" +
+  //       //     modifiedFilepath[3] +
+  //       //     "/" +
+  //       //     modifiedFilepath[4];
+  //       //   // delete a file
+  //       //   fs2.unlink(modifiedFilepath, (err) => {
+  //       //     if (err) {
+  //       //       error = "Error Updating File";
+  //       //       console.log(err);
+  //       //     } else {
+  //       //       responseCode = 200;
+  //       //     }
+  //       //   });
+  //       // }
+  //       connection.release();
+  //     }
+  //   );
+  // });
   results = [];
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
@@ -258,6 +265,7 @@ exports.updateContent = async (req, res) => {
         } else {
           error = "Content does not exist";
           responseCode = 500;
+          console.log(error);
         }
         // log result
         // console.log(result);

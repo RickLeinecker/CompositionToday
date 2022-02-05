@@ -12,10 +12,16 @@ exports.getComposersByGenre = async (req, res) => {
   var results = [];
   var responseCode = 0;
   const { genre } = req.body;
+  //Give batches to frontend — getComposersByGenre (new input: genre, startIndex, endIndex)
+  // (new output: userID, firstName, lastName, username, profilePicPath, audioFilepath, audioFilename — only fetch featured song)
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT user.id, user.uid, user.firstName, user.lastName, user.username, user.email, user.isPublisher, specializationTag.tagID, tag.tagName FROM user INNER JOIN specializationTag ON user.id=specializationTag.userID INNER JOIN tag ON specializationTag.tagID=tag.id AND tag.tagName=?",
+      `SELECT DISTINCT user.id,user.uid,user.firstName,user.lastName,user.username,user.email,user.isPublisher,specializationTag.tagID,tag.tagName,userProfile.profilePicPath,content.audioFilename,content.audioFilepath 
+      FROM user INNER JOIN specializationTag ON user.id=specializationTag.userID 
+      INNER JOIN tag ON specializationTag.tagID=tag.id AND tag.tagName=? AND tag.approvedGenre=1 
+      INNER JOIN userProfile ON user.id=userProfile.userID
+      LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE isFeaturedSong=1) content ON user.id=content.userID`,
       [genre],
       function (err, result) {
         if (err) {
