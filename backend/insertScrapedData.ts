@@ -5,116 +5,114 @@ const fetch2 = require("node-fetch");
 // import json array
 const composers = require("./scraped_data.json");
 
-console.log(composers.length);
+const createScrapedComposer = async (composer) => {
+  // incoming: firstName, lastName, isPublisher, bio, websiteLink
+  // outgoing: userID
+  var obj = {
+    firstName: composer.firstName,
+    lastName: composer.lastName,
+    isPublisher: composer.isPublisher,
+    bio: composer.bio,
+    websiteLink: composer.websiteLink,
+  };
+  var js = JSON.stringify(obj);
 
-// const createScrapedComposer = async (composer) => {
-//   // incoming: firstName, lastName, isPublisher, bio, websiteLink
-//   // outgoing: userID
-//   var obj = {
-//     firstName: composer.firstName,
-//     lastName: composer.lastName,
-//     isPublisher: composer.isPublisher,
-//     bio: composer.bio,
-//     websiteLink: composer.websiteLink,
-//   };
-//   var js = JSON.stringify(obj);
+  try {
+    const response = await fetch2(
+      "http://compositiontoday.net/api/createScrapedComposer",
+      {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
-//   try {
-//     const response = await fetch2(
-//       "http://compositiontoday.net/api/createScrapedComposer",
-//       {
-//         method: "POST",
-//         body: js,
-//         headers: { "Content-Type": "application/json" },
-//       }
-//     );
+    var txt = await response.text();
+    var res = JSON.parse(txt);
 
-//     var txt = await response.text();
-//     var res = JSON.parse(txt);
+    if (res.error.length > 0) {
+      console.log("API Error:" + res.error);
+    } else {
+      return res.result[0];
+    }
+  } catch (e) {
+    console.log(e.toString());
+  }
+};
 
-//     if (res.error.length > 0) {
-//       console.log("API Error:" + res.error);
-//     } else {
-//       return res.result[0];
-//     }
-//   } catch (e) {
-//     console.log(e.toString());
-//   }
-// };
+const createContentAndTag = async (userContent) => {
+  // incoming: contentName, contentText, contentType, location, timestamp
+  // outgoing: userID
+  var obj = {
+    userID: userContent.userID,
+    contentName: userContent.contentName,
+    contentText: userContent.contentText,
+    contentType: userContent.contentType,
+    location: userContent.location,
+    timestamp: userContent.timestamp,
+    tag: userContent.tag,
+  };
+  var js = JSON.stringify(obj);
 
-// const createContentAndTag = async (userContent) => {
-//   // incoming: contentName, contentText, contentType, location, timestamp
-//   // outgoing: userID
-//   var obj = {
-//     userID: userContent.userID,
-//     contentName: userContent.contentName,
-//     contentText: userContent.contentText,
-//     contentType: userContent.contentType,
-//     location: userContent.location,
-//     timestamp: userContent.timestamp,
-//     tag: userContent.tag,
-//   };
-//   var js = JSON.stringify(obj);
+  try {
+    const response = await fetch2(
+      "http://compositiontoday.net/api/createContentAndTag",
+      {
+        method: "POST",
+        body: js,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
-//   try {
-//     const response = await fetch2(
-//       "http://compositiontoday.net/api/createContentAndTag",
-//       {
-//         method: "POST",
-//         body: js,
-//         headers: { "Content-Type": "application/json" },
-//       }
-//     );
+    var txt = await response.text();
+    var res = JSON.parse(txt);
 
-//     var txt = await response.text();
-//     var res = JSON.parse(txt);
+    if (res.error.length > 0) {
+      console.log("API Error:" + res.error);
+    } else {
+      return res.result[0];
+    }
+  } catch (e) {
+    console.log(e.toString());
+  }
+};
 
-//     if (res.error.length > 0) {
-//       console.log("API Error:" + res.error);
-//     } else {
-//       return res.result[0];
-//     }
-//   } catch (e) {
-//     console.log(e.toString());
-//   }
-// };
+// start inserting
+insertScrapedComposers();
 
-// // start inserting
-// insertScrapedComposers();
+// insert scraped composers
+async function insertScrapedComposers() {
+  for (const composer of composers) {
+    const userID = await insertComposer(composer);
+    for (const content of composer.content) {
+      await insertUserContent(content);
+      // CREATE USER CONTENT
+      async function insertUserContent(content) {
+        // add userID to the user's content object
+        content.userID = userID;
+        console.log(userID);
 
-// // insert scraped composers
-// async function insertScrapedComposers() {
-//   for (const composer of composers) {
-//     const userID = await insertComposer(composer);
-//     for (const content of composer.content) {
-//       await insertUserContent(content);
-//       // CREATE USER CONTENT
-//       async function insertUserContent(content) {
-//         // add userID to the user's content object
-//         content.userID = userID;
-//         console.log(userID);
+        // Note: new createContentAndTag endpoint created for this task
+        // create content for composer
+        await createContentAndTag(content);
+        return;
+      }
+    }
 
-//         // Note: new createContentAndTag endpoint created for this task
-//         // create content for composer
-//         await createContentAndTag(content);
-//         return;
-//       }
-//     }
+    async function insertComposer(composerToBeInserted) {
+      // CREATE USER
+      // add userProfile info to composer
+      composerToBeInserted.composer.bio = composerToBeInserted.userProfile.bio;
+      composerToBeInserted.composer.websiteLink =
+        composerToBeInserted.userProfile.website;
 
-//     async function insertComposer(composerToBeInserted) {
-//       // CREATE USER
-//       // add userProfile info to composer
-//       composerToBeInserted.composer.bio = composerToBeInserted.userProfile.bio;
-//       composerToBeInserted.composer.websiteLink =
-//         composerToBeInserted.userProfile.website;
-
-//       // Note: new createScrapedComposer endpoint created for this task
-//       // create the composer and the composer's profile, return userID
-//       const userID = await createScrapedComposer(composerToBeInserted.composer);
-//       return userID;
-//     }
-//   }
-// }
+      // Note: new createScrapedComposer endpoint created for this task
+      // create the composer and the composer's profile, return userID
+      const userID = await createScrapedComposer(composerToBeInserted.composer);
+      return userID;
+    }
+  }
+}
 
 // // ============================================================= //
 // // New Endpoints Used For Inserting Scraped Composers

@@ -1,8 +1,8 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getTags
-exports.getTags = async (req, res) => {
+// getComposerGenresController
+exports.getComposerGenres = async (req, res) => {
   // incoming: nothing
   // outgoing: tags, error
 
@@ -11,7 +11,7 @@ exports.getTags = async (req, res) => {
   var responseCode = 0;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT tag.id,tag.tagName FROM tag",
+      "SELECT tag.id,tag.tagName,tag.imageFilepath FROM tag WHERE approvedGenre=1;",
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
@@ -22,7 +22,7 @@ exports.getTags = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "No tags exist";
+            error = "No specialization tags exist";
             responseCode = 500;
           }
         }
@@ -38,3 +38,4 @@ exports.getTags = async (req, res) => {
     );
   });
 };
+// "SELECT DISTINCT tag.tagName FROM tag INNER JOIN specializationTag ON tag.id=specializationTag.tagID;"
