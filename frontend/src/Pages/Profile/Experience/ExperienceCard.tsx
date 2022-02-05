@@ -1,11 +1,9 @@
 import { ExperienceType } from '../../../ObjectInterface';
 import EditExperienceModal from './EditExperienceModal';
-import EditIcon from '@mui/icons-material/Edit';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import DeleteIcon from '@mui/icons-material/Delete';
 import './ExperienceStyle.scss';
-import { useState } from 'react';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
+import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 
 type Props = {
     experience: ExperienceType;
@@ -18,23 +16,19 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     const { id, contentName, contentText, description, fromDate, toDate, isDateCurrent } = experience;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const[showOptions, setShowOptions] = useState<boolean>(false);
     
 
     const startDate =  !fromDate ? undefined : new Date(fromDate);
     const endDate = !toDate ? undefined : new Date(toDate);
 
     return (
-        <div className="card" onMouseOver={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(false)}>
-            {isMyProfile && showOptions && 
-                <>
-                    <div className="card-icons">
-                        <EditIcon onClick={handleOpenEdit}/> 
-                        <DeleteIcon onClick={handleOpenDelete}/>
-                    </div>
-                </>
-            }
-            
+        <div className="card">
+            <div className="card-icons" style={{display: "flex"}}>
+                {isMyProfile &&
+                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                }
+            </div>
+
             <GenericDeleteModal
                 contentID={id}
                 notifyChange={notifyChange}
@@ -51,15 +45,17 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
             />
             
             <div className="card-body">
-                <h1 className="card-title">{contentName}</h1>
-                <p className="card-text">{contentText}</p>
-                <p className="card-text">{"Start date: " + startDate?.toDateString()}</p>
-                {isDateCurrent ? 
-                    <p>Current</p> 
-                    :
-                    <p className="card-text">{"End date: " + endDate?.toDateString()}</p>
-                }
-                <p className="card-text">{description}</p>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <h1 style={{marginRight: "2%"}}>{contentName}</h1>
+                    <h2 className="card-text-secondary">{"(" + contentText + ")"}</h2>
+                </div>
+                
+                <p className="card-text-secondary">
+                    {startDate && ((startDate.getUTCMonth() + 1).toString() + "/" + startDate.getUTCFullYear().toString()) + "-" 
+                    + (isDateCurrent ? "Current" : (endDate && ((endDate.getUTCMonth() + 1).toString() 
+                    + "/" + endDate.getUTCFullYear().toString())))}
+                </p>
+                <p className="card-text-secondary">{description}</p>
             </div>
         </div>
     )

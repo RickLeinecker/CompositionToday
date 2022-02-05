@@ -8,6 +8,7 @@ const readUserProfileByUIDController = require("../controllers/userProfileContro
 const updateUserProfileController = require("../controllers/userProfileControllers/updateUserProfileController.ts");
 const deleteUserProfileController = require("../controllers/userProfileControllers/deleteUserProfileController.ts");
 const getUserProfilesController = require("../controllers/userProfileControllers/getUserProfilesController.ts");
+const getUserProfileByUsernameController = require("../controllers/userProfileControllers/getUserProfileByUsernameController.ts");
 
 router.post(
   "/api/createUserProfile",
@@ -27,5 +28,9 @@ router.delete(
   deleteUserProfileController.deleteUserProfile
 );
 router.get("/api/getUserProfiles", getUserProfilesController.getUserProfiles);
+router.post(
+  "/api/getUserProfileByUsername",
+  getUserProfileByUsernameController.getUserProfile
+);
 
 module.exports = router;

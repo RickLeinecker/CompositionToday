@@ -48,6 +48,10 @@ export type ExperienceType = {
 }
 
 export type ArticleType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentText: string;
@@ -56,6 +60,10 @@ export type ArticleType = {
 }
 
 export type MusicType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentText: string;
@@ -69,13 +77,17 @@ export type MusicType = {
 }
 
 export type EventType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     userID: number;
     contentName: string;
     timestamp?: string;
     description?: string;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate: Date;
+    toDate: Date;
     imageFilepath?: string;
     imageFilename?: string;
     location?: string;
@@ -107,4 +119,20 @@ export type TagType = {
     tagName: string;
 }
 
+export type composerType = {
+    id: number;
+    uid: string | null;
+    firstName: string;
+    lastName: string;
+    username: string | null;
+    email: string | null;
+    isPublisher: number;
+    profilePicPath: string | null;
+    audioFilename: string | null;
+    audioFilepath: string | null;
+}
 
+export type genreType = {
+    tagName: string;
+    imageFilepath: string;
+}
