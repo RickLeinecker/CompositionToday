@@ -20,6 +20,9 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [newContentValue, setNewContentValue] = useState<MusicType>(music)
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
+    const [audioFileToDelete, setAudioFileToDelete] = useState<string>("");
+    const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
+
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -76,15 +79,62 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         handleChange(file.name, "audioFilename")
     }
 
-    const deleteSheetMusic = () => {
+    const deleteSheetMusic = async () => {
         console.log("delete sheet music");
+        if(newContentValue.sheetMusicFilepath !== undefined){
+            setSheetMusicFileToDelete(newContentValue.sheetMusicFilepath)
+            handleChange("", "sheetMusicFilepath")
+        }
+
+        handleChange("", "sheetMusicFilename");
+        setNewContentSheetMusic(null)
     }
 
     const deleteAudio = () => {
         console.log("delete audio");
+        if(newContentValue.audioFilepath !== undefined){
+            setAudioFileToDelete(newContentValue.audioFilepath)
+            handleChange("", "audioFilepath")
+        }
+
+        handleChange("", "audioFilename");
+        setNewContentAudio(null);
     }
 
+    const deleteFile = async (filepath: string) => {
+        const handlerObject: GenericHandlerType = {
+            data: JSON.stringify({
+                filepath: filepath
+            }),
+            methodType: "DELETE",
+            path: "deleteFile",
+        }
+
+        try {
+            let answer = (await GenericHandler(handlerObject));
+            if (answer.error.length > 0) {
+                toast.error('Failed to delete file');
+                return;
+            }
+
+            notifyChange();
+            toast.success('File deleted');
+
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error('Failed to delete file');
+        }
+    }
     async function confirmEditHandler() {
+
+        if(audioFileToDelete !== ""){
+            deleteFile(audioFileToDelete);
+        }
+
+        if(sheetMusicFileToDelete !== ""){
+            deleteFile(sheetMusicFileToDelete);
+        }
+
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
         if (newContentSheetMusic !== null) {
             newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentValue.sheetMusicFilename, "sheet music", "uploadSheetMusic");
