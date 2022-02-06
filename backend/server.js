@@ -1,8 +1,8 @@
 // server.js - Composition Today Server
 
 // import middleware
-const express = require("express");
-const cors = require("cors");
+var express = require("express");
+var cors = require("cors");
 require("dotenv").config();
 
 var userRoutes = require("./api/routes/userRoutes.ts");
@@ -15,6 +15,7 @@ var specializationTagRoutes = require("./api/routes/specializationTagRoutes.ts")
 var tagRoutes = require("./api/routes/tagRoutes.ts");
 var likeRoutes = require("./api/routes/likeRoutes.ts");
 var likeTypeRoutes = require("./api/routes/likeTypeRoutes.ts");
+var fileRoutes = require("./api/routes/fileRoutes.ts");
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/", specializationTagRoutes);
 app.use("/", tagRoutes);
 app.use("/", likeRoutes);
 app.use("/", likeTypeRoutes);
+app.use("/", fileRoutes);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -44,4 +46,5 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(4001); // start Node + Express server on port 4000
+// app.listen(4001); // start Node + Express server on port 4000
+app.listen(5000); // start Node + Express server on port 5000

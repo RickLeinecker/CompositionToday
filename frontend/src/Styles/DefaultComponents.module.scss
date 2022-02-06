@@ -1,0 +1,36 @@
+@import "./DefaultValues.module.scss";
+// Google fonts
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;440&display=swap');
+
+li {
+    list-style-type: none;
+    padding: 1%;
+}
+
+.card {
+    display: flex;
+    position: relative;
+    background-color: $white;
+    border-radius: 0.2em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+p {
+    font-family: 'Work Sans';
+    font-weight: 500;
+    font-size: calc(10px + 0.5vw)
+}
+
+.modal-field{
+    margin: 3%;
+}
+
+.card-icons{
+    position: absolute;
+    top: 1%;
+    right: 1%;
+}
+
+.card-text-secondary{
+    color: $secondary-text
+}

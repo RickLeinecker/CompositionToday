@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // createTag
 exports.createTag = async (req, res) => {
@@ -7,28 +7,30 @@ exports.createTag = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { tagName } = req.body;
-
-  const sqlInsert = "INSERT INTO tag(tagName) VALUES (?)";
-  connection.query(sqlInsert, [tagName], function (err, result) {
-    if (err) {
-      error = "SQL Insert Error";
-      responseCode = 500;
-      // console.log(err);
-    } else {
-      results = "Success";
-      responseCode = 201;
-      // console.log(result);
-    }
-    // package data
-    var ret = {
-      result: results,
-      error: error,
-    };
-    // send data
-    res.status(responseCode).json(ret);
+  mysql_pool.getConnection(function (err, connection) {
+    const sqlInsert = "INSERT INTO tag(tagName) VALUES (?)";
+    connection.query(sqlInsert, [tagName], function (err, result) {
+      if (err) {
+        error = "SQL Insert Error";
+        responseCode = 500;
+        console.log(err);
+      } else {
+        results.push("Success");
+        responseCode = 201;
+        // console.log(result);
+      }
+      // package data
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+      connection.release();
+    });
   });
 };

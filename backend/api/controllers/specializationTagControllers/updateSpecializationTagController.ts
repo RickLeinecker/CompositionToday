@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateSpecializationTag
 exports.updateSpecializationTag = async (req, res) => {
@@ -7,24 +7,38 @@ exports.updateSpecializationTag = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const { userID, tagID, specializationTagID } = req.body;
 
-  var sqlInsert = "UPDATE specializationTag SET userID=?,tagID=? WHERE id=?";
+  // build update string with non null fields
+  var insertString = "UPDATE specializationTag SET ";
+  if (userID) {
+    insertString += "userID=?,";
+    insertArray.push(userID);
+  }
 
-  connection.query(
-    sqlInsert,
-    [userID, tagID, specializationTagID],
-    function (err, result) {
+  if (tagID) {
+    insertString += "tagID=?,";
+    insertArray.push(tagID);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(specializationTagID);
+
+  // var sqlInsert = "UPDATE specializationTag SET userID=?,tagID=? WHERE id=?";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result.affectedRows > 0) {
-          results = "Success";
+          results.push("Success");
           responseCode = 200;
         } else {
           error = "Specialization with this tag does not exist";
@@ -39,6 +53,7 @@ exports.updateSpecializationTag = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
-    }
-  );
+      connection.release();
+    });
+  });
 };

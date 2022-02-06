@@ -1,53 +1,79 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateUserProfile
 exports.updateUserProfile = async (req, res) => {
-  // incoming: userId, bio, specialization, location, privacySetting, content, profilePicPath, connections, displayName, userProfileID
+  // incoming: userID, bio, location, privacySetting, profilePicPath, displayName, userProfileID
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const {
-    userId,
     bio,
-    specializationTags,
     location,
     privacySetting,
-    contents,
     profilePicPath,
-    connections,
     displayName,
+    websiteLink,
     userProfileID,
+    userID,
   } = req.body;
 
-  var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specializationTags=?,location=?,privacySetting=?,contents=?,profilePicPath=?,connections=?,displayName=? WHERE id=?";
+  // build update string with non null fields
+  var insertString = "UPDATE userProfile SET ";
+  if (bio) {
+    insertString += "bio=?,";
+    insertArray.push(bio);
+  }
 
-  connection.query(
-    sqlInsert,
-    [
-      userId,
-      bio,
-      specializationTags,
-      location,
-      privacySetting,
-      contents,
-      profilePicPath,
-      connections,
-      displayName,
-      userProfileID,
-    ],
-    function (err, result) {
+  if (location) {
+    insertString += "location=?,";
+    insertArray.push(location);
+  }
+
+  if (privacySetting) {
+    insertString += "privacySetting=?,";
+    insertArray.push(privacySetting);
+  }
+
+  if (profilePicPath) {
+    insertString += "profilePicPath=?,";
+    insertArray.push(profilePicPath);
+  }
+
+  if (displayName) {
+    insertString += "displayName=?,";
+    insertArray.push(displayName);
+  }
+
+  if (websiteLink) {
+    insertString += "websiteLink=?,";
+    insertArray.push(websiteLink);
+  }
+
+  if (userProfileID) {
+    insertString += "userProfileID=?,";
+    insertArray.push(userProfileID);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE userID=?";
+  insertArray.push(userID);
+
+  // var sqlInsert =
+  //   "UPDATE userProfile SET bio=?,location=?,privacySetting=?,profilePicPath=?,displayName=?,websiteLink=?,userProfileID=? WHERE userID=?";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result.affectedRows > 0) {
-          results = "Success";
+          results.push("Success");
           responseCode = 200;
         } else {
           error = "User Profile does not exist";
@@ -62,6 +88,7 @@ exports.updateUserProfile = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
-    }
-  );
+      connection.release();
+    });
+  });
 };

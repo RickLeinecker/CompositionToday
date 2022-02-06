@@ -1,7 +1,7 @@
 import { Button, Form } from "react-bootstrap";
 import GenericFormGroup from "./GenericFormGroup";
 
-const GenericForm = () => {
+const GenericForm = (): JSX.Element => {
     return (
         <Form>
             {/* <GenericFormGroup label="Email" /> */}

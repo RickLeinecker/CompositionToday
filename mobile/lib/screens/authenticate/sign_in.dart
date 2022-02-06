@@ -1,10 +1,15 @@
+import 'package:composition_today/screens/authenticate/forgot_password.dart';
 import 'package:composition_today/services/auth.dart';
+import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:composition_today/shared/loading.dart';
 import 'package:flutter/material.dart';
 
+import 'forgot_email.dart';
+
 class SignIn extends StatefulWidget {
   final Function toggleView;
+  // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
   SignIn({required this.toggleView});
   @override
   _SignInState createState() => _SignInState();
@@ -24,14 +29,12 @@ class _SignInState extends State<SignIn> {
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.grey[100],
-            appBar: AppBar(
-              backgroundColor: Color(0xffF7B41F),
-              elevation: 0.0,
-              title: Text('Member Login'),
+            appBar: MyAppBar(
+              title: const Text('Member Login'),
               actions: <Widget>[
                 TextButton.icon(
-                  icon: Icon(Icons.person_add),
-                  label: Text('Register here'),
+                  icon: const Icon(Icons.person_add),
+                  label: const Text('Register here'),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -42,17 +45,18 @@ class _SignInState extends State<SignIn> {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                         decoration: textInputDecoration.copyWith(
                           hintText: 'Email',
                           labelText: 'Email',
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.mail,
                           ),
                         ),
@@ -61,12 +65,27 @@ class _SignInState extends State<SignIn> {
                         onChanged: (val) {
                           setState(() => email = val);
                         }),
-                    SizedBox(height: 20.0),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotEmail()));
+                      },
+                      child: const Text(
+                        'Forgot Email?',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          color: blueColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
                     TextFormField(
                         decoration: textInputDecoration.copyWith(
                           hintText: 'Password',
                           labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
+                          prefixIcon: const Icon(Icons.lock),
                         ),
                         validator: (val) => val!.length < 6
                             ? 'Enter a password 6+ chars long'
@@ -75,9 +94,24 @@ class _SignInState extends State<SignIn> {
                         onChanged: (val) {
                           setState(() => password = val);
                         }),
-                    SizedBox(height: 20.0),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPassword()));
+                      },
+                      child: const Text(
+                        'Forgot Password?',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          color: blueColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
                     ElevatedButton(
-                      child: Text(
+                      child: const Text(
                         'Sign in',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -97,13 +131,13 @@ class _SignInState extends State<SignIn> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xff3981FF),
+                        primary: blueColor,
                       ),
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     )
                   ],
                 ),

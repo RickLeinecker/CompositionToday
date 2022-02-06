@@ -1,46 +1,68 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateComment
 exports.updateComment = async (req, res) => {
-  // incoming: contentID, commenterUserID, timestamp, likes, comment, approved, commentID
+  // incoming: contentID, commenterUserID, timestamp, comment, approved, commentID
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const {
     contentID,
     commenterUserID,
     timestamp,
-    likes,
     comment,
     approved,
     commentID,
   } = req.body;
-  var sqlInsert =
-    "UPDATE comments SET contentID=?,commenterUserID=?,timestamp=?,likes=?,comment=?,approved=? WHERE id=?";
 
-  connection.query(
-    sqlInsert,
-    [
-      contentID,
-      commenterUserID,
-      timestamp,
-      likes,
-      comment,
-      approved,
-      commentID,
-    ],
-    function (err, result) {
+  // build update string with non null fields
+  var insertString = "UPDATE comment SET ";
+  if (contentID) {
+    insertString += "contentID=?,";
+    insertArray.push(contentID);
+  }
+
+  if (commenterUserID) {
+    insertString += "commenterUserID=?,";
+    insertArray.push(commenterUserID);
+  }
+
+  if (timestamp) {
+    insertString += "timestamp=?,";
+    insertArray.push(timestamp);
+  }
+
+  if (comment) {
+    insertString += "comment=?,";
+    insertArray.push(comment);
+  }
+
+  if (approved) {
+    insertString += "approved=?,";
+    insertArray.push(approved);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(commentID);
+
+  // var sqlInsert =
+  //   "UPDATE comment SET contentID=?,commenterUserID=?,timestamp=?,comment=?,approved=? WHERE id=?";
+
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result.affectedRows > 0) {
-          results = "Success";
+          results.push("Success");
           responseCode = 200;
         } else {
           error = "Comment does not exist";
@@ -55,6 +77,7 @@ exports.updateComment = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
-    }
-  );
+      connection.release();
+    });
+  });
 };

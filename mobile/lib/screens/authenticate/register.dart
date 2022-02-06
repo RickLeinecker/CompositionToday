@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
+import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:composition_today/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:composition_today/services/auth.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -15,23 +19,23 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   // text field state
-  String name = '';
+  String username = '';
   String email = '';
   String password = '';
   String error = '';
+
+  @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.grey[100],
-            appBar: AppBar(
-              backgroundColor: Color(0xffF7B41F),
-              elevation: 0.0,
-              title: Text('Member Registration'),
+            appBar: MyAppBar(
+              title: const Text('Member Registration'),
               actions: <Widget>[
                 TextButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Login here'),
+                  icon: const Icon(Icons.person),
+                  label: const Text('Login here'),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -42,99 +46,93 @@ class _RegisterState extends State<Register> {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    /*SizedBox(height: 20.0),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Name',
-                        labelText: 'Name',
-                        prefixIcon: Icon(
-                          Icons.person,
-                        ),
-                      ),
-                      validator: (val) => val!.isEmpty ? 'Enter a name' : null,
-                      onChanged: (val) {
-                        setState(() => name = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Username',
-                        labelText: 'Username',
-                        prefixIcon: Icon(
-                          Icons.account_circle,
-                        ),
-                      ),
-                      validator: (val) => val!.isEmpty ? 'Enter a name' : null,
-                      onChanged: (val) {
-                        setState(() => name = val);
-                      },
-                    ),*/
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Email',
-                        labelText: 'Email',
-                        prefixIcon: Icon(
-                          Icons.mail,
-                        ),
-                      ),
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 10.0),
+                      TextFormField(
                         decoration: textInputDecoration.copyWith(
-                          hintText: 'Password',
-                          labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
+                          hintText: 'Username',
+                          labelText: 'Username',
+                          prefixIcon: const Icon(
+                            Icons.account_circle,
+                          ),
                         ),
-                        validator: (val) => val!.length < 6
-                            ? 'Enter a password 6+ chars long'
-                            : null,
-                        obscureText: true,
+                        validator: (val) =>
+                            val!.isEmpty ? 'Enter a username' : null,
                         onChanged: (val) {
-                          setState(() => password = val);
-                        }),
-                    SizedBox(height: 20.0),
-                    ElevatedButton(
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white),
+                          setState(() => username = val);
+                        },
                       ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            loading = true;
-                          });
-                          dynamic result = await _auth
-                              .registerWithEmailAndPassword(email, password);
-                          if (result == null) {
+                      const SizedBox(height: 15.0),
+                      TextFormField(
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Email',
+                          labelText: 'Email',
+                          prefixIcon: const Icon(
+                            Icons.mail,
+                          ),
+                        ),
+                        validator: (val) =>
+                            EmailValidator.validate(email) == false
+                                ? 'Enter an email'
+                                : null,
+                        onChanged: (val) {
+                          setState(() => email = val);
+                        },
+                      ),
+                      const SizedBox(height: 15.0),
+                      TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Password',
+                            labelText: 'Password',
+                            prefixIcon: const Icon(Icons.lock),
+                          ),
+                          validator: (val) => val!.length < 6
+                              ? 'Enter a password 6+ chars long'
+                              : null,
+                          obscureText: true,
+                          onChanged: (val) {
+                            setState(() => password = val);
+                          }),
+                      const SizedBox(height: 15.0),
+                      ElevatedButton(
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
                             setState(() {
-                              error = 'please supply a valid email';
-                              loading = false;
+                              loading = true;
                             });
+                            dynamic result =
+                                await _auth.registerWithEmailAndPassword(
+                                    username, email, password);
+                            if (result == null) {
+                              setState(() {
+                                error = 'please supply a valid email';
+                                loading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff3981FF),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: blueColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 12.0),
-                    Text(
-                      error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
-                    )
-                  ],
+                      const SizedBox(height: 10.0),
+                      Text(
+                        error,
+                        style:
+                            const TextStyle(color: Colors.red, fontSize: 14.0),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // updateInboxEntry
 exports.updateInboxEntry = async (req, res) => {
@@ -7,26 +7,50 @@ exports.updateInboxEntry = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
+  var insertArray = [];
   var responseCode = 0;
 
   const { inboxEntryID, contentID, profileID, requesterID, commentID } =
     req.body;
 
-  var sqlInsert =
-    "UPDATE userProfile SET userId=?,bio=?,specialization=?,location=?,displayName=? WHERE id=?";
+  // build update string with non null fields
+  var insertString = "UPDATE inbox SET ";
+  if (commentID) {
+    insertString += "commentID=?,";
+    insertArray.push(commentID);
+  }
 
-  connection.query(
-    sqlInsert,
-    [contentID, profileID, requesterID, commentID, inboxEntryID],
-    function (err, result) {
+  if (contentID) {
+    insertString += "contentID=?,";
+    insertArray.push(contentID);
+  }
+
+  if (profileID) {
+    insertString += "profileID=?,";
+    insertArray.push(profileID);
+  }
+
+  if (requesterID) {
+    insertString += "requesterID=?,";
+    insertArray.push(requesterID);
+  }
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(inboxEntryID);
+
+  // var sqlInsert =
+  //   "UPDATE inbox SET contentID=?,profileID=?,requesterID=?,commentID=? WHERE id=?";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
         responseCode = 500;
-        // console.log(err);
+        console.log(err);
       } else {
         if (result.affectedRows > 0) {
-          results = "Success";
+          results.push("Success");
           responseCode = 200;
         } else {
           error = "Inbox entry does not exist";
@@ -41,6 +65,7 @@ exports.updateInboxEntry = async (req, res) => {
       };
       // send data
       res.status(responseCode).json(ret);
-    }
-  );
+      connection.release();
+    });
+  });
 };

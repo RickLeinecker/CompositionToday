@@ -1,5 +1,5 @@
 // mysql connection
-var { connection } = require("../../../database/database.ts");
+var { mysql_pool } = require("../../../database/database.ts");
 
 // deleteContent
 exports.deleteContent = async (req, res) => {
@@ -7,33 +7,37 @@ exports.deleteContent = async (req, res) => {
   // outgoing: error
 
   var error = "";
-  var results = "";
+  var results = [];
   var responseCode = 0;
 
   const { contentID } = req.body;
-
-  connection.query(
-    "DELETE FROM content WHERE id=?",
-    [contentID],
-    function (err, result) {
-      if (err) {
-        error = "SQL Delete Error";
-        // console.log(err);
-      } else {
-        if (result.affectedRows > 0) {
-          results = "Success";
+  mysql_pool.getConnection(function (err, connection) {
+    connection.query(
+      "DELETE FROM content WHERE id=?",
+      [contentID],
+      function (err, result) {
+        if (err) {
+          error = "SQL Delete Error";
+          responseCode = 500;
+          console.log(err);
         } else {
-          error = "Content does not exist";
+          if (result.affectedRows > 0) {
+            results.push("Success");
+            responseCode = 200;
+          } else {
+            error = "Content does not exist";
+          }
+          // console.log(result);
         }
-        // console.log(result);
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
+        connection.release();
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-    }
-  );
+    );
+  });
 };

@@ -1,19 +1,12 @@
-import useLogout from '../../Helper/CustomHooks/useLogout';
-import { Button } from 'react-bootstrap';
 import TopNavBar from '../TopNavBar';
+import '../Showcase/ShowcaseStyle.scss';
+import GenericInfiniteLoader from '../../Helper/Generics/GenericInfiniteLoader';
 
 export default function Home() {
-    const { handleLogout } = useLogout();
-
     return (
         <>
             <TopNavBar />
-            <div>
-                Homepage
-                <Button variant="link" onClick={handleLogout}>
-                    Logout
-                </Button>
-            </div>
+            <GenericInfiniteLoader />
         </>
     )
 }

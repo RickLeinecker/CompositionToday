@@ -4,15 +4,21 @@ var router = express.Router();
 
 const createUserProfileController = require("../controllers/userProfileControllers/createUserProfileController.ts");
 const readUserProfileController = require("../controllers/userProfileControllers/readUserProfileController.ts");
+const readUserProfileByUIDController = require("../controllers/userProfileControllers/readUserProfileByUIDController.ts");
 const updateUserProfileController = require("../controllers/userProfileControllers/updateUserProfileController.ts");
 const deleteUserProfileController = require("../controllers/userProfileControllers/deleteUserProfileController.ts");
 const getUserProfilesController = require("../controllers/userProfileControllers/getUserProfilesController.ts");
+const getUserProfileByUsernameController = require("../controllers/userProfileControllers/getUserProfileByUsernameController.ts");
 
 router.post(
   "/api/createUserProfile",
   createUserProfileController.createUserProfile
 );
-router.post("/api/readUsersProfile", readUserProfileController.readUserProfile);
+router.post("/api/readUserProfile", readUserProfileController.readUserProfile);
+router.post(
+  "/api/readUserProfileByUID",
+  readUserProfileByUIDController.readUserProfileByUID
+);
 router.patch(
   "/api/updateUserProfile",
   updateUserProfileController.updateUserProfile
@@ -22,5 +28,9 @@ router.delete(
   deleteUserProfileController.deleteUserProfile
 );
 router.get("/api/getUserProfiles", getUserProfilesController.getUserProfiles);
+router.post(
+  "/api/getUserProfileByUsername",
+  getUserProfileByUsernameController.getUserProfile
+);
 
 module.exports = router;

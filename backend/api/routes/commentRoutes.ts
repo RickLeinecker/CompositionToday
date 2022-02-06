@@ -8,9 +8,14 @@ const updateCommentController = require("../controllers/commentControllers/updat
 const deleteCommentController = require("../controllers/commentControllers/deleteCommentController.ts");
 const getCommentsController = require("../controllers/commentControllers/getCommentsController.ts");
 const approveCommentController = require("../controllers/commentControllers/approveCommentController.ts");
+const getCommentsForContentController = require("../controllers/commentControllers/getCommentsForContentController.ts");
 
 router.post("/api/createComment", createCommentController.createComment);
 router.post("/api/readComment", readCommentController.readComment);
+router.post(
+  "/api/getCommentsForContent",
+  getCommentsForContentController.getCommentsForContent
+);
 router.patch("/api/updateComment", updateCommentController.updateComment);
 router.patch("/api/approveComment", approveCommentController.approveComment);
 router.delete("/api/deleteComment", deleteCommentController.deleteComment);

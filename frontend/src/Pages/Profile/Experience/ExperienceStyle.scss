@@ -1,0 +1,12 @@
+@import "../../../Styles/DefaultComponents.module.scss";
+@import "../../../Styles/DefaultValues.module.scss";
+
+.card-icons{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.card-title {
+    font-weight: 900;
+}
