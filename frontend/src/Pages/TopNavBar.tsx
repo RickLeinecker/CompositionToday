@@ -3,15 +3,43 @@ import { Nav, Navbar, Image, NavDropdown } from 'react-bootstrap';
 import useLogout from "../Helper/CustomHooks/useLogout";
 import GenericSearch from '../Helper/Generics/GenericSearch';
 import { useEffect, useState } from "react";
+import { GenericHandlerType } from "../ObjectInterface";
+import GenericHandler from "../Handlers/GenericHandler";
 
 export default function TopNavBar() {
     const { handleLogout } = useLogout();
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState<string>("");
+    const [profilePicPath, setProfilePicPath] = useState<string>("");
 
     useEffect(() => {
         let temp = window.sessionStorage.getItem("username");
 
+        console.log("useeffect again");
         setUsername(!temp ? "" : temp);
+
+        async function fetchUser(){
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({username: temp}),
+                methodType: "POST",
+                path: "readUserByUsername",
+            }
+            
+            try{
+                let answer = (await GenericHandler(handlerObject));
+                if(answer.error.length > 0){
+                    return;
+                }
+                
+                const result = await answer.result;
+                setProfilePicPath(result.profilePicPath)
+
+            } catch(e: any){
+                console.error("Frontend Error: " + e);
+            }
+        
+        }
+
+        fetchUser();
     }, [])
 
     return (
@@ -33,13 +61,13 @@ export default function TopNavBar() {
                     <Nav.Link as={Link} to={`/profile/${username}`}>
                         <Image
                             className={"d-inline-block align-top me-2"}
-                            src="img_avatar.png"
+                            src={profilePicPath}
                             width="40vw"
                             height="40vh"
                             roundedCircle
                         />
                     </Nav.Link>
-                    <NavDropdown align="end" title="[Username]">
+                    <NavDropdown align="end" title={username}>
                         <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

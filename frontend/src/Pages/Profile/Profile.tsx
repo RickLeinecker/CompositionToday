@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
-import TopNavBar from '../TopNavBar';
 import './ProfileStyle.scss';
 import DefaultValues from '../../Styles/DefaultValues.module.scss';
 import { getAuth } from 'firebase/auth';
@@ -81,7 +80,6 @@ export default function Profile(props: any) {
 
     return (
         <>
-            <TopNavBar/>
             <ProfileContext.Provider value={{ isMyProfile }} >
             <div>
                 { 

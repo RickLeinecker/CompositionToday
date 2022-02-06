@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import TopNavBar from '../TopNavBar'
 
 export default function Blog() {
 
@@ -9,7 +8,6 @@ export default function Blog() {
 
     return (
         <>
-            <TopNavBar />
         </>
     )
 }

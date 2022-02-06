@@ -92,7 +92,6 @@ export default function Showcase() {
 
     return (
         <>
-            <TopNavBar />
             <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
                 <Container>
                     <h1>Showcase</h1>
