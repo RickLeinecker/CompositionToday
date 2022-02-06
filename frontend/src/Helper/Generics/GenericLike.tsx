@@ -7,7 +7,7 @@ export default function GenericLike() {
 
     // we will replace userID with username
     const [username, setUsername] = useState<string>("");
-    const [isLiked, setIsLiked] = useState<boolean>();
+    const [isLiked, setIsLiked] = useState<boolean>(false);
     const [likeID, setLikeID] = useState<number>();
     const [likeCount, setLikeCount] = useState<number>(0);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -16,16 +16,16 @@ export default function GenericLike() {
         setAnchorEl(event.currentTarget);
     }
 
-    function closeMenu(){
+    function closeMenu(newIsLiked: boolean){
         setAnchorEl(null)
-    }
-
-    useEffect(() => {
-        async function fetchIsLiked(){
-            console.log("fetch if we liked this, and the likeID")
+        console.log(isLiked + " " + newIsLiked)
+        if(isLiked && !newIsLiked)
+            setLikeCount(likeCount - 1);
+        else if(!isLiked && newIsLiked){
+            setLikeCount(likeCount + 1);
         }
-        fetchIsLiked();
-    },[username])
+        setIsLiked(newIsLiked);
+    }
 
     useEffect(() => {
         let temp = window.sessionStorage.getItem("username");
@@ -38,7 +38,7 @@ export default function GenericLike() {
             <p>{likeCount}</p>
             {isLiked && <FavoriteIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteIcon>}
             {!isLiked && <FavoriteBorderIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteBorderIcon>}
-            {anchorEl && <GenericLikeMenu anchorEl={anchorEl} closeMenu={closeMenu}/>}
+            {anchorEl && <GenericLikeMenu anchorEl={anchorEl} closeMenu={closeMenu} likeType='like'/>}
         </div>
     );
 }

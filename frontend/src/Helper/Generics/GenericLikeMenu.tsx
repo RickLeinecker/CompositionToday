@@ -1,22 +1,38 @@
 import { Popover, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 type Props = {
-    closeMenu: () => void
+    closeMenu: (newIsLiked: boolean) => void
     anchorEl: any;
+    likeType: string | null;
 }
 
-export default function GenericLikeMenu({ closeMenu, anchorEl}: Props) {
-    const [alignment, setAlignment] = useState('like');
+export default function GenericLikeMenu({ closeMenu, anchorEl, likeType}: Props) {
+    const [alignment, setAlignment] = useState<string | null>(likeType);
+    const [likeCount, setLikeCount] = useState<number>(0);
+    const [loveCount, setLoveCount] = useState<number>(0);
+
     const open = Boolean(anchorEl);
+    const didMountRef = useRef(false);
     
+    useEffect(() => {
+        if(didMountRef.current)
+            handleClose();
+
+        // onMount
+        if(!didMountRef.current){
+            didMountRef.current = true;
+            // fetchLikeCounts
+        }
+    }, [alignment])
+
     const handleClose = () => {
-        closeMenu();
+        alignment === null ? closeMenu(false) : closeMenu(true);
     };
 
-    const handleChange = (event: any, newAlignment: string) => {
+    const handleChange = (event: any, newAlignment: string | null) => {
         setAlignment(newAlignment);
     };    
 
@@ -30,11 +46,11 @@ export default function GenericLikeMenu({ closeMenu, anchorEl}: Props) {
             onChange={handleChange}
             >
             <ToggleButton value="like">
-                <p>0</p>
+                <p>{likeCount}</p>
                 <FavoriteIcon></FavoriteIcon>
             </ToggleButton>
             <ToggleButton value="love">
-                <p>0</p>
+                <p>{loveCount}</p>
                 <ThumbUpIcon></ThumbUpIcon>
             </ToggleButton>
         </ToggleButtonGroup>
