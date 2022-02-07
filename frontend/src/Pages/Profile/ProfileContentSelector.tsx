@@ -48,7 +48,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
 
     return (
         <>
-            <div className="container">
+            <div className="container-profile">
                 <div className="my-profile-box">
                     <div style={{ position: "relative", display: "flex", marginLeft: "5%" }}>
                         <div>
