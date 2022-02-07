@@ -20,7 +20,7 @@ export default function GenericFileUpload({updateFile, type, name, filename, del
                 Upload {name}
                 <input type="file" accept={type} onChange={fileSelectedHandler} hidden/>
             </Button>
-            {filename && <Chip label={filename} onDelete={deleteFile}/>}
+            {filename ? <Chip label={filename} onDelete={deleteFile}/> : <></>}
         </div>
     )
 }

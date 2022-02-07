@@ -8,6 +8,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 
 type Props = {
     music: MusicType;
@@ -101,30 +102,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         setNewContentAudio(null);
     }
 
-    const deleteFile = async (filepath: string) => {
-        const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({
-                filepath: filepath
-            }),
-            methodType: "DELETE",
-            path: "deleteFile",
-        }
-
-        try {
-            let answer = (await GenericHandler(handlerObject));
-            if (answer.error.length > 0) {
-                toast.error('Failed to delete file');
-                return;
-            }
-
-            notifyChange();
-            toast.success('File deleted');
-
-        } catch (e: any) {
-            console.error("Frontend Error: " + e);
-            toast.error('Failed to delete file');
-        }
-    }
     async function confirmEditHandler() {
 
         let audioFileToDeleteTemp = audioFileToDelete;
