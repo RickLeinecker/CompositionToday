@@ -58,11 +58,15 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
+                {id}
+                {sheetMusicFilepath}
+                
                 {sheetMusicFilepath && 
                     <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">
                         Open sheet music
                     </a>
                 }
+                {audioFilepath}
                 {audioFilepath && 
                     <ReactAudioPlayer
                         src={audioFilepath}

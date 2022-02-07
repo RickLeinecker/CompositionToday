@@ -80,9 +80,9 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     }
 
     const deleteSheetMusic = async () => {
-        console.log("delete sheet music");
-        if(newContentValue.sheetMusicFilepath !== undefined){
-            setSheetMusicFileToDelete(newContentValue.sheetMusicFilepath)
+        let fileToDelete = newContentValue.sheetMusicFilepath
+        if(fileToDelete !== undefined){
+            setSheetMusicFileToDelete(fileToDelete)
             handleChange("", "sheetMusicFilepath")
         }
 
@@ -92,8 +92,9 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const deleteAudio = () => {
         console.log("delete audio");
-        if(newContentValue.audioFilepath !== undefined){
-            setAudioFileToDelete(newContentValue.audioFilepath)
+        let fileToDelete = newContentValue.audioFilepath
+        if(fileToDelete !== undefined){
+            setAudioFileToDelete(fileToDelete)
             handleChange("", "audioFilepath")
         }
 
@@ -127,16 +128,28 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     }
     async function confirmEditHandler() {
 
-        if(audioFileToDelete !== ""){
-            deleteFile(audioFileToDelete);
+        console.log("sheet music path: " + newContentValue.sheetMusicFilepath);
+        console.log("sheet music filename: " + newContentValue.sheetMusicFilename);
+        console.log("sheet music file: " + newContentSheetMusic);
+
+        let audioFileToDeleteTemp = audioFileToDelete;
+        if(audioFileToDeleteTemp !== "" && audioFileToDeleteTemp !== null){
+            console.log("temp is " + audioFileToDeleteTemp)
+            deleteFile(audioFileToDeleteTemp);
+            setAudioFileToDelete("");
         }
 
-        if(sheetMusicFileToDelete !== ""){
-            deleteFile(sheetMusicFileToDelete);
+        let sheetMusicFileToDeleteTemp = sheetMusicFileToDelete;
+        if(sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null){
+            console.log("temp is " + sheetMusicFileToDeleteTemp);
+            deleteFile(sheetMusicFileToDeleteTemp);
+            setSheetMusicFileToDelete("");
         }
 
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
+        console.log("new content: " + newContentSheetMusicPath);
         if (newContentSheetMusic !== null) {
+            console.log("we do get here");
             newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentValue.sheetMusicFilename, "sheet music", "uploadSheetMusic");
             if (newContentSheetMusicPath === '') {
                 toast.error('Failed to create music');
@@ -153,6 +166,9 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
             }
         }
 
+        console.log("user id " + newContentValue.userID);
+        console.log("content id " + newContentValue.id);
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -163,6 +179,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 description: newContentValue.description,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
+                audioFilepath: newContentAudioPath,
+                audioFilename: newContentValue.audioFilename,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -171,12 +189,14 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
+                console.log(answer.error)
                 toast.error("Failed to update music")
                 return;
             }
 
             toast.success("Music updated")
             notifyChange();
+
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to update music")
