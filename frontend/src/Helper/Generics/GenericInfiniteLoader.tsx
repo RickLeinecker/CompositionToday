@@ -60,7 +60,7 @@ export default function GenericInfiniteLoader() {
     }
 
     return (
-        <div style={{ width: "100%", height: "90vh" }}>
+        <div style={{ margin: "auto", width: "100%", height: "90vh" }}>
             <AutoSizer>
                 {({ height, width }) => (
                     <InfiniteLoader
