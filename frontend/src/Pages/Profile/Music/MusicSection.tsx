@@ -24,7 +24,6 @@ export default function MusicSection({ createOpen, handleCloseCreate, userID }: 
 
     useEffect(() => {
         async function fetchData() {
-            console.log("We fetch again...");
             const handlerObject: GenericHandlerType = {
                 data: JSON.stringify({ contentType: "music", userID }),
                 methodType: "POST",
