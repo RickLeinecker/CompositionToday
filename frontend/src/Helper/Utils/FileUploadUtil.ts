@@ -20,7 +20,6 @@ export async function uploadFile(newFile: File, newFileName: string | undefined,
             return "";
         }
 
-        // notifyChange();
         return(answer.result[0].filepath);
 
     } catch (e: any) {
