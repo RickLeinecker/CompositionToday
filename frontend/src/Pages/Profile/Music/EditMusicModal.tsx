@@ -91,7 +91,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     }
 
     const deleteAudio = () => {
-        console.log("delete audio");
         let fileToDelete = newContentValue.audioFilepath
         if(fileToDelete !== undefined){
             setAudioFileToDelete(fileToDelete)
@@ -128,28 +127,20 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     }
     async function confirmEditHandler() {
 
-        console.log("sheet music path: " + newContentValue.sheetMusicFilepath);
-        console.log("sheet music filename: " + newContentValue.sheetMusicFilename);
-        console.log("sheet music file: " + newContentSheetMusic);
-
         let audioFileToDeleteTemp = audioFileToDelete;
         if(audioFileToDeleteTemp !== "" && audioFileToDeleteTemp !== null){
-            console.log("temp is " + audioFileToDeleteTemp)
             deleteFile(audioFileToDeleteTemp);
             setAudioFileToDelete("");
         }
 
         let sheetMusicFileToDeleteTemp = sheetMusicFileToDelete;
         if(sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null){
-            console.log("temp is " + sheetMusicFileToDeleteTemp);
             deleteFile(sheetMusicFileToDeleteTemp);
             setSheetMusicFileToDelete("");
         }
 
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
-        console.log("new content: " + newContentSheetMusicPath);
         if (newContentSheetMusic !== null) {
-            console.log("we do get here");
             newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentValue.sheetMusicFilename, "sheet music", "uploadSheetMusic");
             if (newContentSheetMusicPath === '') {
                 toast.error('Failed to create music');
@@ -165,9 +156,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 return;
             }
         }
-
-        console.log("user id " + newContentValue.userID);
-        console.log("content id " + newContentValue.id);
 
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
@@ -189,7 +177,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                console.log(answer.error)
                 toast.error("Failed to update music")
                 return;
             }
