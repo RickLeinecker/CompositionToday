@@ -79,7 +79,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         handleChange(file.name, "audioFilename")
     }
 
-    const deleteSheetMusic = async () => {
+    const deleteSheetMusic = () => {
         let fileToDelete = newContentValue.sheetMusicFilepath
         if(fileToDelete !== undefined){
             setSheetMusicFileToDelete(fileToDelete)
