@@ -111,7 +111,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} isMultiline={true}/>
                     <GenericDatePicker 
                         title={'Start date'} 
                         type={"fromDate"}
