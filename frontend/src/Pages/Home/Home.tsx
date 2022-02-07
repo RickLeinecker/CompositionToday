@@ -1,5 +1,4 @@
 import TopNavBar from '../TopNavBar';
-import '../Showcase/ShowcaseStyle.scss';
 import GenericInfiniteLoader from '../../Helper/Generics/GenericInfiniteLoader';
 import FilterFeed from './FilterFeed';
 import SortFeed from './SortFeed';
