@@ -31,10 +31,8 @@ export default function Home() {
                         <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy}/>
                     </div>
                 </div>
-                <div>
-                    <GenericInfiniteLoader />
-                </div>
             </div>
+            <GenericInfiniteLoader/>
         </div>
     )
 }
