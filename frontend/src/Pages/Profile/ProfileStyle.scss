@@ -1,7 +1,7 @@
 @import "../frontend/src/Styles/DefaultValues.module.scss";
 @import "../../Styles/DefaultComponents.module.scss";
 
-#container {
+.container {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -9,7 +9,7 @@
     height: 100%;
 }
 
-#my-profile-box {
+.my-profile-box {
     margin-top: 4%;
     background-color: $primary-color-semi;
     border-radius: 3em;
