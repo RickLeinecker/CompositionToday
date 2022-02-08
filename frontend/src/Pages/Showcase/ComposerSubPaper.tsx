@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Box, Grid, IconButton, Paper, Slide } from '@mui/material'
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -7,17 +8,20 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import { style2, style3 } from './inlineStyles';
 import paperStyle from './PaperStyle.module.scss';
 import { PlayerContext } from './PlayerContext';
+import { toast } from 'react-toastify';
 
 type ComposerSubPaperProps = {
     imagePath: string | null;
+    username: string | null;
 }
 
-export default function ComposerSubPaper({ imagePath }: ComposerSubPaperProps) {
+export default function ComposerSubPaper({ imagePath, username }: ComposerSubPaperProps) {
     const [hovering, setHovering] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [pressed, setPressed] = useState(false);
     const containerRef = useRef(null);
     const { stopAllPlayers, setStopAllPlayers } = useContext(PlayerContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setPlaying(false);
@@ -31,7 +35,11 @@ export default function ComposerSubPaper({ imagePath }: ComposerSubPaperProps) {
 
     const handleClick = (e: any) => {
         e.stopPropagation();
-        console.log('top');
+
+        if (username === null)
+            toast.error('This user does not have a profile.');
+        else
+            navigate(`/profile/${username}`);
     }
 
     const handlePlay = (e: any) => {

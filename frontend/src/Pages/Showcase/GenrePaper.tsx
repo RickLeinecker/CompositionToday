@@ -24,6 +24,7 @@ export default function GenrePaper({ genre, setGenreClicked }: GenreProps) {
         >
             <div className='genre-parent' style={imgStyle}>
                 <img src={genre.imageFilepath} alt="genre" className='genre-image' style={imgStyle} />
+                {/* TODO: ensure genre name doesn't overflow */}
                 <p className='genre-text'>{genre.tagName}</p>
             </div>
         </Paper >
