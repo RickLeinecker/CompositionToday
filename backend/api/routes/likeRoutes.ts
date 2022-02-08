@@ -14,7 +14,7 @@ const getLikesForCommentController = require("../controllers/likeControllers/get
 const didUserLikeContentController = require("../controllers/likeControllers/didUserLikeContentController.ts");
 const getLikeCountForCommentController = require("../controllers/likeControllers/getLikeCountForCommentController.ts");
 const getLikeCountForContentController = require("../controllers/likeControllers/getLikeCountForContentController.ts");
-
+const didUserLikeCommentController = require("../controllers/likeControllers/didUserLikeCommentController.ts");
 router.post("/api/createLike", createLikeController.createLike);
 router.post(
   "/api/getLikeCountForContent",
@@ -36,6 +36,11 @@ router.post(
   "/api/didUserLikeContent",
   didUserLikeContentController.didUserLikeContent
 );
+router.post(
+  "/api/didUserLikeComment",
+  didUserLikeCommentController.didUserLikeComment
+);
+
 router.post("/api/readLike", readLikeController.readLike);
 router.post(
   "/api/getLikesForContent",
