@@ -38,6 +38,17 @@ export default function ArticleCard({ article, isMyProfile, notifyChange }: Prop
                     <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
                 }
             </div>
+
+            <div style={{display: "flex", margin:"2%", marginBottom: "1%"}}>
+                    <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
+                            <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
+                        </div>
+                    </Link>
+            </div>
+
+            <Divider variant="fullWidth" component="div" sx={{margin:"0.5% auto", width:"95%"}}/>
             
             <GenericDeleteModal
                 contentID={id}
@@ -55,18 +66,11 @@ export default function ArticleCard({ article, isMyProfile, notifyChange }: Prop
             />
             
             <div className="card-body" style={{paddingBottom: "0%"}}>
-                <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
-                        <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
-                    </div>
-                </Link>
-                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
                 <h1 className="card-title">{contentName}</h1>
                 <p className="card-text">{contentText}</p>
-                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
             </div>
             
+            <Divider variant="fullWidth" component="div" sx={{margin:"1% auto", width:"95%"}}/>
 
             <div style={{float: "right", marginBottom:"-1%"}}>
                 {isCommentsOpen ?
