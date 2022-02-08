@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // updateLike
 exports.updateLike = async (req, res) => {
-  // incoming: likeID, userID, timestamp, likeTypeID, commentID, contentID
+  // incoming: likeID, uid, timestamp, likeTypeID, commentID, contentID
   // outgoing: error
 
   var error = "";
@@ -11,14 +11,13 @@ exports.updateLike = async (req, res) => {
   var insertArray = [];
   var responseCode = 0;
 
-  const { likeID, userID, timestamp, likeTypeID, commentID, contentID } =
-    req.body;
+  const { likeID, uid, timestamp, likeTypeID, commentID, contentID } = req.body;
 
   // build update string with non null fields
   var insertString = "UPDATE likes SET ";
-  if (userID) {
-    insertString += "userID=?,";
-    insertArray.push(userID);
+  if (uid) {
+    insertString += "uid=?,";
+    insertArray.push(uid);
   }
 
   if (timestamp) {
@@ -45,8 +44,6 @@ exports.updateLike = async (req, res) => {
   insertString += " WHERE id=?";
   insertArray.push(likeID);
 
-  // var sqlInsert =
-  //   "UPDATE likes SET userID=?,timestamp=?,likeTypeID=?,commentID=?,contentID=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
       if (err) {

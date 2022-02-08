@@ -1,25 +1,19 @@
-// get all of the comments for any content
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getCommentsForContentController
-exports.getCommentsForContent = async (req, res) => {
-  // incoming: contentID
-  // outgoing: comments, error
+// getLikeCountForComment
+exports.getLikeCountForComment = async (req, res) => {
+  // incoming: commentID
+  // outgoing: likes, error
 
   var error = "";
   var results = [];
   var responseCode = 0;
-
-  const { contentID } = req.body;
+  const { commentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT comment.id,comment.contentID,comment.commenterUserID,
-      comment.timestamp,comment.comment,comment.approved,userProfile.profilePicPath,
-      userProfile.displayName,user.username FROM comment INNER JOIN userProfile 
-      ON comment.commenterUserID=userProfile.userID INNER JOIN user ON comment.commenterUserID=user.id 
-      WHERE contentID=?`,
-      [contentID],
+      "SELECT COUNT(*) AS likeCount,likes.commentID,COUNT(CASE WHEN likeType.likeType = 'thumbs_up' THEN 1 ELSE NULL END) AS likedCount,COUNT(CASE WHEN likeType.likeType = 'heart' THEN 1 ELSE NULL END) AS lovedCount FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE commentID=?",
+      [commentID],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
@@ -30,7 +24,7 @@ exports.getCommentsForContent = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "No comments for this content";
+            error = "No likes exist";
             responseCode = 500;
           }
         }
