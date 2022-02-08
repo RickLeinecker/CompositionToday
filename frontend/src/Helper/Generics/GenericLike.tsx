@@ -30,7 +30,6 @@ export default function GenericLike() {
     useEffect(() => {
         let temp = window.sessionStorage.getItem("username");
         setUsername(!temp ? "" : temp);
-        console.log(temp);
     }, [])
 
     return(

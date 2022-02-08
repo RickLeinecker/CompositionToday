@@ -32,7 +32,6 @@ export default function CommentSection({contentID, notifyChange}: Props) {
 
                 setError("");
                 setResponse(await answer.result);
-                console.log(answer.result);
                 setLoading(false);
 
             } catch (e: any) {
