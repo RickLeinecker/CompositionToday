@@ -121,7 +121,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={event.id} notifyChange={notifyChange}/> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={event.id}/> : <></>}
             </div>
         </div>
     )

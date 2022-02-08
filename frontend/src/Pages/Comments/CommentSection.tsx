@@ -7,13 +7,17 @@ import DefaultValues from '../../Styles/DefaultValues.module.scss';
 
 type Props = {
     contentID: number;
-    notifyChange: () => void;
 }
 
-export default function CommentSection({contentID, notifyChange}: Props) {
+export default function CommentSection({contentID}: Props) {
     const [response, setResponse] = useState<Array<CommentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [commentHasChanged, setCommentHasChanged] = useState<boolean>(false);
+
+    const notifyChange = () => {
+        setCommentHasChanged(value => !value);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -41,7 +45,7 @@ export default function CommentSection({contentID, notifyChange}: Props) {
 
         }
         fetchData();
-    }, [])
+    }, [commentHasChanged, contentID])
     
     return (
         <div>

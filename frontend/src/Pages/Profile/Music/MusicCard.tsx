@@ -107,7 +107,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={music.id} notifyChange={notifyChange}/> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={music.id}/> : <></>}
             </div>
 
         </div>

@@ -95,6 +95,10 @@ export type EventType = {
 }
 
 export type CommentType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
     id: number;
     contentID: number;
     commenterUserID: number;

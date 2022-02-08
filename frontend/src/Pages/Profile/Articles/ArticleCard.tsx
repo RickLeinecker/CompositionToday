@@ -88,7 +88,7 @@ export default function ArticleCard({ article, isMyProfile, notifyChange }: Prop
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={article.id} notifyChange={notifyChange}/> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={article.id}/> : <></>}
             </div>
         </div>
     )
