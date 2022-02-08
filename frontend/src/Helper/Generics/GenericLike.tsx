@@ -34,10 +34,10 @@ export default function GenericLike() {
     }, [])
 
     return(
-        <div style={{float: "right", display: "flex", marginRight: "3%"}}>
+        <div style={{float: "right", display: "flex", marginRight: "1%"}}>
             <p>{likeCount}</p>
-            {isLiked && <FavoriteIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteIcon>}
-            {!isLiked && <FavoriteBorderIcon style={{marginLeft:"10%"}} onClick={handleClick}></FavoriteBorderIcon>}
+            {isLiked && <FavoriteIcon style={{marginLeft:"2%"}} onClick={handleClick}></FavoriteIcon>}
+            {!isLiked && <FavoriteBorderIcon style={{marginLeft:"2%"}} onClick={handleClick}></FavoriteBorderIcon>}
             {anchorEl && <GenericLikeMenu anchorEl={anchorEl} closeMenu={closeMenu} likeType='like'/>}
         </div>
     );

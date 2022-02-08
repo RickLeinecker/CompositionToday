@@ -7,6 +7,16 @@ import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import moment from 'moment';
+import GenericLike from '../../../Helper/Generics/GenericLike';
+import { Divider, Grid } from '@mui/material';
+import CommentSection from '../../Comments/CommentSection';
+import { useState } from 'react';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+
 
 type Props = {
     music: MusicType;
@@ -19,6 +29,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName} = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const[isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
 
     return (
         <div className="card">
@@ -46,7 +57,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                 handleCloseEdit={handleCloseEdit}
             />
             
-            <div className="card-body">
+            <div className="card-body" style={{paddingBottom: "0%"}}>
                 
                 <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
                     <div style={{display: "flex", alignItems: "center"}}>
@@ -54,7 +65,8 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                         <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
                     </div>
                 </Link>
-                <hr/>
+
+                <Divider variant="fullWidth" component="div" sx={{margin:"1% 0"}}/>
                 <h5 className="card-title">{contentName}</h5>
                 <p className="card-text">{contentText}</p>
                 <p className="card-text">{description}</p>
@@ -70,7 +82,27 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                         controls
                     /> 
                 }
+                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
+
+                
             </div>
+
+            <div style={{float: "right", marginBottom:"-1%"}}>
+                {isCommentsOpen ?
+                    <div style={{float: "right"}}>
+                        <ChatBubbleIcon onClick={() => setIsCommentsOpen(false)}/>
+                        <ArrowDropDownIcon/>
+                    </div>
+                    :
+                    <div style={{float: "right"}}>
+                        <ChatBubbleOutlineIcon onClick={() => setIsCommentsOpen(true)}/>
+                        <ArrowDropUpIcon/>
+                    </div>
+                }
+                <GenericLike/>
+            </div>
+
+            {isCommentsOpen ? <CommentSection/> : <></>}
         </div>
     )
 }
