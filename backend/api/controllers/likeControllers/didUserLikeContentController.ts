@@ -13,7 +13,7 @@ exports.didUserLikeContent = async (req, res) => {
   const { contentID, uid } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT likes.id AS likeID,likeType.likeType FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE likes.contentID=? and likes.uid=?;",
+      "SELECT likes.id AS likeID,likeType.likeType,likeType.id AS likeTypeID FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE likes.contentID=? and likes.uid=?;",
       [contentID, uid],
       function (err, result) {
         if (err) {
@@ -26,7 +26,12 @@ exports.didUserLikeContent = async (req, res) => {
             results = result[0];
             responseCode = 200;
           } else {
-            var obj = { likeID: null, likeType: null, isLiked: false };
+            var obj = {
+              likeID: null,
+              likeType: null,
+              likeTypeID: null,
+              isLiked: false,
+            };
             results = obj;
             responseCode = 200;
           }
