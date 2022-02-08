@@ -127,7 +127,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 <div>
                     <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} isMultiline={true}/>    
                     <GenericDatePicker 
                         title={'Start date'} 
                         type={"fromDate"}
