@@ -11,6 +11,7 @@ const deleteLikeController = require("../controllers/likeControllers/deleteLikeC
 const getLikesController = require("../controllers/likeControllers/getLikesController.ts");
 const getLikesForContentController = require("../controllers/likeControllers/getLikesForContentController.ts");
 const getLikesForCommentController = require("../controllers/likeControllers/getLikesForCommentController.ts");
+const didUserLikeContentController = require("../controllers/likeControllers/didUserLikeContentController.ts");
 
 router.post("/api/createLike", createLikeController.createLike);
 router.post(
@@ -20,6 +21,10 @@ router.post(
 router.post(
   "/api/createLikeForContent",
   createLikeForContentController.createLikeForContent
+);
+router.post(
+  "/api/didUserLikeContent",
+  didUserLikeContentController.didUserLikeContent
 );
 router.post("/api/readLike", readLikeController.readLike);
 router.post(
