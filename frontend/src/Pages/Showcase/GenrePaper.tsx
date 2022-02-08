@@ -1,6 +1,7 @@
 import { Paper } from '@mui/material';
 import { style, genreStyle } from './inlineStyles';
 import { genreType } from '../../ObjectInterface';
+import { imgStyle } from './inlineStyles';
 
 type GenreProps = {
     genre: genreType;
@@ -13,8 +14,18 @@ export default function GenrePaper({ genre, setGenreClicked }: GenreProps) {
     }
 
     return (
-        <Paper elevation={3} sx={{ ...style, ...genreStyle, backgroundImage: `url(${genre.imageFilepath})` }} onClick={handleClick} >
-            <p className='genre-text'>{genre.tagName}</p>
-        </Paper>
+        <Paper
+            elevation={3}
+            sx={{
+                ...style,
+                ...genreStyle
+            }}
+            onClick={handleClick}
+        >
+            <div style={imgStyle}>
+                <img src={genre.imageFilepath} alt="genre" className='genre-image' style={imgStyle} />
+                <p className='genre-text'>{genre.tagName}</p>
+            </div>
+        </Paper >
     );
 }

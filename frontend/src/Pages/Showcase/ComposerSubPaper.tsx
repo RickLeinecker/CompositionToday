@@ -5,9 +5,14 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import { style2, style3 } from './inlineStyles';
+import paperStyle from './PaperStyle.module.scss';
 import { PlayerContext } from './PlayerContext';
 
-export default function ComposerSubPaper() {
+type ComposerSubPaperProps = {
+    imagePath: string | null;
+}
+
+export default function ComposerSubPaper({ imagePath }: ComposerSubPaperProps) {
     const [hovering, setHovering] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [pressed, setPressed] = useState(false);
@@ -46,8 +51,11 @@ export default function ComposerSubPaper() {
         setHovering(false);
     }
 
+    if (imagePath === null)
+        imagePath = '/img_avatar.png';
+
     return (
-        <Paper elevation={1} sx={style2} onClick={handleClick} onMouseEnter={handleEnter} onMouseLeave={handleLeave} >
+        <Paper elevation={1} sx={{...style2, backgroundImage: `url(${imagePath})`, backgroundSize: paperStyle.innerSize}} onClick={handleClick} onMouseEnter={handleEnter} onMouseLeave={handleLeave} >
             <Grid container direction="column" item minHeight='100%' alignItems="stretch" justifyContent="flex-end" >
                 <Box overflow="hidden" ref={containerRef} >
                     <Slide direction="up" in={hovering} container={containerRef.current} >

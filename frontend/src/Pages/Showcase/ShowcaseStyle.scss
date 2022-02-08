@@ -1,21 +1,42 @@
 h1 {
   &.header {
-      text-align: center;
-      font-weight: 900;
-      margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 900;
+    margin-bottom: 2rem;
   }
 }
 
 .genre-text {
-  margin: 0;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
   color: white;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: 2rem;
   font-weight: 900;
   font-stretch: extra-condensed;
   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
+}
+
+.genre-image {
+  opacity: 0.4;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+
+.genre-image:hover {
+  opacity: 0.8;
+  -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+  transform: scale(1.05);
 }
 
 .container {
@@ -60,5 +81,5 @@ h1 {
 }
 
 #testbutton {
-  background-color: 'red';
+  background-color: "red";
 }
