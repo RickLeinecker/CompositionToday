@@ -94,6 +94,15 @@ export type EventType = {
     mapsEnabled: boolean
 }
 
+export type CommentType = {
+    id: number;
+    contentID: number;
+    commenterUserID: number;
+    timestamp: string;
+    comment: string;
+    approved: number;
+}
+
 /**
  * Example
  * @property data: JSON.stringify({contentType: "experience"})

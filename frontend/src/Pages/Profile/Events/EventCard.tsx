@@ -9,6 +9,11 @@ import moment from 'moment';
 import { Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import GenericLike from '../../../Helper/Generics/GenericLike';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CommentSection from '../../Comments/CommentSection';
 
 type Props = {
     event: EventType;
@@ -23,6 +28,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
+    const[isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
 
     return (
         <div className="card">
@@ -50,7 +56,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 handleCloseEdit={handleCloseEdit}
             />
 
-            <div className="card-body">
+            <div className="card-body" style={{paddingBottom: "0%"}}>
                 <div style={{display: "flex"}}>
                     <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
                         <div style={{display: "flex", alignItems: "center"}}>
@@ -77,6 +83,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                         <></>
                     }
                 </div>
+                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
                 <div style={{marginTop: "2%"}}>
                     {
                         mapsEnabled && showMap ?
@@ -95,8 +102,23 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 </div>
             </div>
 
-            <div>
+            <div style={{float: "right", marginBottom:"-1%"}}>
+                {isCommentsOpen ?
+                    <div style={{float: "right"}} onClick={() => setIsCommentsOpen(false)}>
+                        <ChatBubbleIcon/>
+                        <ArrowDropDownIcon/>
+                    </div>
+                    :
+                    <div style={{float: "right"}} onClick={() => setIsCommentsOpen(true)}>
+                        <ChatBubbleOutlineIcon/>
+                        <ArrowDropUpIcon/>
+                    </div>
+                }
                 <GenericLike/>
+            </div>
+
+            <div>
+                {isCommentsOpen ? <CommentSection contentID={event.id} notifyChange={notifyChange}/> : <></>}
             </div>
         </div>
     )
