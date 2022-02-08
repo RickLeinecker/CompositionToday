@@ -83,7 +83,6 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                         <></>
                     }
                 </div>
-                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
                 <div style={{marginTop: "2%"}}>
                     {
                         mapsEnabled && showMap ?
@@ -100,6 +99,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                             <></>
                     }
                 </div>
+                <Divider variant="fullWidth" component="div" sx={{margin:"1.5% 0"}}/>
             </div>
 
             <div style={{float: "right", marginBottom:"-1%"}}>
