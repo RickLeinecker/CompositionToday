@@ -1,24 +1,18 @@
-// get all of the comments for any content
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getCommentsForContentController
-exports.getCommentsForContent = async (req, res) => {
+// getLikeCountForContent
+exports.getLikeCountForContent = async (req, res) => {
   // incoming: contentID
-  // outgoing: comments, error
+  // outgoing: likes, error
 
   var error = "";
   var results = [];
   var responseCode = 0;
-
   const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT comment.id,comment.contentID,comment.commenterUserID,
-      comment.timestamp,comment.comment,comment.approved,userProfile.profilePicPath,
-      userProfile.displayName,user.username FROM comment INNER JOIN userProfile 
-      ON comment.commenterUserID=userProfile.userID INNER JOIN user ON comment.commenterUserID=user.id 
-      WHERE contentID=?`,
+      "SELECT COUNT(*) AS likeCount,likes.contentID,COUNT(CASE WHEN likeType.likeType = 'thumbs_up' THEN 1 ELSE NULL END) AS likedCount,COUNT(CASE WHEN likeType.likeType = 'heart' THEN 1 ELSE NULL END) AS lovedCount FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE contentID=?",
       [contentID],
       function (err, result) {
         if (err) {
@@ -30,7 +24,7 @@ exports.getCommentsForContent = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "No comments for this content";
+            error = "No likes exist";
             responseCode = 500;
           }
         }
