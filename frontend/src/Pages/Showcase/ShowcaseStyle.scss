@@ -32,11 +32,13 @@ h1 {
   backface-visibility: hidden;
 }
 
-.genre-image:hover {
-  opacity: 0.8;
-  -ms-transform: scale(1.05); /* IE 9 */
-  -webkit-transform: scale(1.05); /* Safari 3-8 */
-  transform: scale(1.05);
+.genre-parent:hover {
+  & .genre-image{
+    opacity: 0.8;
+    -ms-transform: scale(1.05); /* IE 9 */
+    -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+  }
 }
 
 .container {

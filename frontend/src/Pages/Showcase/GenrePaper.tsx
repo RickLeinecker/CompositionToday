@@ -22,7 +22,7 @@ export default function GenrePaper({ genre, setGenreClicked }: GenreProps) {
             }}
             onClick={handleClick}
         >
-            <div style={imgStyle}>
+            <div className='genre-parent' style={imgStyle}>
                 <img src={genre.imageFilepath} alt="genre" className='genre-image' style={imgStyle} />
                 <p className='genre-text'>{genre.tagName}</p>
             </div>
