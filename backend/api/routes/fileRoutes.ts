@@ -1,5 +1,6 @@
 // Routes for file uploads and downloads
 var express = require("express");
+const sharp = require("sharp");
 var router = express.Router();
 var multer = require("multer");
 var path = require("path");
@@ -145,6 +146,8 @@ router.post("/api/uploadAudio", function (req, res) {
   var error = "";
   var results = [];
   var responseCode;
+  // console.log("THIS IS THE REQUEST: " + req);
+  // console.log("End Test.");
   uploadAudio(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
@@ -215,7 +218,7 @@ router.post("/api/uploadImage", function (req, res) {
   var error = "";
   var results = [];
   var responseCode;
-  uploadImage(req, res, function (err) {
+  uploadImage(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
       error = err.message;
@@ -229,9 +232,24 @@ router.post("/api/uploadImage", function (req, res) {
       responseCode = 200;
       console.log(req.file);
       console.log(req.file.path);
+      const { filename: image } = req.file;
+      var options = {
+        width: 256,
+        height: 256,
+        fit: sharp.fit.cover,
+        position: sharp.strategy.entropy,
+      };
+      await sharp(req.file.path)
+        .resize(options)
+        .jpeg()
+        .toFile(path.resolve(req.file.destination, "rs" + image));
+      fs.unlinkSync(req.file.path);
+
+      // return res.send("SUCCESS!");
       let fileInfo = {
         filename: req.file.filename,
-        filepath: "http://compositiontoday.net/images/" + req.file.filename,
+        filepath:
+          "http://compositiontoday.net/images/" + "rs" + req.file.filename,
       };
       results.push(fileInfo);
     }
