@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
@@ -18,6 +19,7 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
+    const currentUid = getAuth().currentUser?.uid;
 
     const notifyChange = () => { setHasChanged(value => !value); }
 
@@ -25,7 +27,7 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
         async function fetchData() {
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "article", userID }),
+                data: JSON.stringify({ contentType: "article", uid: currentUid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -49,7 +51,7 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
 
         }
         fetchData();
-    }, [hasChanged])
+    }, [hasChanged, currentUid])
 
 
 

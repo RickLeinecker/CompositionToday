@@ -25,7 +25,7 @@ type Props = {
 
 
 export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName} = music;
+    const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser} = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
@@ -103,7 +103,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange }: Props) {
                         <ArrowDropUpIcon/>
                     </div>
                 }
-                <GenericLike/>
+                <GenericLike contentID={music.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser}/>
             </div>
 
             <div>

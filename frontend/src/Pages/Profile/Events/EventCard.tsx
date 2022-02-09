@@ -23,7 +23,7 @@ type Props = {
 
 
 export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp } = event;
+    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showMap, setShowMap] = useState<boolean>(false);
@@ -117,7 +117,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                         <ArrowDropUpIcon/>
                     </div>
                 }
-                <GenericLike/>
+                <GenericLike contentID={event.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser}/>
             </div>
 
             <div>

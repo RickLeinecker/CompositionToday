@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
@@ -19,13 +20,14 @@ export default function MusicSection({ createOpen, handleCloseCreate, userID }: 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
+    const currentUid = getAuth().currentUser?.uid;
 
     const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "music", userID }),
+                data: JSON.stringify({ contentType: "music", uid: currentUid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -49,7 +51,7 @@ export default function MusicSection({ createOpen, handleCloseCreate, userID }: 
 
         }
         fetchData();
-    }, [userID, hasChanged])
+    }, [currentUid, hasChanged])
 
 
 

@@ -23,7 +23,7 @@ type Props = {
 
 
 export default function ArticleCard({ article, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, contentText, username, profilePicPath, displayName, timestamp} = article;
+    const { id, contentName, contentText, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser} = article;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
@@ -84,7 +84,7 @@ export default function ArticleCard({ article, isMyProfile, notifyChange }: Prop
                         <ArrowDropUpIcon/>
                     </div>
                 }
-                <GenericLike/>
+                <GenericLike contentID={article.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser}/>
             </div>
 
             <div>
