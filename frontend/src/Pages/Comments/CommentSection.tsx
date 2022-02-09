@@ -65,7 +65,7 @@ export default function CommentSection({contentID}: Props) {
                             />
                         </div>
             }
-            <CommentCompose/>
+            <CommentCompose notifyChange={notifyChange} contentID={contentID}/>
         </div>
     );
 }
