@@ -4,6 +4,7 @@ import GenericHandler from '../../Handlers/GenericHandler';
 import GenericVirtualizedList from '../../Helper/Generics/GenericVirtualizedList';
 import { CommentType, GenericHandlerType } from '../../ObjectInterface';
 import DefaultValues from '../../Styles/DefaultValues.module.scss';
+import CommentCompose from './CommentCompose';
 
 type Props = {
     contentID: number;
@@ -64,6 +65,7 @@ export default function CommentSection({contentID}: Props) {
                             />
                         </div>
             }
+            <CommentCompose/>
         </div>
     );
 }
