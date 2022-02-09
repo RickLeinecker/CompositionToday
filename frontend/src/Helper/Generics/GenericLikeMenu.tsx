@@ -166,7 +166,8 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
     }, [alignment])
 
     const handleClose = () => {
-        alignment === null ? closeMenu(false) : closeMenu(true);
+        console.log(alignment);
+        (alignment === null || alignment === "") ? closeMenu(false) : closeMenu(true);
     };
 
     const handleChange = (event: any, newAlignment: string) => {
