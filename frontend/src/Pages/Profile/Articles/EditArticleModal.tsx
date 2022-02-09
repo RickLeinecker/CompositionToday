@@ -70,6 +70,7 @@ export default function EditArticleModal({article, notifyChange, editOpen, handl
                 contentType: "article",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
+                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",

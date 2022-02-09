@@ -1,5 +1,6 @@
 import { useContext, useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
+import CommentCard from '../../Pages/Comments/CommentCard';
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
 import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
@@ -56,6 +57,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                             {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                             {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                             {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                         </div>
                                     </CellMeasurer>
                                 )

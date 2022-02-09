@@ -129,6 +129,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
+                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",

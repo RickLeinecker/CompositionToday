@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
@@ -20,6 +21,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
     const [tagOptions, setTagOptions] = useState<Array<TagType>>();
+    const currentUid = getAuth().currentUser?.uid;
 
     const notifyChange = () => {
         setHasChanged(value => !value);
@@ -30,7 +32,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
         async function fetchData(){
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "event", userID}),
+                data: JSON.stringify({contentType: "event", uid: currentUid}),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -54,7 +56,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
         
         }
         fetchData();
-    }, [userID, notifyChange])
+    }, [currentUid, notifyChange])
 
 
     // get tags

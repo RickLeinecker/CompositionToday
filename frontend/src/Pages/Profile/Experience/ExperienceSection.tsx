@@ -5,6 +5,7 @@ import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateExperienceModal from './CreateExperienceModal';
 import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
+import { getAuth } from 'firebase/auth';
 
 type Props = {
     userID: number;
@@ -16,6 +17,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const currentUid = getAuth().currentUser?.uid;
     const [hasChanged, setHasChanged] = useState(false);
 
     const notifyChange = () => { setHasChanged(value => !value); }
@@ -23,7 +25,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "experience", userID }),
+                data: JSON.stringify({ contentType: "experience", uid: currentUid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -47,7 +49,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
         }
         fetchData();
 
-    }, [userID, hasChanged])
+    }, [currentUid, hasChanged])
 
     return (
         <>
