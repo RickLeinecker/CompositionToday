@@ -6,6 +6,7 @@ import { GenericHandlerType } from '../../ObjectInterface';
 import GenericHandler from '../../Handlers/GenericHandler';
 import { toast } from 'react-toastify';
 import { getAuth } from 'firebase/auth';
+import "./CommentStyle.scss";
 
 type Props = {
     notifyChange: () => void;
@@ -51,15 +52,16 @@ export default function CommentCompose({notifyChange, contentID}: Props) {
     return (
         <div style={{width: "80%", display: "flex", alignContent: "center", margin: "1% auto"}}>
             <TextField
+                className="inputRounded"
                 label={"Post a comment..."}
                 variant="outlined"
                 fullWidth
                 onChange={e => setComment(e.target.value)}
                 value={comment}
                 multiline
-                style={{borderRadius: "8em", marginRight: "2%"}}
+                style={{marginRight: "2%"}}
             />
-            <Button onClick={postComment}>
+            <Button onClick={postComment} style={{borderRadius: "100em"}}>
                 <SendIcon/>
             </Button>
         </div>

@@ -1,0 +1,7 @@
+@import "../frontend/src/Styles/DefaultValues.module.scss";
+@import "../../Styles/DefaultComponents.module.scss";
+
+.inputRounded .MuiOutlinedInput-root {
+    border-radius: 20em;
+
+}
