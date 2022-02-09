@@ -126,7 +126,6 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
             try {
                 let answer = (await GenericHandler(handlerObject));
                 if (answer.error.length > 0) {
-                    console.log(answer.error);
                     return;
                 }
 
@@ -166,7 +165,6 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
     }, [alignment])
 
     const handleClose = () => {
-        console.log(alignment);
         (alignment === null || alignment === "") ? closeMenu(false) : closeMenu(true);
     };
 
