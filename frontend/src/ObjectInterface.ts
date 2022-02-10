@@ -51,6 +51,9 @@ export type ArticleType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
     userID: number;
@@ -63,6 +66,9 @@ export type MusicType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
     userID: number;
@@ -80,6 +86,9 @@ export type EventType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
     userID: number;
@@ -92,6 +101,26 @@ export type EventType = {
     imageFilename?: string;
     location?: string;
     mapsEnabled: boolean
+}
+
+export type CommentType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
+    id: number;
+    contentID: number;
+    commenterUserID: number;
+    timestamp: string;
+    comment: string;
+    approved: number;
+}
+
+export type LikeType = {
+    likeID: number;
+    likeType: string;
+    likeTypeID: number;
+    isLiked: boolean;
 }
 
 /**

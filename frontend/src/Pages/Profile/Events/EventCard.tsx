@@ -9,6 +9,11 @@ import moment from 'moment';
 import { Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import GenericLike from '../../../Helper/Generics/GenericLike';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CommentSection from '../../Comments/CommentSection';
 
 type Props = {
     event: EventType;
@@ -18,11 +23,12 @@ type Props = {
 
 
 export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
-    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp } = event;
+    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const[showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
+    const[isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false)
 
     return (
         <div className="card">
@@ -34,6 +40,17 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                     <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
                 }
             </div>
+
+            <div style={{display: "flex", margin:"2%", marginBottom: "1%"}}>
+                    <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
+                            <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
+                        </div>
+                    </Link>
+            </div>
+
+            <Divider variant="fullWidth" component="div" sx={{margin:"0.5% auto", width:"95%"}}/>
 
             <GenericDeleteModal
                 contentID={id}
@@ -50,16 +67,7 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 handleCloseEdit={handleCloseEdit}
             />
 
-            <div className="card-body">
-                <div style={{display: "flex"}}>
-                    <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
-                        <div style={{display: "flex", alignItems: "center"}}>
-                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{float: "left"}} roundedCircle/>
-                            <h5 className="card-title" style={{marginLeft:"2%"}}>{displayName}</h5>
-                        </div>
-                    </Link>
-                </div>
-                <Divider variant="fullWidth" component="div" sx={{margin:"2% 0"}}/>
+            <div className="card-body" style={{paddingBottom: "0%"}}>
                 <div style={{display: "flex", margin: "0 0"}}>
                     <div style={{flex: "1 0 0"}}>
                         <h5 className="card-title">{contentName}</h5>
@@ -95,8 +103,25 @@ export default function EventCard({ event, isMyProfile, notifyChange }: Props) {
                 </div>
             </div>
 
+            <Divider variant="fullWidth" component="div" sx={{margin:"1% auto", width:"95%"}}/>
+
+            <div style={{float: "right", marginBottom:"-1%"}}>
+                {isCommentsOpen ?
+                    <div style={{float: "right"}} onClick={() => setIsCommentsOpen(false)}>
+                        <ChatBubbleIcon/>
+                        <ArrowDropDownIcon/>
+                    </div>
+                    :
+                    <div style={{float: "right"}} onClick={() => setIsCommentsOpen(true)}>
+                        <ChatBubbleOutlineIcon/>
+                        <ArrowDropUpIcon/>
+                    </div>
+                }
+                <GenericLike contentID={event.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser}/>
+            </div>
+
             <div>
-                <GenericLike/>
+                {isCommentsOpen ? <CommentSection contentID={event.id}/> : <></>}
             </div>
         </div>
     )

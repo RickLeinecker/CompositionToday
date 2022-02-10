@@ -15,11 +15,12 @@ export default function Showcase() {
     const [genres, setGenres] = useState<genreType[]>([]);
     const [genreClicked, setGenreClicked] = useState<string>("");
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
+    const [genreComposers, setGenreComposers] = useState<any[]>([]);
     const [stopAllPlayers, setStopAllPlayers] = useState<boolean>(false);
     const bottomRef = useRef<HTMLHeadingElement>(null);
 
     const scrollToBottom = () => {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function Showcase() {
             shuffleArray(list);
             // console.log(list)
 
-            setGenres(list.slice(0, 4));
+            setGenres(list);
         } catch (e: any) {
             toast.error('Failed to retrieve data');
         }
@@ -59,6 +60,7 @@ export default function Showcase() {
 
     const getFeaturedComposers = async () => {
         try {
+            // Handler retrieves 4 composers randomly
             let answer = await GenericGetHandler("getComposersForShowcase");
 
             setFeaturedComposers(answer.result);
@@ -79,12 +81,12 @@ export default function Showcase() {
             };
 
             let answer = await GenericHandler(handlerObject);
-            // let list: any[] = answer.result;
-            // console.log(list)
+            let list: any[] = answer.result;
+            console.log(list)
             // shuffleArray(list);
             // console.log(list)
 
-            // setFeaturedComposers(list.slice(0, 4));
+            setGenreComposers(list);
         } catch (e: any) {
             toast.error('Failed to retrieve data');
         }
@@ -98,11 +100,17 @@ export default function Showcase() {
                     <h1>Showcase</h1>
                     <GenericSearch />
 
-                    <ComposerSection featuredComposers={featuredComposers} />
+                    <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
-                    <GenreSection genres={genres} setGenreClicked={setGenreClicked} />
+                    <GenreSection genres={genres.slice(0, 4)} setGenreClicked={setGenreClicked} />
 
-                    {!!genreClicked && <h1 ref={bottomRef} className='header'>Composers of {genreClicked}</h1>}
+                    {
+                        !!genreClicked &&
+                        <>
+                            <ComposerSection header={`Composers of ${genreClicked}`} featuredComposers={genreComposers} />
+                            <div ref={bottomRef} />
+                        </>
+                    }
                 </Container>
             </PlayerContext.Provider>
         </>

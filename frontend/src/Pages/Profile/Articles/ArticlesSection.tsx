@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
@@ -18,57 +19,58 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
+    const currentUid = getAuth().currentUser?.uid;
 
     const notifyChange = () => { setHasChanged(value => !value); }
 
     useEffect(() => {
-        async function fetchData(){
+        async function fetchData() {
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "article", userID}),
+                data: JSON.stringify({ contentType: "article", uid: currentUid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
 
-            try{
+            try {
                 let answer = (await GenericHandler(handlerObject));
-                if(answer.error.length > 0){
+                if (answer.error.length > 0) {
                     setError(answer.error);
                     return;
                 }
-                
+
                 setError("");
                 setResponse(await answer.result);
                 setLoading(false);
-                
 
-            } catch(e: any){
+
+            } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 setError(DefaultValues.apiErrorMessage);
             }
-        
+
         }
         fetchData();
-    }, [hasChanged])
+    }, [hasChanged, currentUid])
 
 
-        
+
     return (
         <>
             <CreateArticleModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
-                {!error && loading ? <div>...loading</div> 
-                :
-                error ? 
-                <Alert variant="danger">{error}</Alert>
-                : 
-                <GenericVirtualizedList
-                    bodyStyle={{ width: "100%", height: "50vh" }}
-                    individualStyle={{ padding: "1% 1% 20px" }}
-                    items={response}
-                    notifyChange={notifyChange}
-                    type={"article"}
-                />
+                {!error && loading ? <div>...loading</div>
+                    :
+                    error ?
+                        <Alert variant="danger">{error}</Alert>
+                        :
+                        <GenericVirtualizedList
+                            bodyStyle={{ width: "100%", height: "50vh" }}
+                            individualStyle={{ padding: "1% 1% 20px" }}
+                            items={response}
+                            notifyChange={notifyChange}
+                            type={"article"}
+                        />
                 }
             </div>
         </>

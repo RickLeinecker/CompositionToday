@@ -13,6 +13,7 @@ import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
+import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 
 type Props = {
     event: EventType;
@@ -31,6 +32,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
     const [tagOptions, setTagOptions] = useState<TagType[] | undefined>();
+    const [imageFileToDelete, setImageFileToDelete] = useState<string>("");
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
     const onHide = (): void => {
@@ -60,7 +62,14 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     }
 
     const deleteImageFile = () => {
-        console.log("delete image");
+        let fileToDelete = newContentValue.imageFilepath
+        if(fileToDelete !== undefined){
+            setImageFileToDelete(fileToDelete)
+            handleChange("", "imageFilepath")
+        }
+
+        handleChange("", "imageFilename");
+        setNewContentImage(null)
     }
 
     const checkForErrors = (): boolean => {
@@ -89,6 +98,13 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     }
 
     async function confirmEditHandler() {
+
+        let imageFileToDeleteTemp = imageFileToDelete;
+        if(imageFileToDeleteTemp !== "" && imageFileToDeleteTemp !== null){
+            deleteFile(imageFileToDeleteTemp);
+            setImageFileToDelete("");
+        }
+
         let newContentImagePath = null;
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
@@ -113,6 +129,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
+                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
