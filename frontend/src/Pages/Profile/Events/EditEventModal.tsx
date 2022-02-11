@@ -80,7 +80,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
-        error = checkDateError(newContentValue.fromDate, newContentValue.toDate);
+        error = checkDateError(newContentValue.fromDate, newContentValue.toDate) || error;
 
         let isMissingLoc = false;
         isMissingLoc = newContentValue.mapsEnabled && !newContentValue.location;
@@ -111,6 +111,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 return true;
             }
         }
+        setFromDateErrorMessage("");
         return false;
     }
 

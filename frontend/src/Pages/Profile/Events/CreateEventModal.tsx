@@ -89,6 +89,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
             setFromDateErrorMessage("Start date must be before end date");
             return true;
         }
+        setFromDateErrorMessage("");
         return false;
     }
 
