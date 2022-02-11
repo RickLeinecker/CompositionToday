@@ -4,7 +4,7 @@ import TopNavBar from '../TopNavBar';
 import './ProfileStyle.scss';
 import DefaultValues from '../../Styles/DefaultValues.module.scss';
 import { getAuth } from 'firebase/auth';
-import { GenericHandlerType, User, UserProfile } from '../../ObjectInterface';
+import { GenericHandlerType, UserProfile } from '../../ObjectInterface';
 import GenericHandler from '../../Handlers/GenericHandler';
 import ProfileContentSelector from './ProfileContentSelector';
 import { useParams } from 'react-router-dom';

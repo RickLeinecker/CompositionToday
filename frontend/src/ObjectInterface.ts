@@ -10,7 +10,7 @@ export type User = {
 };
 
 export type UserProfile = {
-    userID: number;
+    userID?: number;
     uid: string;
     displayName?: string;
     bio?: string;
