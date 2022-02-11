@@ -91,6 +91,7 @@ exports.createContent = async (req, res) => {
                     error = err;
                     responseCode = 500;
                     console.log(err);
+                    finishedProcess();
                   } else {
                     results.push("Success");
                     responseCode = 201;
