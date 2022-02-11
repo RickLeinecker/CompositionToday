@@ -10,6 +10,7 @@ import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
 export default function GenericInfiniteLoader() {
     const [items, setItems] = useState<any[]>([null]);
+    const [rerender, setRerender] = useState<boolean>(false);
 
     type loadedParam = {
         index: number
@@ -52,6 +53,11 @@ export default function GenericInfiniteLoader() {
 
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
+    // This helps resize new/removed data for window
+    const clearCache = () => cache.current.clearAll();
+
+    const notifyChange = () => setRerender(prev => !prev);
+
     interface virtualizedType {
         key: any;
         index: number;
@@ -84,7 +90,6 @@ export default function GenericInfiniteLoader() {
                                     const type = "music";
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
-                                    const notifyChange = () => { };
 
                                     return (
                                         <CellMeasurer
@@ -96,7 +101,7 @@ export default function GenericInfiniteLoader() {
                                         >
                                             <div style={{ ...style, ...individualStyle }}>
                                                 {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
                                                 {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                                 {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                             </div>

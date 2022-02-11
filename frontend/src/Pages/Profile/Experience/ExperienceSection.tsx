@@ -7,12 +7,13 @@ import CreateExperienceModal from './CreateExperienceModal';
 import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 
 type Props = {
+    uid: string;
     userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ userID, createOpen, handleCloseCreate }: Props) {
+export default function ExperienceSection({ uid, userID, createOpen, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -23,7 +24,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "experience", userID }),
+                data: JSON.stringify({ contentType: "experience", uid: uid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -47,7 +48,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
         }
         fetchData();
 
-    }, [userID, hasChanged])
+    }, [uid, hasChanged])
 
     return (
         <>

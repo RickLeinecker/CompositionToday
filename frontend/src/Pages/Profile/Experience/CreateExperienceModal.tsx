@@ -30,6 +30,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [toDateError, setToDateError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
@@ -66,8 +67,21 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
         error = (checkIfEmpty(newContentToDate, setToDateError) && !newContentIsDateCurrent) || error;
 
+        error = (!newContentIsDateCurrent && checkDateError(newContentFromDate, newContentToDate))|| error;
+
         return(error)
     }
+
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to && from.getDate() > to.getDate()){
+            setFromDateError(true);
+            setFromDateErrorMessage("Start date must be before end date");
+            return true;
+        }
+        setFromDateErrorMessage("");
+        return false;
+    }
+
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if(!value){
@@ -127,14 +141,15 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
                 <div>
                     <GenericInputField title="Experience Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Role" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false}/>    
+                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} isMultiline={true}/>    
                     <GenericDatePicker 
                         title={'Start date'} 
                         type={"fromDate"}
                         value={newContentFromDate} 
                         isRequired={true} 
                         onChange={setNewContentFromDate}
-                        error={fromDateError}                    
+                        error={fromDateError}        
+                        errorMessage={fromDateErrorMessage}            
                     />
                     {!newContentIsDateCurrent &&
                         <GenericDatePicker 

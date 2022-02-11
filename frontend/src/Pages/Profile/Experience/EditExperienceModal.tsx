@@ -22,6 +22,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
     
@@ -56,6 +57,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = (checkIfEmpty(newContentValue.toDate, setToDateError) && !newContentValue.isDateCurrent) || error;
 
+        error = (!newContentValue.isDateCurrent && checkDateError(newContentValue.fromDate, newContentValue.toDate)) || error;
+
         return(error)
     }
 
@@ -69,6 +72,22 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         }
     }
 
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to){
+            // from and to are strings for some reason
+            to = new Date(to);
+            from = new Date(from);
+            if(from.getDate() > to.getDate()){
+                setFromDateError(true);
+                setFromDateErrorMessage("Start date must be before end date");
+                return true;
+            }
+        }
+        setFromDateErrorMessage("");
+        return false;
+    }
+
+
     async function confirmEditHandler() {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
@@ -81,7 +100,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 // fromDate: newContentValue.fromDate?.toISOString().slice(0, 19).replace('T', ' '),
                 // toDate: newContentValue.toDate?.toISOString().slice(0, 19).replace('T', ' '),
                 fromDate: new Date(newContentValue?.fromDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
-                toDate: new Date(newContentValue?.toDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
+                toDate: newContentValue.toDate ? new Date(newContentValue?.toDate?.toString()!).toISOString().slice(0, 19).replace('T', ' ') : null,
                 isDateCurrent: newContentValue.isDateCurrent,
             }),
             methodType: "PATCH",
@@ -111,14 +130,15 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                 <>
                     <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false}/>
+                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} isMultiline={true}/>
                     <GenericDatePicker 
                         title={'Start date'} 
                         type={"fromDate"}
                         value={newContentValue.fromDate || null} 
                         isRequired={true} 
                         onChange={handleChange}
-                        error={fromDateError}                    
+                        error={fromDateError}       
+                        errorMessage={fromDateErrorMessage}             
                     />
                     {!newContentValue.isDateCurrent &&
                         <GenericDatePicker 

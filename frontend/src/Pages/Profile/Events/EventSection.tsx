@@ -8,12 +8,13 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateEventModal from './CreateEventModal';
 
 type Props = {
+    uid: string;
     userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function EventSection({createOpen, handleCloseCreate, userID}: Props) {
+export default function EventSection({createOpen, handleCloseCreate, uid, userID}: Props) {
 
     const [response, setResponse] = useState<Array<EventType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
         async function fetchData(){
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({contentType: "event", userID}),
+                data: JSON.stringify({contentType: "event", uid: uid}),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -54,7 +55,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
         
         }
         fetchData();
-    }, [userID, notifyChange])
+    }, [uid, hasChanged])
 
 
     // get tags

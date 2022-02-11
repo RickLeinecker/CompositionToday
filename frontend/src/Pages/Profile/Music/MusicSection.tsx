@@ -5,15 +5,15 @@ import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedL
 import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateMusicModal from './CreateMusicModal';
-import MusicCard from './MusicCard';
 
 type Props = {
+    uid: string;
     userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function MusicSection({ createOpen, handleCloseCreate, userID }: Props) {
+export default function MusicSection({ createOpen, handleCloseCreate, uid, userID }: Props) {
 
     const [response, setResponse] = useState<Array<MusicType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -24,9 +24,8 @@ export default function MusicSection({ createOpen, handleCloseCreate, userID }: 
 
     useEffect(() => {
         async function fetchData() {
-
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "music", userID }),
+                data: JSON.stringify({ contentType: "music", uid: uid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -50,7 +49,7 @@ export default function MusicSection({ createOpen, handleCloseCreate, userID }: 
 
         }
         fetchData();
-    }, [userID, hasChanged])
+    }, [uid, hasChanged])
 
 
 
