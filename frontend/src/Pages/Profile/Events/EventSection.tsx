@@ -56,7 +56,7 @@ export default function EventSection({createOpen, handleCloseCreate, userID}: Pr
         
         }
         fetchData();
-    }, [currentUid, notifyChange])
+    }, [currentUid, hasChanged])
 
 
     // get tags

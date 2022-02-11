@@ -28,6 +28,8 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
+    const [toDateErrorMessage, setToDateErrorMessage] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
@@ -79,6 +81,9 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
+        error = checkDateError(newContentValue.fromDate, newContentValue.toDate) || error;
+        error = checkToDateError(newContentValue.toDate) || error;
+
         let isMissingLoc = false;
         isMissingLoc = newContentValue.mapsEnabled && !newContentValue.location;
         setMissingLocationError(isMissingLoc);
@@ -97,6 +102,32 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         }
     }
 
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to){
+            // from and to are strings for some reason
+            to = new Date(to);
+            from = new Date(from);
+            if(from.getTime() > to.getTime()){
+                setFromDateError(true);
+                setFromDateErrorMessage("Start date must be before end date");
+                return true;
+            }
+        }
+        setFromDateErrorMessage("");
+        return false;
+    }
+
+    function checkToDateError(to: Date | null): boolean {
+        if(to && new Date(to).getTime() < new Date().getTime()){
+            setToDateErrorMessage("The event cannot end in the past");
+            setToDateError(true);
+            return true;
+        }
+
+        setToDateErrorMessage("");
+        return false;
+    }
+
     async function confirmEditHandler() {
 
         let imageFileToDeleteTemp = imageFileToDelete;
@@ -105,7 +136,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             setImageFileToDelete("");
         }
 
-        let newContentImagePath = null;
+        let newContentImagePath = newContentValue.imageFilepath;
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
             if (newContentImagePath === '') {
@@ -125,11 +156,10 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 // toDate: newContentValue.toDate?.toISOString().slice(0, 19).replace('T', ' '),
                 fromDate: new Date(newContentValue?.fromDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
                 toDate: new Date(newContentValue?.toDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
-                imageFilepath: newContentImagePath,
+                imageFilepath: newContentImagePath || "",
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
-                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -191,6 +221,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isRequired={true}
                         onChange={handleChange}
                         error={fromDateError}
+                        errorMessage={fromDateErrorMessage}
                     />
                     <GenericDateTimePicker
                         title={'End date'}
@@ -199,6 +230,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isRequired={true}
                         onChange={handleChange}
                         error={toDateError}
+                        errorMessage={toDateErrorMessage}
                     />
                     <Autocomplete
                         multiple
