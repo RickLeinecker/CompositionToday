@@ -19,8 +19,13 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
 
+    console.log("cache removed")
     // This helps resize new/removed data for window
-    cache.current.clearAll();
+    const clearCache = () => {
+        cache.current.clearAll();
+    }
+
+    clearCache();
 
     interface virtualizedType {
         key: any;
@@ -54,7 +59,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                     >
                                         <div style={{ ...style, ...individualStyle }}>
                                             {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
                                             {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                             {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                             {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}

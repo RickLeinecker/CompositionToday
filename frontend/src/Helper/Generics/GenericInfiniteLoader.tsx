@@ -85,6 +85,7 @@ export default function GenericInfiniteLoader() {
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
                                     const notifyChange = () => { };
+                                    const clearCache = () => { };
 
                                     return (
                                         <CellMeasurer
@@ -96,7 +97,7 @@ export default function GenericInfiniteLoader() {
                                         >
                                             <div style={{ ...style, ...individualStyle }}>
                                                 {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
                                                 {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                                 {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                             </div>
