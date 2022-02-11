@@ -1,17 +1,8 @@
 import TopNavBar from "../TopNavBar";
 import GenericSearch from "../../Helper/Generics/GenericSearch";
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-
 import {
-	Paper,
-	CardActionArea,
 	Container,
 	Grid,
-	Link,
-	Typography,
 } from "@mui/material";
 import "./RelatedProjects.scss";
 import RelatedProjectsCard from "./RelatedProjectsCard";
@@ -41,7 +32,7 @@ export default function RelatedProjects() {
 						description="This is the John Cage Tribute Project."
 					/>
 
-					{/* MicroTonal */}
+					{/* Microtonal */}
 					<RelatedProjectsCard
 						path="http://microtonality.net/"
 						img="music_clip_art.png"
