@@ -8,12 +8,11 @@ import CreateMusicModal from './CreateMusicModal';
 
 type Props = {
     uid: string;
-    userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function MusicSection({ createOpen, handleCloseCreate, uid, userID }: Props) {
+export default function MusicSection({ createOpen, handleCloseCreate, uid }: Props) {
 
     const [response, setResponse] = useState<Array<MusicType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -55,7 +54,7 @@ export default function MusicSection({ createOpen, handleCloseCreate, uid, userI
 
     return (
         <>
-            <CreateMusicModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateMusicModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div>
                     :

@@ -12,13 +12,13 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function CreateExperienceModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateExperienceModal({ uid, notifyChange, createOpen, handleCloseCreate}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
@@ -96,7 +96,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     async function confirmCreateHandler() {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "experience",
