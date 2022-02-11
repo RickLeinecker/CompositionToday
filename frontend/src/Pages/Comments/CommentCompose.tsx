@@ -23,7 +23,7 @@ export default function CommentCompose({notifyChange, contentID}: Props) {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: contentID,
-                commenterUid: currentUid,
+                commenterUID: currentUid,
                 comment: comment,
                 approved: true,
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
