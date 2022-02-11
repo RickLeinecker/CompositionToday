@@ -136,7 +136,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             setImageFileToDelete("");
         }
 
-        let newContentImagePath = null;
+        let newContentImagePath = newContentValue.imageFilepath;
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
             if (newContentImagePath === '') {
@@ -156,11 +156,10 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 // toDate: newContentValue.toDate?.toISOString().slice(0, 19).replace('T', ' '),
                 fromDate: new Date(newContentValue?.fromDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
                 toDate: new Date(newContentValue?.toDate?.toString()!).toISOString().slice(0, 19).replace('T', ' '),
-                imageFilepath: newContentImagePath,
+                imageFilepath: newContentImagePath || "",
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
-                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
