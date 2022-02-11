@@ -29,6 +29,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
     const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
+    const [toDateErrorMessage, setToDateErrorMessage] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
@@ -81,6 +82,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
         error = checkDateError(newContentValue.fromDate, newContentValue.toDate) || error;
+        error = checkToDateError(newContentValue.toDate) || error;
 
         let isMissingLoc = false;
         isMissingLoc = newContentValue.mapsEnabled && !newContentValue.location;
@@ -112,6 +114,17 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             }
         }
         setFromDateErrorMessage("");
+        return false;
+    }
+
+    function checkToDateError(to: Date | null): boolean {
+        if(to && new Date(to).getTime() < new Date().getTime()){
+            setToDateErrorMessage("The event cannot end in the past");
+            setToDateError(true);
+            return true;
+        }
+
+        setToDateErrorMessage("");
         return false;
     }
 
@@ -218,6 +231,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isRequired={true}
                         onChange={handleChange}
                         error={toDateError}
+                        errorMessage={toDateErrorMessage}
                     />
                     <Autocomplete
                         multiple

@@ -43,10 +43,6 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
         let toDateCurr = new Date(toDate).getTime();
         let currDate = new Date().getTime();
 
-        console.log(fromDateCurr);
-        console.log(toDateCurr);
-        console.log(currDate);
-
         if (toDateCurr < currDate) {
             setStatus("Completed")
         }
