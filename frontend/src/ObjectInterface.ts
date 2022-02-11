@@ -43,8 +43,8 @@ export type ExperienceType = {
     contentName: string;
     timestamp: string;
     description?: string;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate: Date;
+    toDate: Date;
     isDateCurrent: boolean;
 }
 

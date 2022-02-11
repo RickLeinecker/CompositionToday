@@ -22,6 +22,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
     
@@ -56,6 +57,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = (checkIfEmpty(newContentValue.toDate, setToDateError) && !newContentValue.isDateCurrent) || error;
 
+        error = (!newContentValue.isDateCurrent && checkDateError(newContentValue.fromDate, newContentValue.toDate)) || error;
+
         return(error)
     }
 
@@ -68,6 +71,22 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             return false;
         }
     }
+
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to){
+            // from and to are strings for some reason
+            to = new Date(to);
+            from = new Date(from);
+            if(from.getDate() > to.getDate()){
+                setFromDateError(true);
+                setFromDateErrorMessage("Start date must be before end date");
+                return true;
+            }
+        }
+        setFromDateErrorMessage("");
+        return false;
+    }
+
 
     async function confirmEditHandler() {
         const handlerObject: GenericHandlerType = {
@@ -118,7 +137,8 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
                         value={newContentValue.fromDate || null} 
                         isRequired={true} 
                         onChange={handleChange}
-                        error={fromDateError}                    
+                        error={fromDateError}       
+                        errorMessage={fromDateErrorMessage}             
                     />
                     {!newContentValue.isDateCurrent &&
                         <GenericDatePicker 
