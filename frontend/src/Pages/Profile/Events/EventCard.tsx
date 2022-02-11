@@ -52,7 +52,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
         else {
             setStatus("Scheduled");
         }
-    }, []);
+    }, [fromDate, toDate]);
 
     return (
         <div className="card">
@@ -69,7 +69,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
                         </div>
                         <div style={{marginTop:"-5%"}}>
                             {status === 'Scheduled' && <Chip label={status} color="success" />}
-                            {status === 'Ongoing' && <Chip label={status} color="warning" />}
+                            {status === 'Ongoing' && <Chip label={status} color="primary" />}
                             {status === 'Completed' && <Chip label={status} color="error" />}
                         </div>
                     </div>
