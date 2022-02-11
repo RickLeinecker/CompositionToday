@@ -10,6 +10,7 @@ import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
 export default function GenericInfiniteLoader() {
     const [items, setItems] = useState<any[]>([null]);
+    const [rerender, setRerender] = useState<boolean>(false);
 
     type loadedParam = {
         index: number
@@ -52,6 +53,11 @@ export default function GenericInfiniteLoader() {
 
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
+    // This helps resize new/removed data for window
+    const clearCache = () => cache.current.clearAll();
+
+    const notifyChange = () => setRerender(prev => !prev);
+
     interface virtualizedType {
         key: any;
         index: number;
@@ -60,7 +66,7 @@ export default function GenericInfiniteLoader() {
     }
 
     return (
-        <div style={{width: "100%", height: "90vh"}}>
+        <div style={{ width: "100%", height: "90vh" }}>
             <AutoSizer>
                 {({ height, width }) => (
                     <InfiniteLoader
@@ -84,8 +90,6 @@ export default function GenericInfiniteLoader() {
                                     const type = "music";
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
-                                    const notifyChange = () => { };
-                                    const clearCache = () => { };
 
                                     return (
                                         <CellMeasurer
