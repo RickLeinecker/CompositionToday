@@ -11,13 +11,13 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function CreateMusicModal({ userID, notifyChange, createOpen, handleCloseCreate }: Props) {
+export default function CreateMusicModal({ uid, notifyChange, createOpen, handleCloseCreate }: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
@@ -123,7 +123,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "music",

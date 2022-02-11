@@ -8,12 +8,11 @@ import CreateArticleModal from './CreateArticleModal';
 
 type Props = {
     uid: string;
-    userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ArticlesSection({ uid, userID, createOpen, handleCloseCreate }: Props) {
+export default function ArticlesSection({ uid, createOpen, handleCloseCreate }: Props) {
 
     const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
@@ -56,7 +55,7 @@ export default function ArticlesSection({ uid, userID, createOpen, handleCloseCr
 
     return (
         <>
-            <CreateArticleModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateArticleModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div>
                     :

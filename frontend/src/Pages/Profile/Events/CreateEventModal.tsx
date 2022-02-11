@@ -14,14 +14,14 @@ import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
     tagOptions: TagType[] | undefined;
 }
 
-export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
+export default function CreateEventModal({ uid, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
@@ -144,7 +144,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentType: "event",
                 description: newContentDescription,
