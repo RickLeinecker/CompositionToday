@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../FirebaseAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
-    sendSignInLinkToEmail,
-    sendEmailVerification
-} from "firebase/auth";
+import { sendSignInLinkToEmail, sendEmailVerification } from "firebase/auth";
 import { auth } from "../../FirebaseAuth/firebase";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from "../../Handlers/GenericHandler";
@@ -18,134 +15,175 @@ const SignUp = () => {
     let errorFlag = false;
     const { signUpUser } = useAuthContext();
     const navigate = useNavigate();
-
-    const registerUserProfile = async (uid: string) => {
-        const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({
-                uid: uid,
-                username: usernameRef.current?.value!,
-                email: emailRef.current?.value!,
-            }),
-            methodType: "POST",
-            path: "createUser",
-        };
-
-        try {
-            let answer = await GenericHandler(handlerObject);
-            console.log(answer.error);
-            if (answer.error.length > 0) {
-                toast.error("Failed to create user.");
-                return answer;
-            }
-            toast.success("User created");
-            return answer;
-        } catch (e: any) {
-            console.error("Frontend Error: " + e);
-            toast.error("Failed to create user.");
-        }
-    };
-
+    
     // TODO: url needs to change when in production
-    const actionCodeSettings = {
-        // URL you want to redirect back to. The domain (www.example.com) for this
-        // URL must be in the authorized domains list in the Firebase Console.
-        url: "http://localhost:3000/registration",
-        // This must be true.
-        handleCodeInApp: true,
+    const actionCodeSettings = {    
+      url: "http://localhost:3000/registration",
+      // This must be true.
+      handleCodeInApp: true,
     };
 
-    console.log("anything random");
+    // checks if username is already in use
+  const checkUsername = async (username: string) => {
+    const handlerObject: GenericHandlerType = {
+      data: JSON.stringify({
+        username: username,
+      }),
+      methodType: "POST",
+      path: "readUserByUsername",
+    };
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        const email = emailRef.current?.value;
-        const username = usernameRef.current?.value;
-        const password = psdRef.current?.value;
+    try {
+      let answer = await GenericHandler(handlerObject);
+      if(answer.error.length > 0 )
+      {
+        toast.success("Username is valid");
+        return answer;
+      }
+      toast.error("User with this name already exists");
+      return answer;
+    } catch (e: any) {
+      console.error("Frontend Error: " + e);
+      toast.error("Failed to create user.");
+    }
+  };
 
-        console.log("enter 1");
-        if (email && password && username) {
-            const res = await signUpUser(email, password);
-            console.log(res);
+  // makes API call to backend and creates a new User
+  const registerUserProfile = async (uid: string) => {
+    const handlerObject: GenericHandlerType = {
+      data: JSON.stringify({
+        uid: uid,
+        username: usernameRef.current?.value!,
+        email: emailRef.current?.value!,
+      }),
+      methodType: "POST",
+      path: "createUser",
+    };
 
-            switch (res) {
-                case "auth/email-already-in-use":
-                    setErrorText(() => "Email is already in use.");
-                    errorFlag = true;
-                    break;
-                case "auth/invalid-email":
-                    setErrorText(() => "Email is not valid.");
-                    errorFlag = true;
-                    break;
-                case "auth/weak-password":
-                    setErrorText(() => "Password is too weak.");
-                    errorFlag = true;
-                    break;
-                default:
-                    break;
-            }
-            console.log("after switch");
+    try {
+      let answer = await GenericHandler(handlerObject);
+    //   console.log(answer.error);
+      if (answer.error.length > 0) {
+        toast.error("Failed to create user.");
+        return answer;
+      }
+      toast.success("User created");
+      return answer;
+    } catch (e: any) {
+      console.error("Frontend Error: " + e);
+      toast.error("Failed to create user.");
+    }
+  };
 
-            if (!errorFlag) {
-                console.log("in flag statement");
 
-                // auth will get a user from signUpUser iff correct
-                  await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setErrorText(() => "");
 
-                  const answer = await registerUserProfile(res.user.uid);
-                  if (answer.error.length > 0) {
-                    setErrorText(() => "Failed to create user.");
-                    errorFlag = true;
-                  }
+    const email = emailRef.current?.value;
+    const username = usernameRef.current?.value;
+    const password = psdRef.current?.value;
 
-                  if(!errorFlag){
-                    navigate("/email-sent", {
-                      state: {
-                        email: email,
-                        username: username,
-                        type: 'sign-up',
-                      },
-                    });
-                  }
+    if (email && password && username) {
+    
+      const answer = await checkUsername(username);
+      const res = "";
 
-            }
-        } else {
-            console.log("empty fields");
-            setErrorText("Some field(s) are empty");
+      if (answer.error.length == 0) {
+        console.log("Username is in use error.");
+        setErrorText(() => "Username is already in use.");
+        errorFlag = true;
+        return;
+      }
+
+
+      if (!errorFlag) {
+        const res = await signUpUser(email, password);
+        console.log("right after sign up user")
+        console.log(res)
+
+        switch (res as any) {
+          case "Username is already in use.":
+            setErrorText(() => "Username is already in use.");
+            errorFlag = true;
+            return;
+          case "auth/email-already-in-use":
+            setErrorText(() => "Email is already in use.");
+            errorFlag = true;
+            return;
+          case "auth/invalid-email":
+            setErrorText(() => "Email is not valid.");
+            errorFlag = true;
+            return;
+          case "auth/weak-password":
+            setErrorText(() => "Password is too weak.");
+            errorFlag = true;
+            return;
+          default:
+            break;
         }
-    };
+        console.log("after switch")
 
-    return (
-        <>
-            <div className="form-container sign-up-container">
-                <form className="registration" onSubmit={handleSubmit}>
-                    <h1 className="registration">Create Account</h1>
-                    <input
-                        className="registration"
-                        type="text"
-                        placeholder="Username"
-                        ref={usernameRef}
-                    />
-                    <input
-                        className="registration"
-                        type="email"
-                        placeholder="Email"
-                        ref={emailRef}
-                    />
-                    <input
-                        id="password"
-                        className="registration"
-                        type="password"
-                        placeholder="Password"
-                        ref={psdRef}
-                    />
-                    <button className="registration">Sign Up</button>
-                    <p className="registration-error pink-text center-align">
-                        {errorText}
-                    </p>
-                </form>
-            </div>
-        </>
-    );
+        if (!errorFlag) {
+          await sendEmailVerification(auth.currentUser!, actionCodeSettings);
+            
+          console.log("right before register user profile")
+          const answer = await registerUserProfile(res.user.uid);
+          if (answer.error.length > 0) {
+            setErrorText(() => "Failed to create user.");
+            errorFlag = true;
+          }
+        }
+      }
+
+      if (!errorFlag) {
+        // auth will get a user from signUpUser iff correct
+        navigate("/email-sent", {
+          state: {
+            email: email,
+            username: username,
+            type: "sign-up",
+          },
+        });
+      }
+    } else {
+      console.log("empty fields");
+      setErrorText("Some field(s) are empty");
+    }
+  };
+
+  return (
+    <>
+      <div className="form-container sign-up-container">
+        <form className="registration" onSubmit={handleSubmit}>
+          <h1 className="registration">Create Account</h1>
+          <input
+            className="registration"
+            type="text"
+            placeholder="Username"
+            ref={usernameRef}
+          />
+          <input
+            className="registration"
+            type="email"
+            placeholder="Email"
+            ref={emailRef}
+          />
+          <input
+            id="password"
+            className="registration"
+            type="password"
+            placeholder="Password"
+            ref={psdRef}
+          />
+          <button className="registration">Sign Up</button>
+          <p className="registration-error pink-text center-align">
+            {errorText}
+          </p>
+        </form>
+      </div>
+    </>
+  );
 };
 
 export default SignUp;
