@@ -73,7 +73,7 @@ export default function CreateExperienceModal({ userID, notifyChange, createOpen
     }
 
     function checkDateError(from: Date | null, to: Date | null): boolean {
-        if(from && to && from.getTime() > to.getTime()){
+        if(from && to && from.getDate() > to.getDate()){
             setFromDateError(true);
             setFromDateErrorMessage("Start date must be before end date");
             return true;

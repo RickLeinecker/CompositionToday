@@ -79,7 +79,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
             // from and to are strings for some reason
             to = new Date(to);
             from = new Date(from);
-            if(from.getTime() > to.getTime()){
+            if(from.getDate() > to.getDate()){
                 setFromDateError(true);
                 setFromDateErrorMessage("Start date must be before end date");
                 return true;
