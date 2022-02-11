@@ -73,8 +73,6 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     }
 
     function checkDateError(from: Date | null, to: Date | null): boolean {
-        console.log("from is: " + from);
-        console.log("to is: " + to);
         if(from && to){
             // from and to are strings for some reason
             to = new Date(to);
