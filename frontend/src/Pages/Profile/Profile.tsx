@@ -14,7 +14,6 @@ import { auth } from '../../FirebaseAuth/firebase';
 export default function Profile(props: any) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState<User>();
     const [userProfile, setUserProfile] = useState<UserProfile>();
     const currentUid = getAuth().currentUser?.uid;
     const [hasChanged, setHasChanged] = useState(false);
@@ -29,10 +28,10 @@ export default function Profile(props: any) {
     // sets current section button color to selected 
     useEffect(() => {
         setIsMyProfile(false);
-        if(user?.uid === auth.currentUser?.uid)
+        if(userProfile?.uid === auth.currentUser?.uid)
             setIsMyProfile(true);
 
-    }, [user])
+    }, [userProfile])
 
     // get user info
     useEffect(() => {
@@ -52,16 +51,10 @@ export default function Profile(props: any) {
                 
                 setError("");
                 const result = await answer.result;
-                setUser({
-                    id: result.id,
-                    userProfileID: result.userProfileID,
-                    firstName: result.firstName,
-                    lastName: result.lastName,
-                    email: result.email,
-                    uid: result.uid,
-                });
+
                 setUserProfile({
                     userID: result.userID,
+                    uid: result.uid,
                     bio: result.bio,
                     displayName: result.displayName,
                     profilePicPath: result.profilePicPath,
@@ -88,7 +81,7 @@ export default function Profile(props: any) {
                 (loading && !error) ?
                     <div>...loading</div> 
                 :
-                (user && userProfile && !error) ? 
+                (userProfile && !error) ? 
                     <ProfileContentSelector userProfile={userProfile} notifyChange={notifyChange}/>
                 :
                     <Alert variant="danger">{error}</Alert>
