@@ -11,6 +11,7 @@ export type User = {
 
 export type UserProfile = {
     userID: number;
+    uid: string;
     displayName?: string;
     bio?: string;
     websiteLink?: string;
