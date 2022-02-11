@@ -52,7 +52,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
         else {
             setStatus("Scheduled");
         }
-    }, []);
+    }, [fromDate, toDate]);
 
     return (
         <div className="card">
