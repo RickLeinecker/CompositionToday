@@ -1,6 +1,6 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
-const fs2 = require("fs");
+// const fs2 = require("fs");
 
 // updateContent
 exports.updateContent = async (req, res) => {
@@ -40,159 +40,126 @@ exports.updateContent = async (req, res) => {
     imageFilename,
   } = req.body;
 
-  // get current content, if fields differ, then update
-  mysql_pool.getConnection(function (err, connection) {
-    connection.query(
-      "SELECT * FROM content WHERE id=?",
-      [contentID],
-      function (err, result) {
+  // build update string with non null fields
+  var insertString = "UPDATE content SET ";
+  if (userID != null) {
+    insertString += "userID=?,";
+    insertArray.push(userID);
+  }
+
+  if (imageFilepathArray != null) {
+    insertString += "imageFilepathArray=?,";
+    insertArray.push(imageFilepathArray);
+  }
+
+  if (contentText != null) {
+    insertString += "contentText=?,";
+    insertArray.push(contentText);
+  }
+
+  if (location != null) {
+    insertString += "location=?,";
+    insertArray.push(location);
+  }
+
+  if (timestamp != null) {
+    insertString += "timestamp=?,";
+    insertArray.push(timestamp);
+  }
+
+  if (audioFilepath != null) {
+    insertString += "audioFilepath=?,";
+    insertArray.push(audioFilepath);
+  }
+
+  if (sheetMusicFilepath != null) {
+    insertString += "sheetMusicFilepath=?,";
+    insertArray.push(sheetMusicFilepath);
+  }
+
+  if (contentType != null) {
+    insertString += "contentType=?,";
+    insertArray.push(contentType);
+  }
+
+  if (contentName != null) {
+    insertString += "contentName=?,";
+    insertArray.push(contentName);
+  }
+
+  if (websiteLink != null) {
+    insertString += "websiteLink=?,";
+    insertArray.push(websiteLink);
+  }
+
+  if (collaborators != null) {
+    insertString += "collaborators=?,";
+    insertArray.push(collaborators);
+  }
+
+  if (description != null) {
+    insertString += "description=?,";
+    insertArray.push(description);
+  }
+  if (toDate != null) {
+    insertString += "toDate=?,";
+    insertArray.push(toDate);
+  }
+  if (fromDate != null) {
+    insertString += "fromDate=?,";
+    insertArray.push(fromDate);
+  }
+  if (isDateCurrent != null) {
+    insertString += "isDateCurrent=?,";
+    insertArray.push(isDateCurrent);
+  }
+  if (price != null) {
+    insertString += "price=?,";
+    insertArray.push(price);
+  }
+  if (audioFilename != null) {
+    insertString += "audioFilename=?,";
+    insertArray.push(audioFilename);
+  }
+  if (sheetMusicFilename != null) {
+    insertString += "sheetMusicFilename=?,";
+    insertArray.push(sheetMusicFilename);
+  }
+  if (mapsEnabled != null) {
+    insertString += "mapsEnabled=?,";
+    insertArray.push(mapsEnabled);
+  }
+  if (imageFilepath != null) {
+    insertString += "imageFilepath=?,";
+    insertArray.push(imageFilepath);
+  }
+  if (imageFilename != null) {
+    insertString += "imageFilename=?,";
+    insertArray.push(imageFilename);
+  }
+
+  if (insertString.length > 19) {
+    insertString = insertString.slice(0, -1);
+    insertString += " WHERE id=?";
+    insertArray.push(contentID);
+
+    mysql_pool.getConnection(function (err, connection) {
+      connection.query(insertString, insertArray, function (err, result) {
         if (err) {
-          error = "SQL Search Error";
+          error = "SQL Update Error";
           responseCode = 500;
           console.log(err);
         } else {
-          if (result[0]) {
-            // build update string with non null fields
-            var insertString = "UPDATE content SET ";
-            if (result[0].userID != userID) {
-              insertString += "userID=?,";
-              insertArray.push(userID);
-            }
-
-            if (result[0].imageFilepathArray != imageFilepathArray) {
-              insertString += "imageFilepathArray=?,";
-              insertArray.push(imageFilepathArray);
-            }
-
-            if (result[0].contentText != contentText) {
-              insertString += "contentText=?,";
-              insertArray.push(contentText);
-            }
-
-            if (result[0].location != location) {
-              insertString += "location=?,";
-              insertArray.push(location);
-            }
-
-            if (result[0].timestamp != timestamp) {
-              insertString += "timestamp=?,";
-              insertArray.push(timestamp);
-            }
-
-            if (result[0].audioFilepath != audioFilepath) {
-              insertString += "audioFilepath=?,";
-              insertArray.push(audioFilepath);
-            }
-
-            if (result[0].sheetMusicFilepath != sheetMusicFilepath) {
-              insertString += "sheetMusicFilepath=?,";
-              insertArray.push(sheetMusicFilepath);
-            }
-
-            if (result[0].contentType != contentType) {
-              insertString += "contentType=?,";
-              insertArray.push(contentType);
-            }
-
-            if (result[0].contentName != contentName) {
-              insertString += "contentName=?,";
-              insertArray.push(contentName);
-            }
-
-            if (result[0].websiteLink != websiteLink) {
-              insertString += "websiteLink=?,";
-              insertArray.push(websiteLink);
-            }
-
-            if (result[0].collaborators != collaborators) {
-              insertString += "collaborators=?,";
-              insertArray.push(collaborators);
-            }
-
-            if (result[0].description != description) {
-              insertString += "description=?,";
-              insertArray.push(description);
-            }
-            if (result[0].toDate != toDate) {
-              insertString += "toDate=?,";
-              insertArray.push(toDate);
-            }
-            if (result[0].fromDate != fromDate) {
-              insertString += "fromDate=?,";
-              insertArray.push(fromDate);
-            }
-            if (result[0].isDateCurrent != isDateCurrent) {
-              insertString += "isDateCurrent=?,";
-              insertArray.push(isDateCurrent);
-            }
-            if (result[0].price != price) {
-              insertString += "price=?,";
-              insertArray.push(price);
-            }
-            if (result[0].audioFilename != audioFilename) {
-              insertString += "audioFilename=?,";
-              insertArray.push(audioFilename);
-            }
-            if (result[0].sheetMusicFilename != sheetMusicFilename) {
-              insertString += "sheetMusicFilename=?,";
-              insertArray.push(sheetMusicFilename);
-            }
-            if (result[0].mapsEnabled != mapsEnabled) {
-              insertString += "mapsEnabled=?,";
-              insertArray.push(mapsEnabled);
-            }
-            if (result[0].imageFilepath != imageFilepath) {
-              insertString += "imageFilepath=?,";
-              insertArray.push(imageFilepath);
-            }
-            if (result[0].imageFilename != imageFilename) {
-              insertString += "imageFilename=?,";
-              insertArray.push(imageFilename);
-            }
-            if (insertString.length > 19) {
-              insertString = insertString.slice(0, -1);
-              insertString += " WHERE id=?";
-              insertArray.push(contentID);
-
-              mysql_pool.getConnection(function (err, connection) {
-                connection.query(
-                  insertString,
-                  insertArray,
-                  function (err, result) {
-                    if (err) {
-                      error = "SQL Update Error";
-                      responseCode = 500;
-                      console.log(err);
-                    } else {
-                      if (result.affectedRows > 0) {
-                        results.push("Success");
-                        responseCode = 200;
-                      } else {
-                        error = "Content does not exist";
-                        responseCode = 500;
-                        console.log(error);
-                      }
-                      // log result
-                      // console.log(result);
-                    }
-                    // package data
-                    // var ret = {
-                    //   result: results,
-                    //   error: error,
-                    // };
-                    // // send data
-                    // res.status(responseCode).json(ret);
-                    connection.release();
-                  }
-                );
-              });
-            }
-            responseCode = 200;
+          if (result.affectedRows > 0) {
             results.push("Success");
+            responseCode = 200;
           } else {
             error = "Content does not exist";
             responseCode = 500;
+            console.log(error);
           }
+          // log result
+          // console.log(result);
         }
         // package data
         var ret = {
@@ -202,9 +169,9 @@ exports.updateContent = async (req, res) => {
         // send data
         res.status(responseCode).json(ret);
         connection.release();
-      }
-    );
-  });
+      });
+    });
+  }
 };
 
 // ------------- AUTO DELETE ON UPDATE CODE v1 -----------
