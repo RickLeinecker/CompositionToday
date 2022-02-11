@@ -8,22 +8,22 @@ import GenericHandler from "../../Handlers/GenericHandler";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
-    const emailRef = useRef<HTMLInputElement>(null);
-    const usernameRef = useRef<HTMLInputElement>(null);
-    const psdRef = useRef<HTMLInputElement>(null);
-    const [errorText, setErrorText] = useState("");
-    let errorFlag = false;
-    const { signUpUser } = useAuthContext();
-    const navigate = useNavigate();
-    
-    // TODO: url needs to change when in production
-    const actionCodeSettings = {    
-      url: "http://localhost:3000/registration",
-      // This must be true.
-      handleCodeInApp: true,
-    };
+  const emailRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const psdRef = useRef<HTMLInputElement>(null);
+  const [errorText, setErrorText] = useState("");
+  let errorFlag = false;
+  const { signUpUser } = useAuthContext();
+  const navigate = useNavigate();
 
-    // checks if username is already in use
+  // TODO: url needs to change when in production
+  const actionCodeSettings = {
+    url: "http://localhost:3000/registration",
+    // This must be true.
+    handleCodeInApp: true,
+  };
+
+  // checks if username is already in use
   const checkUsername = async (username: string) => {
     const handlerObject: GenericHandlerType = {
       data: JSON.stringify({
@@ -35,8 +35,7 @@ const SignUp = () => {
 
     try {
       let answer = await GenericHandler(handlerObject);
-      if(answer.error.length > 0 )
-      {
+      if (answer.error.length > 0) {
         toast.success("Username is valid");
         return answer;
       }
@@ -62,7 +61,6 @@ const SignUp = () => {
 
     try {
       let answer = await GenericHandler(handlerObject);
-    //   console.log(answer.error);
       if (answer.error.length > 0) {
         toast.error("Failed to create user.");
         return answer;
@@ -85,12 +83,11 @@ const SignUp = () => {
     const password = psdRef.current?.value;
 
     if (email && password && username) {
-    
+
       const answer = await checkUsername(username);
       const res = "";
 
       if (answer.error.length == 0) {
-        console.log("Username is in use error.");
         setErrorText(() => "Username is already in use.");
         errorFlag = true;
         return;
@@ -99,8 +96,6 @@ const SignUp = () => {
 
       if (!errorFlag) {
         const res = await signUpUser(email, password);
-        console.log("right after sign up user")
-        console.log(res)
 
         switch (res as any) {
           case "Username is already in use.":
@@ -122,12 +117,10 @@ const SignUp = () => {
           default:
             break;
         }
-        console.log("after switch")
 
         if (!errorFlag) {
           await sendEmailVerification(auth.currentUser!, actionCodeSettings);
-            
-          console.log("right before register user profile")
+
           const answer = await registerUserProfile(res.user.uid);
           if (answer.error.length > 0) {
             setErrorText(() => "Failed to create user.");
@@ -147,7 +140,6 @@ const SignUp = () => {
         });
       }
     } else {
-      console.log("empty fields");
       setErrorText("Some field(s) are empty");
     }
   };
