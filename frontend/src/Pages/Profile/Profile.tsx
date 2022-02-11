@@ -62,6 +62,7 @@ export default function Profile(props: any) {
                 });
                 setUserProfile({
                     userID: result.userID,
+                    uid: result.uid,
                     bio: result.bio,
                     displayName: result.displayName,
                     profilePicPath: result.profilePicPath,
