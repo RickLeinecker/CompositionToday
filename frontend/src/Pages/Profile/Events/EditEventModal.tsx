@@ -28,6 +28,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
@@ -79,6 +80,8 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentValue.toDate, setToDateError) || error;
 
+        error = checkDateError(newContentValue.fromDate, newContentValue.toDate);
+
         let isMissingLoc = false;
         isMissingLoc = newContentValue.mapsEnabled && !newContentValue.location;
         setMissingLocationError(isMissingLoc);
@@ -95,6 +98,20 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             setError(false);
             return false;
         }
+    }
+
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to){
+            // from and to are strings for some reason
+            to = new Date(to);
+            from = new Date(from);
+            if(from.getTime() > to.getTime()){
+                setFromDateError(true);
+                setFromDateErrorMessage("Start date must be before end date");
+                return true;
+            }
+        }
+        return false;
     }
 
     async function confirmEditHandler() {
@@ -191,6 +208,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isRequired={true}
                         onChange={handleChange}
                         error={fromDateError}
+                        errorMessage={fromDateErrorMessage}
                     />
                     <GenericDateTimePicker
                         title={'End date'}

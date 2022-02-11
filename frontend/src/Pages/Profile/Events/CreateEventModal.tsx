@@ -35,6 +35,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [toDateError, setToDateError] = useState(false);
     const [missingLocationError, setMissingLocationError] = useState(false);
 
@@ -72,6 +73,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentToDate, setToDateError) || error;
 
+        error = checkDateError(newContentFromDate, newContentToDate) || error;
 
         let isMissingLoc = false;
         isMissingLoc = newContentMapsEnabled && !newContentLocation
@@ -79,6 +81,15 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = isMissingLoc || error;
 
         return(error)
+    }
+
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to && from.getTime() > to.getTime()){
+            setFromDateError(true);
+            setFromDateErrorMessage("Start date must be before end date");
+            return true;
+        }
+        return false;
     }
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
@@ -172,7 +183,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         value={newContentFromDate} 
                         isRequired={true} 
                         onChange={setNewContentFromDate}
-                        error={fromDateError}                    
+                        error={fromDateError}  
+                        errorMessage={fromDateErrorMessage}                  
                     />
                     <GenericDateTimePicker 
                         title={'End date'} 
