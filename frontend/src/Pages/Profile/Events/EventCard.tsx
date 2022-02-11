@@ -6,7 +6,7 @@ import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Divider } from '@mui/material';
+import { Chip, Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import GenericLike from '../../../Helper/Generics/GenericLike';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -46,7 +46,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
         if (toDateCurr < currDate) {
             setStatus("Completed")
         }
-        else if (fromDateCurr < currDate) { 
+        else if (fromDateCurr < currDate) {
             setStatus("Ongoing");
         }
         else {
@@ -56,22 +56,33 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
 
     return (
         <div className="card">
-            <div className="card-icons" style={{ display: "flex" }}>
-                <p className="card-text-secondary">
-                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                </p>
-                {isMyProfile &&
-                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
-                }
-            </div>
-
-            <div style={{ display: "flex", margin: "2%", marginBottom: "1%" }}>
-                <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                        <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+            <div style={{ margin: "2%", marginBottom: "1%" }}>
+                <div className="card-icons" style={{ display: "flex" }}>
+                    <div style={{ flexDirection: "column" }}>
+                        <div style={{display: "flex"}}>
+                            <p className="card-text-secondary">
+                                {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                            </p>
+                            {isMyProfile &&
+                                <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
+                            }
+                        </div>
+                        <div style={{marginTop:"-5%"}}>
+                            {status === 'Scheduled' && <Chip label={status} color="success" />}
+                            {status === 'Ongoing' && <Chip label={status} color="warning" />}
+                            {status === 'Completed' && <Chip label={status} color="error" />}
+                        </div>
                     </div>
-                </Link>
+                </div>
+
+                <div style={{ display: "flex"}}>
+                    <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
+                            <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+                        </div>
+                    </Link>
+                </div>
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
@@ -98,7 +109,6 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
                         <p className="card-text-secondary">{description}</p>
                         <p className="card-text">{"From: " + moment(new Date(fromDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
                         <p className="card-text">{"To: " + moment(new Date(toDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
-                        <p className="card-text">{"Status: " + status}</p>
                         {location && <p className="card-text">{"Location: " + location}</p>}
                         {mapsEnabled ? <p className="card-text" style={{ textDecoration: "underline" }} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
                     </div>
