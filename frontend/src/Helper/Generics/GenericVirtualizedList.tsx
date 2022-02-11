@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
 import CommentCard from '../../Pages/Comments/CommentCard';
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
@@ -19,13 +19,12 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
 
-    console.log("cache removed")
-    // This helps resize new/removed data for window
-    const clearCache = () => {
-        cache.current.clearAll();
-    }
+    useEffect(() => {
+        clearCache();
+    }, [items])
 
-    clearCache();
+    // This helps resize new/removed data for window
+    const clearCache = () => cache.current.clearAll();
 
     interface virtualizedType {
         key: any;
@@ -60,8 +59,8 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         <div style={{ ...style, ...individualStyle }}>
                                             {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                             {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
                                             {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
                                         </div>
                                     </CellMeasurer>

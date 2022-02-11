@@ -34,6 +34,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange, clearCache
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
         clearCache();
+        notifyChange();
     }
 
     return (
