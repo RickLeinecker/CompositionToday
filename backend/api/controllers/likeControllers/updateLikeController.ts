@@ -15,27 +15,27 @@ exports.updateLike = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE likes SET ";
-  if (uid) {
+  if (uid != null) {
     insertString += "uid=?,";
     insertArray.push(uid);
   }
 
-  if (timestamp) {
+  if (timestamp != null) {
     insertString += "timestamp=?,";
     insertArray.push(timestamp);
   }
 
-  if (likeTypeID) {
+  if (likeTypeID != null) {
     insertString += "likeTypeID=?,";
     insertArray.push(likeTypeID);
   }
 
-  if (commentID) {
+  if (commentID != null) {
     insertString += "commentID=?,";
     insertArray.push(commentID);
   }
 
-  if (contentID) {
+  if (contentID != null) {
     insertString += "contentID=?,";
     insertArray.push(contentID);
   }
