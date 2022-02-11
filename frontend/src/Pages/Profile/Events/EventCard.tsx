@@ -1,7 +1,7 @@
 import { EventType } from '../../../ObjectInterface';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import EditEventModal from './EditEventModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
@@ -30,12 +30,33 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
     const [showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+    const [status, setStatus] = useState("");
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
         clearCache();
         notifyChange();
     }
+
+    useEffect(() => {
+        let fromDateCurr = new Date(fromDate).getTime();
+        let toDateCurr = new Date(toDate).getTime();
+        let currDate = new Date().getTime();
+
+        console.log(fromDateCurr);
+        console.log(toDateCurr);
+        console.log(currDate);
+
+        if (toDateCurr < currDate) {
+            setStatus("Completed")
+        }
+        else if (fromDateCurr < currDate) { 
+            setStatus("Ongoing");
+        }
+        else {
+            setStatus("Scheduled");
+        }
+    }, []);
 
     return (
         <div className="card">
@@ -81,6 +102,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
                         <p className="card-text-secondary">{description}</p>
                         <p className="card-text">{"From: " + moment(new Date(fromDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
                         <p className="card-text">{"To: " + moment(new Date(toDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                        <p className="card-text">{"Status: " + status}</p>
                         {location && <p className="card-text">{"Location: " + location}</p>}
                         {mapsEnabled ? <p className="card-text" style={{ textDecoration: "underline" }} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
                     </div>
