@@ -114,7 +114,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange, clearCache
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={music.id} /> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={music.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
 
         </div>

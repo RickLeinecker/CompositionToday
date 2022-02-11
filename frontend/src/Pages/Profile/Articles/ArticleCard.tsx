@@ -95,7 +95,7 @@ export default function ArticleCard({ article, isMyProfile, notifyChange, clearC
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={article.id} /> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={article.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
         </div>
     )

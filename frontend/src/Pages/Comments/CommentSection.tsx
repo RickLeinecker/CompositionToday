@@ -8,9 +8,11 @@ import CommentCompose from './CommentCompose';
 
 type Props = {
     contentID: number;
+    clearCache: () => void;
+    notifyParent: () => void;
 }
 
-export default function CommentSection({contentID}: Props) {
+export default function CommentSection({contentID, clearCache, notifyParent}: Props) {
     const [response, setResponse] = useState<Array<CommentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -38,6 +40,8 @@ export default function CommentSection({contentID}: Props) {
                 setError("");
                 setResponse(await answer.result);
                 setLoading(false);
+                clearCache();
+                notifyParent();
 
             } catch (e: any) {
                 console.error("Frontend Error: " + e);

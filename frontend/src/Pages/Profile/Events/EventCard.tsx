@@ -1,7 +1,7 @@
 import { EventType } from '../../../ObjectInterface';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import EditEventModal from './EditEventModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
@@ -36,6 +36,10 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
         clearCache();
         notifyChange();
     }
+
+    useEffect(() => {
+        return () => { console.log("div dismounted") };
+    })
 
     return (
         <div className="card">
@@ -128,7 +132,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={event.id} /> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={event.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
         </div>
     )
