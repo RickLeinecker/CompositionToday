@@ -10,14 +10,16 @@ import moment from 'moment';
 import GenericLike from '../../../Helper/Generics/GenericLike';
 import { Divider } from '@mui/material';
 import CommentSection from '../../Comments/CommentSection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { List } from 'react-virtualized';
 
 
 type Props = {
+    vRef?: React.MutableRefObject<List | null>;
     music: MusicType;
     isMyProfile: boolean;
     notifyChange: () => void;
@@ -25,7 +27,7 @@ type Props = {
 }
 
 
-export default function MusicCard({ music, isMyProfile, notifyChange, clearCache }: Props) {
+export default function MusicCard({ vRef, music, isMyProfile, notifyChange, clearCache }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -36,6 +38,16 @@ export default function MusicCard({ music, isMyProfile, notifyChange, clearCache
         clearCache();
         notifyChange();
     }
+
+    // Cleanup function gets called when component is unmounted
+    // off the virtualized window. Perfect to recompute height.
+    useEffect(() => {
+        return () => {
+            // clearCache();
+            console.log("unmounted");
+            vRef?.current?.recomputeRowHeights()
+        };
+    }, [])
 
     return (
         <div className="card">
