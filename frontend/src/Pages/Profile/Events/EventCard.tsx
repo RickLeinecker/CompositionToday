@@ -39,6 +39,12 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
         notifyVirtualizer();
     }
 
+    const handleMapExpand = () => {
+        setShowMap(prev => !prev);
+        clearCache();
+        notifyVirtualizer();
+    }
+
     useEffect(() => {
         let fromDateCurr = new Date(fromDate).getTime();
         let toDateCurr = new Date(toDate).getTime();
@@ -60,7 +66,7 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
             <div style={{ margin: "2%", marginBottom: "1%" }}>
                 <div className="card-icons" style={{ display: "flex" }}>
                     <div style={{ flexDirection: "column" }}>
-                        <div style={{display: "flex"}}>
+                        <div style={{ display: "flex" }}>
                             <p className="card-text-secondary">
                                 {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                             </p>
@@ -68,15 +74,15 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
                                 <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                             }
                         </div>
-                        <div style={{marginTop:"-5%"}}>
-                            {status === 'Scheduled' && <Chip style={{float: "right"}} label={status} color="success" />}
-                            {status === 'Ongoing' && <Chip style={{float: "right"}} label={status} color="primary" />}
-                            {status === 'Completed' && <Chip style={{float: "right"}} label={status} color="error" />}
+                        <div style={{ marginTop: "-5%" }}>
+                            {status === 'Scheduled' && <Chip style={{ float: "right" }} label={status} color="success" />}
+                            {status === 'Ongoing' && <Chip style={{ float: "right" }} label={status} color="primary" />}
+                            {status === 'Completed' && <Chip style={{ float: "right" }} label={status} color="error" />}
                         </div>
                     </div>
                 </div>
 
-                <div style={{ display: "flex"}}>
+                <div style={{ display: "flex" }}>
                     <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
@@ -111,7 +117,7 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
                         <p className="card-text">{"From: " + moment(new Date(fromDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
                         <p className="card-text">{"To: " + moment(new Date(toDate).toUTCString()).format('MMMM Do YYYY, h:mm:ss a')}</p>
                         {location && <p className="card-text">{"Location: " + location}</p>}
-                        {mapsEnabled ? <p className="card-text" style={{ textDecoration: "underline" }} onClick={() => setShowMap(!showMap)}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
+                        {mapsEnabled ? <p className="card-text" style={{ textDecoration: "underline" }} onClick={handleMapExpand}>{showMap ? "Hide map" : "Show map"}</p> : <></>}
                     </div>
                     {imageFilepath ?
                         <div style={{ flex: "1 0 0" }}>
