@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function GenericVirtualizedList({ bodyStyle, individualStyle, items, notifyChange, type }: Props) {
-    const [hasChanged, setHasChanged] = useState<boolean>(false);
+    const [rerender, setRerender] = useState<boolean>(false);
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
 
@@ -24,9 +24,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
         clearCache();
     }, [items])
 
-    const notifyVirtualizer = () => {
-        setHasChanged(value => !value);
-    }
+    const notifyVirtualizer = () => setRerender(value => !value);
 
     // This helps resize new/removed data for window
     const clearCache = () => cache.current.clearAll();
