@@ -108,12 +108,14 @@ export default function GenericInfiniteLoader() {
                                             columnIndex={0}
                                             rowIndex={index}
                                         >
-                                            <div style={{ ...style, ...individualStyle }}>
-                                                {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {!!result && type === "music" && <MusicCard vRef={virtualizedRef} music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                                {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                            </div>
+                                            {({ measure, registerChild }) => (
+                                                <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
+                                                    {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                    {!!result && type === "music" && <MusicCard vRef={virtualizedRef} music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                    {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                    {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                </div>
+                                            )}
                                         </CellMeasurer>
                                     )
                                 }}

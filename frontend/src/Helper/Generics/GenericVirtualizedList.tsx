@@ -56,13 +56,15 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         columnIndex={0}
                                         rowIndex={index}
                                     >
-                                        <div style={{ ...style, ...individualStyle }}>
-                                            {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                            {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                        </div>
+                                        {({ measure, registerChild }) => (
+                                            <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
+                                                {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                            </div>
+                                        )}
                                     </CellMeasurer>
                                 )
                             }}

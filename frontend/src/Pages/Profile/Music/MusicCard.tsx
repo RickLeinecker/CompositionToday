@@ -42,10 +42,13 @@ export default function MusicCard({ vRef, music, isMyProfile, notifyChange, clea
     // Cleanup function gets called when component is unmounted
     // off the virtualized window. Perfect to recompute height.
     useEffect(() => {
+        console.log("remounted")
         return () => {
             // clearCache();
+            setIsCommentsOpen(false);
             console.log("unmounted");
-            vRef?.current?.recomputeRowHeights()
+            vRef?.current?.recomputeRowHeights(1);
+            vRef?.current?.forceUpdateGrid();
         };
     }, [])
 

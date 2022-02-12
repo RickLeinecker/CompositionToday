@@ -13,7 +13,7 @@ type Props = {
 }
 
 
-export default function CommentCard({ commentType, isMyProfile, notifyChange }: Props) {
+export default function ArticleCard({ commentType, isMyProfile, notifyChange }: Props) {
     const { id, comment, timestamp, approved, contentID, commenterUserID, username, profilePicPath, displayName} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
