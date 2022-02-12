@@ -137,7 +137,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "music",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,

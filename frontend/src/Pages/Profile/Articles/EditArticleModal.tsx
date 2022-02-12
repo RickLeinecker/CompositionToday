@@ -66,7 +66,7 @@ export default function EditArticleModal({article, notifyChange, editOpen, handl
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "article",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,

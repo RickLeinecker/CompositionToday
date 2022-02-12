@@ -148,7 +148,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "event",
                 contentName: newContentValue.contentName,
                 description: newContentValue.description,
