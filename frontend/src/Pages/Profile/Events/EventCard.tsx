@@ -68,9 +68,9 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
                             }
                         </div>
                         <div style={{marginTop:"-5%"}}>
-                            {status === 'Scheduled' && <Chip label={status} color="success" />}
-                            {status === 'Ongoing' && <Chip label={status} color="primary" />}
-                            {status === 'Completed' && <Chip label={status} color="error" />}
+                            {status === 'Scheduled' && <Chip style={{float: "right"}} label={status} color="success" />}
+                            {status === 'Ongoing' && <Chip style={{float: "right"}} label={status} color="primary" />}
+                            {status === 'Completed' && <Chip style={{float: "right"}} label={status} color="error" />}
                         </div>
                     </div>
                 </div>
