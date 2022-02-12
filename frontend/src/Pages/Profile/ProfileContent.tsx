@@ -5,18 +5,18 @@ import MusicSection from './Music/MusicSection';
 
 type Props = {
     currentSection: string;
-    userID: number;
+    uid: string;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ProfileContent({currentSection, userID, createOpen, handleCloseCreate}: Props) {
+export default function ProfileContent({currentSection, uid, createOpen, handleCloseCreate}: Props) {
     return (
         <div id="sections">
-            {currentSection === "Experience" && <ExperienceSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
-            {currentSection === "Music" && <MusicSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
-            {currentSection === "Events" && <EventSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
-            {currentSection === "Articles" && <ArticlesSection userID={userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Experience" && <ExperienceSection uid={uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Music" && <MusicSection uid={uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />}
+            {currentSection === "Events" && <EventSection uid={uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
+            {currentSection === "Articles" && <ArticlesSection uid={uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>}
         </div>
     )
 }

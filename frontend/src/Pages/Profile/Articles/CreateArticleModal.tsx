@@ -9,13 +9,13 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function CreateArticleModal({ userID, notifyChange, createOpen, handleCloseCreate}: Props) {
+export default function CreateArticleModal({ uid, notifyChange, createOpen, handleCloseCreate}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
@@ -65,7 +65,7 @@ export default function CreateArticleModal({ userID, notifyChange, createOpen, h
     async function confirmCreateHandler() {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "article",

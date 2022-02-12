@@ -3,13 +3,14 @@ import ComposerPaper from './ComposerPaper';
 import { gridStyle } from './inlineStyles';
 
 type ComposerSectionProps = {
+    header: string;
     featuredComposers: any[];
 }
 
-export default function ComposerSection({ featuredComposers }: ComposerSectionProps) {
+export default function ComposerSection({ header, featuredComposers }: ComposerSectionProps) {
     return (
         <>
-            <h1 className="header" >Featured Composers</h1>
+            <h1 className="header" >{header}</h1>
 
             <div className="container">
                 <Grid container>

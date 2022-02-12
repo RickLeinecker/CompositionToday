@@ -14,14 +14,14 @@ import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
     tagOptions: TagType[] | undefined;
 }
 
-export default function CreateEventModal({ userID, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
+export default function CreateEventModal({ uid, notifyChange, createOpen, handleCloseCreate, tagOptions}: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
@@ -35,6 +35,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
+    const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
+    const [toDateErrorMessage, setToDateErrorMessage] = useState("");
     const [toDateError, setToDateError] = useState(false);
     const [missingLocationError, setMissingLocationError] = useState(false);
 
@@ -72,6 +74,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = checkIfEmpty(newContentFromDate, setFromDateError) || error;
         error = checkIfEmpty(newContentToDate, setToDateError) || error;
 
+        error = checkDateError(newContentFromDate, newContentToDate) || error;
+        error = checkToDateError(newContentToDate) || error
 
         let isMissingLoc = false;
         isMissingLoc = newContentMapsEnabled && !newContentLocation
@@ -79,6 +83,28 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
         error = isMissingLoc || error;
 
         return(error)
+    }
+
+    function checkDateError(from: Date | null, to: Date | null): boolean {
+        if(from && to && from.getTime() > to.getTime()){
+            setFromDateError(true);
+            setFromDateErrorMessage("Start date must be before end date");
+            return true;
+        }
+        
+        setFromDateErrorMessage("");
+        return false;
+    }
+    
+    function checkToDateError(to: Date | null): boolean {
+        if(to && to.getTime() < new Date().getTime()){
+            setToDateErrorMessage("The event cannot end in the past");
+            setToDateError(true);
+            return true;
+        }
+
+        setToDateErrorMessage("");
+        return false;
     }
 
     function checkIfEmpty(value: string | Date | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
@@ -118,7 +144,7 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
 
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentType: "event",
                 description: newContentDescription,
@@ -172,7 +198,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         value={newContentFromDate} 
                         isRequired={true} 
                         onChange={setNewContentFromDate}
-                        error={fromDateError}                    
+                        error={fromDateError}  
+                        errorMessage={fromDateErrorMessage}                  
                     />
                     <GenericDateTimePicker 
                         title={'End date'} 
@@ -180,7 +207,8 @@ export default function CreateEventModal({ userID, notifyChange, createOpen, han
                         value={newContentToDate} 
                         isRequired={true} 
                         onChange={setNewContentToDate}
-                        error={toDateError}                    
+                        error={toDateError}    
+                        errorMessage={toDateErrorMessage}                      
                     />
                     <Autocomplete
                         multiple

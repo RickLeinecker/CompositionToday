@@ -48,8 +48,8 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
 
     return (
         <>
-            <div id="container">
-                <div id="my-profile-box">
+            <div className="container-profile">
+                <div className="my-profile-box">
                     <div style={{ position: "relative", display: "flex", marginLeft: "5%" }}>
                         <div>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
@@ -95,7 +95,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         }
                     </div>
                     <div className='content-scroll'>
-                        <ProfileContent currentSection={currentSection} userID={userProfile.userID} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+                        <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                     </div>
                 </div>
             </div>

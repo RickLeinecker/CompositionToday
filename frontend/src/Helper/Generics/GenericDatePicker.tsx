@@ -6,12 +6,13 @@ type Props = {
     title: string
     type: string
     value: Date | null
-    error?: boolean
-    isRequired: boolean
+    error?: boolean;
+    errorMessage?: string;
+    isRequired: boolean;
     onChange: (newValue: Date | null, type: string) => void;
 }
 
-export default function GenericDatePicker({title, value, isRequired, error, onChange, type}: Props) {
+export default function GenericDatePicker({title, value, isRequired, error, onChange, type, errorMessage}: Props) {
 
     return (
         <div className='modal-field'>
@@ -20,7 +21,7 @@ export default function GenericDatePicker({title, value, isRequired, error, onCh
                     label={title}
                     value={value}
                     onChange={e => onChange(e, type)}
-                    renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} fullWidth required={isRequired} error={error} helperText={error && "This is required"} />}
+                    renderInput={(params: JSX.IntrinsicAttributes) => <TextField {...params} fullWidth required={isRequired} error={error} helperText={error && (errorMessage || "This is required")} />}
                 />
             </LocalizationProvider>
         </div>

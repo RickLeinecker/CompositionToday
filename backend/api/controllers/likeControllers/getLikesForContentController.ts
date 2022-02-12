@@ -13,9 +13,10 @@ exports.getLikesForContent = async (req, res) => {
   var responseCode = 0;
 
   const { contentID } = req.body;
+
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM likes WHERE contentID=?",
+      "SELECT likes.id,likes.uid,likes.timestamp,likes.likeTypeID,likeType.likeType,likes.contentID FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE contentID=?;",
       [contentID],
       function (err, result) {
         if (err) {

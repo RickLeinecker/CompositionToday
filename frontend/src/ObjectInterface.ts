@@ -10,7 +10,8 @@ export type User = {
 };
 
 export type UserProfile = {
-    userID: number;
+    userID?: number;
+    uid: string;
     displayName?: string;
     bio?: string;
     websiteLink?: string;
@@ -21,7 +22,8 @@ export type UserProfile = {
 
 export type ContentType = {
     id: number;
-    userID: string;
+    uid: string;
+    userID?: string;
     imageFilePathArray?: object;
     contentText?: string;
     location?: string;
@@ -37,13 +39,14 @@ export type ContentType = {
 
 export type ExperienceType = {
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp: string;
     description?: string;
-    fromDate?: Date;
-    toDate?: Date;
+    fromDate: Date;
+    toDate: Date;
     isDateCurrent: boolean;
 }
 
@@ -51,9 +54,13 @@ export type ArticleType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp: string;
@@ -63,9 +70,13 @@ export type MusicType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp?: string;
@@ -80,9 +91,13 @@ export type EventType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentName: string;
     timestamp?: string;
     description?: string;
@@ -92,6 +107,26 @@ export type EventType = {
     imageFilename?: string;
     location?: string;
     mapsEnabled: boolean
+}
+
+export type CommentType = {
+    username: string;
+    profilePicPath: string;
+    displayName: string;
+    
+    id: number;
+    contentID: number;
+    commenterUserID: number;
+    timestamp: string;
+    comment: string;
+    approved: number;
+}
+
+export type LikeType = {
+    likeID: number;
+    likeType: string;
+    likeTypeID: number;
+    isLiked: boolean;
 }
 
 /**

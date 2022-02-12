@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRef } from 'react';
-import { AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader, List } from 'react-virtualized';
+import { AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader, InfiniteLoaderChildProps, List } from 'react-virtualized';
 import GenericHandler from "../../Handlers/GenericHandler";
 import { GenericHandlerType } from "../../ObjectInterface";
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
@@ -10,6 +10,8 @@ import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
 export default function GenericInfiniteLoader() {
     const [items, setItems] = useState<any[]>([null]);
+    const [rerender, setRerender] = useState<boolean>(false);
+    const virtualizedRef = useRef<List | null>(null);
 
     type loadedParam = {
         index: number
@@ -52,6 +54,11 @@ export default function GenericInfiniteLoader() {
 
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
 
+    // This helps resize new/removed data for window
+    const clearCache = () => cache.current.clearAll();
+
+    const notifyVirtualizer = () => setRerender(prev => !prev);
+
     interface virtualizedType {
         key: any;
         index: number;
@@ -68,9 +75,15 @@ export default function GenericInfiniteLoader() {
                         rowCount={items.length + 50}
                         loadMoreRows={loadMoreItems}
                     >
-                        {({ onRowsRendered, registerChild }) => (
+                        {({ onRowsRendered, registerChild }: InfiniteLoaderChildProps) => (
                             <List
-                                ref={registerChild}
+                                ref={(ref) => {
+                                    // Save ref for public methods if needed
+                                    virtualizedRef.current = ref;
+
+                                    // Pass it on to InfiniteLoader as well
+                                    registerChild(ref)
+                                }}
                                 style={{ scrollbarWidth: "none" }}
                                 width={width}
                                 height={height}
@@ -84,7 +97,8 @@ export default function GenericInfiniteLoader() {
                                     const type = "music";
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
-                                    const notifyChange = () => { };
+                                    // console.log("scrolling")
+                                    // virtualizedRef.current?.recomputeRowHeights();
 
                                     return (
                                         <CellMeasurer
@@ -94,12 +108,14 @@ export default function GenericInfiniteLoader() {
                                             columnIndex={0}
                                             rowIndex={index}
                                         >
-                                            <div style={{ ...style, ...individualStyle }}>
-                                                {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                                {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                            </div>
+                                            {({ measure, registerChild }) => (
+                                                <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
+                                                    {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                    {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache} />}
+                                                    {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                    {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                </div>
+                                            )}
                                         </CellMeasurer>
                                     )
                                 }}
