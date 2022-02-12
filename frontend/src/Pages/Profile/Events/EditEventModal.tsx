@@ -65,7 +65,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     const deleteImageFile = () => {
         let fileToDelete = newContentValue.imageFilepath
-        if(fileToDelete !== undefined){
+        if (fileToDelete !== undefined) {
             setImageFileToDelete(fileToDelete)
             handleChange("", "imageFilepath")
         }
@@ -103,11 +103,11 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     }
 
     function checkDateError(from: Date | null, to: Date | null): boolean {
-        if(from && to){
+        if (from && to) {
             // from and to are strings for some reason
             to = new Date(to);
             from = new Date(from);
-            if(from.getTime() > to.getTime()){
+            if (from.getTime() > to.getTime()) {
                 setFromDateError(true);
                 setFromDateErrorMessage("Start date must be before end date");
                 return true;
@@ -118,7 +118,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     }
 
     function checkToDateError(to: Date | null): boolean {
-        if(to && new Date(to).getTime() < new Date().getTime()){
+        if (to && new Date(to).getTime() < new Date().getTime()) {
             setToDateErrorMessage("The event cannot end in the past");
             setToDateError(true);
             return true;
@@ -131,7 +131,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     async function confirmEditHandler() {
 
         let imageFileToDeleteTemp = imageFileToDelete;
-        if(imageFileToDeleteTemp !== "" && imageFileToDeleteTemp !== null){
+        if (imageFileToDeleteTemp !== "" && imageFileToDeleteTemp !== null) {
             deleteFile(imageFileToDeleteTemp);
             setImageFileToDelete("");
         }
@@ -148,7 +148,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "event",
                 contentName: newContentValue.contentName,
                 description: newContentValue.description,
@@ -185,28 +185,28 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     // get tags
     useEffect(() => {
         fetchTags();
-        async function fetchTags(){
-            
-            try{
+        async function fetchTags() {
+
+            try {
                 let answer = (await GenericGetHandler("getTags"));
-                if(answer.error.length > 0){
+                if (answer.error.length > 0) {
                     // setError(answer.error);
                     return;
                 }
-                
+
                 // setError("");
                 const result = await answer.result;
                 setTagOptions(result);
 
                 // setLoading(false);
-                
 
-            } catch(e: any){
+
+            } catch (e: any) {
                 console.error("Frontend Error: " + e);
                 // setError(DefaultValues.apiErrorMessage);
             }
         }
-    },[]);
+    }, []);
 
     return (
         <div>
@@ -258,10 +258,10 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         label="Enable map"
                     />
                     <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
-                    {missingLocationError && <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert>}
+                    {missingLocationError ? <Alert variant="danger">{"You must add a location or uncheck the maps enabled box"}</Alert> : <></>}
                 </>
             </GenericModal>
-            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
         </div>
     )
 }

@@ -22,7 +22,8 @@ export type UserProfile = {
 
 export type ContentType = {
     id: number;
-    userID: string;
+    uid: string;
+    userID?: string;
     imageFilePathArray?: object;
     contentText?: string;
     location?: string;
@@ -38,7 +39,8 @@ export type ContentType = {
 
 export type ExperienceType = {
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp: string;
@@ -57,7 +59,8 @@ export type ArticleType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp: string;
@@ -72,7 +75,8 @@ export type MusicType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentText: string;
     contentName: string;
     timestamp?: string;
@@ -92,7 +96,8 @@ export type EventType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
-    userID: number;
+    uid: string;
+    userID?: number;
     contentName: string;
     timestamp?: string;
     description?: string;

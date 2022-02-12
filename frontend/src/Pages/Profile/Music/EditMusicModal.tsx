@@ -137,7 +137,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "music",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
@@ -146,7 +146,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
-                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
