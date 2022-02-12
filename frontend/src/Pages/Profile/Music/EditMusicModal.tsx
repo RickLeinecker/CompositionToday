@@ -146,7 +146,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
-                timestamp: newContentValue.timestamp,
             }),
             methodType: "PATCH",
             path: "updateContent",
