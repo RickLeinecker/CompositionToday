@@ -9,11 +9,11 @@ import CommentDeleteModal from './CommentDeleteModal';
 type Props = {
     commentType: CommentType;
     isMyProfile: boolean;
+    notifyVirtualizer: () => void
     notifyChange: () => void;
 }
 
-
-export default function ArticleCard({ commentType, isMyProfile, notifyChange }: Props) {
+export default function ArticleCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
     const { id, comment, timestamp, approved, contentID, commenterUserID, username, profilePicPath, displayName} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 

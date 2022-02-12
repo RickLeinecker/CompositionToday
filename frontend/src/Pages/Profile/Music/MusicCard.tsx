@@ -10,22 +10,24 @@ import moment from 'moment';
 import GenericLike from '../../../Helper/Generics/GenericLike';
 import { Divider } from '@mui/material';
 import CommentSection from '../../Comments/CommentSection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { List } from 'react-virtualized';
 
 
 type Props = {
     music: MusicType;
     isMyProfile: boolean;
+    notifyVirtualizer: () => void;
     notifyChange: () => void;
     clearCache: () => void;
 }
 
 
-export default function MusicCard({ music, isMyProfile, notifyChange, clearCache }: Props) {
+export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = music;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -34,8 +36,21 @@ export default function MusicCard({ music, isMyProfile, notifyChange, clearCache
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
         clearCache();
-        notifyChange();
+        notifyVirtualizer();
     }
+
+    // Cleanup function gets called when component is unmounted
+    // off the virtualized window.
+    // useEffect(() => {
+    //     console.log("remounted")
+    //     return () => {
+    //         // clearCache();
+    //         setIsCommentsOpen(false);
+    //         console.log("unmounted");
+    //         vRef?.current?.recomputeRowHeights(1);
+    //         vRef?.current?.forceUpdateGrid();
+    //     };
+    // }, [])
 
     return (
         <div className="card">
@@ -114,7 +129,7 @@ export default function MusicCard({ music, isMyProfile, notifyChange, clearCache
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={music.id} /> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={music.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
 
         </div>
