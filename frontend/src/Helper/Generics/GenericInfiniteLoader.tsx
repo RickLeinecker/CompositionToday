@@ -57,7 +57,7 @@ export default function GenericInfiniteLoader() {
     // This helps resize new/removed data for window
     const clearCache = () => cache.current.clearAll();
 
-    const notifyChange = () => setRerender(prev => !prev);
+    const notifyVirtualizer = () => setRerender(prev => !prev);
 
     interface virtualizedType {
         key: any;
@@ -78,7 +78,7 @@ export default function GenericInfiniteLoader() {
                         {({ onRowsRendered, registerChild }: InfiniteLoaderChildProps) => (
                             <List
                                 ref={(ref) => {
-                                    // Save ref for later
+                                    // Save ref for public methods if needed
                                     virtualizedRef.current = ref;
 
                                     // Pass it on to InfiniteLoader as well
@@ -111,7 +111,7 @@ export default function GenericInfiniteLoader() {
                                             {({ measure, registerChild }) => (
                                                 <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
                                                     {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                    {!!result && type === "music" && <MusicCard vRef={virtualizedRef} music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                    {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache} />}
                                                     {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                                     {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                                 </div>

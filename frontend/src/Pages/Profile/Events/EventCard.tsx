@@ -19,11 +19,12 @@ type Props = {
     event: EventType;
     isMyProfile: boolean;
     notifyChange: () => void;
+    notifyVirtualizer: () => void;
     clearCache: () => void;
 }
 
 
-export default function EventCard({ event, isMyProfile, notifyChange, clearCache }: Props) {
+export default function EventCard({ event, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = event;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -35,7 +36,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
         clearCache();
-        notifyChange();
+        notifyVirtualizer();
     }
 
     useEffect(() => {

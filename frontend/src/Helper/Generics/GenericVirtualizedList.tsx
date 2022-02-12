@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
 import CommentCard from '../../Pages/Comments/CommentCard';
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
@@ -16,12 +16,17 @@ interface Props {
 }
 
 export default function GenericVirtualizedList({ bodyStyle, individualStyle, items, notifyChange, type }: Props) {
+    const [hasChanged, setHasChanged] = useState<boolean>(false);
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
 
     useEffect(() => {
         clearCache();
     }, [items])
+
+    const notifyVirtualizer = () => {
+        setHasChanged(value => !value);
+    }
 
     // This helps resize new/removed data for window
     const clearCache = () => cache.current.clearAll();
@@ -57,12 +62,13 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         rowIndex={index}
                                     >
                                         {({ measure, registerChild }) => (
+                                            // ExperienceCard doesn't need norifyVirtualizer because it has not expandable comments
                                             <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
                                                 {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                                {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                                {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                                {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} clearCache={clearCache} />}
-                                                {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} />}
                                             </div>
                                         )}
                                     </CellMeasurer>
