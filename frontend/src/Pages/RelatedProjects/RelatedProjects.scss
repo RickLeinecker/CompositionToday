@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import "../../Styles/DefaultValues.module.scss";
+
+.related-projects-container{
+    justify-content: center;
+    color: black;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.grid-container{
+    padding-top:1.5rem;
+}
+
+.related-projects{
+    text-decoration-color: white;
+}
+
+.john-cage{
+    background: white
+    ;
+}
+.microtonal{
+    background: #9898ff;
+}
+
+.schillinger{
+    background:#FB7B50;
+}
+
+.misc{
+    background:#55A5CE;
+}

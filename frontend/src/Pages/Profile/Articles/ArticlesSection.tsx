@@ -1,4 +1,3 @@
-import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../../Handlers/GenericHandler';
@@ -8,18 +7,17 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateArticleModal from './CreateArticleModal';
 
 type Props = {
-    userID: number;
+    uid: string;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ArticlesSection({ userID, createOpen, handleCloseCreate }: Props) {
+export default function ArticlesSection({ uid, createOpen, handleCloseCreate }: Props) {
 
     const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
-    const currentUid = getAuth().currentUser?.uid;
 
     const notifyChange = () => { setHasChanged(value => !value); }
 
@@ -27,7 +25,7 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
         async function fetchData() {
 
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "article", uid: currentUid }),
+                data: JSON.stringify({ contentType: "article", uid: uid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -51,13 +49,13 @@ export default function ArticlesSection({ userID, createOpen, handleCloseCreate 
 
         }
         fetchData();
-    }, [hasChanged, currentUid])
+    }, [hasChanged, uid])
 
 
 
     return (
         <>
-            <CreateArticleModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateArticleModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             <div>
                 {!error && loading ? <div>...loading</div>
                     :

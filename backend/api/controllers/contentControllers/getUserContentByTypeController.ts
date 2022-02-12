@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // getContentByType
 exports.getUserContentByType = async (req, res) => {
-  // incoming: contentType, userID
+  // incoming: contentType, uid
   // outgoing: content, error
   /*
       `SELECT content.id,content.userID,content.contentText,

@@ -3,6 +3,7 @@ import { Nav, Navbar, Image, NavDropdown } from 'react-bootstrap';
 import useLogout from "../Helper/CustomHooks/useLogout";
 import GenericSearch from '../Helper/Generics/GenericSearch';
 import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 
 export default function TopNavBar() {
     const { handleLogout } = useLogout();
@@ -30,20 +31,29 @@ export default function TopNavBar() {
                 </Nav>
 
                 <Nav className="ms-auto">
-                    <Nav.Link as={Link} to={`/profile/${username}`}>
-                        <Image
-                            className={"d-inline-block align-top me-2"}
-                            src="img_avatar.png"
-                            width="40vw"
-                            height="40vh"
-                            roundedCircle
-                        />
-                    </Nav.Link>
-                    <NavDropdown align="end" title="[Username]">
-                        <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                    </NavDropdown>
+
+                    {getAuth().currentUser?.isAnonymous ? 
+                        <> 
+                            <Nav.Link className="me-2" as={Link} to="/registration"> Sign Up </Nav.Link>
+                        </> 
+                        :
+                        <>
+                            <Nav.Link as={Link} to={`/profile/${username}`}>
+                                <Image
+                                    className={"d-inline-block align-top me-2"}
+                                    src="img_avatar.png"
+                                    width="40vw"
+                                    height="40vh"
+                                    roundedCircle
+                                />
+                            </Nav.Link>
+                            <NavDropdown align="end" title="[Username]">
+                                <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        </>
+                    }
                 </Nav>
             </Navbar.Collapse>
         </Navbar >

@@ -14,10 +14,11 @@ exports.getCommentsForContent = async (req, res) => {
   const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT comment.id,comment.contentID,comment.commenterUserID,
+      `SELECT comment.id,comment.contentID,comment.commenterUID,
       comment.timestamp,comment.comment,comment.approved,userProfile.profilePicPath,
-      userProfile.displayName,user.username FROM comment INNER JOIN userProfile 
-      ON comment.commenterUserID=userProfile.userID INNER JOIN user ON comment.commenterUserID=user.id 
+      userProfile.displayName,user.username FROM comment
+      INNER JOIN user ON comment.commenterUID=user.uid
+      INNER JOIN userProfile ON user.id=userProfile.userID 
       WHERE contentID=?`,
       [contentID],
       function (err, result) {

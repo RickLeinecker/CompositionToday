@@ -6,7 +6,7 @@ import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Divider } from '@mui/material';
+import { Chip, Divider } from '@mui/material';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import GenericLike from '../../../Helper/Generics/GenericLike';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -30,6 +30,7 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
     const [showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+    const [status, setStatus] = useState("");
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
@@ -38,27 +39,50 @@ export default function EventCard({ event, isMyProfile, notifyChange, clearCache
     }
 
     useEffect(() => {
-        return () => { console.log("div dismounted") };
-    })
+        let fromDateCurr = new Date(fromDate).getTime();
+        let toDateCurr = new Date(toDate).getTime();
+        let currDate = new Date().getTime();
+
+        if (toDateCurr < currDate) {
+            setStatus("Completed")
+        }
+        else if (fromDateCurr < currDate) {
+            setStatus("Ongoing");
+        }
+        else {
+            setStatus("Scheduled");
+        }
+    }, [fromDate, toDate]);
 
     return (
         <div className="card">
-            <div className="card-icons" style={{ display: "flex" }}>
-                <p className="card-text-secondary">
-                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                </p>
-                {isMyProfile &&
-                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
-                }
-            </div>
-
-            <div style={{ display: "flex", margin: "2%", marginBottom: "1%" }}>
-                <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                        <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+            <div style={{ margin: "2%", marginBottom: "1%" }}>
+                <div className="card-icons" style={{ display: "flex" }}>
+                    <div style={{ flexDirection: "column" }}>
+                        <div style={{display: "flex"}}>
+                            <p className="card-text-secondary">
+                                {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                            </p>
+                            {isMyProfile &&
+                                <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
+                            }
+                        </div>
+                        <div style={{marginTop:"-5%"}}>
+                            {status === 'Scheduled' && <Chip style={{float: "right"}} label={status} color="success" />}
+                            {status === 'Ongoing' && <Chip style={{float: "right"}} label={status} color="primary" />}
+                            {status === 'Completed' && <Chip style={{float: "right"}} label={status} color="error" />}
+                        </div>
                     </div>
-                </Link>
+                </div>
+
+                <div style={{ display: "flex"}}>
+                    <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
+                            <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+                        </div>
+                    </Link>
+                </div>
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
