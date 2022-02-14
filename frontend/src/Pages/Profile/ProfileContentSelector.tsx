@@ -8,6 +8,7 @@ import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ProfileContext } from './ProfileContext';
+import { IconButton } from '@mui/material';
 
 type Props = {
     userProfile: UserProfile;
@@ -61,7 +62,9 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         {isMyProfile &&
                             <>
                                 <div className='corner-icon'>
-                                    <EditIcon style={{ fontSize: "calc(12px + 2.5vw)" }} onClick={handleOpenEdit} />
+                                    <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
+                                        <EditIcon style={{ fontSize: "calc(12px + 2.5vw)" }} />
+                                    </IconButton>
                                 </div>
 
                                 <EditProfileModal
@@ -90,7 +93,9 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
 
                         {isMyProfile &&
                             <div style={{ position: "absolute", top: "0.5em", right: "1%" }}>
-                                <AddCircleIcon style={{ fontSize: "5vw" }} onClick={handleOpenCreate} />
+                                <IconButton aria-label="create-content" onClick={handleOpenCreate}>
+                                    <AddCircleIcon style={{ fontSize: "5vw" }} />
+                                </IconButton>
                             </div>
                         }
                     </div>
