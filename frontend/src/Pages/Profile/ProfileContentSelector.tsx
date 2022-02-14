@@ -52,8 +52,8 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
             <div className="container-profile">
                 <div className="my-profile-box">
                     <div style={{ position: "relative", display: "flex", marginLeft: "5%" }}>
+                        <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                         <div>
-                            <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div style={{ marginLeft: "20%" }}>
                                 <p style={{ fontSize: "calc(10px + 1vw)" }}>{userProfile.bio}</p>
