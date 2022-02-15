@@ -108,12 +108,12 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                             />
                         }
                     </div>
-                </div>
+                </div>    
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
 
-            <div style={{ float: "right", marginBottom: "-1%" }}>
+            <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
                 {isCommentsOpen ?
                     <div style={{ float: "right" }} onClick={handleCommentExpand}>
                         <ChatBubbleIcon />
