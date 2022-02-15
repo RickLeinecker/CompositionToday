@@ -92,7 +92,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "experience",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,

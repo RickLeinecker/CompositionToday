@@ -15,7 +15,6 @@ import Profile from "./Pages/Profile/Profile";
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
-
     return (
         <>
             <Routes>

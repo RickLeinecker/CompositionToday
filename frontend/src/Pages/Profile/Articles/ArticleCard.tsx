@@ -18,12 +18,13 @@ import { Divider } from '@mui/material';
 type Props = {
     article: ArticleType;
     isMyProfile: boolean;
+    notifyVirtualizer: () => void;
     notifyChange: () => void;
     clearCache: () => void;
 }
 
 
-export default function ArticleCard({ article, isMyProfile, notifyChange, clearCache }: Props) {
+export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, contentText, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = article;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -32,7 +33,7 @@ export default function ArticleCard({ article, isMyProfile, notifyChange, clearC
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
         clearCache();
-        notifyChange();
+        notifyVirtualizer();
     }
 
     return (
@@ -95,7 +96,7 @@ export default function ArticleCard({ article, isMyProfile, notifyChange, clearC
             </div>
 
             <div>
-                {isCommentsOpen ? <CommentSection contentID={article.id} /> : <></>}
+                {isCommentsOpen ? <CommentSection contentID={article.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
         </div>
     )

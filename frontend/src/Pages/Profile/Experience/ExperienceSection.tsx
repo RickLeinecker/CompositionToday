@@ -8,12 +8,11 @@ import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedL
 
 type Props = {
     uid: string;
-    userID: number;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ uid, userID, createOpen, handleCloseCreate }: Props) {
+export default function ExperienceSection({ uid, createOpen, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -52,7 +51,7 @@ export default function ExperienceSection({ uid, userID, createOpen, handleClose
 
     return (
         <>
-            <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateExperienceModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             {
                 !error && loading ? <div>...loading</div>
                     :
