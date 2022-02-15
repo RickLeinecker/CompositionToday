@@ -59,7 +59,7 @@ exports.getUserContentByType = async (req, res) => {
   const { contentType, uid } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT content.id,content.userID,content.imageFilepathArray,
+      `SELECT content.id,user.uid,content.imageFilepathArray,
       content.contentText,content.location,content.timestamp,
       content.audioFilepath,content.sheetMusicFilepath,content.contentType,
       content.websiteLink,content.contentType,content.contentName,
