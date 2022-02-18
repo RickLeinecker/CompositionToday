@@ -11,6 +11,7 @@ const getContentController = require("../controllers/contentControllers/getConte
 const getContentByTypeController = require("../controllers/contentControllers/getContentByTypeController.ts");
 const getUserContentByTypeController = require("../controllers/contentControllers/getUserContentByTypeController.ts");
 const getContentByTypeInBatchesController = require("../controllers/contentControllers/getContentByTypeInBatchesController.ts");
+const getHomefeedContentInBatchesController = require("../controllers/contentControllers/getHomefeedContentInBatchesController.ts");
 
 router.post("/api/createContent", createContentController.createContent);
 router.post(
@@ -21,6 +22,10 @@ router.post(
 router.post(
   "/api/getContentByTypeInBatches",
   getContentByTypeInBatchesController.getContentByTypeInBatches
+);
+router.post(
+  "/api/getHomefeedContentInBatchesController",
+  getHomefeedContentInBatchesController.getHomefeedContentInBatches
 );
 router.post("/api/readContent", readContentController.readContent);
 router.patch("/api/updateContent", updateContentController.updateContent);
