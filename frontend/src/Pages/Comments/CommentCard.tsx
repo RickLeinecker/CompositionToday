@@ -5,6 +5,8 @@ import { CommentType } from '../../ObjectInterface';
 import CommentOptionsMenu from './CommentOptionsMenu';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import CommentDeleteModal from './CommentDeleteModal';
+import { useEffect, useState } from 'react';
+import CommentEditModal from './CommentEditModal';
 
 type Props = {
     commentType: CommentType;
@@ -14,8 +16,17 @@ type Props = {
 }
 
 export default function ArticleCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
-    const { id, comment, timestamp, approved, contentID, commenterUserID, username, profilePicPath, displayName} = commentType;
+    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    const [currentUsername, setCurrentUsername] = useState("");
+
+    useEffect(() => {
+        let temp = window.sessionStorage.getItem("username");
+
+        setCurrentUsername(!temp ? "" : temp);
+    }, [])
+
 
     return (
         <div className="card">
@@ -23,8 +34,11 @@ export default function ArticleCard({ commentType, isMyProfile, notifyVirtualize
                 <p className="card-text-secondary">
                     {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                 </p>
-                {isMyProfile && 
+                {(isMyProfile && username !== currentUsername) && 
                     <CommentOptionsMenu handleOpenDelete={handleOpenDelete}/>
+                }
+                {(username === currentUsername) && 
+                    <CommentOptionsMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
                 }
             </div>
             
@@ -36,6 +50,12 @@ export default function ArticleCard({ commentType, isMyProfile, notifyVirtualize
                 type={"comment"}
             />
 
+            <CommentEditModal
+                comment={commentType}
+                notifyChange={notifyChange}
+                editOpen={editOpen}
+                handleCloseEdit={handleCloseEdit}
+            />
 
             <div style={{display: "flex", margin:"2%", marginBottom: "1%"}}>
                     <Link to={`/profile/${username}`} style={{textDecoration: 'none'}}>
