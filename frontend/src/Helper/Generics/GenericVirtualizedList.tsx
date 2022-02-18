@@ -45,6 +45,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                             style={{ scrollbarWidth: "none" }}
                             width={width}
                             height={height}
+                            scrollToIndex={type === "comment" ? items.length : undefined}
                             rowHeight={cache.current.rowHeight}
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
