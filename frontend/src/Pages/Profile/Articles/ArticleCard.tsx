@@ -38,22 +38,22 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
 
     return (
         <div className="card">
-            <div className="card-icons" style={{ display: "flex" }}>
-                <p className="card-text-secondary">
-                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                </p>
-                {isMyProfile &&
-                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
-                }
-            </div>
-
-            <div style={{ display: "flex", margin: "2%", marginBottom: "1%" }}>
+            <div style={{ display: "flex"}}>
                 <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
                         <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
                         <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
                     </div>
                 </Link>
+                
+                <div className="card-icons" style={{ display: "flex" }}>
+                    <p className="card-text-secondary">
+                        {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                    </p>
+                    {isMyProfile &&
+                        <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
+                    }
+                </div>
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />

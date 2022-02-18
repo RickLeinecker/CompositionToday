@@ -26,11 +26,13 @@ p {
 }
 
 .card-icons{
-    position: absolute;
+    position: relative;
     top: 1%;
-    right: 1%;
+    right: 0.5%;
+    margin-left: auto;
 }
 
 .card-text-secondary{
-    color: $secondary-text
+    color: $secondary-text;
+    white-space:nowrap;
 }
