@@ -95,7 +95,7 @@ export default function EventSection({ createOpen, handleCloseCreate, uid }: Pro
                         :
                         <div>
                             <GenericVirtualizedList
-                                bodyStyle={{ width: "100%", height: "50vh" }}
+                                bodyStyle={{ width: "100%", height: "75h" }}
                                 individualStyle={{ padding: "1% 1% 20px" }}
                                 items={response}
                                 notifyChange={notifyChange}
