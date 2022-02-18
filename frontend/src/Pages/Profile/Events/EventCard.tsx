@@ -63,32 +63,30 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
 
     return (
         <div className="card">
-            <div>
-                <div style={{ display: "flex" }}>
-                    <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                        <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
-                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                            <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
-                        </div>
-                    </Link>
+            <div style={{ display: "flex" }}>
+                <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
+                    <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
+                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
+                        <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+                    </div>
+                </Link>
 
-                    <div className="card-icons">
-                        <div style={{ flexDirection: "column"}}>
-                            <div style={{ display: "flex" }}>
-                                <p className="card-text-secondary">
-                                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                                </p>
-                                <div>
-                                    {isMyProfile &&
-                                        <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
-                                    }
-                                </div>
+                <div className="card-icons">
+                    <div style={{ flexDirection: "column"}}>
+                        <div style={{ display: "flex" }}>
+                            <p className="card-text-secondary">
+                                {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                            </p>
+                            <div>
+                                {isMyProfile &&
+                                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                                }
                             </div>
-                            <div style={{float: "right"}}>
-                                {status === 'Scheduled' && <Chip label={status} color="success" />}
-                                {status === 'Ongoing' && <Chip label={status} color="primary" />}
-                                {status === 'Completed' && <Chip label={status} color="error" />}
-                            </div>
+                        </div>
+                        <div style={{float: "right"}}>
+                            {status === 'Scheduled' && <Chip label={status} color="success" />}
+                            {status === 'Ongoing' && <Chip label={status} color="primary" />}
+                            {status === 'Completed' && <Chip label={status} color="error" />}
                         </div>
                     </div>
                 </div>
