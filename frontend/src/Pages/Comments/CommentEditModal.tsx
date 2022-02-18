@@ -64,7 +64,6 @@ export default function CommetnEditModal({ comment, notifyChange, editOpen, hand
                 commentID: comment.id,
                 contentID: comment.contentID,
                 commenterUID: comment.commenterUID,
-                timestamp: comment.timestamp,
                 comment: newContentValue,
                 approved: 1,
             }),
