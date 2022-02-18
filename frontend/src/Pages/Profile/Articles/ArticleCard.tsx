@@ -80,7 +80,7 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
 
-            <div style={{ float: "right", marginBottom: "-1%" }}>
+            <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
                 {isCommentsOpen ?
                     <div style={{ float: "right" }} onClick={handleCommentExpand}>
                         <ChatBubbleIcon />

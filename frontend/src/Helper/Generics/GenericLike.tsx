@@ -64,7 +64,7 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
     }, [contentID, currentUid, isRefresh])
 
     return (
-        <div style={{ float: "right", display: "flex", marginRight: "1%" }}>
+        <div style={{ cursor: 'pointer', float: "right", display: "flex", marginRight: "1%" }}>
             <p>{currentLikeCount || "0"}</p>
             {isLiked ? <FavoriteIcon style={{ marginLeft: "2%" }} onClick={handleClick}></FavoriteIcon> : <></>}
             {!isLiked ? <FavoriteBorderIcon style={{ marginLeft: "2%" }} onClick={handleClick}></FavoriteBorderIcon> : <></>}

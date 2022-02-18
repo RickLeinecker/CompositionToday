@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, Paper, Popover } from '@mui/material';
+import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Paper, Popover } from '@mui/material';
 
 type Props = {
     filterByType: string[];
@@ -27,33 +27,35 @@ export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
         let type = event.currentTarget.name;
         let tempArr = filterByType;
 
-        if(type === "event"){
+        if (type === "event") {
             setIsEventChecked(newValue);
         }
 
-        if(type === "music"){
+        if (type === "music") {
             setIsMusicChecked(newValue);
         }
 
-        if(type === "article"){
+        if (type === "article") {
             setIsArticleChecked(newValue);
         }
 
-        if(!newValue){
+        if (!newValue) {
             tempArr = tempArr.filter(e => e !== type);
         }
-        else if(!tempArr.includes(type)){
+        else if (!tempArr.includes(type)) {
             tempArr.push(type);
         }
-        
+
         updateFilterBy(tempArr);
     };
 
     return (
         <div>
-            <TuneIcon fontSize="large" onClick={handleClick}/>
+            <IconButton aria-label="filter" onClick={handleClick}>
+                <TuneIcon fontSize="large" />
+            </IconButton>
             <Popover style={{}} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-                <Container sx={{mt:"10%"}}>
+                <Container sx={{ mt: "10%" }}>
                     <FormLabel component="legend">Filter by type</FormLabel>
                     <FormGroup>
                         <FormControlLabel
