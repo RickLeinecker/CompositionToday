@@ -18,7 +18,8 @@ export default function GenrePaper({ genre, setGenreClicked }: GenreProps) {
             elevation={3}
             sx={{
                 ...style,
-                ...genreStyle
+                ...genreStyle,
+                position: 'absolute'
             }}
             onClick={handleClick}
         >

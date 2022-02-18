@@ -102,7 +102,7 @@ export default function Showcase() {
 
                     <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
-                    <GenreSection genres={genres.slice(0, 4)} setGenreClicked={setGenreClicked} />
+                    <GenreSection genres={genres} setGenreClicked={setGenreClicked} />
 
                     {
                         !!genreClicked &&
