@@ -51,19 +51,21 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
         <>
             <div className="container-profile">
                 <div className="my-profile-box">
-                    <div style={{ position: "relative", display: "flex", marginLeft: "5%" }}>
-                        <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
-                        <div>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
+                        <div style={{ flex: "1 0 0" }}>
+                            <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
+                        </div>
+                        <div style={{ flex: "7 0 0" }}>
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
-                            <div style={{ marginLeft: "20%" }}>
-                                <p style={{ fontSize: "calc(10px + 1vw)" }}>{userProfile.bio}</p>
+                            <div>
+                                <p style={{ fontSize: "calc(10px + 1vw)", marginLeft: "5%"}}>{userProfile.bio}</p>
                             </div>
                         </div>
                         {isMyProfile &&
                             <>
                                 <div className='corner-icon'>
                                     <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
-                                        <EditIcon style={{ fontSize: "calc(12px + 2.5vw)" }} />
+                                        <EditIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black}} />
                                     </IconButton>
                                 </div>
 
@@ -94,7 +96,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         {isMyProfile &&
                             <div style={{ position: "absolute", top: "0.5em", right: "1%" }}>
                                 <IconButton aria-label="create-content" onClick={handleOpenCreate}>
-                                    <AddCircleIcon style={{ fontSize: "5vw" }} />
+                                    <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
                                 </IconButton>
                             </div>
                         }
