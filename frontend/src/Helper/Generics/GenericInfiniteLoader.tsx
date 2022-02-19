@@ -8,7 +8,13 @@ import EventCard from '../../Pages/Profile/Events/EventCard';
 import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
-export default function GenericInfiniteLoader() {
+type Props = {
+    uid: string | undefined;
+    contentType: string[];
+    sortBy: string;
+}
+
+export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Props) {
     const [items, setItems] = useState<any[]>([null]);
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
@@ -26,10 +32,11 @@ export default function GenericInfiniteLoader() {
 
     // return promise from api
     const loadMoreItems = async ({ startIndex, stopIndex }: loadParam) => {
+        console.log(sortBy, contentType);
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({ contentType: "music", startIndex: startIndex, endIndex: stopIndex }),
+            data: JSON.stringify({ uid: uid, contentTypeArray: contentType, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
-            path: "getContentByTypeInBatches",
+            path: "getHomefeedContentInBatches",
         }
 
         try {

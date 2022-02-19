@@ -108,10 +108,17 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         </div>
                         {isMyProfile &&
                             <>
-                                <div className='corner-icon'>
-                                    <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
-                                        <EditIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black}} />
-                                    </IconButton>
+                                <div className='corner-icon' style={{flexDirection: "column"}}>
+                                    <div>
+                                        <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
+                                            <EditIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black}} />
+                                        </IconButton>
+                                    </div>
+                                    <div>
+                                        <IconButton aria-label="add-content" onClick={handleOpenCreate}>
+                                            <AddCircleIcon style={{ fontSize: "calc(12px + 2.5vw)" , color: DefaultValues.black }} />
+                                        </IconButton>
+                                    </div>
                                 </div>
 
                                 <EditProfileModal
@@ -134,16 +141,10 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         </TabsUnstyled>
                     </div>
                 </div>
+
                 <div className='content-box'>
                     <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                 </div>
-                {isMyProfile &&
-                    <div style={{position: "absolute", right: "22%", bottom: "3%"}}>
-                        <Fab color="default" aria-label="add" onClick={handleOpenCreate}>
-                            <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
-                        </Fab>
-                    </div>
-                }
             </div>
         </>
     )
