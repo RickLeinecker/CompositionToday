@@ -54,6 +54,11 @@ exports.getHomefeedContentInBatches = async (req, res) => {
     }
     insertString = insertString.slice(0, -4);
     insertString += " GROUP BY likes.uid, content.id";
+  } else {
+    insertString += "WHERE ";
+    insertString +=
+      "contentType='music' OR contentType='event' OR contentType='article'";
+    insertString += " GROUP BY likes.uid, content.id";
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
