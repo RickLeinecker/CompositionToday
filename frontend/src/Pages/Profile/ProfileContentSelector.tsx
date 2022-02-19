@@ -8,7 +8,7 @@ import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ProfileContext } from './ProfileContext';
-import { IconButton } from '@mui/material';
+import { Fab, IconButton } from '@mui/material';
 
 type Props = {
     userProfile: UserProfile;
@@ -88,23 +88,15 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                     </div>
                 </div>
                 <div className='content-box'>
-                    <div style={{ position: "relative", display: "flex" }}>
-                        <div className='content-text-box'>
-                            <h1>{currentSection}</h1>
-                        </div>
-
-                        {isMyProfile &&
-                            <div style={{ position: "absolute", top: "0.5em", right: "1%" }}>
-                                <IconButton aria-label="create-content" onClick={handleOpenCreate}>
-                                    <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
-                                </IconButton>
-                            </div>
-                        }
-                    </div>
-                    <div className='content-scroll'>
-                        <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
-                    </div>
+                    <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                 </div>
+                {isMyProfile &&
+                    <div style={{position: "absolute", right: "22%", bottom: "5%"}}>
+                        <Fab color="default" aria-label="add" onClick={handleOpenCreate}>
+                            <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
+                        </Fab>
+                    </div>
+                }
             </div>
         </>
     )

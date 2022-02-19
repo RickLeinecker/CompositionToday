@@ -63,7 +63,7 @@ export default function MusicSection({ createOpen, handleCloseCreate, uid }: Pro
                         :
                         <div>
                             <GenericVirtualizedList
-                                bodyStyle={{ width: "100%", height: "75vh" }}
+                                bodyStyle={{ width: "100%", height: "60vh" }}
                                 individualStyle={{ padding: "1% 1% 20px" }}
                                 items={response}
                                 notifyChange={notifyChange}
