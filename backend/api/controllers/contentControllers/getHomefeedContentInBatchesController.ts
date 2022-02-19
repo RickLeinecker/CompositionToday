@@ -40,7 +40,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
+  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
@@ -71,7 +71,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       insertString,
-      [startIndex, numberOfRecords],
+      [uid, startIndex, numberOfRecords],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
