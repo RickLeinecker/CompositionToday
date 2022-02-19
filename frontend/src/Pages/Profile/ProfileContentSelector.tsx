@@ -138,7 +138,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                     <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                 </div>
                 {isMyProfile &&
-                    <div style={{position: "absolute", right: "22%", bottom: "5%"}}>
+                    <div style={{position: "absolute", right: "22%", bottom: "3%"}}>
                         <Fab color="default" aria-label="add" onClick={handleOpenCreate}>
                             <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
                         </Fab>

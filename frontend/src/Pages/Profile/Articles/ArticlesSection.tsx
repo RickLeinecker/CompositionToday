@@ -63,7 +63,7 @@ export default function ArticlesSection({ uid, createOpen, handleCloseCreate }: 
                         <Alert variant="danger">{error}</Alert>
                         :
                         <GenericVirtualizedList
-                            bodyStyle={{ width: "100%", height: "60vh" }}
+                            bodyStyle={{ width: "100%", height: "65vh" }}
                             individualStyle={{ padding: "1% 1% 20px" }}
                             items={response}
                             notifyChange={notifyChange}
