@@ -13,14 +13,20 @@ export default function Home() {
     const currentUid = getAuth().currentUser?.uid;
 
     function updateSortBy(newValue: string) {
-        console.log("sort", newValue)
         setSortBy(newValue);
         setKey(prev => prev + 1);
     }
 
-    function updateFilterBy(newValue: string[]) {
-        console.log(newValue);
-        setFilterByType(newValue);
+    function updateFilterBy(newValue: string) {
+        let tempArr = filterByType;
+
+        if(tempArr.includes(newValue)){
+            tempArr = tempArr.filter(e => e !== newValue);
+        }
+        else{
+            tempArr.push(newValue)
+        }
+        setFilterByType(tempArr);
         setKey(prev => prev + 1);
     }
 
@@ -30,7 +36,7 @@ export default function Home() {
             <div className='container'>
                 <div style={{ position: "relative", display: "flex", justifyContent: "right", marginTop: "1%" }}>
                     <div style={{ marginRight: "1%" }}>
-                        <FilterFeed filterByType={filterByType} updateFilterBy={updateFilterBy} />
+                        <FilterFeed updateFilterBy={updateFilterBy} />
                     </div>
                     <div>
                         <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
