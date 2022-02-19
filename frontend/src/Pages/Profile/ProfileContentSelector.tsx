@@ -96,7 +96,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
         <>
             <div className="container-profile">
                 <div className="my-profile-box">
-                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "1%", alignItems: "center", justifyContent: "center"}}>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
                         <div style={{ flex: "1 0 0" }}>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                         </div>
@@ -123,7 +123,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                             </>
                         }
                     </div>
-                    <div style={{ margin: "0% auto", marginTop: "0.5%" }}>
+                    <div style={{ margin: "0% auto", marginTop: "2%" }}>
                         <TabsUnstyled defaultValue={"Experience"} onChange={handleChange}>
                             <TabsList>
                                 <Tab value='Experience'>Experience</Tab>
