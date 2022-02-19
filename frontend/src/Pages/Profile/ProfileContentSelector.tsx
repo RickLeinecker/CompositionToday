@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Image } from 'react-bootstrap';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import { UserProfile } from '../../ObjectInterface';
@@ -12,7 +12,6 @@ import { Fab, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
-import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 
@@ -66,12 +65,6 @@ const Tab = styled(TabUnstyled)`
   }
 `;
 
-const TabPanel = styled(TabPanelUnstyled)`
-  width: 100%;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.875rem;
-`;
-
 const TabsList = styled(TabsListUnstyled)`
   margin: auto;
   width: 100%;
@@ -103,7 +96,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
         <>
             <div className="container-profile">
                 <div className="my-profile-box">
-                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "1%", alignItems: "center", justifyContent: "center"}}>
                         <div style={{ flex: "1 0 0" }}>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                         </div>
