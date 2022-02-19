@@ -101,7 +101,7 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
                                 noRowsRenderer={noRowsRenderer}
                                 rowRenderer={({ key, index, style, parent }: virtualizedType) => {
                                     const result = items?.[index]!;
-                                    const type = "music";
+                                    const type = result?.contentType;
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
                                     // console.log("scrolling")
@@ -117,10 +117,9 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
                                         >
                                             {({ measure, registerChild }) => (
                                                 <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
-                                                    {/* {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
                                                     {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache} />}
-                                                    {/* {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
-                                                    {/* {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />} */}
+                                                    {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
+                                                    {!!result && type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
                                                 </div>
                                             )}
                                         </CellMeasurer>
