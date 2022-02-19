@@ -31,7 +31,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   WHERE content.contentType=? AND user.uid=?
   GROUP BY likes.uid, content.id;`;
 */
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
