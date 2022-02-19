@@ -25,7 +25,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
-    insertString += " GROUP BY timestamp ORDER BY timestamp DESC";
+    insertString += " ORDER BY timestamp DESC";
   } else {
     // do some algos
     // filter by popularity -> show the content w/largest likeCount in DESC order
