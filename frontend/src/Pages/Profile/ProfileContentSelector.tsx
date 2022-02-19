@@ -131,7 +131,7 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                         }
                     </div>
                     <div style={{ margin: "0% auto", marginTop: "2%" }}>
-                        <TabsUnstyled defaultValue={0} onChange={handleChange}>
+                        <TabsUnstyled defaultValue={"Experience"} onChange={handleChange}>
                             <TabsList>
                                 <Tab value='Experience'>Experience</Tab>
                                 <Tab value='Music'>Music</Tab>
