@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-=======
 import React, { useState } from 'react';
->>>>>>> e596d892458532df2f48539ffd7b4819d701a67f
 import TuneIcon from '@mui/icons-material/Tune';
 import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Popover } from '@mui/material';
 
