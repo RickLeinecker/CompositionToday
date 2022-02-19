@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from 'react';
-import { Button, ButtonGroup, Image } from 'react-bootstrap';
+import { useState, useContext } from 'react';
+import { Image } from 'react-bootstrap';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import { UserProfile } from '../../ObjectInterface';
 import DefaultValues from '../../Styles/DefaultValues.module.scss';
@@ -8,7 +8,74 @@ import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ProfileContext } from './ProfileContext';
-import { IconButton } from '@mui/material';
+import { Fab, IconButton } from '@mui/material';
+import { styled } from '@mui/system';
+import TabsUnstyled from '@mui/base/TabsUnstyled';
+import TabsListUnstyled from '@mui/base/TabsListUnstyled';
+import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
+
+const blue = {
+  50: '#F0F7FF',
+  100: '#C2E0FF',
+  200: '#80BFFF',
+  300: '#66B2FF',
+  400: '#3399FF',
+  500: '#1f9affd3',
+  600: '#0072E5',
+  700: '#0059B2',
+  800: '#004C99',
+  900: '#003A75',
+};
+
+const Tab = styled(TabUnstyled)`
+  font-family: IBM Plex Sans, sans-serif;
+  color: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  background-color: transparent;
+  width: 100%;
+  padding: 0.8em 1em;
+  margin: 0.5em 0.5em;
+  border: none;
+  border-radius: 0.5em;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background-color: ${blue[600]};
+  }
+
+  &:focus {
+    color: #fff;
+    border-radius: 0.5em;
+    outline: 1em solid ${blue[200]};
+    outline-offset: 1em;
+  }
+
+  &.${tabUnstyledClasses.selected} {
+    background-color: ${blue[50]};
+    color: ${blue[500]};
+  }
+
+  &.${buttonUnstyledClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const TabsList = styled(TabsListUnstyled)`
+  margin: auto;
+  width: 100%;
+  background-color: ${blue[500]};
+  border-radius: 1em;
+  margin-bottom: 0em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+`;
 
 type Props = {
     userProfile: UserProfile;
@@ -21,31 +88,9 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
     const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const { isMyProfile } = useContext(ProfileContext);
 
-    // sets current section button color to selected 
-    useEffect(() => {
-        let property = document.getElementById(currentSection)
-
-        if (property !== null)
-            property.style.background = DefaultValues.secondaryColor
-
-        return () => {
-        }
-    }, [currentSection])
-
-    const handleClick = async (event: any) => {
-
-        event.preventDefault()
-
-        // sets old section button color to selected
-        // and updates section 
-        if (event?.target?.value != null && event?.target?.value !== currentSection) {
-            let oldProperty = document.getElementById(currentSection)
-            if (oldProperty != null) {
-                oldProperty.style.background = DefaultValues.white
-            }
-            setCurrentSection(event?.target?.value)
-        }
-    }
+    const handleChange = (event: any, newValue: number | string) => {
+        setCurrentSection(newValue.toString());
+    };
 
     return (
         <>
@@ -78,33 +123,27 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                             </>
                         }
                     </div>
-                    <div style={{ margin: "2% 0" }}>
-                        <ButtonGroup className="buttonContainer" onClick={handleClick}>
-                            <Button className="rounded-pill" id="Experience" style={{ background: DefaultValues.secondaryColor }} variant="light" value="Experience">Experience</Button>{' '}
-                            <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
-                            <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
-                            <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
-                        </ButtonGroup>
+                    <div style={{ margin: "0% auto", marginTop: "2%" }}>
+                        <TabsUnstyled defaultValue={"Experience"} onChange={handleChange}>
+                            <TabsList>
+                                <Tab value='Experience'>Experience</Tab>
+                                <Tab value='Music'>Music</Tab>
+                                <Tab value="Events">Events</Tab>
+                                <Tab value="Articles">Articles</Tab>
+                            </TabsList>
+                        </TabsUnstyled>
                     </div>
                 </div>
                 <div className='content-box'>
-                    <div style={{ position: "relative", display: "flex" }}>
-                        <div className='content-text-box'>
-                            <h1>{currentSection}</h1>
-                        </div>
-
-                        {isMyProfile &&
-                            <div style={{ position: "absolute", top: "0.5em", right: "1%" }}>
-                                <IconButton aria-label="create-content" onClick={handleOpenCreate}>
-                                    <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
-                                </IconButton>
-                            </div>
-                        }
-                    </div>
-                    <div className='content-scroll'>
-                        <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
-                    </div>
+                    <ProfileContent currentSection={currentSection} uid={userProfile.uid} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
                 </div>
+                {isMyProfile &&
+                    <div style={{position: "absolute", right: "22%", bottom: "3%"}}>
+                        <Fab color="default" aria-label="add" onClick={handleOpenCreate}>
+                            <AddCircleIcon style={{ fontSize: "5vw", color: DefaultValues.black }} />
+                        </Fab>
+                    </div>
+                }
             </div>
         </>
     )
