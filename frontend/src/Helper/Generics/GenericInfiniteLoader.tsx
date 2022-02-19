@@ -5,7 +5,6 @@ import GenericHandler from "../../Handlers/GenericHandler";
 import { GenericHandlerType } from "../../ObjectInterface";
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
-import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
 
 type Props = {
