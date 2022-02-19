@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Paper, Popover } from '@mui/material';
+import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Popover } from '@mui/material';
 
 type Props = {
-    filterByType: string[];
-    updateFilterBy: (newValue: string[]) => void
+    updateFilterBy: (newValue: string) => void
 }
 
-export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
+export default function FilterFeed({ updateFilterBy }: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const [isEventChecked, setIsEventChecked] = useState<boolean>(filterByType.includes("event"));
-    const [isMusicChecked, setIsMusicChecked] = useState<boolean>(filterByType.includes("music"));
-    const [isArticleChecked, setIsArticleChecked] = useState<boolean>(filterByType.includes("article"));
+    const [isEventChecked, setIsEventChecked] = useState<boolean>(false);
+    const [isMusicChecked, setIsMusicChecked] = useState<boolean>(false);
+    const [isArticleChecked, setIsArticleChecked] = useState<boolean>(false);
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -25,28 +24,12 @@ export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
 
     const handleChange = (event: any, newValue: boolean) => {
         let type = event.currentTarget.name;
-        let tempArr = filterByType;
 
-        if (type === "event") {
-            setIsEventChecked(newValue);
-        }
+        if (type === "event") { setIsEventChecked(newValue); }
+        if (type === "music") { setIsMusicChecked(newValue); }
+        if (type === "article") { setIsArticleChecked(newValue); }
 
-        if (type === "music") {
-            setIsMusicChecked(newValue);
-        }
-
-        if (type === "article") {
-            setIsArticleChecked(newValue);
-        }
-
-        if (!newValue) {
-            tempArr = tempArr.filter(e => e !== type);
-        }
-        else if (!tempArr.includes(type)) {
-            tempArr.push(type);
-        }
-
-        updateFilterBy(tempArr);
+        updateFilterBy(type);
     };
 
     return (
