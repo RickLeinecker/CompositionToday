@@ -24,7 +24,7 @@ router.post(
   getContentByTypeInBatchesController.getContentByTypeInBatches
 );
 router.post(
-  "/api/getHomefeedContentInBatchesController",
+  "/api/getHomefeedContentInBatches",
   getHomefeedContentInBatchesController.getHomefeedContentInBatches
 );
 router.post("/api/readContent", readContentController.readContent);

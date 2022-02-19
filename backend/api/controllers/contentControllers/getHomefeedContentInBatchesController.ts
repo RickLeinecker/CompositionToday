@@ -14,19 +14,22 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   var results = [];
   var responseCode = 0;
   var insertString = "SELECT * FROM content ";
-
+  var array = JSON.parse(contentTypeArray);
   // if contentTypeArray has contentTypes, build string
-  if (contentTypeArray.length > 0) {
+  if (array.length > 0) {
     insertString += "WHERE ";
-    for (var contentT in contentTypeArray) {
-      insertString += " contentType=" + contentT;
+    for (var contentT in array) {
+      insertString += "contentType=" + contentT + " AND ";
     }
+    insertString.slice(0, -5);
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
     insertString += " ORDER BY timestamp DESC";
   } else {
     // do some algos
+    // filter by popularity -> show the content w/largest likeCount in DESC order
+    // get likeCount for content and show most liked first
   }
   // limit for batches
   insertString += " LIMIT ?,?;";
