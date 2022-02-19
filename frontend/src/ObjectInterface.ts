@@ -116,7 +116,7 @@ export type CommentType = {
     
     id: number;
     contentID: number;
-    commenterUserID: number;
+    commenterUID: string;
     timestamp: string;
     comment: string;
     approved: number;

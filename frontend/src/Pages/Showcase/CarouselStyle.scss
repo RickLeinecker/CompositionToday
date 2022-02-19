@@ -1,0 +1,11 @@
+@import "./PaperStyle.module.scss";
+
+.carousel-container {
+    height: inherit;
+    width: inherit;
+    padding-left: 70px;
+}
+
+.carousel-card-item {
+    padding-bottom: $paper-size;
+}

@@ -10,71 +10,81 @@
 }
 
 .my-profile-box {
-    margin-top: 4%;
-    background-color: $primary-color-semi;
-    border-radius: 3em;
-    height: 100%;
-    margin: 0.5% auto;
-    padding: 0.5%;
-    width: 80%;
+    background-color: $primary-color;
+    border-radius: 1em;
+    margin: 1% auto;
+    width: 59%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .content-box {
-    background-color: $secondary-color-semi;
-    border-radius: 3em;
-    height: 100%;
-    margin: 0.5% auto;
-    padding: 0.5%;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.content-scroll {
-    // max-height: 35vh;
-    // overflow-y: scroll;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 800px) {
-    .my-profile-box {
-        background-color: $primary-color-semi;
-        height: 100%;
-        padding: 2%;
-        margin: 0 0;
-        width: 100%;
-        border-radius: 0;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .content-box {
-        background-color: $secondary-color-semi;
-        height: 100%;
-        padding: 1%;
-        width: 100%;
-        margin: 0 0;
-        border-radius: 0;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-}
-
-.content-text-box { 
-    background-color: $white;
-    border-radius: 1em;
-    height: 100%;
-    margin: 1% auto;
-    text-align: center;
-    padding: 1%;
-    position: relative;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    flex-direction: row;
+    // background-color: $secondary-color-semi;
+    // border-radius: 3em;
+    // height: 100%;
+    // margin: 0.5% auto;
+    // padding: 0.5%;
+    // width: 80%;
+    // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #sections {
     margin: 0 auto;
-    top: 10%;
-    width: 80%;
+    width: 60%;
+}
+
+@media (max-width: 700px) {
+    #sections{
+        margin: 0 auto;
+        top: 10%;
+        width: 90%;
+    }
+
+    .my-profile-box {
+        background-color: $primary-color;
+        border-radius: 1em;
+        margin: 1% auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 89%;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    #sections{
+        margin: 0 auto;
+        top: 10%;
+        width: 80%;
+    }
+
+    .my-profile-box {
+        background-color: $primary-color;
+        border-radius: 1em;
+        margin: 1% auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 79%;
+    }
+    // .content-box {
+    //     background-color: $secondary-color-semi;
+    //     height: 100%;
+    //     padding: 1%;
+    //     width: 100%;
+    //     margin: 0 0;
+    //     border-radius: 0;
+    //     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    // }
+}
+
+.content-text-box { 
+    // background-color: $white;
+    // border-radius: 1em;
+    // height: 100%;
+    // margin: 1% auto;
+    // text-align: center;
+    // padding: 1%;
+    // position: relative;
+    // width: 80%;
+    // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    // flex-direction: row;
 }
 
 .buttonContainer {
@@ -92,9 +102,7 @@
 }
 
 .corner-icon{
-    position: absolute;
-    top: 2%;
-    right: 2%;
+    position: relative;
 }
 
 .user-name{
@@ -106,13 +114,13 @@
 }
 
 .profile-pic{
-    width: 12%;
+    width: 100%;
     height: auto;
     float: left;
 }
 
 .profile-pic-card{
-    width: calc(12px + 6%);
+    width: calc(10px + 15%);
     height: auto;
     float: left;
 }
