@@ -53,7 +53,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
       insertString += `contentType='${contentT}' OR `;
     }
     insertString = insertString.slice(0, -4);
-    insertString += " AND user.uid=? GROUP BY likes.uid, content.id";
+    insertString += " OR user.uid=? GROUP BY likes.uid, content.id";
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
