@@ -10,9 +10,9 @@
 }
 
 .my-profile-box {
-    background-color: $primary-color-semi;
+    background-color: $primary-color;
     border-radius: 1em;
-    margin: 1% auto;
+    margin: 0% auto;
     width: 59%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -40,12 +40,11 @@
     }
 
     .my-profile-box {
-        background-color: $primary-color-semi;
+        background-color: $primary-color;
         border-radius: 1em;
-        height: 100%;
         margin: 1% auto;
-        width: 89%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 89%;
     }
 }
 
@@ -58,12 +57,11 @@
     }
 
     .my-profile-box {
-        background-color: $primary-color-semi;
+        background-color: $primary-color;
         border-radius: 1em;
-        height: 100%;
         margin: 1% auto;
-        width: 79%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 79%;
     }
     // .content-box {
     //     background-color: $secondary-color-semi;
