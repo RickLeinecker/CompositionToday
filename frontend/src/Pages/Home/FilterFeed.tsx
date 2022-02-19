@@ -46,6 +46,10 @@ export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
             tempArr.push(type);
         }
 
+        if (tempArr.length === 0) {
+            tempArr = ["music", "event", "article"];
+        }
+
         updateFilterBy(tempArr);
     };
 
