@@ -40,8 +40,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
-  FROM content LEFT JOIN user ON content.userID=user.id
+  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  FROM content INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
   LEFT JOIN likes ON likes.contentID=content.id `;
@@ -53,7 +53,12 @@ exports.getHomefeedContentInBatches = async (req, res) => {
       insertString += `contentType='${contentT}' OR `;
     }
     insertString = insertString.slice(0, -4);
-    insertString += " OR user.uid=? GROUP BY likes.uid, content.id";
+    insertString += " GROUP BY likes.uid, content.id";
+  } else {
+    insertString += "WHERE ";
+    insertString +=
+      "contentType='music' OR contentType='event' OR contentType='article'";
+    insertString += " GROUP BY likes.uid, content.id";
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
