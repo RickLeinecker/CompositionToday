@@ -8,7 +8,82 @@ import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ProfileContext } from './ProfileContext';
-import { Fab, IconButton } from '@mui/material';
+import { Fab, IconButton, Tab, Tabs } from '@mui/material';
+import { styled } from '@mui/system';
+import TabsUnstyled from '@mui/base/TabsUnstyled';
+import TabsListUnstyled from '@mui/base/TabsListUnstyled';
+import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
+import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
+
+// const blue = {
+//   50: '#F0F7FF',
+//   100: '#C2E0FF',
+//   200: '#80BFFF',
+//   300: '#66B2FF',
+//   400: '#3399FF',
+//   500: '#007FFF',
+//   600: '#0072E5',
+//   700: '#0059B2',
+//   800: '#004C99',
+//   900: '#003A75',
+// };
+
+// const Tab = styled(TabUnstyled)`
+//   font-family: IBM Plex Sans, sans-serif;
+//   color: white;
+//   cursor: pointer;
+//   font-size: 0.875rem;
+//   font-weight: bold;
+//   background-color: transparent;
+//   width: 100%;
+//   padding: 12px 16px;
+//   margin: 6px 6px;
+//   border: none;
+//   border-radius: 5px;
+//   display: flex;
+//   justify-content: center;
+
+//   &:hover {
+//     background-color: ${blue[400]};
+//   }
+
+//   &:focus {
+//     color: #fff;
+//     border-radius: 3px;
+//     outline: 2px solid ${blue[200]};
+//     outline-offset: 2px;
+//   }
+
+//   &.${tabUnstyledClasses.selected} {
+//     background-color: ${blue[50]};
+//     color: ${blue[600]};
+//   }
+
+//   &.${buttonUnstyledClasses.disabled} {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+// `;
+
+// const TabPanel = styled(TabPanelUnstyled)`
+//   width: 100%;
+//   font-family: IBM Plex Sans, sans-serif;
+//   font-size: 0.875rem;
+// `;
+
+// const TabsList = styled(TabsListUnstyled)`
+//   margin: auto;
+//   width: 100%;
+//   min-width: 320px;
+//   background-color: ${blue[500]};
+//   border-radius: 8px;
+//   margin-bottom: 16px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   align-content: space-between;
+// `;
 
 type Props = {
     userProfile: UserProfile;
@@ -20,6 +95,11 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: createOpen, handleClick: handleOpenCreate, handleClose: handleCloseCreate } = useOpen();
     const { isMyProfile } = useContext(ProfileContext);
+    const [value, setValue] =  useState(0);
+
+    const handleChange = (event: any, newValue: number) => {
+      setValue(newValue);
+    };
 
     // sets current section button color to selected 
     useEffect(() => {
@@ -78,13 +158,27 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
                             </>
                         }
                     </div>
-                    <div style={{ margin: "2% 0" }}>
-                        <ButtonGroup className="buttonContainer" onClick={handleClick}>
+                    <div style={{ margin: "0% 3%" }}>
+                        {/* <ButtonGroup className="buttonContainer" onClick={handleClick}>
                             <Button className="rounded-pill" id="Experience" style={{ background: DefaultValues.secondaryColor }} variant="light" value="Experience">Experience</Button>{' '}
                             <Button className="rounded-pill" id="Music" variant="light" value="Music">Music</Button>{' '}
                             <Button className="rounded-pill" id="Events" variant="light" value="Events">Events</Button>{' '}
                             <Button className="rounded-pill" id="Articles" variant="light" value="Articles">Articles</Button>{' '}
-                        </ButtonGroup>
+                        </ButtonGroup> */}
+                        <Tabs value={value} variant="fullWidth" onChange={handleChange} centered>
+                            <Tab label="Experience" />
+                            <Tab label="Music" />
+                            <Tab label="Events" />
+                            <Tab label="Articles" />
+                        </Tabs>
+                        {/* <TabsUnstyled defaultValue={0}>
+                            <TabsList>
+                                <Tab>Experience</Tab>
+                                <Tab>Music</Tab>
+                                <Tab>Events</Tab>
+                                <Tab>Articles</Tab>
+                            </TabsList>
+                        </TabsUnstyled> */}
                     </div>
                 </div>
                 <div className='content-box'>
