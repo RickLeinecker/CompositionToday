@@ -11,14 +11,16 @@ export default function Home() {
 
     const [sortBy, setSortBy] = useState<string>("newest");
     const [filterByType, setFilterByType] = useState<Array<string>>(["music", "event", "article"]);
-    const [rerender, setRerender] = useState<boolean>(false);
+    const [key, setKey] = useState<number>(0);
     const currentUid = getAuth().currentUser?.uid;
 
     useEffect(() => {
-        setRerender(prev => !prev);
+        console.log(key)
+        setKey(prev => prev + 1);
     }, [filterByType, sortBy]);
 
     function updateSortBy(newValue: string) {
+        console.log("sort", newValue)
         setSortBy(newValue);
     }
 
@@ -40,7 +42,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <GenericInfiniteLoader uid={currentUid} contentType={filterByType} sortBy={sortBy} />
+            <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
         </div>
     )
 }

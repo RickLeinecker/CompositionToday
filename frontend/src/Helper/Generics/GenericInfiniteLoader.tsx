@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader, InfiniteLoaderChildProps, List } from 'react-virtualized';
 import GenericHandler from "../../Handlers/GenericHandler";
@@ -19,6 +19,8 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
 
+    console.log("did change", items)
+
     type loadedParam = {
         index: number
     };
@@ -30,9 +32,14 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
         stopIndex: number;
     };
 
+    useEffect(() => {
+        return () => {};
+    })
+
     // return promise from api
     const loadMoreItems = async ({ startIndex, stopIndex }: loadParam) => {
         console.log(sortBy, contentType);
+        console.log(startIndex, stopIndex);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({ uid: uid, contentTypeArray: contentType, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
@@ -46,7 +53,10 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
             // answer.then(res => { setItems(res.result) }).catch(err => err);
             console.log(answer);
             console.log(items);
-            setItems(prev => [...prev, ...answer.result]);
+            setItems(prev => {
+                let temp = [...prev, ...answer.result];
+                return [...new Set<string>(temp.map(x => JSON.stringify(x)))].map(x => JSON.parse(x));
+            });
             return new Promise((resolve, reject) => { resolve(answer.result); });
         } catch (e: any) {
             console.error("Frontend Error: " + e);
