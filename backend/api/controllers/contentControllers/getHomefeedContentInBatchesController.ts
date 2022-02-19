@@ -31,7 +31,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   WHERE content.contentType=? AND user.uid=?
   GROUP BY likes.uid, content.id;`;
 */
-  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -41,7 +41,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
   COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
-  FROM content LEFT JOIN user ON content.userID=user.id
+  FROM content INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
   LEFT JOIN likes ON likes.contentID=content.id `;
@@ -53,7 +53,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
       insertString += `contentType='${contentT}' OR `;
     }
     insertString = insertString.slice(0, -4);
-    insertString += " OR user.uid=? GROUP BY likes.uid, content.id";
+    insertString += " GROUP BY likes.uid, content.id";
   }
   if (sortBy == "newest" || !sortBy) {
     // append order by desc
@@ -71,7 +71,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       insertString,
-      [uid, startIndex, numberOfRecords],
+      [startIndex, numberOfRecords],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
