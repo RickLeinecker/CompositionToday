@@ -4,6 +4,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { GenericHandlerType, LikeType } from '../../ObjectInterface';
 import GenericHandler from '../../Handlers/GenericHandler';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import CelebrationIcon from '@mui/icons-material/Celebration';
 
 type Props = {
     closeMenu: (newIsLiked: boolean) => void
@@ -21,14 +23,22 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
     const [likeCount, setLikeCount] = useState<number>(0)
     const [likedCount, setLikedCount] = useState<number>(0);
     const [lovedCount, setLovedCount] = useState<number>(0);
+    const [celebratedCount, setCelebratedCount] = useState<number>(0);
+    const [jammedCount, setJammedCount] = useState<number>(0);
 
     const open = Boolean(anchorEl);
     const didMountRef = useRef(false);
 
     async function createLike(){
-        let likeTypeID = 0;
+        let likeTypeID = -1;
         if(alignment === 'thumbs_up'){
             likeTypeID = 0;
+        }
+        else if(alignment === 'music_notes'){
+            likeTypeID = 1;
+        }
+        else if(alignment === 'clapping_hands'){
+            likeTypeID = 2;
         }
         else if(alignment === 'heart'){
             likeTypeID = 3;
@@ -72,9 +82,15 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
     }
 
     async function updateLike(){
-        let likeTypeID = 0;
+        let likeTypeID = -1;
         if(alignment === 'thumbs_up'){
             likeTypeID = 0;
+        }
+        else if(alignment === 'music_notes'){
+            likeTypeID = 1;
+        }
+        else if(alignment === 'clapping_hands'){
+            likeTypeID = 2;
         }
         else if(alignment === 'heart'){
             likeTypeID = 3;
@@ -165,6 +181,8 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
                 setLikeCount(await answer.result[0].likeCount);
                 setLikedCount(await answer.result[0].likedCount);
                 setLovedCount(await answer.result[0].lovedCount);
+                setCelebratedCount(await answer.result[0].celebratedCount);
+                setJammedCount(await answer.result[0].jammedCount);
 
             } catch (e: any) {
                 console.error("Frontend Error: " + e);
@@ -216,11 +234,19 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
             >
             <ToggleButton value="heart">
                 <p>{lovedCount}</p>
-                <FavoriteIcon></FavoriteIcon>
+                <FavoriteIcon/>
             </ToggleButton>
             <ToggleButton value="thumbs_up">
                 <p>{likedCount}</p>
-                <ThumbUpIcon></ThumbUpIcon>
+                <ThumbUpIcon/>
+            </ToggleButton>
+            <ToggleButton value="clapping_hands">
+                <p>{celebratedCount}</p>
+                <CelebrationIcon/>
+            </ToggleButton>
+            <ToggleButton value="music_notes">
+                <p>{jammedCount}</p>
+                <MusicNoteIcon/>
             </ToggleButton>
         </ToggleButtonGroup>
     </Popover>
