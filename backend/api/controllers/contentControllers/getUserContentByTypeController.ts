@@ -59,7 +59,7 @@ exports.getUserContentByType = async (req, res) => {
   // get profilepicpath and username
   const { contentType, uid } = req.body;
 
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -68,20 +68,20 @@ exports.getUserContentByType = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
+  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
   LEFT JOIN likes ON likes.contentID=content.id
   WHERE content.contentType=? AND user.uid=?
-  GROUP BY likes.uid, content.id `;
+  GROUP BY content.id`;
 
-  if (contentType == "experience") {
-    insertString += "ORDER BY isDateCurrent, toDate, fromDate DESC;";
-  } else {
-    insertString += "ORDER BY timestamp DESC;";
-  }
+  // if (contentType == "experience") {
+  //   insertString += "ORDER BY isDateCurrent, toDate, fromDate DESC;";
+  // } else {
+  //   insertString += "ORDER BY timestamp DESC;";
+  // }
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, [contentType, uid], function (err, result) {
