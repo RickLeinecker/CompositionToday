@@ -75,13 +75,13 @@ exports.getUserContentByType = async (req, res) => {
   ON content.userID=userProfile.userID 
   LEFT JOIN likes ON likes.contentID=content.id
   WHERE content.contentType=? AND user.uid=?
-  GROUP BY content.id`;
+  GROUP BY content.id `;
 
-  // if (contentType == "experience") {
-  //   insertString += "ORDER BY isDateCurrent, toDate, fromDate DESC;";
-  // } else {
-  //   insertString += "ORDER BY timestamp DESC;";
-  // }
+  if (contentType == "experience") {
+    insertString += "ORDER BY isDateCurrent, toDate, fromDate DESC;";
+  } else {
+    insertString += "ORDER BY timestamp DESC;";
+  }
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, [contentType, uid], function (err, result) {
