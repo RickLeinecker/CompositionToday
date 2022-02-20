@@ -59,7 +59,11 @@ exports.getUserContentByType = async (req, res) => {
   // get profilepicpath and username
   const { contentType, uid } = req.body;
 
-  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
+  console.log(
+    "TEST UID PRINT-> Expected: VQuFHcY4AwbVIVP5q6y0eXjkkef1 Received: " + uid
+  );
+
+  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -68,12 +72,12 @@ exports.getUserContentByType = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
+  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
-  LEFT JOIN likes ON likes.contentID=content.id
+  LEFT JOIN likes ON content.id=likes.contentID
   WHERE content.contentType=? AND user.uid=?
   GROUP BY content.id `;
 
@@ -84,28 +88,32 @@ exports.getUserContentByType = async (req, res) => {
   }
 
   mysql_pool.getConnection(function (err, connection) {
-    connection.query(insertString, [contentType, uid], function (err, result) {
-      if (err) {
-        error = "SQL Search Error";
-        responseCode = 500;
-        console.log(err);
-      } else {
-        if (result[0]) {
-          results = result;
-          responseCode = 200;
-        } else {
-          error = "Content does not exist";
+    connection.query(
+      insertString,
+      [uid, contentType, uid],
+      function (err, result) {
+        if (err) {
+          error = "SQL Search Error";
           responseCode = 500;
+          console.log(err);
+        } else {
+          if (result[0]) {
+            results = result;
+            responseCode = 200;
+          } else {
+            error = "Content does not exist";
+            responseCode = 500;
+          }
         }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
+        connection.release();
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-      connection.release();
-    });
+    );
   });
 };
