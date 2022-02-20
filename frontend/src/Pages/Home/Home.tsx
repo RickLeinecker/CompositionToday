@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import './HomeStyle.scss';
 import HomeHeader from './HomeHeader';
+import { TagType } from '../../ObjectInterface';
 
 export default function Home() {
 
@@ -30,11 +31,15 @@ export default function Home() {
         setKey(prev => prev + 1);
     }
 
+    function updateTags(newValue: Array<TagType>){
+        console.log("here we get the tags")
+    }
+
     return (
         <div>
             <TopNavBar />
             <div className='container-home'>
-                <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} sortBy={sortBy} uid={currentUid || ""}/>
+                <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""}/>
             </div>
             <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
         </div>

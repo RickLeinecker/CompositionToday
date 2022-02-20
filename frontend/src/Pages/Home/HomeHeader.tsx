@@ -8,15 +8,17 @@ import useOpen from '../../Helper/CustomHooks/useOpen';
 import CreateEventModal from '../Profile/Events/CreateEventModal';
 import CreateArticleModal from '../Profile/Articles/CreateArticleModal';
 import CreateMusicModal from '../Profile/Music/CreateMusicModal';
+import { TagType } from '../../ObjectInterface';
 
 type Props = {
-    updateFilterBy: (newValue: string) => void
+    updateFilterBy: (newValue: string) => void;
     sortBy: string;
-    updateSortBy: (newValue: string) => void
+    updateSortBy: (newValue: string) => void;
+    updateTags: (newValue: Array<TagType>) => void;
     uid: string;
 }
 
-export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid }: Props) {
+export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, updateTags }: Props) {
 
     const { open: createArticleOpen, handleClick: handleArticleOpenCreate, handleClose: handleArticleCloseCreate } = useOpen();
     const { open: createMusicOpen, handleClick: handleMusicOpenCreate, handleClose: handleMusicCloseCreate } = useOpen();
@@ -40,7 +42,7 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid }
                             </Button>
                         </div>
                         <div style={{ flex: "1 0 0" }}>
-                            <FilterFeed updateFilterBy={updateFilterBy} />
+                            <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags}/>
                             <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
                         </div>
                     </div>
