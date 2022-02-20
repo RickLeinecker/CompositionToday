@@ -32,6 +32,13 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
     const [status, setStatus] = useState("");
+    const [currentUsername, setCurrentUsername] = useState("");
+
+    useEffect(() => {
+        let temp = window.sessionStorage.getItem("username");
+
+        setCurrentUsername(!temp ? "" : temp);
+    }, [])
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
@@ -78,7 +85,7 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
                                 {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                             </p>
                             <div>
-                                {isMyProfile &&
+                                {(isMyProfile || username === currentUsername) &&
                                     <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
                                 }
                             </div>

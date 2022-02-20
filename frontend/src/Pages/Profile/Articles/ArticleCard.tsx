@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -29,6 +29,14 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+    const [currentUsername, setCurrentUsername] = useState("");
+
+    useEffect(() => {
+        let temp = window.sessionStorage.getItem("username");
+
+        setCurrentUsername(!temp ? "" : temp);
+    }, [])
+
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
@@ -50,7 +58,7 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
                     <p className="card-text-secondary">
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
-                    {isMyProfile &&
+                    {(isMyProfile || username === currentUsername) &&
                         <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                     }
                 </div>
