@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default function CommentCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
-    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser} = commentType;
+    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const [currentUsername, setCurrentUsername] = useState("");
@@ -75,7 +75,7 @@ export default function CommentCard({ commentType, isMyProfile, notifyVirtualize
             </div>
 
             <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
-                <GenericLike contentID={contentID} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={true}/>
+                <GenericLike contentID={id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={true}/>
             </div>
 
         </div>
