@@ -48,7 +48,6 @@ export type ExperienceType = {
     fromDate: Date;
     toDate: Date;
     isDateCurrent: boolean;
-    username: string;
 }
 
 export type ArticleType = {
