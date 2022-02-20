@@ -100,7 +100,7 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
                         <ArrowDropUpIcon />
                     </div>
                 }
-                <GenericLike contentID={article.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} />
+                <GenericLike contentID={article.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
             </div>
 
             <div>

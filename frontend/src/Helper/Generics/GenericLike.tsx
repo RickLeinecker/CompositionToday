@@ -10,9 +10,10 @@ type Props = {
     contentID: number;
     likeCount: number;
     isLikedByLoggedInUser: boolean;
+    isComment: boolean;
 }
 
-export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUser }: Props) {
+export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUser, isComment}: Props) {
 
     const [isLiked, setIsLiked] = useState<boolean>(isLikedByLoggedInUser);
     const [currentLikeCount, setCurrentLikeCount] = useState<number>(likeCount);
@@ -42,7 +43,15 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
 
     useEffect(() => {
         async function didUserLikeContent() {
-            const handlerObject: GenericHandlerType = {
+            
+            const handlerObject: GenericHandlerType = isComment ? 
+            {
+                data: JSON.stringify({ commentID: contentID, uid: currentUid }),
+                methodType: "POST",
+                path: "didUserLikeComment",
+            } 
+            : 
+            {                 
                 data: JSON.stringify({ contentID: contentID, uid: currentUid }),
                 methodType: "POST",
                 path: "didUserLikeContent",
@@ -72,6 +81,7 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
                 anchorEl={anchorEl}
                 closeMenu={closeMenu}
                 contentID={contentID}
+                isComment={isComment}
                 currentUid={currentUid} 
                 likeType={likeType} 
                 refresh={refresh} 

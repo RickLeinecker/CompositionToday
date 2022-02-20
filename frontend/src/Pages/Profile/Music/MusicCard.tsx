@@ -135,7 +135,7 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                         <ArrowDropUpIcon />
                     </div>
                 }
-                <GenericLike contentID={music.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} />
+                <GenericLike contentID={music.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
             </div>
 
             <div>

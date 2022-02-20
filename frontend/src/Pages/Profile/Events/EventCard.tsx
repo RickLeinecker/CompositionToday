@@ -166,7 +166,7 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
                         <ArrowDropUpIcon />
                     </div>
                 }
-                <GenericLike contentID={event.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} />
+                <GenericLike contentID={event.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
             </div>
 
             <div>

@@ -13,9 +13,10 @@ type Props = {
     likeType: LikeType | null;
     refresh: () => void;
     updateLikeCount: (newCount: number) => void;
+    isComment: boolean;
 }
 
-export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, currentUid, likeType, refresh, updateLikeCount}: Props) {
+export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, currentUid, likeType, refresh, updateLikeCount, isComment}: Props) {
     const [alignment, setAlignment] = useState<string>(likeType?.likeType || "");
     const [likeCount, setLikeCount] = useState<number>(0)
     const [likedCount, setLikedCount] = useState<number>(0);
@@ -33,7 +34,19 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
             likeTypeID = 3;
         }
 
-        const handlerObject: GenericHandlerType = {
+        const handlerObject: GenericHandlerType = isComment ? 
+        {
+            data: JSON.stringify({ 
+                commentID: contentID, 
+                uid: currentUid, 
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                likeTypeID: likeTypeID,
+            }),
+            methodType: "POST",
+            path: "createLikeForComment",
+        }
+        :
+        {
             data: JSON.stringify({ 
                 contentID: contentID, 
                 uid: currentUid, 
@@ -67,7 +80,20 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
             likeTypeID = 3;
         }
 
-        const handlerObject: GenericHandlerType = {
+        const handlerObject: GenericHandlerType = isComment ? 
+        {
+            data: JSON.stringify({ 
+                likeID: likeType?.likeID,
+                commentID: contentID, 
+                uid: currentUid, 
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                likeTypeID: likeTypeID,
+            }),
+            methodType: "PATCH",
+            path: "updateLike",
+        }
+        : 
+        {
             data: JSON.stringify({ 
                 likeID: likeType?.likeID,
                 contentID: contentID, 
@@ -117,7 +143,14 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
 
     useEffect(() => {
         async function fetchData() {
-            const handlerObject: GenericHandlerType = {
+            const handlerObject: GenericHandlerType = isComment ? 
+            {
+                data: JSON.stringify({ commentID: contentID}),
+                methodType: "POST",
+                path: "getLikeCountForComment",
+            }
+            :
+            {
                 data: JSON.stringify({ contentID: contentID}),
                 methodType: "POST",
                 path: "getLikeCountForContent",
