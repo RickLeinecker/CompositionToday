@@ -68,7 +68,7 @@ exports.getUserContentByType = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
+  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
@@ -84,28 +84,32 @@ exports.getUserContentByType = async (req, res) => {
   }
 
   mysql_pool.getConnection(function (err, connection) {
-    connection.query(insertString, [contentType, uid], function (err, result) {
-      if (err) {
-        error = "SQL Search Error";
-        responseCode = 500;
-        console.log(err);
-      } else {
-        if (result[0]) {
-          results = result;
-          responseCode = 200;
-        } else {
-          error = "Content does not exist";
+    connection.query(
+      insertString,
+      [uid, contentType, uid],
+      function (err, result) {
+        if (err) {
+          error = "SQL Search Error";
           responseCode = 500;
+          console.log(err);
+        } else {
+          if (result[0]) {
+            results = result;
+            responseCode = 200;
+          } else {
+            error = "Content does not exist";
+            responseCode = 500;
+          }
         }
+        // package data
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
+        connection.release();
       }
-      // package data
-      var ret = {
-        result: results,
-        error: error,
-      };
-      // send data
-      res.status(responseCode).json(ret);
-      connection.release();
-    });
+    );
   });
 };
