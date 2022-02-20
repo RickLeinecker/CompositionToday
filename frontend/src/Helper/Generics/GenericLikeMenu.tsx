@@ -37,8 +37,8 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
         else if(alignment === 'music_notes'){
             likeTypeID = 1;
         }
-        else if(alignment === 'clapping_hands'){
-            likeTypeID = 2;
+        else if(alignment === 'celebration'){
+            likeTypeID = 5;
         }
         else if(alignment === 'heart'){
             likeTypeID = 3;
@@ -89,8 +89,8 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
         else if(alignment === 'music_notes'){
             likeTypeID = 1;
         }
-        else if(alignment === 'clapping_hands'){
-            likeTypeID = 2;
+        else if(alignment === 'celebration'){
+            likeTypeID = 5;
         }
         else if(alignment === 'heart'){
             likeTypeID = 3;
@@ -240,7 +240,7 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
                 <p>{likedCount}</p>
                 <ThumbUpIcon/>
             </ToggleButton>
-            <ToggleButton value="clapping_hands">
+            <ToggleButton value="celebration">
                 <p>{celebratedCount}</p>
                 <CelebrationIcon/>
             </ToggleButton>
