@@ -59,7 +59,11 @@ exports.getUserContentByType = async (req, res) => {
   // get profilepicpath and username
   const { contentType, uid } = req.body;
 
-  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
+  console.log(
+    "TEST UID PRINT-> Expected: VQuFHcY4AwbVIVP5q6y0eXjkkef1 Received: " + uid
+  );
+
+  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -73,7 +77,7 @@ exports.getUserContentByType = async (req, res) => {
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
-  LEFT JOIN likes ON likes.contentID=content.id
+  LEFT JOIN likes ON content.id=likes.contentID
   WHERE content.contentType=? AND user.uid=?
   GROUP BY content.id `;
 
