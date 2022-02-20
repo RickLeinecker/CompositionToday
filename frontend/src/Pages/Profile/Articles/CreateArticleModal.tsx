@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import { fetchTags } from '../../../Helper/Utils/GetTagsUtil';
+import { Autocomplete, TextField } from '@mui/material';
 
 
 type Props = {
@@ -19,11 +21,23 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
+    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
+
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    // get tags
+    useEffect(() => {
+        async function getTags() {
+            setTagOptions(await fetchTags());
+        }
+        getTags()
+    }, []);
+    
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -107,6 +121,25 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                     <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
+                    <Autocomplete
+                        multiple
+                        id="tags-standard"
+                        options={tagOptions!}
+                        onChange={(event, newValue) => setNewContentTags(newValue)}
+                        getOptionLabel={(option) => option.tagName}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderInput={(params) => (
+                            <div className='modal-field'>
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label="Tags"
+                                    placeholder="Tags"
+                                    fullWidth
+                                />
+                            </div>
+                        )}
+                    />
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>

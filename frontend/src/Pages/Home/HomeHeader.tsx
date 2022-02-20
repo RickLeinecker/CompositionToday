@@ -1,5 +1,4 @@
 import { Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
 import FilterFeed from './FilterFeed'
 import SortFeed from './SortFeed'
 import ArticleIcon from '@mui/icons-material/Article';
@@ -9,8 +8,6 @@ import useOpen from '../../Helper/CustomHooks/useOpen';
 import CreateEventModal from '../Profile/Events/CreateEventModal';
 import CreateArticleModal from '../Profile/Articles/CreateArticleModal';
 import CreateMusicModal from '../Profile/Music/CreateMusicModal';
-import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import { TagType } from '../../ObjectInterface';
 
 type Props = {
     updateFilterBy: (newValue: string) => void
@@ -24,34 +21,6 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid }
     const { open: createArticleOpen, handleClick: handleArticleOpenCreate, handleClose: handleArticleCloseCreate } = useOpen();
     const { open: createMusicOpen, handleClick: handleMusicOpenCreate, handleClose: handleMusicCloseCreate } = useOpen();
     const { open: createEventOpen, handleClick: handleEventOpenCreate, handleClose: handleEventCloseCreate } = useOpen();
-    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
-
-
-    // get tags
-    useEffect(() => {
-        fetchTags();
-        async function fetchTags() {
-
-            try {
-                let answer = (await GenericGetHandler("getTags"));
-                if (answer.error.length > 0) {
-                    // setError(answer.error);
-                    return;
-                }
-
-                // setError("");
-                const result = await answer.result;
-                setTagOptions(result);
-
-                // setLoading(false);
-
-
-            } catch (e: any) {
-                console.error("Frontend Error: " + e);
-                // setError(DefaultValues.apiErrorMessage);
-            }
-        }
-    }, []);
 
     return (
         <div>
@@ -77,7 +46,7 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid }
                     </div>
                 </div>
             </div>
-            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { } } tagOptions={tagOptions}/>
+            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { } }/>
             <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={() => { } }/>
             <CreateMusicModal uid={uid} createOpen={createMusicOpen} handleCloseCreate={handleMusicCloseCreate} notifyChange={() => { } }/>
         </div>
