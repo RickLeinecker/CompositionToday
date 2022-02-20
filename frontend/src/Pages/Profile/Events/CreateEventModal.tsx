@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { toast } from 'react-toastify';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { Alert } from 'react-bootstrap';
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
-import { fetchTags } from '../../../Helper/Utils/GetTagsUtil';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 type Props = {
     uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
-    // tagOptions: TagType[] | undefined;
 }
 
 export default function CreateEventModal({ uid, notifyChange, createOpen, handleCloseCreate }: Props) {
@@ -40,18 +39,12 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
     const [toDateErrorMessage, setToDateErrorMessage] = useState("");
     const [toDateError, setToDateError] = useState(false);
     const [missingLocationError, setMissingLocationError] = useState(false);
-    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-
-    // get tags
-    useEffect(() => {
-        async function getTags() {
-            setTagOptions(await fetchTags());
-        }
-        getTags()
-    }, []);
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -221,25 +214,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                         error={toDateError}
                         errorMessage={toDateErrorMessage}
                     />
-                    <Autocomplete
-                        multiple
-                        id="tags-standard"
-                        options={tagOptions!}
-                        onChange={(event, newValue) => setNewContentTags(newValue)}
-                        getOptionLabel={(option) => option.tagName}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                        renderInput={(params) => (
-                            <div className='modal-field'>
-                                <TextField
-                                    {...params}
-                                    variant="outlined"
-                                    label="Tags"
-                                    placeholder="Tags"
-                                    fullWidth
-                                />
-                            </div>
-                        )}
-                    />
+                    <GenericTagsPicker updateTags={updateTags}/>
                     <PlacesAutocomplete updateLocation={updateLocation} location={""} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentMapsEnabled}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { GenericHandlerType, TagType } from '../../../ObjectInterface';
@@ -9,8 +9,7 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
-import { fetchTags } from '../../../Helper/Utils/GetTagsUtil';
-import { Autocomplete, TextField } from '@mui/material';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 type Props = {
     uid: string;
@@ -29,17 +28,12 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
-    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-    // get tags
-    useEffect(() => {
-        async function getTags() {
-            setTagOptions(await fetchTags());
-        }
-        getTags()
-    }, []);
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -184,25 +178,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                     <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} />
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} />
-                    <Autocomplete
-                        multiple
-                        id="tags-standard"
-                        options={tagOptions!}
-                        onChange={(event, newValue) => setNewContentTags(newValue)}
-                        getOptionLabel={(option) => option.tagName}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                        renderInput={(params) => (
-                            <div className='modal-field'>
-                                <TextField
-                                    {...params}
-                                    variant="outlined"
-                                    label="Tags"
-                                    placeholder="Tags"
-                                    fullWidth
-                                />
-                            </div>
-                        )}
-                    />
+                    <GenericTagsPicker updateTags={updateTags}/>
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
                     {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
