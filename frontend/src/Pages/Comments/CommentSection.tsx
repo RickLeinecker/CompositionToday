@@ -61,7 +61,7 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
                         :
                         <div>
                             <GenericVirtualizedList
-                                bodyStyle={{ width: "100%", height: "20vh" }}
+                                bodyStyle={{ width: "100%", height: "30vh" }}
                                 individualStyle={{ padding: "1% 1% 20px" }}
                                 items={response}
                                 notifyChange={notifyChange}
