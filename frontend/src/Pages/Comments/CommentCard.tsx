@@ -17,7 +17,7 @@ type Props = {
     notifyChange: () => void;
 }
 
-export default function ArticleCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
+export default function CommentCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
     const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
@@ -25,7 +25,6 @@ export default function ArticleCard({ commentType, isMyProfile, notifyVirtualize
 
     useEffect(() => {
         let temp = window.sessionStorage.getItem("username");
-
         setCurrentUsername(!temp ? "" : temp);
     }, [])
 
