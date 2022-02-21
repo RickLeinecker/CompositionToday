@@ -1,9 +1,10 @@
 import TopNavBar from '../TopNavBar';
 import GenericInfiniteLoader from '../../Helper/Generics/GenericInfiniteLoader';
-import FilterFeed from './FilterFeed';
-import SortFeed from './SortFeed';
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
+import './HomeStyle.scss';
+import HomeHeader from './HomeHeader';
+import { TagType } from '../../ObjectInterface';
 
 export default function Home() {
 
@@ -20,28 +21,25 @@ export default function Home() {
     function updateFilterBy(newValue: string) {
         let tempArr = filterByType;
 
-        if(tempArr.includes(newValue)){
+        if (tempArr.includes(newValue)) {
             tempArr = tempArr.filter(e => e !== newValue);
         }
-        else{
+        else {
             tempArr.push(newValue)
         }
         setFilterByType(tempArr);
         setKey(prev => prev + 1);
     }
 
+    function updateTags(newValue: Array<TagType>){
+        console.log("here we get the tags")
+    }
+
     return (
         <div>
             <TopNavBar />
-            <div className='container'>
-                <div style={{ position: "relative", display: "flex", justifyContent: "right", marginTop: "1%" }}>
-                    <div style={{ marginRight: "1%" }}>
-                        <FilterFeed updateFilterBy={updateFilterBy} />
-                    </div>
-                    <div>
-                        <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
-                    </div>
-                </div>
+            <div className='container-home'>
+                <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""}/>
             </div>
             <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
         </div>

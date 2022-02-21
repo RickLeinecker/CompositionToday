@@ -4,6 +4,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import './ExperienceStyle.scss';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
+import { useEffect, useState } from 'react';
 
 type Props = {
     experience: ExperienceType;
@@ -24,7 +25,7 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
     return (
         <div className="card">
             <div className="card-icons" style={{display: "flex"}}>
-                {isMyProfile &&
+                {(isMyProfile) &&
                     <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
                 }
             </div>

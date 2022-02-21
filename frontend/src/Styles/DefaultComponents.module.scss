@@ -34,5 +34,5 @@ p {
 
 .card-text-secondary{
     color: $secondary-text;
-    white-space:nowrap;
+    overflow-wrap: break-word;
 }
