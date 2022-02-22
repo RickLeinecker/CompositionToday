@@ -15,12 +15,12 @@ exports.updateSpecializationTag = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE specializationTag SET ";
-  if (userID) {
+  if (userID != null) {
     insertString += "userID=?,";
     insertArray.push(userID);
   }
 
-  if (tagID) {
+  if (tagID != null) {
     insertString += "tagID=?,";
     insertArray.push(tagID);
   }

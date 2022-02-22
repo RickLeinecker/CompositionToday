@@ -22,27 +22,27 @@ exports.updateComment = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE comment SET ";
-  if (contentID) {
+  if (contentID != null) {
     insertString += "contentID=?,";
     insertArray.push(contentID);
   }
 
-  if (commenterUserID) {
+  if (commenterUserID != null) {
     insertString += "commenterUserID=?,";
     insertArray.push(commenterUserID);
   }
 
-  if (timestamp) {
+  if (timestamp != null) {
     insertString += "timestamp=?,";
     insertArray.push(timestamp);
   }
 
-  if (comment) {
+  if (comment != null) {
     insertString += "comment=?,";
     insertArray.push(comment);
   }
 
-  if (approved) {
+  if (approved != null) {
     insertString += "approved=?,";
     insertArray.push(approved);
   }
