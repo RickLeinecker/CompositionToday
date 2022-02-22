@@ -33,9 +33,9 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre='', getPayload }: Props
         try {
             let answer = await GenericHandler(handlerObject);
 
-            // console.log(typeof(answer));
             if (!answer.error)
-                getPayload(answer.result);
+                getPayload(answer.result.map((x: any) => x.item));
+
         } catch (e: any) {
             console.error("Frontend Error: " + e);
         }
