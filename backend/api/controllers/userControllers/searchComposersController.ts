@@ -32,7 +32,7 @@ exports.searchComposers = async (req, res) => {
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, [genre], function (err, result) {
       if (err) {
-        error = err;
+        error = "SQL Error";
         responseCode = 500;
         console.log(err);
       } else {
@@ -41,34 +41,23 @@ exports.searchComposers = async (req, res) => {
           // pass in list to new fuse object,
           // and search query
           // return result
-          const options = {
-            // isCaseSensitive: false,
-            // includeScore: false,
-            // shouldSort: true,
-            // includeMatches: false,
-            // findAllMatches: false,
-            minMatchCharLength: 1,
-            // location: 0,
-            // threshold: 0.6,
-            // distance: 100,
-            // useExtendedSearch: false,
-            // ignoreLocation: false,
-            // ignoreFieldNorm: false,
-            // fieldNormWeight: 1,
-            keys: ["username", "firstName", "lastName"],
-          };
-          const fuse = new Fuse(result, options);
-
-          results = fuse.search(searchQuery);
+          if (searchQuery.length > 0) {
+            const options = {
+              minMatchCharLength: 1,
+              keys: ["username", "firstName", "lastName"],
+            };
+            const fuse = new Fuse(result, options);
+            results = fuse.search(searchQuery);
+          } else {
+            results = result;
+          }
           if (results.length < 1) {
-            error = "No Composers Found";
-            responseCode = 500;
+            responseCode = 204;
           } else {
             responseCode = 200;
           }
         } else {
-          error = "No Composers Found";
-          responseCode = 500;
+          responseCode = 204;
         }
       }
       // package data
