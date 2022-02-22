@@ -27,7 +27,7 @@ export default function TopNavBar() {
                 </Nav>
 
                 <Nav className="ms-5">
-                    <GenericSearch />
+                    <GenericSearch placeHolder="Search" apiEndpoint='searchComposers' getPayload={(value: any) => {}} />
                 </Nav>
 
                 <Nav className="ms-auto">
