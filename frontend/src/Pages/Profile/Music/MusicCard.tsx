@@ -32,6 +32,14 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
+    const [currentUsername, setCurrentUsername] = useState("");
+
+    useEffect(() => {
+        let temp = window.sessionStorage.getItem("username");
+
+        setCurrentUsername(!temp ? "" : temp);
+    }, [])
+
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
@@ -67,7 +75,7 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                         <p className="card-text-secondary">
                             {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                         </p>
-                        {isMyProfile &&
+                        {(isMyProfile || username === currentUsername) &&
                             <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                         }
                     </div>
@@ -127,7 +135,7 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                         <ArrowDropUpIcon />
                     </div>
                 }
-                <GenericLike contentID={music.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} />
+                <GenericLike contentID={music.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
             </div>
 
             <div>

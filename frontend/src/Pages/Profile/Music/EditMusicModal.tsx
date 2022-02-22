@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
+import { GenericHandlerType, MusicType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 type Props = {
     music: MusicType;
@@ -21,6 +22,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [newContentValue, setNewContentValue] = useState<MusicType>(music)
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [audioFileToDelete, setAudioFileToDelete] = useState<string>("");
     const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
 
@@ -29,6 +31,10 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -182,6 +188,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                     <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} />
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
+                    <GenericTagsPicker updateTags={updateTags}/>
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                 </>
