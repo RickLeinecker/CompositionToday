@@ -98,7 +98,7 @@ export default function Showcase() {
             <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
                 <Container>
                     <h1>Showcase</h1>
-                    <GenericSearch />
+                    <GenericSearch placeHolder='Search Composers' apiEndpoint='searchComposers' getPayload={(value: any) => {}}/>
 
                     <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
@@ -107,7 +107,11 @@ export default function Showcase() {
                     {
                         !!genreClicked &&
                         <>
-                            <ComposerSection header={`Composers of ${genreClicked}`} featuredComposers={genreComposers} />
+                            <ComposerSection
+                                header={`Composers of ${genreClicked}`}
+                                featuredComposers={genreComposers}
+                                genre={genreClicked}
+                            />
                             <div ref={bottomRef} />
                         </>
                     }
