@@ -51,6 +51,7 @@ exports.searchComposers = async (req, res) => {
           } else {
             results = result;
           }
+          // if no results, status code 204: No Content
           if (results.length < 1) {
             responseCode = 204;
           } else {
