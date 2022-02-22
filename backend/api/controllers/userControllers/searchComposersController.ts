@@ -55,12 +55,17 @@ exports.searchComposers = async (req, res) => {
             // ignoreLocation: false,
             // ignoreFieldNorm: false,
             // fieldNormWeight: 1,
-            keys: ["username", "firtName", "lastName"],
+            keys: ["username", "firstName", "lastName"],
           };
           const fuse = new Fuse(result, options);
 
           results = fuse.search(searchQuery);
-          responseCode = 200;
+          if (results.length < 1) {
+            error = "No Composers Found";
+            responseCode = 500;
+          } else {
+            responseCode = 200;
+          }
         } else {
           error = "No Composers Found";
           responseCode = 500;
