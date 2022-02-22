@@ -16,22 +16,22 @@ exports.updateInboxEntry = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE inbox SET ";
-  if (commentID != null) {
+  if (commentID !== null) {
     insertString += "commentID=?,";
     insertArray.push(commentID);
   }
 
-  if (contentID != null) {
+  if (contentID !== null) {
     insertString += "contentID=?,";
     insertArray.push(contentID);
   }
 
-  if (profileID != null) {
+  if (profileID !== null) {
     insertString += "profileID=?,";
     insertArray.push(profileID);
   }
 
-  if (requesterID != null) {
+  if (requesterID !== null) {
     insertString += "requesterID=?,";
     insertArray.push(requesterID);
   }

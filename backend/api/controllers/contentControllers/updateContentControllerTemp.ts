@@ -54,98 +54,98 @@ exports.updateContent = async (req, res) => {
           if (result[0]) {
             // build update string with non null fields
             var insertString = "UPDATE content SET ";
-            if (result[0].userID != userID) {
+            if (result[0].userID !== userID) {
               insertString += "userID=?,";
               insertArray.push(userID);
             }
 
-            if (result[0].imageFilepathArray != imageFilepathArray) {
+            if (result[0].imageFilepathArray !== imageFilepathArray) {
               insertString += "imageFilepathArray=?,";
               insertArray.push(imageFilepathArray);
             }
 
-            if (result[0].contentText != contentText) {
+            if (result[0].contentText !== contentText) {
               insertString += "contentText=?,";
               insertArray.push(contentText);
             }
 
-            if (result[0].location != location) {
+            if (result[0].location !== location) {
               insertString += "location=?,";
               insertArray.push(location);
             }
 
-            if (result[0].timestamp != timestamp) {
+            if (result[0].timestamp !== timestamp) {
               insertString += "timestamp=?,";
               insertArray.push(timestamp);
             }
 
-            if (result[0].audioFilepath != audioFilepath) {
+            if (result[0].audioFilepath !== audioFilepath) {
               insertString += "audioFilepath=?,";
               insertArray.push(audioFilepath);
             }
 
-            if (result[0].sheetMusicFilepath != sheetMusicFilepath) {
+            if (result[0].sheetMusicFilepath !== sheetMusicFilepath) {
               insertString += "sheetMusicFilepath=?,";
               insertArray.push(sheetMusicFilepath);
             }
 
-            if (result[0].contentType != contentType) {
+            if (result[0].contentType !== contentType) {
               insertString += "contentType=?,";
               insertArray.push(contentType);
             }
 
-            if (result[0].contentName != contentName) {
+            if (result[0].contentName !== contentName) {
               insertString += "contentName=?,";
               insertArray.push(contentName);
             }
 
-            if (result[0].websiteLink != websiteLink) {
+            if (result[0].websiteLink !== websiteLink) {
               insertString += "websiteLink=?,";
               insertArray.push(websiteLink);
             }
 
-            if (result[0].collaborators != collaborators) {
+            if (result[0].collaborators !== collaborators) {
               insertString += "collaborators=?,";
               insertArray.push(collaborators);
             }
 
-            if (result[0].description != description) {
+            if (result[0].description !== description) {
               insertString += "description=?,";
               insertArray.push(description);
             }
-            if (result[0].toDate != toDate) {
+            if (result[0].toDate !== toDate) {
               insertString += "toDate=?,";
               insertArray.push(toDate);
             }
-            if (result[0].fromDate != fromDate) {
+            if (result[0].fromDate !== fromDate) {
               insertString += "fromDate=?,";
               insertArray.push(fromDate);
             }
-            if (result[0].isDateCurrent != isDateCurrent) {
+            if (result[0].isDateCurrent !== isDateCurrent) {
               insertString += "isDateCurrent=?,";
               insertArray.push(isDateCurrent);
             }
-            if (result[0].price != price) {
+            if (result[0].price !== price) {
               insertString += "price=?,";
               insertArray.push(price);
             }
-            if (result[0].audioFilename != audioFilename) {
+            if (result[0].audioFilename !== audioFilename) {
               insertString += "audioFilename=?,";
               insertArray.push(audioFilename);
             }
-            if (result[0].sheetMusicFilename != sheetMusicFilename) {
+            if (result[0].sheetMusicFilename !== sheetMusicFilename) {
               insertString += "sheetMusicFilename=?,";
               insertArray.push(sheetMusicFilename);
             }
-            if (result[0].mapsEnabled != mapsEnabled) {
+            if (result[0].mapsEnabled !== mapsEnabled) {
               insertString += "mapsEnabled=?,";
               insertArray.push(mapsEnabled);
             }
-            if (result[0].imageFilepath != imageFilepath) {
+            if (result[0].imageFilepath !== imageFilepath) {
               insertString += "imageFilepath=?,";
               insertArray.push(imageFilepath);
             }
-            if (result[0].imageFilename != imageFilename) {
+            if (result[0].imageFilename !== imageFilename) {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
             }
