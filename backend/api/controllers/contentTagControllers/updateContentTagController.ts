@@ -15,12 +15,12 @@ exports.updateContentTag = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE contentTag SET ";
-  if (contentID) {
+  if (contentID !== null) {
     insertString += "contentID=?,";
     insertArray.push(contentID);
   }
 
-  if (tagID) {
+  if (tagID !== null) {
     insertString += "tagID=?,";
     insertArray.push(tagID);
   }

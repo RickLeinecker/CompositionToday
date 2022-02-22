@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // deleteUser - delete a user from database
 exports.deleteUser = async (req, res) => {
-  // incoming: userID
+  // incoming: uid
   // outgoing: success or error
 
   // declaring variables for errors and results
@@ -11,12 +11,12 @@ exports.deleteUser = async (req, res) => {
   var results = [];
   var responseCode = 0;
   // reading data from frontend
-  const { userID } = req.body;
+  const { uid } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     // query database, handle errors, return JSON
     connection.query(
-      "DELETE FROM user WHERE id=?",
-      [userID],
+      "DELETE FROM user WHERE uid=?",
+      [uid],
       function (err, result) {
         if (err) {
           error = "SQL Delete Error";

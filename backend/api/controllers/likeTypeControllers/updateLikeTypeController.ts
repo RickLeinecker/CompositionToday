@@ -15,7 +15,7 @@ exports.updateLikeType = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE likeType SET ";
-  if (likeType) {
+  if (likeType !== null) {
     insertString += "likeType=?,";
     insertArray.push(likeType);
   }
