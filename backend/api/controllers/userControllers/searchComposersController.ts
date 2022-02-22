@@ -49,6 +49,11 @@ exports.searchComposers = async (req, res) => {
             const fuse = new Fuse(result, options);
             results = fuse.search(searchQuery);
           } else {
+            // change shape of sql results to match fuse.js output
+            result = result.map((doc, idx) => ({
+              item: doc,
+              refIndex: idx,
+            }));
             results = result;
           }
           // if no results, status code 204: No Content
