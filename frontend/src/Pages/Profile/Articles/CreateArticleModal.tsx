@@ -6,6 +6,8 @@ import { GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
+
 
 
 type Props = {
@@ -106,7 +108,8 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
+                    {/* <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/> */}
+                    <RichTextEditor />
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
