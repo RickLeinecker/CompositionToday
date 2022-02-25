@@ -28,7 +28,7 @@ class RelatedProjects extends StatelessWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          color: yellowColor,
+                          color: primaryColor,
                           border: Border.all(color: Colors.white),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20))),
@@ -48,7 +48,7 @@ class RelatedProjects extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              backgroundColor: yellowColor,
+                              backgroundColor: primaryColor,
                               fontSize: 18,
                             ),
                           ),
@@ -57,7 +57,7 @@ class RelatedProjects extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: yellowColor,
+                          color: primaryColor,
                           border: Border.all(color: Colors.white),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20))),
@@ -77,7 +77,7 @@ class RelatedProjects extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              backgroundColor: yellowColor,
+                              backgroundColor: primaryColor,
                               fontSize: 18,
                             ),
                           ),
@@ -86,7 +86,7 @@ class RelatedProjects extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: yellowColor,
+                          color: primaryColor,
                           border: Border.all(color: Colors.white),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20))),
@@ -106,7 +106,7 @@ class RelatedProjects extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              backgroundColor: yellowColor,
+                              backgroundColor: primaryColor,
                               fontSize: 18,
                             ),
                           ),

@@ -1,30 +1,46 @@
 class MusicType {
-  final int? id;
+  final String username;
+  final String profilePicPath;
+  final String displayName;
+  final int id;
+  final String uid;
   final int? userID;
-  final String? contentText;
-  final String? contentName;
+  final String contentText;
+  final String contentName;
   final String? timestamp;
   final String? audioFilepath;
   final String? audioFilename;
   final String? sheetMusicFilepath;
   final String? sheetMusicFilename;
   final String? description;
+  final int likeCount;
+  final bool isLikedByLoggedInUser;
 
   MusicType({
-    this.id,
+    required this.username,
+    required this.profilePicPath,
+    required this.displayName,
+    required this.id,
+    required this.uid,
     this.userID,
-    this.contentText,
-    this.contentName,
+    required this.contentText,
+    required this.contentName,
     this.timestamp,
     this.audioFilepath,
     this.audioFilename,
     this.sheetMusicFilepath,
     this.sheetMusicFilename,
     this.description,
+    required this.likeCount,
+    required this.isLikedByLoggedInUser,
   });
 
   factory MusicType.fromJson(Map<String, dynamic> parsedJson) => MusicType(
+        username: parsedJson['username'],
+        profilePicPath: parsedJson['profilePicPath'],
+        displayName: parsedJson['displayName'],
         id: parsedJson['id'],
+        uid: parsedJson['uid'],
         userID: parsedJson['userID'],
         contentText: parsedJson['contentText'],
         contentName: parsedJson['contentName'],
@@ -34,9 +50,15 @@ class MusicType {
         sheetMusicFilepath: parsedJson['sheetMusicFilepath'],
         sheetMusicFilename: parsedJson['sheetMusicFilename'],
         description: parsedJson['description'],
+        likeCount: parsedJson['likeCount'],
+        isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
       );
   Map<String, dynamic> toJson() => {
+        "username": username,
+        "profilePicPath": profilePicPath,
+        "displayName": displayName,
         "id": id,
+        "uid": uid,
         "userID": userID,
         "contentText": contentText,
         "contentName": contentName,
@@ -46,5 +68,7 @@ class MusicType {
         "sheetMusicFilepath": sheetMusicFilepath,
         "sheetMusicFilename": sheetMusicFilename,
         "description": description,
+        "likeCount": likeCount,
+        "isLikedByLoggedInUser": isLikedByLoggedInUser,
       };
 }
