@@ -6,6 +6,9 @@ import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
+import SlateEditor from '../../../Helper/Editor/SlateEditor';
+
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 
@@ -112,6 +115,8 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    {/* <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/> */}
+                    <SlateEditor />
                     <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
                     <GenericTagsPicker updateTags={updateTags}/>
                 </div>
