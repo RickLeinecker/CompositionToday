@@ -40,11 +40,13 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
   user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  COUNT(comment.id) as commentCount,COUNT(likes.id) AS likeCount, 
+  SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
   ON content.userID=userProfile.userID 
-  LEFT JOIN likes ON content.id=likes.contentID `;
+  LEFT JOIN likes ON content.id=likes.contentID 
+  INNER JOIN comment ON content.id=comment.contentID `;
   // var array = JSON.parse(contentTypeArray);
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray.length > 0) {
