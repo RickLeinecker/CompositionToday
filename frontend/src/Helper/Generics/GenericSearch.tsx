@@ -35,6 +35,8 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre='', getPayload }: Props
 
             if (!answer.error)
                 getPayload(answer.result.map((x: any) => x.item));
+            else if (answer.error === "No composers found" || answer.error === "Genre doesn't exist")
+                getPayload([]);
 
         } catch (e: any) {
             console.error("Frontend Error: " + e);
