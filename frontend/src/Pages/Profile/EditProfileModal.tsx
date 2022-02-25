@@ -9,6 +9,7 @@ import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
 import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../Helper/Generics/GenericDiscardModal';
+import DefaultValues from '../../Styles/DefaultValues.module.scss'
 
 type Props = {
     userProfile: UserProfile;
@@ -122,8 +123,8 @@ export default function EditProfileModal({ userProfile, notifyChange, editOpen, 
                 actionText={"Edit"}
                 checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError} />
-                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError} />
+                    <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
+                    <GenericInputField title="Biography" type="bio" onChange={handleChange} value={newContentValue.bio} isRequired={true} error={bioError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
                     <GenericFileUpload updateFile={updateProfilePic} type={"image/*"} name="profile picture" filename={""} />
                 </>
             </GenericModal>

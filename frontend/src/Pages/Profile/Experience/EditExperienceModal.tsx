@@ -5,10 +5,10 @@ import GenericModal from '../../../Helper/Generics/GenericModal'
 import { ExperienceType, GenericHandlerType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDatePicker from '../../../Helper/Generics/GenericDatePicker';
-import { toSqlDatetime } from '../../../Helper/Utils/DateUtils';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     experience: ExperienceType;
@@ -17,7 +17,7 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
-export default function EditExperienceModal({experience, notifyChange, editOpen, handleCloseEdit}: Props) {
+export default function EditExperienceModal({ experience, notifyChange, editOpen, handleCloseEdit }: Props) {
     const [newContentValue, setNewContentValue] = useState<ExperienceType>(experience)
 
     const [nameError, setNameError] = useState(false);
@@ -25,9 +25,9 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
     const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [fromDateError, setFromDateError] = useState(false);
     const [toDateError, setToDateError] = useState(false);
-    
+
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
-    
+
     const onHide = (): void => {
         handleOpenDiscard()
     }
@@ -51,7 +51,7 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
     const checkForErrors = (): boolean => {
         let error = false;
-        
+
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
         error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
         error = checkIfEmpty(newContentValue.fromDate, setFromDateError) || error;
@@ -59,25 +59,25 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
 
         error = (!newContentValue.isDateCurrent && checkDateError(newContentValue.fromDate, newContentValue.toDate)) || error;
 
-        return(error)
+        return (error)
     }
 
     function checkIfEmpty(value: string | Date | null | undefined, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
-        if(!value){
+        if (!value) {
             setError(true);
             return true;
-        } else{
+        } else {
             setError(false);
             return false;
         }
     }
 
     function checkDateError(from: Date | null, to: Date | null): boolean {
-        if(from && to){
+        if (from && to) {
             // from and to are strings for some reason
             to = new Date(to);
             from = new Date(from);
-            if(from.getDate() > to.getDate()){
+            if (from.getDate() > to.getDate()) {
                 setFromDateError(true);
                 setFromDateErrorMessage("Start date must be before end date");
                 return true;
@@ -128,36 +128,60 @@ export default function EditExperienceModal({experience, notifyChange, editOpen,
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError}/>
-                    <GenericInputField title="Role" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError}/>
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} isMultiline={true}/>
-                    <GenericDatePicker 
-                        title={'Start date'} 
-                        type={"fromDate"}
-                        value={newContentValue.fromDate || null} 
-                        isRequired={true} 
+                    <GenericInputField
+                        title="Experience Title"
+                        type="contentName"
                         onChange={handleChange}
-                        error={fromDateError}       
-                        errorMessage={fromDateErrorMessage}             
+                        value={newContentValue.contentName}
+                        isRequired={true}
+                        error={nameError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Role"
+                        type="contentText"
+                        onChange={handleChange}
+                        value={newContentValue.contentText}
+                        isRequired={true}
+                        error={textError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Description"
+                        type="description"
+                        onChange={handleChange}
+                        value={newContentValue.description}
+                        isRequired={false}
+                        isMultiline={true}
+                        maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
+                    <GenericDatePicker
+                        title={'Start date'}
+                        type={"fromDate"}
+                        value={newContentValue.fromDate || null}
+                        isRequired={true}
+                        onChange={handleChange}
+                        error={fromDateError}
+                        errorMessage={fromDateErrorMessage}
                     />
                     {!newContentValue.isDateCurrent &&
-                        <GenericDatePicker 
-                            title={'End date'} 
+                        <GenericDatePicker
+                            title={'End date'}
                             type={"toDate"}
-                            value={newContentValue.toDate || null}  
-                            isRequired={true} 
+                            value={newContentValue.toDate || null}
+                            isRequired={true}
                             onChange={handleChange}
-                            error={toDateError}               
+                            error={toDateError}
                         />
                     }
-                    <FormControlLabel 
-                        control={<Checkbox checked={newContentValue.isDateCurrent} 
-                        onChange={() => handleChange(!newContentValue.isDateCurrent, "isDateCurrent")}/>} 
-                        label="I currently hold this position" 
+                    <FormControlLabel
+                        control={<Checkbox checked={newContentValue.isDateCurrent}
+                            onChange={() => handleChange(!newContentValue.isDateCurrent, "isDateCurrent")} />}
+                        label="I currently hold this position"
                     />
                 </>
             </GenericModal>
-            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
+            <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
         </div>
     )
 }

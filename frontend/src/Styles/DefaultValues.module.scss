@@ -8,6 +8,11 @@ $white: #FFFBFF;
 $secondary-text:#7F7F7F;
 $black: #000000;
 $apiErrorMessage: "Could not process this request, please reload the page";
+$maxLengthShort: 50;
+$maxLengthMedium: 250;
+$maxLengthLong: 2000;
+$maxLengthMassive: 10000;
+
 
 
 
@@ -20,5 +25,9 @@ $apiErrorMessage: "Could not process this request, please reload the page";
     white: $white;
     black: $black;
     apiErrorMessage: $apiErrorMessage;
+    maxLengthShort: $maxLengthShort;
+    maxLengthMedium: $maxLengthMedium;
+    maxLengthLong: $maxLengthLong;
+    maxLengthMassive: $maxLengthMassive;
 }
 
