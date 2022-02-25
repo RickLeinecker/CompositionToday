@@ -37,7 +37,7 @@ export default function FilterFeed({ updateFilterBy, updateTags}: Props) {
 
     return (
         <div>
-            <IconButton aria-label="filter" onClick={handleClick}>
+            <IconButton aria-label="filter" sx={{padding: "10%"}} onClick={handleClick}>
                 <TuneIcon fontSize="large" />
             </IconButton>
             <Popover style={{}} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
