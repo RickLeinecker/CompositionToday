@@ -4,16 +4,15 @@ import EditEventModal from './EditEventModal';
 import { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Chip, Divider } from '@mui/material';
-import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
+import { Divider } from '@mui/material';
 import GenericLike from '../../../Helper/Generics/GenericLike';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CommentSection from '../../Comments/CommentSection';
+import EventCardHeader from './EventCardHeader';
 
 type Props = {
     event: EventType;
@@ -26,19 +25,9 @@ type Props = {
 
 export default function EventCard({ event, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = event;
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
-    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const [showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
     const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
-    const [status, setStatus] = useState("");
-    const [currentUsername, setCurrentUsername] = useState("");
-
-    useEffect(() => {
-        let temp = window.sessionStorage.getItem("username");
-
-        setCurrentUsername(!temp ? "" : temp);
-    }, [])
 
     const handleCommentExpand = () => {
         setIsCommentsOpen(prev => !prev);
@@ -52,69 +41,11 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
         notifyVirtualizer();
     }
 
-    useEffect(() => {
-        let fromDateCurr = new Date(fromDate).getTime();
-        let toDateCurr = new Date(toDate).getTime();
-        let currDate = new Date().getTime();
-
-        if (toDateCurr < currDate) {
-            setStatus("Completed")
-        }
-        else if (fromDateCurr < currDate) {
-            setStatus("Ongoing");
-        }
-        else {
-            setStatus("Scheduled");
-        }
-    }, [fromDate, toDate]);
-
     return (
         <div className="card">
-            <div style={{ display: "flex" }}>
-                <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                    <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                        <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
-                    </div>
-                </Link>
-
-                <div className="card-icons">
-                    <div style={{ flexDirection: "column"}}>
-                        <div style={{ display: "flex" }}>
-                            <p className="card-text-secondary">
-                                {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                            </p>
-                            <div>
-                                {(isMyProfile || username === currentUsername) &&
-                                    <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
-                                }
-                            </div>
-                        </div>
-                        <div style={{float: "right"}}>
-                            {status === 'Scheduled' && <Chip label={status} color="success" />}
-                            {status === 'Ongoing' && <Chip label={status} color="primary" />}
-                            {status === 'Completed' && <Chip label={status} color="error" />}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <EventCardHeader event={event} isMyProfile={false} notifyChange={notifyChange}/>
+            
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
-
-            <GenericDeleteModal
-                contentID={id}
-                notifyChange={notifyChange}
-                deleteOpen={deleteOpen}
-                handleCloseDelete={handleCloseDelete}
-                type={"Event"}
-            />
-
-            <EditEventModal
-                event={event}
-                notifyChange={notifyChange}
-                editOpen={editOpen}
-                handleCloseEdit={handleCloseEdit}
-            />
 
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <div style={{ display: "flex", margin: "0 0" }}>
@@ -172,6 +103,7 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
             <div>
                 {isCommentsOpen ? <CommentSection contentID={event.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
             </div>
+
         </div>
     )
 }
