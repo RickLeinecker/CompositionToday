@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
+import ThemedToolbarEditor from '../../../Helper/Editor/Themed/ThemedToolbarEditor';
 
 
 
@@ -109,7 +110,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
                     {/* <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/> */}
-                    <RichTextEditor />
+                    <ThemedToolbarEditor />
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
