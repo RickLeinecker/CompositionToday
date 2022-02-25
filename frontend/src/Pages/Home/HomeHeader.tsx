@@ -26,31 +26,27 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, 
 
     return (
         <div>
-            <div style={{ position: "relative", display: "flex", marginTop: "1%", justifyContent: "center" }}>
-                <div className='create-post-box'>
-                    <div style={{ position: "relative", display: "flex", margin: "2%", alignItems: "center", justifyContent: "center" }}>
-                        <div style={{ flex: "7 0 0" }}>
-                            <h1>Create new: </h1>
-                            <Button color="primary" variant="outlined" style={{ margin: "2%" }} onClick={handleArticleOpenCreate} startIcon={<ArticleIcon />}>
-                                Article
-                            </Button>
-                            <Button variant="outlined" style={{ margin: "2%" }} onClick={handleMusicOpenCreate} startIcon={<MusicNoteIcon />}>
-                                Music
-                            </Button>
-                            <Button variant="outlined" style={{ margin: "2%" }} onClick={handleEventOpenCreate} startIcon={<TodayIcon />}>
-                                Event
-                            </Button>
-                        </div>
-                        <div style={{ flex: "1 0 0" }}>
-                            <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags}/>
-                            <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
-                        </div>
-                    </div>
+            <div className="homefeed-header-box">
+                <div className="create-content-box">
+                    <h2 className="create-content-header">Create new: </h2>
+                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleArticleOpenCreate} startIcon={<ArticleIcon />}>
+                        Article
+                    </Button>
+                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleMusicOpenCreate} startIcon={<MusicNoteIcon />}>
+                        Music
+                    </Button>
+                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleEventOpenCreate} startIcon={<TodayIcon />}>
+                        Event
+                    </Button>
                 </div>
+                <div className="icons-box">
+                    <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags} />
+                    <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} /> 
+                </div> 
             </div>
-            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { } }/>
-            <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={() => { } }/>
-            <CreateMusicModal uid={uid} createOpen={createMusicOpen} handleCloseCreate={handleMusicCloseCreate} notifyChange={() => { } }/>
+            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { }} />
+            <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={() => { }} />
+            <CreateMusicModal uid={uid} createOpen={createMusicOpen} handleCloseCreate={handleMusicCloseCreate} notifyChange={() => { }} />
         </div>
     )
 }
