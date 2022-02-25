@@ -14,12 +14,12 @@ type Props = {
     notifyChange: () => void;
 }
 
-export default function ArticleCardHeader({article, isMyProfile, notifyChange}: Props) {
-    const { id, username, profilePicPath, displayName, timestamp } = article;
+export default function ArticleCardHeader({ article, isMyProfile, notifyChange }: Props) {
+    const { id, username, profilePicPath, displayName, timestamp, isEdited } = article;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    
+
     const [currentUsername, setCurrentUsername] = useState("");
 
     useEffect(() => {
@@ -28,31 +28,34 @@ export default function ArticleCardHeader({article, isMyProfile, notifyChange}: 
         setCurrentUsername(!temp ? "" : temp);
     }, [])
 
-  return (
-    <div style={{ display: "flex" }}>
-        <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-            <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
-                <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
-            </div>
-        </Link>
+    return (
+        <div style={{ display: "flex" }}>
+            <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
+                <div style={{ display: "flex", alignItems: "center", margin: "2%" }}>
+                    <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
+                    <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+                </div>
+            </Link>
 
-        <div className="card-icons">
-            <div style={{ flexDirection: "column"}}>
+            <div className="card-icons">
                 <div style={{ display: "flex" }}>
+                    {isEdited &&
+                        <p className="card-text-secondary">
+                            (edited)&nbsp;
+                        </p>
+                    }
                     <p className="card-text-secondary">
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
                     <div>
                         {(isMyProfile || username === currentUsername) &&
-                            <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                            <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                         }
                     </div>
                 </div>
             </div>
-        </div>
 
-        <GenericDeleteModal
+            <GenericDeleteModal
                 contentID={id}
                 notifyChange={notifyChange}
                 deleteOpen={deleteOpen}
@@ -60,12 +63,12 @@ export default function ArticleCardHeader({article, isMyProfile, notifyChange}: 
                 type={"Event"}
             />
 
-        <EditArticleModal
-            article={article}
-            notifyChange={notifyChange}
-            editOpen={editOpen}
-            handleCloseEdit={handleCloseEdit}
-        />
-    </div>
-  )
+            <EditArticleModal
+                article={article}
+                notifyChange={notifyChange}
+                editOpen={editOpen}
+                handleCloseEdit={handleCloseEdit}
+            />
+        </div>
+    )
 }

@@ -16,7 +16,7 @@ type Props = {
 }
 
 export default function EventCardHeader({event, isMyProfile, notifyChange}: Props) {
-    const { id, fromDate, toDate, username, profilePicPath, displayName, timestamp } = event;
+    const { id, fromDate, toDate, username, profilePicPath, displayName, timestamp, isEdited} = event;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -57,22 +57,25 @@ export default function EventCardHeader({event, isMyProfile, notifyChange}: Prop
         </Link>
 
         <div className="card-icons">
-            <div style={{ flexDirection: "column"}}>
-                <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" }}>
+                {isEdited &&
                     <p className="card-text-secondary">
-                        {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                        (edited)&nbsp;
                     </p>
-                    <div>
-                        {(isMyProfile || username === currentUsername) &&
-                            <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
-                        }
-                    </div>
+                }
+                <p className="card-text-secondary">
+                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                </p>
+                <div>
+                    {(isMyProfile || username === currentUsername) &&
+                        <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                    }
                 </div>
-                <div style={{float: "right"}}>
-                    {status === 'Scheduled' && <Chip label={status} color="success" />}
-                    {status === 'Ongoing' && <Chip label={status} color="primary" />}
-                    {status === 'Completed' && <Chip label={status} color="error" />}
-                </div>
+            </div>
+            <div style={{float: "right"}}>
+                {status === 'Scheduled' && <Chip label={status} color="success" />}
+                {status === 'Ongoing' && <Chip label={status} color="primary" />}
+                {status === 'Completed' && <Chip label={status} color="error" />}
             </div>
         </div>
 

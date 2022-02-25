@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function ArticleCardHeader({music, isMyProfile, notifyChange}: Props) {
-    const { id, username, profilePicPath, displayName, timestamp } = music;
+    const { id, username, profilePicPath, displayName, timestamp, isEdited} = music;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -38,16 +38,19 @@ export default function ArticleCardHeader({music, isMyProfile, notifyChange}: Pr
         </Link>
 
         <div className="card-icons">
-            <div style={{ flexDirection: "column"}}>
-                <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" }}>
+                {isEdited &&
                     <p className="card-text-secondary">
-                        {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                        (edited)&nbsp;
                     </p>
-                    <div>
-                        {(isMyProfile || username === currentUsername) &&
-                            <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
-                        }
-                    </div>
+                }
+                <p className="card-text-secondary">
+                    {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
+                </p>
+                <div>
+                    {(isMyProfile || username === currentUsername) &&
+                        <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit}/>
+                    }
                 </div>
             </div>
         </div>
