@@ -1,18 +1,10 @@
 import { EventType } from '../../../ObjectInterface';
-import useOpen from '../../../Helper/CustomHooks/useOpen';
-import EditEventModal from './EditEventModal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Image } from 'react-bootstrap'
-import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import moment from 'moment';
 import { Divider } from '@mui/material';
-import GenericLike from '../../../Helper/Generics/GenericLike';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import CommentSection from '../../Comments/CommentSection';
 import EventCardHeader from './EventCardHeader';
+import CardFooter from '../CardFooter';
 
 type Props = {
     event: EventType;
@@ -27,13 +19,6 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
     const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = event;
     const [showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
-    const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
-
-    const handleCommentExpand = () => {
-        setIsCommentsOpen(prev => !prev);
-        clearCache();
-        notifyVirtualizer();
-    }
 
     const handleMapExpand = () => {
         setShowMap(prev => !prev);
@@ -43,8 +28,8 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
 
     return (
         <div className="card">
-            <EventCardHeader event={event} isMyProfile={false} notifyChange={notifyChange}/>
-            
+            <EventCardHeader event={event} isMyProfile={false} notifyChange={notifyChange} />
+
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
 
             <div className="card-body" style={{ paddingBottom: "0%" }}>
@@ -85,23 +70,15 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
 
-            <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
-                {isCommentsOpen ?
-                    <div style={{ float: "right" }} onClick={handleCommentExpand}>
-                        <ChatBubbleIcon />
-                        <ArrowDropDownIcon />
-                    </div>
-                    :
-                    <div style={{ float: "right" }} onClick={handleCommentExpand}>
-                        <ChatBubbleOutlineIcon />
-                        <ArrowDropUpIcon />
-                    </div>
-                }
-                <GenericLike contentID={event.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
-            </div>
-
             <div>
-                {isCommentsOpen ? <CommentSection contentID={event.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
+                <CardFooter
+                    clearCache={clearCache}
+                    notifyVirtualizer={notifyVirtualizer}
+                    notifyChange={notifyChange}
+                    id={id}
+                    likeCount={likeCount}
+                    isLikedByLoggedInUser={isLikedByLoggedInUser}
+                />
             </div>
 
         </div>

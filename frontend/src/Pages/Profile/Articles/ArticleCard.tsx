@@ -2,18 +2,9 @@ import { ArticleType } from '../../../ObjectInterface';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import EditArticleModal from './EditArticleModal';
-import { Link } from 'react-router-dom';
-import { Image } from 'react-bootstrap'
-import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import CommentSection from '../../Comments/CommentSection';
-import GenericLike from '../../../Helper/Generics/GenericLike';
 import { Divider } from '@mui/material';
+import CardFooter from '../CardFooter';
+import ArticleCardHeader from './ArticleCardHeader';
 
 type Props = {
     article: ArticleType;
@@ -26,60 +17,12 @@ type Props = {
 
 export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, contentText, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser } = article;
-    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
-    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-    const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
-    const [currentUsername, setCurrentUsername] = useState("");
-
-    useEffect(() => {
-        let temp = window.sessionStorage.getItem("username");
-
-        setCurrentUsername(!temp ? "" : temp);
-    }, [])
-
-
-    const handleCommentExpand = () => {
-        setIsCommentsOpen(prev => !prev);
-        clearCache();
-        notifyVirtualizer();
-    }
 
     return (
         <div className="card">
-            <div style={{ display: "flex"}}>
-                <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                    <div style={{ display: "flex", alignItems: "center", margin: "2%"}}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                        <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
-                    </div>
-                </Link>
-                
-                <div className="card-icons" style={{ display: "flex" }}>
-                    <p className="card-text-secondary">
-                        {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
-                    </p>
-                    {(isMyProfile || username === currentUsername) &&
-                        <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
-                    }
-                </div>
-            </div>
+            <ArticleCardHeader article={article} isMyProfile={false} notifyChange={notifyChange} />
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
-
-            <GenericDeleteModal
-                contentID={id}
-                notifyChange={notifyChange}
-                deleteOpen={deleteOpen}
-                handleCloseDelete={handleCloseDelete}
-                type={"Article"}
-            />
-
-            <EditArticleModal
-                article={article}
-                notifyChange={notifyChange}
-                editOpen={editOpen}
-                handleCloseEdit={handleCloseEdit}
-            />
 
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <h1 className="card-title">{contentName}</h1>
@@ -88,24 +31,17 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
 
-            <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
-                {isCommentsOpen ?
-                    <div style={{ float: "right" }} onClick={handleCommentExpand}>
-                        <ChatBubbleIcon />
-                        <ArrowDropDownIcon />
-                    </div>
-                    :
-                    <div style={{ float: "right" }} onClick={handleCommentExpand}>
-                        <ChatBubbleOutlineIcon />
-                        <ArrowDropUpIcon />
-                    </div>
-                }
-                <GenericLike contentID={article.id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={false}/>
-            </div>
-
             <div>
-                {isCommentsOpen ? <CommentSection contentID={article.id} notifyParent={notifyChange} clearCache={clearCache} /> : <></>}
+                <CardFooter
+                    clearCache={clearCache}
+                    notifyVirtualizer={notifyVirtualizer}
+                    notifyChange={notifyChange}
+                    id={id}
+                    likeCount={likeCount}
+                    isLikedByLoggedInUser={isLikedByLoggedInUser}
+                />
             </div>
+            
         </div>
     )
 }
