@@ -39,10 +39,12 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
 
             <div className="card-icons">
                 <div style={{ display: "flex" }}>
-                    {isEdited &&
+                    {isEdited ?
                         <p className="card-text-secondary">
                             (edited)&nbsp;
                         </p>
+                        :
+                        <></>
                     }
                     <p className="card-text-secondary">
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}

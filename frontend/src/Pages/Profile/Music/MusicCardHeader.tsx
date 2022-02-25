@@ -14,7 +14,7 @@ type Props = {
     notifyChange: () => void;
 }
 
-export default function ArticleCardHeader({music, isMyProfile, notifyChange}: Props) {
+export default function MusicCardHeader({music, isMyProfile, notifyChange}: Props) {
     const { id, username, profilePicPath, displayName, timestamp, isEdited} = music;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
@@ -39,10 +39,12 @@ export default function ArticleCardHeader({music, isMyProfile, notifyChange}: Pr
 
         <div className="card-icons">
             <div style={{ display: "flex" }}>
-                {isEdited &&
+                {isEdited ?
                     <p className="card-text-secondary">
                         (edited)&nbsp;
                     </p>
+                    :
+                    <></>
                 }
                 <p className="card-text-secondary">
                     {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
