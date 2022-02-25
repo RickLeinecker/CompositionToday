@@ -14,6 +14,7 @@ exports.updateContent = async (req, res) => {
   var results = [];
   var insertArray = [];
   var responseCode = 0;
+  var isEdited = 0;
 
   const {
     uid,
@@ -54,6 +55,8 @@ exports.updateContent = async (req, res) => {
           if (result[0]) {
             responseCode = 200;
             // build update string with non null fields
+            // update isEdited to true;
+            isEdited = 1;
             var insertString = "UPDATE content SET ";
             if (result[0].id !== null) {
               insertString += "userID=?,";
@@ -150,6 +153,9 @@ exports.updateContent = async (req, res) => {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
             }
+            // update isEdited
+            insertString += "isEdited=?,";
+            insertArray.push(isEdited);
 
             if (insertString.length > 19) {
               insertString = insertString.slice(0, -1);
