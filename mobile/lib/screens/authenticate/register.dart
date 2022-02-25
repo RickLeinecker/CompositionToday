@@ -122,7 +122,7 @@ class _RegisterState extends State<Register> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: blueColor,
+                          primary: primaryColor,
                         ),
                       ),
                       const SizedBox(height: 10.0),

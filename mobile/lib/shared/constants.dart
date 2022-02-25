@@ -11,8 +11,8 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
-const yellowColor = Color(0xffF7B41F);
-const yellowColorSemi = Color(0x73F7B31F);
-const blueColor = Color(0xff3981FF);
-const blueColorSemi = Color(0xc93982FF);
+const secondaryColor = Color(0xff9affd3);
+const secondaryColorSemi = Color(0x1f9affd3);
+const primaryColor = Color(0xff3981FF);
+const primaryColorSemi = Color(0xc93982FF);
 const background = Color(0xffFFFBFF);

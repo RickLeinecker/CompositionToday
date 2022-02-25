@@ -2,9 +2,13 @@
 
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:composition_today/services/auth.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -29,32 +33,24 @@ class SettingsSwitch extends StatefulWidget {
 }
 
 class _SettingsSwitchState extends State<SettingsSwitch> {
-  bool _enableNotifs = false;
   bool _specificNotifs = false;
+  bool loading = false;
+  final AuthService _auth = AuthService();
+  final _emailKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    UserData _currentUserID = Provider.of<UserData?>(context)!;
+    String email = '';
+    String error = '';
     return Container(
       child: Column(
         children: <Widget>[
           const SizedBox(height: 20.0),
           SwitchListTile(
-            title: const Text('Enable Push Notifications'),
-            value: _enableNotifs,
-            tileColor: yellowColor,
-            activeColor: blueColor,
-            onChanged: (bool value) {
-              setState(() {
-                _enableNotifs = value;
-              });
-            },
-            secondary: const Icon(Icons.notifications),
-          ),
-          const SizedBox(height: 20.0),
-          SwitchListTile(
             title: const Text('Only show notifications about your interests'),
             value: _specificNotifs,
-            tileColor: yellowColor,
-            activeColor: blueColor,
+            tileColor: primaryColor,
+            activeColor: primaryColor,
             onChanged: (bool value) {
               setState(() {
                 _specificNotifs = value;
@@ -65,27 +61,75 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
           const SizedBox(height: 20.0),
           ElevatedButton(
             child: const Text(
-              'Update Name',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              // implement ability to change name
-            },
-            style: ElevatedButton.styleFrom(
-              primary: blueColor,
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            child: const Text(
               'Change Email',
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              // implement ability to change email
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Update Email'),
+                  content: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _emailKey,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            TextFormField(
+                                decoration: textInputDecoration.copyWith(
+                                  hintText: 'Email',
+                                  labelText: 'Email',
+                                  prefixIcon: const Icon(
+                                    Icons.mail,
+                                  ),
+                                ),
+                                validator: (val) =>
+                                    EmailValidator.validate(val!) == false
+                                        ? 'Enter a valid email'
+                                        : null,
+                                onChanged: (val) {
+                                  setState(() => email = val);
+                                }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (_emailKey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
+                          // ignore: avoid_init_to_null
+                          dynamic result =
+                              null; // make API call to update email for UID;
+                          if (result == null) {
+                            setState(() {
+                              error =
+                                  'could not sign in with those credentials';
+                              loading = false;
+                            });
+                          }
+                          Navigator.pop(context, 'Update');
+                        }
+                      },
+                      child: const Text('Update'),
+                    ),
+                  ],
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
-              primary: blueColor,
+              primary: primaryColor,
             ),
           ),
           const SizedBox(height: 20.0),
@@ -95,10 +139,10 @@ class _SettingsSwitchState extends State<SettingsSwitch> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              // implement ability to reset password
+              // _auth.resetPassword();
             },
             style: ElevatedButton.styleFrom(
-              primary: blueColor,
+              primary: primaryColor,
             ),
           ),
           const SizedBox(height: 20.0),
