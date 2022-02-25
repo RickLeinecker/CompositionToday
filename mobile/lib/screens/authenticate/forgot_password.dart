@@ -75,7 +75,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 },
                 child: const Text('Send Email'),
                 style: ElevatedButton.styleFrom(
-                  primary: blueColor,
+                  primary: primaryColor,
                 ),
               ),
             ],

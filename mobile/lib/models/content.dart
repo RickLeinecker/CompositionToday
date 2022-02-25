@@ -1,6 +1,7 @@
 class ContentType {
-  final int? id;
-  final String? uid;
+  final int id;
+  final String uid;
+  final String? userID;
   final Object? imageFilePathArray;
   final String? contentText;
   final String? location;
@@ -14,8 +15,9 @@ class ContentType {
   final String? description;
 
   ContentType(
-      {this.id,
-      this.uid,
+      {required this.id,
+      required this.uid,
+      this.userID,
       this.imageFilePathArray,
       this.contentText,
       this.location,
@@ -31,6 +33,7 @@ class ContentType {
   factory ContentType.fromJson(Map<String, dynamic> parsedJson) => ContentType(
         id: parsedJson['id'],
         uid: parsedJson['uid'],
+        userID: parsedJson['userID'],
         imageFilePathArray: parsedJson['imageFilePathArray'],
         contentText: parsedJson['contentText'],
         location: parsedJson['location'],
@@ -47,6 +50,7 @@ class ContentType {
   Map<String, dynamic> toJson() => {
         "id": id,
         "uid": uid,
+        "userID": userID,
         "imageFilePathArray": imageFilePathArray,
         "contentText": contentText,
         "location": location,

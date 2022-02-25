@@ -7,8 +7,8 @@ class MyAppBar extends AppBar {
   MyAppBar({required Widget title, List<Widget>? actions})
       : super(
           title: title,
-          backgroundColor: yellowColor,
-          foregroundColor: background,
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.black,
           elevation: 0.0,
           actions: actions,
         );

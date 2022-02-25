@@ -59,6 +59,7 @@ export type ArticleType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
+    isEdited: boolean;
     uid: string;
     userID?: number;
     contentText: string;
@@ -75,6 +76,7 @@ export type MusicType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
+    isEdited: boolean;
     uid: string;
     userID?: number;
     contentText: string;
@@ -96,6 +98,7 @@ export type EventType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
+    isEdited: boolean;
     uid: string;
     userID?: number;
     contentName: string;
