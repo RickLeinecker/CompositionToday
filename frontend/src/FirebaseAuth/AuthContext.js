@@ -3,14 +3,14 @@ import {auth} from './firebase'
 import { useNavigate } from 'react-router-dom';
 import SignUpAuth from './SignUpAuth'
 import SignInUserAuth from './SignInUserAuth'
+import SignInGuestAuth from './SignInGuestAuth'
 import ResetPasswordAuth from './ResetPasswordAuth';
 import {
     onAuthStateChanged,
-    signOut, 
+    signOut,
 } from 'firebase/auth'
 
 const AuthContext = React.createContext();
-
 
 export const useAuthContext = () =>{
     return useContext(AuthContext)
@@ -44,6 +44,11 @@ export const AuthProvider = ({children}) =>{
         return SignInUserAuth(email, password);
     }
 
+    const signInGuest = () =>
+    {
+        return SignInGuestAuth(auth)
+    }
+
     const logoutUser = () => {
         signOut(auth)
         navigate('/registration');
@@ -68,6 +73,7 @@ export const AuthProvider = ({children}) =>{
         error,
         signUpUser, 
         signInUser,
+        signInGuest,
         logoutUser,
         resetPassword
     }

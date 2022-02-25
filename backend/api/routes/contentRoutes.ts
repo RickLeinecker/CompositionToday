@@ -10,11 +10,22 @@ const deleteContentController = require("../controllers/contentControllers/delet
 const getContentController = require("../controllers/contentControllers/getContentsController.ts");
 const getContentByTypeController = require("../controllers/contentControllers/getContentByTypeController.ts");
 const getUserContentByTypeController = require("../controllers/contentControllers/getUserContentByTypeController.ts");
+const getContentByTypeInBatchesController = require("../controllers/contentControllers/getContentByTypeInBatchesController.ts");
+const getHomefeedContentInBatchesController = require("../controllers/contentControllers/getHomefeedContentInBatchesController.ts");
 
 router.post("/api/createContent", createContentController.createContent);
 router.post(
   "/api/createContentAndTag",
   createContentAndTagController.createContentAndTag
+);
+
+router.post(
+  "/api/getContentByTypeInBatches",
+  getContentByTypeInBatchesController.getContentByTypeInBatches
+);
+router.post(
+  "/api/getHomefeedContentInBatches",
+  getHomefeedContentInBatchesController.getHomefeedContentInBatches
 );
 router.post("/api/readContent", readContentController.readContent);
 router.patch("/api/updateContent", updateContentController.updateContent);

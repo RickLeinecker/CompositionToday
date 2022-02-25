@@ -7,12 +7,12 @@ import CreateExperienceModal from './CreateExperienceModal';
 import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
 
 type Props = {
-    userID: number;
+    uid: string;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function ExperienceSection({ userID, createOpen, handleCloseCreate }: Props) {
+export default function ExperienceSection({ uid, createOpen, handleCloseCreate }: Props) {
     const [response, setResponse] = useState<Array<ExperienceType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -23,7 +23,7 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentType: "experience", userID }),
+                data: JSON.stringify({ contentType: "experience", uid: uid }),
                 methodType: "POST",
                 path: "getUserContentByType",
             }
@@ -47,18 +47,18 @@ export default function ExperienceSection({ userID, createOpen, handleCloseCreat
         }
         fetchData();
 
-    }, [userID, hasChanged])
+    }, [uid, hasChanged])
 
     return (
         <>
-            <CreateExperienceModal userID={userID} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
+            <CreateExperienceModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} />
             {
                 !error && loading ? <div>...loading</div>
                     :
                     error ? <Alert variant="danger">{error}</Alert>
                         :
                         <GenericVirtualizedList
-                            bodyStyle={{ width: "100%", height: "50vh" }}
+                            bodyStyle={{ width: "100%", height: "63vh" }}
                             individualStyle={{ padding: "1% 1% 20px" }}
                             items={response}
                             notifyChange={notifyChange}
