@@ -15,7 +15,7 @@ exports.updateTag = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE tag SET ";
-  if (tagName) {
+  if (tagName !== null) {
     insertString += "tagName=?,";
     insertArray.push(tagName);
   }
