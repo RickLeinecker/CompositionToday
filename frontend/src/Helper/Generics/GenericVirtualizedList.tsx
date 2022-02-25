@@ -1,5 +1,6 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
+import CommentCard from '../../Pages/Comments/CommentCard';
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
 import ExperienceCard from '../../Pages/Profile/Experience/ExperienceCard';
@@ -15,11 +16,18 @@ interface Props {
 }
 
 export default function GenericVirtualizedList({ bodyStyle, individualStyle, items, notifyChange, type }: Props) {
+    const [rerender, setRerender] = useState<boolean>(false);
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
 
+    useEffect(() => {
+        clearCache();
+    }, [items])
+
+    const notifyVirtualizer = () => setRerender(value => !value);
+
     // This helps resize new/removed data for window
-    cache.current.clearAll();
+    const clearCache = () => cache.current.clearAll();
 
     interface virtualizedType {
         key: any;
@@ -37,6 +45,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                             style={{ scrollbarWidth: "none" }}
                             width={width}
                             height={height}
+                            scrollToIndex={type === "comment" ? items.length : undefined}
                             rowHeight={cache.current.rowHeight}
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
@@ -51,12 +60,16 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         columnIndex={0}
                                         rowIndex={index}
                                     >
-                                        <div style={{ ...style, ...individualStyle }}>
-                                            {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                            {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
-                                        </div>
+                                        {({ measure, registerChild }) => (
+                                            // ExperienceCard doesn't need norifyVirtualizer because it has not expandable comments
+                                            <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
+                                                {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "comment" && <CommentCard commentType={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} />}
+                                            </div>
+                                        )}
                                     </CellMeasurer>
                                 )
                             }}

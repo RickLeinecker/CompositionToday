@@ -1,10 +1,12 @@
-$primary-color: #F7B41F;
+// $primary-color: #F7B41F;
+$primary-color: #1f9affd3;
 $primary-color-semi: #f7b31f73;
 $secondary-color: #3981FF;
 $secondary-color-semi: #3982ffc9;
 $background-color: #FFFBFF;
 $white: #FFFBFF;
 $secondary-text:#7F7F7F;
+$black: #000000;
 $apiErrorMessage: "Could not process this request, please reload the page";
 
 
@@ -16,6 +18,7 @@ $apiErrorMessage: "Could not process this request, please reload the page";
     secondaryText: $secondary-text;
     backgroundColor: $background-color;
     white: $white;
+    black: $black;
     apiErrorMessage: $apiErrorMessage;
 }
 

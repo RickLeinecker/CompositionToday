@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import { Alert } from 'react-bootstrap';
@@ -9,25 +9,31 @@ import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 type Props = {
-    userID: number;
+    uid: string;
     notifyChange: () => void;
     createOpen: boolean;
     handleCloseCreate: () => void;
 }
 
-export default function CreateMusicModal({ userID, notifyChange, createOpen, handleCloseCreate }: Props) {
+export default function CreateMusicModal({ uid, notifyChange, createOpen, handleCloseCreate }: Props) {
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -123,7 +129,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
 
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
-                userID,
+                uid: uid,
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "music",
@@ -172,6 +178,7 @@ export default function CreateMusicModal({ userID, notifyChange, createOpen, han
                     <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} />
                     <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} />
+                    <GenericTagsPicker updateTags={updateTags}/>
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
                     {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}

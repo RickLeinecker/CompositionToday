@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType, MusicType } from '../../../ObjectInterface';
+import { GenericHandlerType, MusicType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil'
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 type Props = {
     music: MusicType;
@@ -20,11 +22,19 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [newContentValue, setNewContentValue] = useState<MusicType>(music)
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [audioFileToDelete, setAudioFileToDelete] = useState<string>("");
+    const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
+
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -77,14 +87,41 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     }
 
     const deleteSheetMusic = () => {
-        console.log("delete sheet music");
+        let fileToDelete = newContentValue.sheetMusicFilepath
+        if(fileToDelete !== undefined){
+            setSheetMusicFileToDelete(fileToDelete)
+            handleChange("", "sheetMusicFilepath")
+        }
+
+        handleChange("", "sheetMusicFilename");
+        setNewContentSheetMusic(null)
     }
 
     const deleteAudio = () => {
-        console.log("delete audio");
+        let fileToDelete = newContentValue.audioFilepath
+        if(fileToDelete !== undefined){
+            setAudioFileToDelete(fileToDelete)
+            handleChange("", "audioFilepath")
+        }
+
+        handleChange("", "audioFilename");
+        setNewContentAudio(null);
     }
 
     async function confirmEditHandler() {
+
+        let audioFileToDeleteTemp = audioFileToDelete;
+        if(audioFileToDeleteTemp !== "" && audioFileToDeleteTemp !== null){
+            deleteFile(audioFileToDeleteTemp);
+            setAudioFileToDelete("");
+        }
+
+        let sheetMusicFileToDeleteTemp = sheetMusicFileToDelete;
+        if(sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null){
+            deleteFile(sheetMusicFileToDeleteTemp);
+            setSheetMusicFileToDelete("");
+        }
+
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
         if (newContentSheetMusic !== null) {
             newContentSheetMusicPath = await uploadFile(newContentSheetMusic, newContentValue.sheetMusicFilename, "sheet music", "uploadSheetMusic");
@@ -106,13 +143,15 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
-                userID: newContentValue.userID,
+                uid: newContentValue.uid,
                 contentType: "music",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
                 description: newContentValue.description,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
+                audioFilepath: newContentAudioPath,
+                audioFilename: newContentValue.audioFilename,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -127,6 +166,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
             toast.success("Music updated")
             notifyChange();
+
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to update music")
@@ -148,6 +188,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                     <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
                     <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} />
                     <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
+                    <GenericTagsPicker updateTags={updateTags}/>
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                 </>

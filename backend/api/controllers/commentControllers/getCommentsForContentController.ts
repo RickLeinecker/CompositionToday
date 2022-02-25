@@ -11,11 +11,21 @@ exports.getCommentsForContent = async (req, res) => {
   var results = [];
   var responseCode = 0;
 
-  const { contentID } = req.body;
+  const { uid, contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM comment WHERE contentID=?",
-      [contentID],
+      `SELECT comment.id,comment.contentID,comment.commenterUID,
+      comment.timestamp,comment.comment,comment.approved,userProfile.profilePicPath,
+      userProfile.displayName,user.username,
+      COUNT(likes.id) AS likeCount, 
+      SUM(CASE WHEN likes.commentID = comment.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser 
+      FROM comment
+      INNER JOIN user ON comment.commenterUID=user.uid
+      INNER JOIN userProfile ON user.id=userProfile.userID 
+      LEFT JOIN likes ON comment.id=likes.commentID
+      WHERE comment.contentID=?
+      GROUP BY comment.id `,
+      [uid, contentID],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";

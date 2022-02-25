@@ -5,20 +5,20 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // createLikeForContent
 exports.createLikeForContent = async (req, res) => {
-  // incoming: userID, timestamp, likeTypeID, contentID
+  // incoming: uid, timestamp, likeTypeID, contentID
   // outgoing: error
 
   var error = "";
   var results = [];
   var responseCode = 0;
 
-  const { userID, timestamp, likeTypeID, contentID } = req.body;
+  const { uid, timestamp, likeTypeID, contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     const sqlInsert =
-      "INSERT INTO likes(userID, timestamp, likeTypeID, contentID) VALUES (?,?,?,?)";
+      "INSERT INTO likes(uid, timestamp, likeTypeID, contentID) VALUES (?,?,?,?)";
     connection.query(
       sqlInsert,
-      [userID, timestamp, likeTypeID, contentID],
+      [uid, timestamp, likeTypeID, contentID],
       function (err, result) {
         if (err) {
           error = "SQL Insert Error";

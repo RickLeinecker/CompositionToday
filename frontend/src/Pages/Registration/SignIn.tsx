@@ -1,15 +1,16 @@
 import { useRef, useState } from "react";
 import { useAuthContext } from "../../FirebaseAuth/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from '../../Handlers/GenericHandler'
+
 
 const SignIn = () => {
 	const emailRef = useRef<HTMLInputElement>(null);
 	const psdRef = useRef<HTMLInputElement>(null);
 	const { signInUser } = useAuthContext();
 	const navigate = useNavigate();
-
+	const { signInGuest } = useAuthContext();
 	const [errorText, setErrorText] = useState("");
 	let errorFlag = false;
 
@@ -34,7 +35,7 @@ const SignIn = () => {
 		}
 
 	}
-
+	
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 		const email = emailRef.current?.value;
@@ -79,6 +80,11 @@ const SignIn = () => {
 		}
 	};
 
+	const handleClick = async (e : any) => {
+		await signInGuest();
+		navigate("/")
+	}
+
 	return (
 		<>
 			<div className="form-container sign-in-container">
@@ -96,10 +102,15 @@ const SignIn = () => {
 						placeholder="Password"
 						ref={psdRef}
 					/>
-					<a className="registration" href="/forgot-password">
+					<Link className="registration" to="/forgot-password">
 						Forgot your password?
-					</a>
-					<button className="registration">Sign In</button>
+					</Link>
+					<button className="registration sign-in-button">Sign In</button>
+					<div className="link-container">
+						<Link className="registration" to="#" onClick={handleClick}>
+							Guest sign in
+						</Link>
+					</div>
 					<p className="registration-error pink-text center-align">
 						{errorText}
 					</p>
@@ -109,3 +120,4 @@ const SignIn = () => {
 	);
 };
 export default SignIn;
+

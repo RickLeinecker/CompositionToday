@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
 import TopNavBar from '../TopNavBar';
@@ -15,7 +15,13 @@ export default function Showcase() {
     const [genres, setGenres] = useState<genreType[]>([]);
     const [genreClicked, setGenreClicked] = useState<string>("");
     const [featuredComposers, setFeaturedComposers] = useState<any[]>([]);
+    const [genreComposers, setGenreComposers] = useState<any[]>([]);
     const [stopAllPlayers, setStopAllPlayers] = useState<boolean>(false);
+    const bottomRef = useRef<HTMLHeadingElement>(null);
+
+    const scrollToBottom = () => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
 
     useEffect(() => {
         getFeaturedComposers();
@@ -25,6 +31,7 @@ export default function Showcase() {
 
     useEffect(() => {
         getComposersByGenre(genreClicked);
+        scrollToBottom();
         // console.log("Changed")
     }, [genreClicked])
 
@@ -45,7 +52,7 @@ export default function Showcase() {
             shuffleArray(list);
             // console.log(list)
 
-            setGenres(list.slice(0, 4));
+            setGenres(list);
         } catch (e: any) {
             toast.error('Failed to retrieve data');
         }
@@ -53,6 +60,7 @@ export default function Showcase() {
 
     const getFeaturedComposers = async () => {
         try {
+            // Handler retrieves 4 composers randomly
             let answer = await GenericGetHandler("getComposersForShowcase");
 
             setFeaturedComposers(answer.result);
@@ -73,12 +81,12 @@ export default function Showcase() {
             };
 
             let answer = await GenericHandler(handlerObject);
-            // let list: any[] = answer.result;
-            // console.log(list)
+            let list: any[] = answer.result;
+            console.log(list)
             // shuffleArray(list);
             // console.log(list)
 
-            // setFeaturedComposers(list.slice(0, 4));
+            setGenreComposers(list);
         } catch (e: any) {
             toast.error('Failed to retrieve data');
         }
@@ -90,13 +98,23 @@ export default function Showcase() {
             <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
                 <Container>
                     <h1>Showcase</h1>
-                    <GenericSearch />
+                    <GenericSearch placeHolder='Search Composers' apiEndpoint='searchComposers' getPayload={(value: any) => {}}/>
 
-                    <ComposerSection featuredComposers={featuredComposers} />
+                    <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
                     <GenreSection genres={genres} setGenreClicked={setGenreClicked} />
 
-                    {!!genreClicked && <h1 className='header'>Composers of {genreClicked}</h1>}
+                    {
+                        !!genreClicked &&
+                        <>
+                            <ComposerSection
+                                header={`Composers of ${genreClicked}`}
+                                featuredComposers={genreComposers}
+                                genre={genreClicked}
+                            />
+                            <div ref={bottomRef} />
+                        </>
+                    }
                 </Container>
             </PlayerContext.Provider>
         </>

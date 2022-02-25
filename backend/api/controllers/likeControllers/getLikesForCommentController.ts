@@ -15,7 +15,7 @@ exports.getLikesForComment = async (req, res) => {
   const { commentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT * FROM likes WHERE commentID=?",
+      "SELECT likes.id,likes.uid,likes.timestamp,likes.likeTypeID,likeType.likeType,likes.commentID FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE commentID=?;",
       [commentID],
       function (err, result) {
         if (err) {
