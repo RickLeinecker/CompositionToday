@@ -52,31 +52,45 @@ exports.getUserContentByType = async (req, res) => {
       GROUP BY id;
   
   */
+
   var error = "";
   var results = [];
   var responseCode = 0;
   // get profilepicpath and username
   const { contentType, uid } = req.body;
+
+  console.log(
+    "TEST UID PRINT-> Expected: VQuFHcY4AwbVIVP5q6y0eXjkkef1 Received: " + uid
+  );
+
+  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  content.contentText,content.location,content.timestamp,
+  content.audioFilepath,content.sheetMusicFilepath,content.contentType,
+  content.websiteLink,content.contentType,content.contentName,
+  content.mapsEnabled,content.collaborators,content.description,
+  content.fromDate,content.toDate,content.isDateCurrent,
+  content.price,content.audioFilename,content.sheetMusicFilename,
+  content.imageFilepath,content.imageFilename,content.isFeaturedSong,
+  user.username,userProfile.displayName,userProfile.profilePicPath,
+  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  FROM content
+  INNER JOIN user ON content.userID=user.id
+  INNER JOIN userProfile 
+  ON content.userID=userProfile.userID 
+  LEFT JOIN likes ON content.id=likes.contentID
+  WHERE content.contentType=? AND user.uid=?
+  GROUP BY content.id `;
+
+  if (contentType == "experience") {
+    insertString += "ORDER BY isDateCurrent, toDate, fromDate DESC;";
+  } else {
+    insertString += "ORDER BY timestamp DESC;";
+  }
+
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT content.id,user.uid,content.imageFilepathArray,
-      content.contentText,content.location,content.timestamp,
-      content.audioFilepath,content.sheetMusicFilepath,content.contentType,
-      content.websiteLink,content.contentType,content.contentName,
-      content.mapsEnabled,content.collaborators,content.description,
-      content.fromDate,content.toDate,content.isDateCurrent,
-      content.price,content.audioFilename,content.sheetMusicFilename,
-      content.imageFilepath,content.imageFilename,content.isFeaturedSong,
-      user.username,userProfile.displayName,userProfile.profilePicPath,
-      COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
-      FROM content
-      INNER JOIN user ON content.userID=user.id
-      INNER JOIN userProfile 
-      ON content.userID=userProfile.userID 
-      LEFT JOIN likes ON likes.contentID=content.id
-      WHERE content.contentType=? AND user.uid=?
-      GROUP BY likes.uid, content.id;`,
-      [contentType, uid],
+      insertString,
+      [uid, contentType, uid],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";

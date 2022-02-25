@@ -113,10 +113,13 @@ export type CommentType = {
     username: string;
     profilePicPath: string;
     displayName: string;
+
+    likeCount: number;
+    isLikedByLoggedInUser: boolean;
     
     id: number;
     contentID: number;
-    commenterUserID: number;
+    commenterUID: string;
     timestamp: string;
     comment: string;
     approved: number;

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-bootstrap';
-import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericVirtualizedList from '../../../Helper/Generics/GenericVirtualizedList';
-import { GenericHandlerType, EventType, TagType } from '../../../ObjectInterface';
+import { GenericHandlerType, EventType } from '../../../ObjectInterface';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss';
 import CreateEventModal from './CreateEventModal';
 
@@ -19,7 +18,6 @@ export default function EventSection({ createOpen, handleCloseCreate, uid }: Pro
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [hasChanged, setHasChanged] = useState(false);
-    const [tagOptions, setTagOptions] = useState<Array<TagType>>();
 
     const notifyChange = () => {
         setHasChanged(value => !value);
@@ -56,37 +54,9 @@ export default function EventSection({ createOpen, handleCloseCreate, uid }: Pro
         fetchData();
     }, [uid, hasChanged])
 
-
-    // get tags
-    useEffect(() => {
-        fetchTags();
-        async function fetchTags() {
-
-            try {
-                let answer = (await GenericGetHandler("getTags"));
-                if (answer.error.length > 0) {
-                    // setError(answer.error);
-                    return;
-                }
-
-                // setError("");
-                const result = await answer.result;
-                setTagOptions(result);
-
-                // setLoading(false);
-
-
-            } catch (e: any) {
-                console.error("Frontend Error: " + e);
-                // setError(DefaultValues.apiErrorMessage);
-            }
-        }
-    }, []);
-
-
     return (
         <>
-            <CreateEventModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate} tagOptions={tagOptions} />
+            <CreateEventModal uid={uid} notifyChange={notifyChange} createOpen={createOpen} handleCloseCreate={handleCloseCreate}/>
             <div>
                 {!error && loading ? <div>...loading</div>
                     :
@@ -95,7 +65,7 @@ export default function EventSection({ createOpen, handleCloseCreate, uid }: Pro
                         :
                         <div>
                             <GenericVirtualizedList
-                                bodyStyle={{ width: "100%", height: "75vh" }}
+                                bodyStyle={{ width: "100%", height: "63vh", margin: "auto" }}
                                 individualStyle={{ padding: "1% 1% 20px" }}
                                 items={response}
                                 notifyChange={notifyChange}

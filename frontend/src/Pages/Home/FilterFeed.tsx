@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Paper, Popover } from '@mui/material';
+import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Popover } from '@mui/material';
+import GenericTagsPicker from '../../Helper/Generics/GenericTagsPicker';
+import { TagType } from '../../ObjectInterface';
 
 type Props = {
-    filterByType: string[];
-    updateFilterBy: (newValue: string[]) => void
+    updateFilterBy: (newValue: string) => void
+    updateTags: (newValue: Array<TagType>) => void;
 }
 
-export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
+export default function FilterFeed({ updateFilterBy, updateTags}: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const [isEventChecked, setIsEventChecked] = useState<boolean>(filterByType.includes("event"));
-    const [isMusicChecked, setIsMusicChecked] = useState<boolean>(filterByType.includes("music"));
-    const [isArticleChecked, setIsArticleChecked] = useState<boolean>(filterByType.includes("article"));
+    const [isEventChecked, setIsEventChecked] = useState<boolean>(false);
+    const [isMusicChecked, setIsMusicChecked] = useState<boolean>(false);
+    const [isArticleChecked, setIsArticleChecked] = useState<boolean>(false);
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -25,37 +27,21 @@ export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
 
     const handleChange = (event: any, newValue: boolean) => {
         let type = event.currentTarget.name;
-        let tempArr = filterByType;
 
-        if (type === "event") {
-            setIsEventChecked(newValue);
-        }
+        if (type === "event") { setIsEventChecked(newValue); }
+        if (type === "music") { setIsMusicChecked(newValue); }
+        if (type === "article") { setIsArticleChecked(newValue); }
 
-        if (type === "music") {
-            setIsMusicChecked(newValue);
-        }
-
-        if (type === "article") {
-            setIsArticleChecked(newValue);
-        }
-
-        if (!newValue) {
-            tempArr = tempArr.filter(e => e !== type);
-        }
-        else if (!tempArr.includes(type)) {
-            tempArr.push(type);
-        }
-
-        updateFilterBy(tempArr);
+        updateFilterBy(type);
     };
 
     return (
         <div>
-            <IconButton aria-label="filter" onClick={handleClick}>
+            <IconButton aria-label="filter" sx={{padding: "10%"}} onClick={handleClick}>
                 <TuneIcon fontSize="large" />
             </IconButton>
             <Popover style={{}} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-                <Container sx={{ mt: "10%" }}>
+                <Container sx={{ mt: "10%", mb: "10%", borderRadius: "1em", width: "25vw"}}>
                     <FormLabel component="legend">Filter by type</FormLabel>
                     <FormGroup>
                         <FormControlLabel
@@ -77,6 +63,8 @@ export default function FilterFeed({ filterByType, updateFilterBy }: Props) {
                             label="Articles"
                         />
                     </FormGroup>
+                    <FormLabel component="legend">Filter by tags</FormLabel>
+                    <GenericTagsPicker updateTags={updateTags}/>
                 </Container>
             </Popover>
         </div>

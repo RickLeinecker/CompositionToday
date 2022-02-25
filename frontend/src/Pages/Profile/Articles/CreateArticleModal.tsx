@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { GenericHandlerType } from '../../../ObjectInterface';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
-import ThemedToolbarEditor from '../../../Helper/Editor/Themed/ThemedToolbarEditor';
-
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
 
 type Props = {
@@ -22,11 +20,16 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -109,8 +112,8 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    {/* <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/> */}
-                    <ThemedToolbarEditor />
+                    <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
+                    <GenericTagsPicker updateTags={updateTags}/>
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>

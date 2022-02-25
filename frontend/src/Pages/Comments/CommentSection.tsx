@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import GenericHandler from '../../Handlers/GenericHandler';
@@ -16,6 +17,7 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
     const [response, setResponse] = useState<Array<CommentType> | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const currentUid = getAuth().currentUser?.uid;
     const [commentHasChanged, setCommentHasChanged] = useState<boolean>(false);
 
     const notifyChange = () => {
@@ -25,7 +27,7 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
     useEffect(() => {
         async function fetchData() {
             const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ contentID: contentID}),
+                data: JSON.stringify({ contentID: contentID, uid: currentUid}),
                 methodType: "POST",
                 path: "getCommentsForContent",
             }
@@ -61,7 +63,7 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
                         :
                         <div>
                             <GenericVirtualizedList
-                                bodyStyle={{ width: "100%", height: "20vh" }}
+                                bodyStyle={{ width: "100%", height: "30vh" }}
                                 individualStyle={{ padding: "1% 1% 20px" }}
                                 items={response}
                                 notifyChange={notifyChange}

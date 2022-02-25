@@ -13,7 +13,7 @@ export default function RelatedProjects() {
 			<TopNavBar />
 			<Container className="related-projects-container" maxWidth="lg">
 				<h1 id="related-projects-header">Related Projects</h1>
-				<GenericSearch />
+				<GenericSearch placeHolder="Search Related Projects" apiEndpoint='searchComposers' getPayload={(value: any) => {}} />
 				<Grid
 					columns={13}
 					container
