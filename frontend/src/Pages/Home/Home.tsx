@@ -30,14 +30,20 @@ export default function Home() {
         setKey(prev => prev + 1);
     }
 
-    function updateTags(newValue: Array<TagType>){
+    function updateTags(newValue: Array<TagType>) {
         console.log("here we get the tags")
     }
 
     return (
         <div>
             <div className='container-home'>
-                <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""}/>
+                {
+                    getAuth().currentUser?.isAnonymous ?
+                        <></>
+                        :
+                        <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""} />
+                }
+
             </div>
             <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
         </div>
