@@ -25,7 +25,7 @@ export default function SortFeed({ sortBy, updateSortBy }: Props) {
 
     return (
         <div>
-            <IconButton aria-label="sort" onClick={handleClick}>
+            <IconButton aria-label="sort" sx={{padding: "10%"}} onClick={handleClick}>
                 <SortIcon fontSize='large' />
             </IconButton>
             <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}>
