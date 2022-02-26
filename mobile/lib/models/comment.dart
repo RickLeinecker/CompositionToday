@@ -8,6 +8,7 @@ class CommentType {
   final String timestamp;
   final String comment;
   final int approved;
+  final bool? isEdited;
 
   CommentType({
     required this.username,
@@ -19,6 +20,7 @@ class CommentType {
     required this.timestamp,
     required this.comment,
     required this.approved,
+    this.isEdited,
   });
   factory CommentType.fromJson(Map<String, dynamic> parsedJson) => CommentType(
         username: parsedJson['username'],
@@ -30,6 +32,7 @@ class CommentType {
         timestamp: parsedJson['timestamp'],
         comment: parsedJson['comment'],
         approved: parsedJson['approved'],
+        isEdited: parsedJson['isEdited'],
       );
   Map<String, dynamic> toJson() => {
         "username": username,
@@ -41,5 +44,6 @@ class CommentType {
         "timestamp": timestamp,
         "comment": comment,
         "approved": approved,
+        "isEdited": isEdited,
       };
 }
