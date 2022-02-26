@@ -118,6 +118,7 @@ export type CommentType = {
     displayName: string;
 
     likeCount: number;
+    isEdited: boolean;
     isLikedByLoggedInUser: boolean;
     
     id: number;

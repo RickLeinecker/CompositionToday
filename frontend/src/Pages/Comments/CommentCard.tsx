@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default function CommentCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
-    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = commentType;
+    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser, isEdited} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const [currentUsername, setCurrentUsername] = useState("");
@@ -41,6 +41,13 @@ export default function CommentCard({ commentType, isMyProfile, notifyVirtualize
                 </Link>
                 
                 <div className="card-icons" style={{ display: "flex" }}>
+                    {isEdited ?
+                        <p className="card-text-secondary">
+                            (edited)&nbsp;
+                        </p>
+                        :
+                        <></>
+                    }
                     <p className="card-text-secondary">
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
