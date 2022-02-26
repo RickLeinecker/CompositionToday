@@ -97,7 +97,7 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                                     width: '24px',
                                 }}
                             />
-                            <span>{`${option.firstName}`}</span>
+                            <span>{`${option.displayName}`}</span>
                         </Link>
                     );
                 }}
