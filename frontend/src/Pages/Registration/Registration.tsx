@@ -24,7 +24,7 @@ export default function Registration() {
 
     return (
         <>
-            <main className="registration">
+            <main data-testid="registration" className="registration">
                 <div className="container registration" ref={container}>
                     <SignIn />
                     <SignUp />
