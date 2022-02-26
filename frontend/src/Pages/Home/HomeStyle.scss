@@ -1,12 +1,32 @@
 @import "../../Styles/DefaultValues.module.scss";
 @import "../../Styles/DefaultComponents.module.scss";
 
-.create-post-box {
+.homefeed-header-box {
     background-color: $white;
     border-radius: 1em;
     margin: 1% auto;
     width: 60vw;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: wrap;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.create-content-box{
+    flex: 10 0 0;
+    align-items: center;
+    display: flex; 
+    flex-wrap: wrap;
+}
+
+.icons-box{
+    margin-right: auto;
+    padding: 2%;
+}
+
+.create-content-header{
+    margin: 2%;
 }
 
 .container-home {

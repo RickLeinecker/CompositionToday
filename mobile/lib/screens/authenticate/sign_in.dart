@@ -3,6 +3,7 @@ import 'package:composition_today/services/auth.dart';
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:composition_today/shared/loading.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import 'forgot_email.dart';
@@ -53,18 +54,20 @@ class _SignInState extends State<SignIn> {
                   children: <Widget>[
                     const SizedBox(height: 20.0),
                     TextFormField(
-                        decoration: textInputDecoration.copyWith(
-                          hintText: 'Email',
-                          labelText: 'Email',
-                          prefixIcon: const Icon(
-                            Icons.mail,
-                          ),
+                      decoration: textInputDecoration.copyWith(
+                        hintText: 'Email',
+                        labelText: 'Email',
+                        prefixIcon: const Icon(
+                          Icons.mail,
                         ),
-                        validator: (val) =>
-                            val!.isEmpty ? 'Enter an email' : null,
-                        onChanged: (val) {
-                          setState(() => email = val);
-                        }),
+                      ),
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
+                      validator: (val) => EmailValidator.validate(val!) == false
+                          ? 'Enter an email'
+                          : null,
+                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -76,7 +79,7 @@ class _SignInState extends State<SignIn> {
                         'Forgot Email?',
                         textAlign: TextAlign.justify,
                         style: TextStyle(
-                          color: blueColor,
+                          color: primaryColor,
                         ),
                       ),
                     ),
@@ -105,7 +108,7 @@ class _SignInState extends State<SignIn> {
                         'Forgot Password?',
                         textAlign: TextAlign.justify,
                         style: TextStyle(
-                          color: blueColor,
+                          color: primaryColor,
                         ),
                       ),
                     ),
@@ -131,7 +134,7 @@ class _SignInState extends State<SignIn> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: blueColor,
+                        primary: primaryColor,
                       ),
                     ),
                     const SizedBox(height: 12.0),

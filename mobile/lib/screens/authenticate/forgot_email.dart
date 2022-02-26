@@ -43,7 +43,7 @@ class ForgotEmail extends StatelessWidget {
                 onPressed: () {},
                 child: const Text('Send Email'),
                 style: ElevatedButton.styleFrom(
-                  primary: blueColor,
+                  primary: primaryColor,
                 ),
               ),
             ],

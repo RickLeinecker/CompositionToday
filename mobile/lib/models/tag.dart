@@ -1,10 +1,10 @@
 class TagType {
-  final int? id;
-  final String? tagName;
+  final int id;
+  final String tagName;
 
   TagType({
-    this.id,
-    this.tagName,
+    required this.id,
+    required this.tagName,
   });
 
   factory TagType.fromJson(Map<String, dynamic> parsedJson) => TagType(
