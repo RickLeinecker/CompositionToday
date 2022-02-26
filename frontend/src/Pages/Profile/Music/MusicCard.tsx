@@ -3,6 +3,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { Divider } from '@mui/material';
 import CardFooter from '../CardFooter';
 import MusicCardHeader from './MusicCardHeader';
+import { useState } from 'react';
 
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 
 export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
     const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = music;
+    const [showMore, setShowMore] = useState(false);
 
     // Cleanup function gets called when component is unmounted
     // off the virtualized window.
@@ -41,7 +43,12 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                     <div style={{ flex: "1 0 0" }}>
                         <h5 className="card-title">{contentName}</h5>
                         <p className="card-text">{contentText}</p>
-                        <p className="card-text">{description}</p>
+                        <p className="card-text-secondary" style={{marginBottom: "0%"}}>{(showMore || !description || description.length <= 250) ? description : description?.substring(0, 250) + "..."}</p>
+                        <div style={{float: "right"}}>
+                            {(!showMore && description && description.length > 250) && <p style={{cursor: "pointer", textDecoration: "underline"}} onClick={() => {setShowMore(true); clearCache(); notifyVirtualizer()}}>Show more</p>}
+                            {(showMore && description && description.length > 250) && <p style={{cursor: "pointer", textDecoration: "underline"}} onClick={() => {setShowMore(false); clearCache(); notifyVirtualizer()}}>Show less</p>}
+                        </div>
+                        <br/>
                         {sheetMusicFilepath &&
                             <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">
                                 Open sheet music

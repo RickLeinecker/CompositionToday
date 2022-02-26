@@ -10,6 +10,7 @@ import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     music: MusicType;
@@ -32,7 +33,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-    function updateTags(newValue: Array<TagType>){
+    function updateTags(newValue: Array<TagType>) {
         setNewContentTags(newValue);
     }
 
@@ -88,7 +89,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const deleteSheetMusic = () => {
         let fileToDelete = newContentValue.sheetMusicFilepath
-        if(fileToDelete !== undefined){
+        if (fileToDelete !== undefined) {
             setSheetMusicFileToDelete(fileToDelete)
             handleChange("", "sheetMusicFilepath")
         }
@@ -99,7 +100,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const deleteAudio = () => {
         let fileToDelete = newContentValue.audioFilepath
-        if(fileToDelete !== undefined){
+        if (fileToDelete !== undefined) {
             setAudioFileToDelete(fileToDelete)
             handleChange("", "audioFilepath")
         }
@@ -111,13 +112,13 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     async function confirmEditHandler() {
 
         let audioFileToDeleteTemp = audioFileToDelete;
-        if(audioFileToDeleteTemp !== "" && audioFileToDeleteTemp !== null){
+        if (audioFileToDeleteTemp !== "" && audioFileToDeleteTemp !== null) {
             deleteFile(audioFileToDeleteTemp);
             setAudioFileToDelete("");
         }
 
         let sheetMusicFileToDeleteTemp = sheetMusicFileToDelete;
-        if(sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null){
+        if (sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null) {
             deleteFile(sheetMusicFileToDeleteTemp);
             setSheetMusicFileToDelete("");
         }
@@ -185,10 +186,34 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 actionText={"Edit"}
                 checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Music Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
-                    <GenericInputField title="Title" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} />
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericInputField
+                        title="Music Title"
+                        type="contentName"
+                        onChange={handleChange}
+                        value={newContentValue.contentName}
+                        isRequired={true}
+                        error={nameError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Title"
+                        type="contentText"
+                        onChange={handleChange}
+                        value={newContentValue.contentText}
+                        isRequired={true}
+                        error={textError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Description"
+                        type="description"
+                        onChange={handleChange}
+                        value={newContentValue.description}
+                        isRequired={false}
+                        isMultiline={true}
+                        maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
+                    <GenericTagsPicker updateTags={updateTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                 </>
