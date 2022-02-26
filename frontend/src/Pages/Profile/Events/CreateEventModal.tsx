@@ -13,6 +13,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     uid: string;
@@ -42,7 +43,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-    function updateTags(newValue: Array<TagType>){
+    function updateTags(newValue: Array<TagType>) {
         setNewContentTags(newValue);
     }
 
@@ -194,8 +195,24 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <GenericInputField title="Event Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} />
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} />
+                    <GenericInputField
+                        title="Event Title"
+                        type="contentName"
+                        onChange={setNewContentName}
+                        value={newContentName}
+                        isRequired={true}
+                        error={nameError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Description"
+                        type="description"
+                        onChange={setNewContentDescription}
+                        value={newContentDescription}
+                        isRequired={false}
+                        isMultiline={true}
+                        maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
                     <GenericDateTimePicker
                         title={'Start date'}
                         type={"fromDate"}
@@ -214,7 +231,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                         error={toDateError}
                         errorMessage={toDateErrorMessage}
                     />
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericTagsPicker updateTags={updateTags} />
                     <PlacesAutocomplete updateLocation={updateLocation} location={""} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentMapsEnabled}
