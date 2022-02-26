@@ -31,7 +31,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   WHERE content.contentType=? AND user.uid=?
   GROUP BY likes.uid, content.id;`;
 */
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -39,14 +39,13 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.fromDate,content.toDate,content.isDateCurrent,
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
-  user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(comment.id) as commentCount,COUNT(likes.id) AS likeCount, 
+  user.username,userProfile.displayName,userProfile.profilePicPath,content.isEdited,
+  COUNT(likes.id) AS likeCount, 
   SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
-  FROM content INNER JOIN user ON content.userID=user.id
-  INNER JOIN userProfile 
-  ON content.userID=userProfile.userID 
-  LEFT JOIN likes ON content.id=likes.contentID 
-  INNER JOIN comment ON content.id=comment.contentID `;
+  FROM content 
+  INNER JOIN user ON content.userID=user.id
+  INNER JOIN userProfile ON content.userID=userProfile.userID 
+  LEFT JOIN likes ON content.id=likes.contentID `;
   // var array = JSON.parse(contentTypeArray);
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray.length > 0) {
@@ -75,8 +74,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   // limit for batches
   insertString += " LIMIT ?,?;";
 
-  mysql_pool.getConnection(function (err, connection) {
-    connection.query(
+  mysql_pool.getConnection(function (err, connection2) {
+    connection2.query(
       insertString,
       [uid, startIndex, numberOfRecords],
       function (err, result) {
@@ -87,20 +86,52 @@ exports.getHomefeedContentInBatches = async (req, res) => {
         } else {
           if (result[0]) {
             results = result;
-            responseCode = 200;
+            traverse();
+            async function traverse() {
+              for (var j = 0; j < result.length - 1; ++j) {
+                await sqlCall(j);
+              }
+            }
+
+            // console.log(results[i].id);
+            async function sqlCall(j) {
+              mysql_pool.getConnection(function (err, connection) {
+                connection.query(
+                  `SELECT COUNT(id) AS commentCount
+                  FROM comment
+                  WHERE comment.contentID=?`,
+                  [results[j].id],
+                  async function (err, result2) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      results[j].commentCount = result2[0].commentCount;
+                    }
+                    connection.release();
+                    if (j === results.length - 2) {
+                      responseCode = 200;
+                      updateResults();
+                    }
+                  }
+                );
+              });
+              return;
+            }
           } else {
             error = "Content does not exist";
             responseCode = 500;
           }
         }
-        // package data
-        var ret = {
-          result: results,
-          error: error,
-        };
-        // send data
-        res.status(responseCode).json(ret);
-        connection.release();
+        function updateResults() {
+          // package data
+          var ret = {
+            result: results,
+            error: error,
+          };
+          // send data
+          res.status(responseCode).json(ret);
+          connection2.release();
+        }
       }
     );
   });

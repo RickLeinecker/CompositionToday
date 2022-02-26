@@ -77,11 +77,11 @@ exports.updateContent = async (req, res) => {
               insertString += "location=?,";
               insertArray.push(location);
             }
-
-            if (timestamp !== null) {
-              insertString += "timestamp=?,";
-              insertArray.push(timestamp);
-            }
+            // remove edit timestamp
+            // if (timestamp !== null) {
+            //   insertString += "timestamp=?,";
+            //   insertArray.push(timestamp);
+            // }
 
             if (audioFilepath !== null) {
               insertString += "audioFilepath=?,";
@@ -153,12 +153,12 @@ exports.updateContent = async (req, res) => {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
             }
-            // update isEdited
-            insertString += "isEdited=?,";
-            insertArray.push(isEdited);
 
             if (insertString.length > 19) {
               insertString = insertString.slice(0, -1);
+              // update isEdited
+              insertString += ",isEdited=1";
+
               insertString += " WHERE id=?";
               insertArray.push(contentID);
 

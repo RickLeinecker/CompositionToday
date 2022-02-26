@@ -58,12 +58,14 @@ exports.searchComposers = async (req, res) => {
           }
           // if no results, status code 204: No Content
           if (results.length < 1) {
-            responseCode = 204;
+            responseCode = 202;
+            error = "No composers found";
           } else {
             responseCode = 200;
           }
         } else {
-          responseCode = 204;
+          responseCode = 202;
+          error = "Genre doesn't exist";
         }
       }
       // package data
