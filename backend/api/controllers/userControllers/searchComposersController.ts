@@ -15,7 +15,7 @@ exports.searchComposers = async (req, res) => {
   // build insert string
   var insertString = `SELECT DISTINCT user.id,user.uid,user.firstName,
   user.lastName,user.username,user.email,user.isPublisher,
-  userProfile.profilePicPath,content.audioFilename,content.audioFilepath`;
+  userProfile.profilePicPath,content.audioFilename,content.audioFilepath,userProfile.displayName`;
   // if genre is passed in from frontend,
   // then, add genre tag searching
   if (genre) {
@@ -44,7 +44,7 @@ exports.searchComposers = async (req, res) => {
           if (searchQuery.length > 0) {
             const options = {
               minMatchCharLength: 1,
-              keys: ["username", "firstName", "lastName"],
+              keys: ["username", "firstName", "lastName", "displayName"],
             };
             const fuse = new Fuse(result, options);
             results = fuse.search(searchQuery);
@@ -58,12 +58,14 @@ exports.searchComposers = async (req, res) => {
           }
           // if no results, status code 204: No Content
           if (results.length < 1) {
-            responseCode = 204;
+            responseCode = 202;
+            error = "No composers found";
           } else {
             responseCode = 200;
           }
         } else {
-          responseCode = 204;
+          responseCode = 202;
+          error = "Genre doesn't exist";
         }
       }
       // package data

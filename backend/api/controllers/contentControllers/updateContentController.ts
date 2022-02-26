@@ -14,6 +14,7 @@ exports.updateContent = async (req, res) => {
   var results = [];
   var insertArray = [];
   var responseCode = 0;
+  var isEdited = 0;
 
   const {
     uid,
@@ -54,6 +55,8 @@ exports.updateContent = async (req, res) => {
           if (result[0]) {
             responseCode = 200;
             // build update string with non null fields
+            // update isEdited to true;
+            isEdited = 1;
             var insertString = "UPDATE content SET ";
             if (result[0].id !== null) {
               insertString += "userID=?,";
@@ -74,11 +77,11 @@ exports.updateContent = async (req, res) => {
               insertString += "location=?,";
               insertArray.push(location);
             }
-
-            if (timestamp !== null) {
-              insertString += "timestamp=?,";
-              insertArray.push(timestamp);
-            }
+            // remove edit timestamp
+            // if (timestamp !== null) {
+            //   insertString += "timestamp=?,";
+            //   insertArray.push(timestamp);
+            // }
 
             if (audioFilepath !== null) {
               insertString += "audioFilepath=?,";
@@ -153,6 +156,9 @@ exports.updateContent = async (req, res) => {
 
             if (insertString.length > 19) {
               insertString = insertString.slice(0, -1);
+              // update isEdited
+              insertString += ",isEdited=1";
+
               insertString += " WHERE id=?";
               insertArray.push(contentID);
 

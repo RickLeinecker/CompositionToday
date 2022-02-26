@@ -10,6 +10,7 @@ exports.updateComment = async (req, res) => {
   var results = [];
   var insertArray = [];
   var responseCode = 0;
+  var isEdited = 0;
 
   const {
     contentID,
@@ -22,32 +23,33 @@ exports.updateComment = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE comment SET ";
-  if (contentID !== null) {
+  if (contentID !== null && contentID !== undefined) {
     insertString += "contentID=?,";
     insertArray.push(contentID);
   }
 
-  if (commenterUserID !== null) {
+  if (commenterUserID !== null && commenterUserID !== undefined) {
     insertString += "commenterUserID=?,";
     insertArray.push(commenterUserID);
   }
 
-  if (timestamp !== null) {
+  if (timestamp !== null && timestamp !== undefined) {
     insertString += "timestamp=?,";
     insertArray.push(timestamp);
   }
 
-  if (comment !== null) {
+  if (comment !== null && comment !== undefined) {
     insertString += "comment=?,";
     insertArray.push(comment);
   }
 
-  if (approved !== null) {
+  if (approved !== null && approved !== undefined) {
     insertString += "approved=?,";
     insertArray.push(approved);
   }
 
   insertString = insertString.slice(0, -1);
+  insertString += ",isEdited=1";
   insertString += " WHERE id=?";
   insertArray.push(commentID);
 

@@ -70,9 +70,9 @@ exports.getUserContentByType = async (req, res) => {
   content.mapsEnabled,content.collaborators,content.description,
   content.fromDate,content.toDate,content.isDateCurrent,
   content.price,content.audioFilename,content.sheetMusicFilename,
-  content.imageFilepath,content.imageFilename,content.isFeaturedSong,
-  user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  content.imageFilepath,content.imageFilename,content.isFeaturedSong,content.isEdited,
+  user.username,userProfile.displayName,userProfile.profilePicPath,COUNT(likes.id) AS likeCount,
+  SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile 
