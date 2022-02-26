@@ -9,6 +9,7 @@ import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:composition_today/models/content_card.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -31,13 +32,15 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.grey[100],
       appBar: MyAppBar(
         title: const Text('Composition Today'),
-        actions: <Widget>[],
+        actions: const <Widget>[],
       ),
       body: Center(
         child: Container(
-          child: Text(
-              getLoggedInUser(Provider.of<UserData?>(context)!.toString())
-                  .toString()),
+          child: ListView.builder(
+              itemCount: 50,
+              itemBuilder: (BuildContext context, int index) {
+                return const ContentCard();
+              }),
         ),
       ),
       drawer: Drawer(
@@ -47,20 +50,21 @@ class _HomeState extends State<Home> {
             const DrawerHeader(
               margin: EdgeInsets.only(bottom: 8.0),
               decoration: BoxDecoration(
-                color: yellowColor,
+                color: primaryColor,
               ),
               child: Text(
                 'Navigation Menu',
                 style: TextStyle(
                   fontSize: 30,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.info),
+              leading: const Icon(Icons.info, color: Colors.white),
               title: const Text('Related Projects'),
-              tileColor: yellowColorSemi,
+              tileColor: primaryColorSemi,
+              textColor: Colors.white,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
@@ -69,9 +73,10 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 10.0),
             ListTile(
-              leading: const Icon(Icons.settings),
+              leading: const Icon(Icons.settings, color: Colors.white),
               title: const Text('Settings'),
-              tileColor: yellowColorSemi,
+              tileColor: primaryColorSemi,
+              textColor: Colors.white,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
@@ -80,9 +85,10 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 10.0),
             ListTile(
-              leading: const Icon(Icons.person_remove),
+              leading: const Icon(Icons.person_remove, color: Colors.white),
               title: const Text('Logout'),
-              tileColor: yellowColorSemi,
+              tileColor: primaryColorSemi,
+              textColor: Colors.white,
               onTap: () async {
                 await _auth.signOut();
               },

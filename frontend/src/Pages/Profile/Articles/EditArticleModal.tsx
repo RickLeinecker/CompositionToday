@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { ArticleType, GenericHandlerType } from '../../../ObjectInterface';
+import { ArticleType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     article: ArticleType;
@@ -16,11 +18,16 @@ type Props = {
 
 export default function EditArticleModal({ article, notifyChange, editOpen, handleCloseEdit }: Props) {
     const [newContentValue, setNewContentValue] = useState<ArticleType>(article)
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>){
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -96,8 +103,9 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
-                    <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} isMultiline={true} />
+                    <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
+                    <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMassive)}/>
+                    <GenericTagsPicker updateTags={updateTags}/>
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />

@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
 import { EventType, GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import PlacesAutocomplete from './PlacesAutocomplete';
-import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { Alert } from 'react-bootstrap';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
-import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericDateTimePicker from '../../../Helper/Generics/GenericDateTimePicker';
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
+import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     event: EventType;
@@ -33,9 +34,12 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
     const [missingLocationError, setMissingLocationError] = useState(false);
-    const [tagOptions, setTagOptions] = useState<TagType[] | undefined>();
     const [imageFileToDelete, setImageFileToDelete] = useState<string>("");
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    function updateTags(newValue: Array<TagType>) {
+        setNewContentTags(newValue);
+    }
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -182,38 +186,28 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         handleCloseEdit();
     }
 
-    // get tags
-    useEffect(() => {
-        fetchTags();
-        async function fetchTags() {
-
-            try {
-                let answer = (await GenericGetHandler("getTags"));
-                if (answer.error.length > 0) {
-                    // setError(answer.error);
-                    return;
-                }
-
-                // setError("");
-                const result = await answer.result;
-                setTagOptions(result);
-
-                // setLoading(false);
-
-
-            } catch (e: any) {
-                console.error("Frontend Error: " + e);
-                // setError(DefaultValues.apiErrorMessage);
-            }
-        }
-    }, []);
-
     return (
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Experience Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
-                    <GenericInputField title="Description" type="description" onChange={handleChange} value={newContentValue.description} isRequired={false} />
+                    <GenericInputField
+                        title="Experience Title"
+                        type="contentName"
+                        onChange={handleChange}
+                        value={newContentValue.contentName}
+                        isRequired={true}
+                        error={nameError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Description"
+                        type="description"
+                        onChange={handleChange}
+                        value={newContentValue.description}
+                        isMultiline={true}
+                        isRequired={false}
+                        maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
                     <GenericDateTimePicker
                         title={'Start date'}
                         type={"fromDate"}
@@ -232,25 +226,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         error={toDateError}
                         errorMessage={toDateErrorMessage}
                     />
-                    <Autocomplete
-                        multiple
-                        id="tags-standard"
-                        options={tagOptions!}
-                        onChange={(event, newValue) => setNewContentTags(newValue)}
-                        getOptionLabel={(option) => option.tagName}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                        renderInput={(params) => (
-                            <div className='modal-field'>
-                                <TextField
-                                    {...params}
-                                    variant="outlined"
-                                    label="Tags"
-                                    placeholder="Tags"
-                                    fullWidth
-                                />
-                            </div>
-                        )}
-                    />
+                    <GenericTagsPicker updateTags={updateTags} />
                     <PlacesAutocomplete location={newContentValue.location} updateLocation={handleChange} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentValue.mapsEnabled}

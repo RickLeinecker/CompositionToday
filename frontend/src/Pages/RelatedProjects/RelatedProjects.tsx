@@ -1,5 +1,3 @@
-import TopNavBar from "../TopNavBar";
-import GenericSearch from "../../Helper/Generics/GenericSearch";
 import {
 	Container,
 	Grid,
@@ -10,10 +8,7 @@ import RelatedProjectsCard from "./RelatedProjectsCard";
 export default function RelatedProjects() {
 	return (
 		<>
-			<TopNavBar />
 			<Container className="related-projects-container" maxWidth="lg">
-				<h1 id="related-projects-header">Related Projects</h1>
-				<GenericSearch />
 				<Grid
 					columns={13}
 					container
@@ -21,6 +16,7 @@ export default function RelatedProjects() {
 					className="grid-container"
 					rowSpacing={{ xs: 2, sm: 2, md: 4, lg: 4 }}
 					columnSpacing={{ xs: 1 }}
+					marginBottom="4rem"
 				>
 					{/* John Cage */}
 					<RelatedProjectsCard

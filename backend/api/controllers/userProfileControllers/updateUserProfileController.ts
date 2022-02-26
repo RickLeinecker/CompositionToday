@@ -24,37 +24,37 @@ exports.updateUserProfile = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE userProfile SET ";
-  if (bio) {
+  if (bio !== null && bio !== undefined) {
     insertString += "bio=?,";
     insertArray.push(bio);
   }
 
-  if (location) {
+  if (location !== null && location !== undefined) {
     insertString += "location=?,";
     insertArray.push(location);
   }
 
-  if (privacySetting) {
+  if (privacySetting !== null && privacySetting !== undefined) {
     insertString += "privacySetting=?,";
     insertArray.push(privacySetting);
   }
 
-  if (profilePicPath) {
+  if (profilePicPath !== null && profilePicPath !== undefined) {
     insertString += "profilePicPath=?,";
     insertArray.push(profilePicPath);
   }
 
-  if (displayName) {
+  if (displayName !== null && displayName !== undefined) {
     insertString += "displayName=?,";
     insertArray.push(displayName);
   }
 
-  if (websiteLink) {
+  if (websiteLink !== null && websiteLink !== undefined) {
     insertString += "websiteLink=?,";
     insertArray.push(websiteLink);
   }
 
-  if (userProfileID) {
+  if (userProfileID !== null && userProfileID !== undefined) {
     insertString += "userProfileID=?,";
     insertArray.push(userProfileID);
   }

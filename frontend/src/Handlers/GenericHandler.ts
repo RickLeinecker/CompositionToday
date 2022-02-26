@@ -12,10 +12,9 @@ export default async function GetContentByTypeHandler(obj: GenericHandlerType){
         headers: { "Content-Type": "application/json" },
         });
 
-        var retResponse = (await response);
-        var txt = retResponse.text();
-        var res = JSON.parse(await txt);
-        
+        let retResponse = (await response);
+        let txt = await retResponse.text();
+        let res = JSON.parse(txt);
         message = (await res);
     } catch (e: any) {
         console.error("Handler Error: " + e)

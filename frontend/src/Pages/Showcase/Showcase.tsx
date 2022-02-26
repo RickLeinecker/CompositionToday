@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import GenericSearch from '../../Helper/Generics/GenericSearch';
-import TopNavBar from '../TopNavBar';
 import GenericHandler from '../../Handlers/GenericHandler';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import { toast } from 'react-toastify';
@@ -94,11 +92,10 @@ export default function Showcase() {
 
     return (
         <>
-            <TopNavBar />
             <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
                 <Container>
-                    <h1>Showcase</h1>
-                    <GenericSearch />
+                    {/* <h1>Showcase</h1> */}
+                    {/* <GenericSearch placeHolder='Search Composers' apiEndpoint='searchComposers' getPayload={(value: any) => {}}/> */}
 
                     <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
@@ -107,7 +104,11 @@ export default function Showcase() {
                     {
                         !!genreClicked &&
                         <>
-                            <ComposerSection header={`Composers of ${genreClicked}`} featuredComposers={genreComposers} />
+                            <ComposerSection
+                                header={`Composers of ${genreClicked}`}
+                                featuredComposers={genreComposers}
+                                genre={genreClicked}
+                            />
                             <div ref={bottomRef} />
                         </>
                     }

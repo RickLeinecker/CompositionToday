@@ -1,6 +1,7 @@
 class ContentType {
-  final int? id;
-  final String? uid;
+  final int id;
+  final String uid;
+  final String? userID;
   final Object? imageFilePathArray;
   final String? contentText;
   final String? location;
@@ -12,25 +13,30 @@ class ContentType {
   final String? contentName;
   final String? timestamp;
   final String? description;
+  final bool? isEdited;
 
-  ContentType(
-      {this.id,
-      this.uid,
-      this.imageFilePathArray,
-      this.contentText,
-      this.location,
-      this.likes,
-      this.audioFilePath,
-      this.sheetMusicFilePath,
-      this.websiteLink,
-      this.contentTags,
-      this.contentName,
-      this.timestamp,
-      this.description});
+  ContentType({
+    required this.id,
+    required this.uid,
+    this.userID,
+    this.imageFilePathArray,
+    this.contentText,
+    this.location,
+    this.likes,
+    this.audioFilePath,
+    this.sheetMusicFilePath,
+    this.websiteLink,
+    this.contentTags,
+    this.contentName,
+    this.timestamp,
+    this.description,
+    this.isEdited,
+  });
 
   factory ContentType.fromJson(Map<String, dynamic> parsedJson) => ContentType(
         id: parsedJson['id'],
         uid: parsedJson['uid'],
+        userID: parsedJson['userID'],
         imageFilePathArray: parsedJson['imageFilePathArray'],
         contentText: parsedJson['contentText'],
         location: parsedJson['location'],
@@ -42,11 +48,13 @@ class ContentType {
         contentName: parsedJson['contentName'],
         timestamp: parsedJson['timestamp'],
         description: parsedJson['description'],
+        isEdited: parsedJson['isEdited'],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "uid": uid,
+        "userID": userID,
         "imageFilePathArray": imageFilePathArray,
         "contentText": contentText,
         "location": location,
@@ -58,5 +66,6 @@ class ContentType {
         "contentName": contentName,
         "timestamp": timestamp,
         "description": description,
+        "isEdited": isEdited,
       };
 }

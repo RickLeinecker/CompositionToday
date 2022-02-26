@@ -8,6 +8,7 @@ import CommentDeleteModal from './CommentDeleteModal';
 import { useEffect, useState } from 'react';
 import CommentEditModal from './CommentEditModal';
 import { Divider } from '@mui/material';
+import GenericLike from '../../Helper/Generics/GenericLike';
 
 type Props = {
     commentType: CommentType;
@@ -16,15 +17,14 @@ type Props = {
     notifyChange: () => void;
 }
 
-export default function ArticleCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
-    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName} = commentType;
+export default function CommentCard({ commentType, isMyProfile, notifyVirtualizer, notifyChange }: Props) {
+    const { id, comment, timestamp, approved, contentID, commenterUID, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser, isEdited} = commentType;
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const [currentUsername, setCurrentUsername] = useState("");
 
     useEffect(() => {
         let temp = window.sessionStorage.getItem("username");
-
         setCurrentUsername(!temp ? "" : temp);
     }, [])
 
@@ -41,6 +41,13 @@ export default function ArticleCard({ commentType, isMyProfile, notifyVirtualize
                 </Link>
                 
                 <div className="card-icons" style={{ display: "flex" }}>
+                    {isEdited ?
+                        <p className="card-text-secondary">
+                            (edited)&nbsp;
+                        </p>
+                        :
+                        <></>
+                    }
                     <p className="card-text-secondary">
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
@@ -73,6 +80,11 @@ export default function ArticleCard({ commentType, isMyProfile, notifyVirtualize
             <div className="card-body">
                 <p className="card-text">{comment}</p>
             </div>
+
+            <div style={{ cursor: "pointer", float: "right", marginBottom: "-1%" }}>
+                <GenericLike contentID={id} likeCount={likeCount} isLikedByLoggedInUser={isLikedByLoggedInUser} isComment={true}/>
+            </div>
+
         </div>
     )
 }

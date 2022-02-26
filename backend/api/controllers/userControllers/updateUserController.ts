@@ -25,40 +25,40 @@ exports.updateUser = async (req, res) => {
 
   // build update string with non null fields
   var insertString = "UPDATE user SET ";
-  if (firstName) {
+  if (firstName !== null) {
     insertString += "firstName=?,";
     insertArray.push(firstName);
   }
 
-  if (lastName) {
+  if (lastName !== null) {
     insertString += "lastName=?,";
     insertArray.push(lastName);
   }
 
-  if (username) {
+  if (username !== null) {
     insertString += "username=?,";
     insertArray.push(username);
   }
 
-  if (email) {
+  if (email !== null) {
     insertString += "email=?,";
     insertArray.push(email);
   }
 
-  if (uid) {
+  if (uid !== null) {
     insertString += "uid=?,";
     insertArray.push(uid);
   }
 
-  if (isPublisher) {
+  if (isPublisher !== null) {
     insertString += "isPublisher=?,";
     insertArray.push(isPublisher);
   }
 
-  if (userProfileID) {
-    insertString += "userProfileID=?,";
-    insertArray.push(userProfileID);
-  }
+  // if (userProfileID !== null) {
+  //   insertString += "userProfileID=?,";
+  //   insertArray.push(userProfileID);
+  // }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Popover } from '@mui/material';
+import GenericTagsPicker from '../../Helper/Generics/GenericTagsPicker';
+import { TagType } from '../../ObjectInterface';
 
 type Props = {
     updateFilterBy: (newValue: string) => void
+    updateTags: (newValue: Array<TagType>) => void;
 }
 
-export default function FilterFeed({ updateFilterBy }: Props) {
+export default function FilterFeed({ updateFilterBy, updateTags}: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -34,11 +37,11 @@ export default function FilterFeed({ updateFilterBy }: Props) {
 
     return (
         <div>
-            <IconButton aria-label="filter" onClick={handleClick}>
+            <IconButton aria-label="filter" sx={{padding: "10%"}} onClick={handleClick}>
                 <TuneIcon fontSize="large" />
             </IconButton>
             <Popover style={{}} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-                <Container sx={{ mt: "10%" }}>
+                <Container sx={{ mt: "10%", mb: "10%", borderRadius: "1em", width: "25vw"}}>
                     <FormLabel component="legend">Filter by type</FormLabel>
                     <FormGroup>
                         <FormControlLabel
@@ -60,6 +63,8 @@ export default function FilterFeed({ updateFilterBy }: Props) {
                             label="Articles"
                         />
                     </FormGroup>
+                    <FormLabel component="legend">Filter by tags</FormLabel>
+                    <GenericTagsPicker updateTags={updateTags}/>
                 </Container>
             </Popover>
         </div>

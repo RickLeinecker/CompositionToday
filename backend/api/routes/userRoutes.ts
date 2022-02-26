@@ -15,6 +15,7 @@ const getLoggedInUserController = require("../controllers/userControllers/getLog
 const getComposersByGenreController = require("../controllers/userControllers/getComposersByGenreController.ts");
 const getComposersForShowcaseController = require("../controllers/userControllers/getComposersForShowcaseController.ts");
 const readUserByUsernameController = require("../controllers/userControllers/readUserByUsernameController.ts");
+const searchComposersController = require("../controllers/userControllers/searchComposersController.ts");
 
 router.post("/api/createUser", createUserController.createUser);
 router.post("/api/createComposer", createComposerController.createComposer);
@@ -22,6 +23,7 @@ router.post(
   "/api/createScrapedComposer",
   createScrapedComposerController.createScrapedComposer
 );
+router.post("/api/searchComposers", searchComposersController.searchComposers);
 router.post("/api/createPublisher", createPublisherController.createPublisher);
 router.post("/api/readUser", readUserController.readUser);
 router.post("/api/readUserByUID", readUserByUIDController.readUserByUID);

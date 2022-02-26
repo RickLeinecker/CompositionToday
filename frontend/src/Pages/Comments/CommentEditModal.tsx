@@ -6,6 +6,7 @@ import GenericDiscardModal from '../../Helper/Generics/GenericDiscardModal';
 import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal';
 import { CommentType, GenericHandlerType } from '../../ObjectInterface';
+import DefaultValues from '../../Styles/DefaultValues.module.scss'
 
 type Props = {
     comment: CommentType;
@@ -93,7 +94,7 @@ export default function CommetnEditModal({ comment, notifyChange, editOpen, hand
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Comment" type="commentText" onChange={handleChange} value={newContentValue} isRequired={true} error={contentError} isMultiline={true} />
+                    <GenericInputField title="Comment" type="commentText" onChange={handleChange} value={newContentValue} isRequired={true} error={contentError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMedium)}/>
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />

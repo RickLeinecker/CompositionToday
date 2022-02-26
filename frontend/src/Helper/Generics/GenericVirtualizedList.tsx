@@ -63,7 +63,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                                         {({ measure, registerChild }) => (
                                             // ExperienceCard doesn't need norifyVirtualizer because it has not expandable comments
                                             <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
-                                                {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyChange={notifyChange} />}
+                                                {type === "experience" && <ExperienceCard experience={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
                                                 {type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
                                                 {type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
                                                 {type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}

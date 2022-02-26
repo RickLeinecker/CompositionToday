@@ -1,9 +1,10 @@
 class GenericHandlerType {
-  final String? data;
-  final String? methodType;
-  final String? path;
+  final String data;
+  final String methodType;
+  final String path;
 
-  GenericHandlerType({this.data, this.methodType, this.path});
+  GenericHandlerType(
+      {required this.data, required this.methodType, required this.path});
 
   factory GenericHandlerType.fromJson(Map<String, dynamic> parsedJson) =>
       GenericHandlerType(
@@ -20,9 +21,9 @@ class GenericHandlerType {
 }
 
 class GenericGetHandlerType {
-  final String? path;
+  final String path;
 
-  GenericGetHandlerType({this.path});
+  GenericGetHandlerType({required this.path});
 
   factory GenericGetHandlerType.fromJson(Map<String, dynamic> parsedJson) =>
       GenericGetHandlerType(

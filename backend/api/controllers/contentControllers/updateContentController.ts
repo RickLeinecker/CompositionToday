@@ -14,6 +14,7 @@ exports.updateContent = async (req, res) => {
   var results = [];
   var insertArray = [];
   var responseCode = 0;
+  var isEdited = 0;
 
   const {
     uid,
@@ -54,105 +55,110 @@ exports.updateContent = async (req, res) => {
           if (result[0]) {
             responseCode = 200;
             // build update string with non null fields
+            // update isEdited to true;
+            isEdited = 1;
             var insertString = "UPDATE content SET ";
-            if (result[0].id != null) {
+            if (result[0].id !== null) {
               insertString += "userID=?,";
               insertArray.push(result[0].id);
             }
 
-            if (imageFilepathArray != null) {
+            if (imageFilepathArray !== null) {
               insertString += "imageFilepathArray=?,";
               insertArray.push(imageFilepathArray);
             }
 
-            if (contentText != null) {
+            if (contentText !== null) {
               insertString += "contentText=?,";
               insertArray.push(contentText);
             }
 
-            if (location != null) {
+            if (location !== null) {
               insertString += "location=?,";
               insertArray.push(location);
             }
+            // remove edit timestamp
+            // if (timestamp !== null) {
+            //   insertString += "timestamp=?,";
+            //   insertArray.push(timestamp);
+            // }
 
-            if (timestamp != null) {
-              insertString += "timestamp=?,";
-              insertArray.push(timestamp);
-            }
-
-            if (audioFilepath != null) {
+            if (audioFilepath !== null) {
               insertString += "audioFilepath=?,";
               insertArray.push(audioFilepath);
             }
 
-            if (sheetMusicFilepath != null) {
+            if (sheetMusicFilepath !== null) {
               insertString += "sheetMusicFilepath=?,";
               insertArray.push(sheetMusicFilepath);
             }
 
-            if (contentType != null) {
+            if (contentType !== null) {
               insertString += "contentType=?,";
               insertArray.push(contentType);
             }
 
-            if (contentName != null) {
+            if (contentName !== null) {
               insertString += "contentName=?,";
               insertArray.push(contentName);
             }
 
-            if (websiteLink != null) {
+            if (websiteLink !== null) {
               insertString += "websiteLink=?,";
               insertArray.push(websiteLink);
             }
 
-            if (collaborators != null) {
+            if (collaborators !== null) {
               insertString += "collaborators=?,";
               insertArray.push(collaborators);
             }
 
-            if (description != null) {
+            if (description !== null) {
               insertString += "description=?,";
               insertArray.push(description);
             }
-            if (toDate != null) {
+            if (toDate !== null) {
               insertString += "toDate=?,";
               insertArray.push(toDate);
             }
-            if (fromDate != null) {
+            if (fromDate !== null) {
               insertString += "fromDate=?,";
               insertArray.push(fromDate);
             }
-            if (isDateCurrent != null) {
+            if (isDateCurrent !== null) {
               insertString += "isDateCurrent=?,";
               insertArray.push(isDateCurrent);
             }
-            if (price != null) {
+            if (price !== null) {
               insertString += "price=?,";
               insertArray.push(price);
             }
-            if (audioFilename != null) {
+            if (audioFilename !== null) {
               insertString += "audioFilename=?,";
               insertArray.push(audioFilename);
             }
-            if (sheetMusicFilename != null) {
+            if (sheetMusicFilename !== null) {
               insertString += "sheetMusicFilename=?,";
               insertArray.push(sheetMusicFilename);
             }
-            if (mapsEnabled != null) {
+            if (mapsEnabled !== null) {
               insertString += "mapsEnabled=?,";
               insertArray.push(mapsEnabled);
             }
-            if (imageFilepath != null) {
+            if (imageFilepath !== null) {
               insertString += "imageFilepath=?,";
               insertArray.push(imageFilepath);
             }
-            if (imageFilename != null) {
+            if (imageFilename !== null) {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
             }
 
             if (insertString.length > 19) {
               insertString = insertString.slice(0, -1);
+              // update isEdited
+              insertString += ",isEdited=1";
+
               insertString += " WHERE id=?";
               insertArray.push(contentID);
 

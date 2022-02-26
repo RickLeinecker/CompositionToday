@@ -12,7 +12,7 @@ exports.getLikeCountForContent = async (req, res) => {
   const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "SELECT COUNT(*) AS likeCount,likes.contentID,COUNT(CASE WHEN likeType.likeType = 'thumbs_up' THEN 1 ELSE NULL END) AS likedCount,COUNT(CASE WHEN likeType.likeType = 'heart' THEN 1 ELSE NULL END) AS lovedCount FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE contentID=?",
+      "SELECT COUNT(*) AS likeCount,likes.contentID,COUNT(CASE WHEN likeType.likeType = 'thumbs_up' THEN 1 ELSE NULL END) AS likedCount,COUNT(CASE WHEN likeType.likeType = 'heart' THEN 1 ELSE NULL END) AS lovedCount,COUNT(CASE WHEN likeType.likeType = 'celebration' THEN 1 ELSE NULL END) AS celebratedCount,COUNT(CASE WHEN likeType.likeType = 'music_notes' THEN 1 ELSE NULL END) AS jammedCount FROM likes INNER JOIN likeType ON likes.likeTypeID=likeType.id WHERE contentID=?",
       [contentID],
       function (err, result) {
         if (err) {
