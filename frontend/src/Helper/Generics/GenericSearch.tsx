@@ -85,7 +85,7 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                 options={options}
                 onInputChange={handleInputChange}
                 placeholder={placeHolder}
-                renderMenuItemChildren={(option: any, props) => {
+                renderMenuItemChildren={(option: any) => {
                     return (
                         <Link key={option.uid} to={`/profile/${option.username}`} style={{ color: "#000", textDecoration: 'none' }}>
                             <img
