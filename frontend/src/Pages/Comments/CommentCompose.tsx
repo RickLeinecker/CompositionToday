@@ -51,7 +51,7 @@ export default function CommentCompose({notifyChange, contentID}: Props) {
     }
 
     return (
-        <div style={{width: "80%", display: "flex", alignContent: "center", margin: "1% auto"}}>
+        <div style={{width: "80%", display: "flex", alignContent: "center", margin: "1% auto", alignItems: "center"}}>
             <TextField
                 // className="inputRounded"
                 label={"Post a comment..."}
@@ -62,8 +62,10 @@ export default function CommentCompose({notifyChange, contentID}: Props) {
                 inputProps={{maxLength: parseInt(DefaultValues.maxLengthMedium)}}
                 style={{marginRight: "2%"}}
             />
-            <Button onClick={postComment} style={{borderRadius: "100em"}}>
-                <SendIcon/>
+            <Button onClick={postComment} style={{borderRadius: "100%"}}>
+                <div style={{alignContent: "center", alignItems: "center", margin: "20% auto", marginLeft: "10%"}}>
+                    <SendIcon/>
+                </div>
             </Button>
         </div>
         
