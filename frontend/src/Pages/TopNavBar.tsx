@@ -19,23 +19,23 @@ export default function TopNavBar() {
         <Navbar className="px-5" bg="light" expand="lg">
             <Navbar.Brand as={Link} to="/">Composition Today</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
+            <Navbar.Collapse id="basic-navbar-nav" style={{ justifyContent: "space-between" }}>
                 <Nav className="ms-5 me-5">
                     <Nav.Link className="me-2" as={Link} to="/showcase">Showcase</Nav.Link>
                     <Nav.Link className="me-2" as={Link} to="/related-projects">Related Projects</Nav.Link>
                     <Nav.Link className="me-2" as={Link} to="/blog">Blog</Nav.Link>
                 </Nav>
 
-                <Nav className="ms-5">
-                    <GenericSearch placeHolder="Search" apiEndpoint='searchComposers' getPayload={(value: any) => {}} />
+                <Nav style={{ marginRight: "3rem" }}>
+                    <GenericSearch placeHolder="Search Composers" apiEndpoint='searchComposers' getPayload={(value: any) => { }} />
                 </Nav>
 
-                <Nav className="ms-auto">
+                <Nav className="ms-5">
 
-                    {getAuth().currentUser?.isAnonymous ? 
-                        <> 
+                    {getAuth().currentUser?.isAnonymous ?
+                        <>
                             <Nav.Link className="me-2" as={Link} to="/registration"> Sign Up </Nav.Link>
-                        </> 
+                        </>
                         :
                         <>
                             <Nav.Link as={Link} to={`/profile/${username}`}>
@@ -47,7 +47,7 @@ export default function TopNavBar() {
                                     roundedCircle
                                 />
                             </Nav.Link>
-                            <NavDropdown align="end" title="[Username]">
+                            <NavDropdown align="end" title={username}>
                                 <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

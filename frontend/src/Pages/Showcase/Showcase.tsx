@@ -97,8 +97,8 @@ export default function Showcase() {
             <TopNavBar />
             <PlayerContext.Provider value={{ stopAllPlayers, setStopAllPlayers }} >
                 <Container>
-                    <h1>Showcase</h1>
-                    <GenericSearch placeHolder='Search Composers' apiEndpoint='searchComposers' getPayload={(value: any) => {}}/>
+                    {/* <h1>Showcase</h1> */}
+                    {/* <GenericSearch placeHolder='Search Composers' apiEndpoint='searchComposers' getPayload={(value: any) => {}}/> */}
 
                     <ComposerSection header="Featured Composers" featuredComposers={featuredComposers} />
 
