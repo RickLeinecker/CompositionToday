@@ -18,7 +18,7 @@ const SignUp = () => {
 
   // TODO: url needs to change when in production
   const actionCodeSettings = {
-    url: "http://localhost:3000/registration",
+    url: "http://compositiontoday.net/registration",
     // This must be true.
     handleCodeInApp: true,
   };
