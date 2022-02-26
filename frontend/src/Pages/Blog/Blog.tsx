@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import TopNavBar from '../TopNavBar'
+import { useEffect } from 'react'
 
 export default function Blog() {
 
@@ -7,9 +6,5 @@ export default function Blog() {
         window.location.replace("http://compositiontoday.net/comptodayblog");
     },[])
 
-    return (
-        <>
-            <TopNavBar />
-        </>
-    )
+    return <></>;
 }
