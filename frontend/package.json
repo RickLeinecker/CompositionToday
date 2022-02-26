@@ -67,6 +67,7 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/react-virtualized": "^9.21.16",
     "@types/wavesurfer.js": "^5.2.2",
+    "jest": "^26.6.0",
     "sass": "^1.43.4"
   }
 }
