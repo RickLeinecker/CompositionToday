@@ -23,11 +23,11 @@ export default function TopNavBar() {
         setUsername(!temp ? "" : temp);
     }, [])
 
-    console.log("HAhj,", location.pathname);
+    let notInSignUp = location.pathname !== "/registration" && location.pathname !== "/profile/" && location.pathname !== "/email-sent";
     return (
         <>
             {
-                (location.pathname !== "/profile/" && location.pathname !== "/email-sent") &&
+                notInSignUp &&
                 <Navbar className="px-5" bg="light" expand="lg">
                     <Navbar.Brand as={Link} to="/">Composition Today</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
