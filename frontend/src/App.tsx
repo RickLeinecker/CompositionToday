@@ -12,11 +12,14 @@ import EmailSent from './Pages/Registration/EmailSent';
 import ForgotPassword from "./Pages/Registration/ForgotPassword";
 import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 import Profile from "./Pages/Profile/Profile";
+import TopNavBar from "./Pages/TopNavBar";
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
     return (
         <>
+            <TopNavBar />
+
             <Routes>
                 <Route element={<PrivateRoute isLogged={currentUser} />}>
                     <Route path='/' element={<Home />} />

@@ -1,4 +1,3 @@
-import TopNavBar from '../TopNavBar';
 import GenericInfiniteLoader from '../../Helper/Generics/GenericInfiniteLoader';
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
@@ -37,7 +36,6 @@ export default function Home() {
 
     return (
         <div>
-            <TopNavBar />
             <div className='container-home'>
                 <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""}/>
             </div>

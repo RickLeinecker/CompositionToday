@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import GenericSearch from '../../Helper/Generics/GenericSearch';
 import ComposerPaper from './ComposerPaper';
 import { gridStyle } from './inlineStyles';
@@ -12,6 +12,11 @@ type ComposerSectionProps = {
 
 export default function ComposerSection({ header, featuredComposers, genre }: ComposerSectionProps) {
     const [composers, setComposers] = useState(featuredComposers);
+    const bottomRef = useRef<HTMLHeadingElement>(null);
+
+    const scrollToBottom = () => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
 
     useEffect(() => {
         setComposers(featuredComposers);
@@ -24,16 +29,16 @@ export default function ComposerSection({ header, featuredComposers, genre }: Co
             <h1 className="header" >{header}</h1>
 
             {
-                header !== "Featured Composers" && 
-                    <GenericSearch
-                        placeHolder={`Search ${header}`}
-                        apiEndpoint='searchComposers'
-                        genre={genre}
-                        getPayload={(value: any) => setComposers(value)}
-                    />
+                header !== "Featured Composers" &&
+                <GenericSearch
+                    placeHolder={`Search ${header}`}
+                    apiEndpoint='searchComposers'
+                    genre={genre}
+                    getPayload={(value: any) => { setComposers(value); scrollToBottom(); }}
+                />
             }
 
-            <div className="container">
+            <div ref={bottomRef} className="container">
                 <Grid container>
                     {
                         composers?.map((composer) => {
