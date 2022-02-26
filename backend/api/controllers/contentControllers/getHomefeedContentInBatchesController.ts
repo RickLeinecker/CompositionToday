@@ -86,52 +86,61 @@ exports.getHomefeedContentInBatches = async (req, res) => {
         } else {
           if (result[0]) {
             results = result;
-            traverse();
-            async function traverse() {
-              for (var j = 0; j < result.length - 1; ++j) {
-                await sqlCall(j);
-              }
-            }
+            responseCode = 200;
+            // updateResults();
 
-            // console.log(results[i].id);
-            async function sqlCall(j) {
-              mysql_pool.getConnection(function (err, connection) {
-                connection.query(
-                  `SELECT COUNT(id) AS commentCount
-                  FROM comment
-                  WHERE comment.contentID=?`,
-                  [results[j].id],
-                  async function (err, result2) {
-                    if (err) {
-                      console.log(err);
-                    } else {
-                      results[j].commentCount = result2[0].commentCount;
-                    }
-                    connection.release();
-                    if (j === results.length - 2) {
-                      responseCode = 200;
-                      updateResults();
-                    }
-                  }
-                );
-              });
-              return;
-            }
+            // CODE FOR ADDING commentCount TO EACH RECORD
+            // traverse();
+            // async function traverse() {
+            //   for (var j = 0; j < result.length - 1; ++j) {
+            //     await sqlCall(j);
+            //   }
+            // }
+
+            // async function sqlCall(j) {
+            //   mysql_pool.getConnection(function (err, connection) {
+            //     connection.query(
+            //       `SELECT COUNT(id) AS commentCount
+            //       FROM comment
+            //       WHERE comment.contentID=?`,
+            //       [results[j].id],
+            //       async function (err, result2) {
+            //         if (err) {
+            //           console.log(err);
+            //         } else {
+            //           results[j].commentCount = result2[0].commentCount;
+            //         }
+            //         connection.release();
+            //         if (j === result.length - 2) {
+            //           responseCode = 200;
+            //           updateResults();
+            //         }
+            //       }
+            //     );
+            //   });
+            // }
           } else {
             error = "Content does not exist";
             responseCode = 500;
           }
         }
-        function updateResults() {
-          // package data
-          var ret = {
-            result: results,
-            error: error,
-          };
-          // send data
-          res.status(responseCode).json(ret);
-          connection2.release();
-        }
+        // function updateResults() {
+        //   // package data
+        //   var ret = {
+        //     result: results,
+        //     error: error,
+        //   };
+        //   // send data
+        //   res.status(responseCode).json(ret);
+        //   connection2.release();
+        // }
+        var ret = {
+          result: results,
+          error: error,
+        };
+        // send data
+        res.status(responseCode).json(ret);
+        connection2.release();
       }
     );
   });
