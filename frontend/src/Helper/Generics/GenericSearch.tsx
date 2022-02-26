@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from "../../Handlers/GenericHandler";
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import { Link } from 'react-router-dom';
 
 type Props = {
     placeHolder: string;
@@ -86,7 +87,7 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                 placeholder={placeHolder}
                 renderMenuItemChildren={(option: any, props) => {
                     return (
-                        <div key={option.uid}>
+                        <Link key={option.uid} to={`/profile/${option.username}`} style={{ color: "#000", textDecoration: 'none' }}>
                             <img
                                 alt={option.lastName}
                                 src={option.profilePicPath}
@@ -97,7 +98,7 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                                 }}
                             />
                             <span>{`${option.displayName}`}</span>
-                        </div>
+                        </Link>
                     );
                 }}
                 useCache={false}
