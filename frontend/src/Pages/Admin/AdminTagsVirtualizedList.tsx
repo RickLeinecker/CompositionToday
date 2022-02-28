@@ -1,6 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
-import { ProfileContext } from '../../Pages/Profile/ProfileContext';
+import AdminGenreCard from './AdminGenreCard';
 import AdminTagCard from './AdminTagCard';
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 export default function AdminTagsVirtualizedList({ bodyStyle, individualStyle, items, notifyChange, type }: Props) {
     const [rerender, setRerender] = useState<boolean>(false);
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
-    const { isMyProfile } = useContext(ProfileContext);
 
     useEffect(() => {
         clearCache();
@@ -57,8 +56,8 @@ export default function AdminTagsVirtualizedList({ bodyStyle, individualStyle, i
                                     >
                                         {({ measure, registerChild }) => (
                                             <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle }}>
-                                                {type === "tag" && <AdminTagCard tags={result} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
-                                                {type === "genre" && <AdminTagCard tags={result} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} isGenre={true}/>}
+                                                {type === "tag" && <AdminTagCard tag={result} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache} />}
+                                                {type === "genre" && <AdminGenreCard genre={result} notifyVirtualizer={notifyVirtualizer} notifyChange={notifyChange} clearCache={clearCache}/>}
                                             </div>
                                         )}
                                     </CellMeasurer>
