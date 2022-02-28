@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuthContext } from './FirebaseAuth/AuthContext';
 import { Routes, Route } from 'react-router-dom'
@@ -13,39 +13,65 @@ import ForgotPassword from "./Pages/Registration/ForgotPassword";
 import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 import Profile from "./Pages/Profile/Profile";
 import TopNavBar from "./Pages/TopNavBar";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import { Link } from "react-router-dom";
+import ToAdmin from "./Pages/Admin/ToAdmin";
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        checkIfAdmin();
+        function checkIfAdmin() {
+            setIsAdmin(true);
+        }
+    }, [currentUser])
+
     return (
         <>
-            <TopNavBar />
+            {(!isAdmin || !currentUser) ?
+                <>
+                    <TopNavBar />
+                    <Routes>
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/' element={<Home />} />
+                        </Route>
 
-            <Routes>
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path='/' element={<Home />} />
-                </Route>
+                        <Route path="/registration" element={<Registration />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/email-sent" element={<EmailSent />} />
 
-                <Route path="/registration" element={<Registration />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/email-sent" element={<EmailSent />} />
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/blog' element={<Blog />} />
+                        </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path='/blog' element={<Blog />} />
-                </Route>
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/showcase' element={<Showcase />} />
+                        </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path='/showcase' element={<Showcase />} />
-                </Route>
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/related-projects' element={<RelatedProjects />} />
+                        </Route>
 
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path='/related-projects' element={<RelatedProjects />} />
-                </Route>
-
-                <Route element={<PrivateRoute isLogged={currentUser} />}>
-                    <Route path='/profile/:username' element={<Profile />} />
-                </Route>
-                <Route path="*" element={<Registration />} />
-            </Routes>
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/profile/:username' element={<Profile />} />
+                        </Route>
+                        <Route path="*" element={<Registration />} />
+                    </Routes>
+                </>
+                :
+                <>
+                    <Routes>
+                        <Route element={<PrivateRoute isLogged={currentUser} />}>
+                            <Route path='/dashboard' element={<AdminDashboard />} />
+                            <Route path='*' element={<ToAdmin />} />
+                            {/* <Link to="/admin-dashboard"></Link> */}
+                        </Route>
+                    </Routes>
+                </>
+            }
 
             <ToastContainer
                 position="bottom-right"
