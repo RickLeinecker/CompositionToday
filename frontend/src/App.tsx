@@ -14,19 +14,42 @@ import PrivateRoute from "./FirebaseAuth/PrivateRoute";
 import Profile from "./Pages/Profile/Profile";
 import TopNavBar from "./Pages/TopNavBar";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import { Link } from "react-router-dom";
 import ToAdmin from "./Pages/Admin/ToAdmin";
+import GenericHandler from './Handlers/GenericHandler';
+import { GenericHandlerType } from './ObjectInterface';
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-
     useEffect(() => {
-        checkIfAdmin();
-        function checkIfAdmin() {
+        async function fetchData() {
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({ uid: currentUser?.uid }),
+                methodType: "POST",
+                path: "isAdmin",
+            }
+
+            try {
+                let answer = (await GenericHandler(handlerObject));
+                if (answer.error.length > 0) {
+                    return;
+                }
+                console.log(answer.result);
+                return await answer.result;
+            } catch (e: any) {
+                console.error("Frontend Error: " + e);
+            }
+
+            return false;
+        }
+
+        async function checkIfAdmin() {
+            // setIsAdmin(await fetchData());
             setIsAdmin(true);
         }
+
+        checkIfAdmin();
     }, [currentUser])
 
     return (
@@ -67,7 +90,6 @@ function App(this: any) {
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/dashboard' element={<AdminDashboard />} />
                             <Route path='*' element={<ToAdmin />} />
-                            {/* <Link to="/admin-dashboard"></Link> */}
                         </Route>
                     </Routes>
                 </>

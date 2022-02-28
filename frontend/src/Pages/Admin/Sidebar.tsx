@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,6 +24,7 @@ import AdminLogout from './AdminLogout';
 import AdminRelatedProjectsManager from './AdminRelatedProjectsManager';
 import AdminTagsManager from './AdminTagsManager';
 import AdminUserManager from './AdminUserManager';
+import useLogout from '../../Helper/CustomHooks/useLogout';
 
 const drawerWidth = 240;
 
@@ -80,6 +82,8 @@ export default function PersistentDrawerLeft() {
     const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState("AdminAdminManager");
 
+    const { handleLogout } = useLogout();
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -152,7 +156,7 @@ export default function PersistentDrawerLeft() {
                 </ListItem>
 
                 <Divider />
-                <ListItem button key={"AdminLogout"} onClick={() => setCurrentPage("AdminLogout")}>
+                <ListItem button key={"AdminLogout"} onClick={handleLogout}>
                     <ListItemIcon>
                         <LogoutIcon />
                     </ListItemIcon>
@@ -165,8 +169,6 @@ export default function PersistentDrawerLeft() {
                 {currentPage === "AdminUserManager" && <AdminUserManager />}
                 {currentPage === "AdminTagsManager" && <AdminTagsManager />}
                 {currentPage === "AdminRelatedProjectsManager" && <AdminRelatedProjectsManager />}
-                {currentPage === "AdminLogout" && <AdminLogout />}
-                
             </Main>
         </Box>
     );
