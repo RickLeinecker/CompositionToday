@@ -1,8 +1,8 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// updateUser - update user in database
-exports.updateUser = async (req, res) => {
+// makeAdmin - makes a user an admin
+exports.makeAdmin = async (req, res) => {
   // incoming: userID, firstName, lastName, username, email, uid, isPublisher
   // outgoing: success or error
 

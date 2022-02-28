@@ -14,7 +14,7 @@ exports.getTagsForContent = async (req, res) => {
   const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT tag.id,contentTag.contentID,tag.tagName 
+      `SELECT tag.id,contentTag.contentID,tag.tagName,contentTag.id AS contentTagID 
       FROM contentTag INNER JOIN tag ON contentTag.tagID=tag.id WHERE contentID=?`,
       [contentID],
       function (err, result) {
