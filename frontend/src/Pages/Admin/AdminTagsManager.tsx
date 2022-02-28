@@ -68,39 +68,44 @@ export default function AdminTagsManager() {
     return (
         <>
             <div>
-                <p style={{textDecoration: "underline"}}>
+                <p style={{ textDecoration: "underline" }}>
                     Tags
                 </p>
                 <Button onClick={handleOpenCreateTag}>
                     Create Tag
                 </Button>
                 <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} />
-                <AdminTagsVirtualizedList
-                    bodyStyle={{ width: "100%", height: "30vh" }}
-                    individualStyle={{ padding: "1% 1% 20px" }}
-                    items={responseTags}
-                    notifyChange={notifyChange}
-                    type={"tag"}
-                />
+                <div style={{ width: "60%", margin: "0 auto" }}>
+                    <AdminTagsVirtualizedList
+                        bodyStyle={{ width: "100%", height: "30vh" }}
+                        individualStyle={{ padding: "0.5% 1%" }}
+                        items={responseTags}
+                        notifyChange={notifyChange}
+                        type={"tag"}
+                    />
+                </div>
             </div>
             <br></br>
             <Divider></Divider>
             <br></br>
             <div>
-                <p style={{textDecoration: "underline"}}>
+                <p style={{ textDecoration: "underline" }}>
                     Genres
                 </p>
                 <Button onClick={handleOpenCreateGenre}>
                     Create Genre
                 </Button>
                 <CreateGenreModal notifyChange={notifyChange} createOpen={createGenreOpen} handleCloseCreate={handleCloseCreateGenre} />
-                <AdminTagsVirtualizedList
-                    bodyStyle={{ width: "100%", height: "30vh" }}
-                    individualStyle={{ padding: "1% 1% 20px" }}
-                    items={responseGenres}
-                    notifyChange={notifyChange}
-                    type={"genre"}
-                />
+                <div style={{ width: "60%", margin: "0 auto" }}>
+                    <AdminTagsVirtualizedList
+                        bodyStyle={{ width: "100%", height: "30vh" }}
+                        individualStyle={{ padding: "0.5% 1%" }}
+                        items={responseGenres}
+                        notifyChange={notifyChange}
+                        type={"genre"}
+                    />
+                </div>
+
             </div>
         </>
     )

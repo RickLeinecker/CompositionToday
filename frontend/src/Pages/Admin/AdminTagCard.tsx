@@ -9,11 +9,13 @@ type Props = {
 
 
 export default function AdminTagCard({ tag, notifyChange, notifyVirtualizer, clearCache }: Props) {
-    const { id, tagName} = tag;
+    const { id, tagName } = tag;
 
     return (
-        <div>
-          {tagName}
+        <div className="card">
+            <div className="card-body">
+                <p className="card-text">{tagName}</p>
+            </div>
         </div>
     )
 }

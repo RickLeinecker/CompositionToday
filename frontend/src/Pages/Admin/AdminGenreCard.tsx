@@ -9,11 +9,13 @@ type Props = {
 
 
 export default function AdminGenreCard({ genre, notifyChange, notifyVirtualizer, clearCache }: Props) {
-    const { id, tagName } = genre;
+    const { id, tagName, imageFilepath } = genre;
 
     return (
-        <div>
-          {tagName}
+        <div className="card">
+            <div className="card-body">
+                <p className="card-text">{tagName}</p>
+            </div>
         </div>
     )
 }
