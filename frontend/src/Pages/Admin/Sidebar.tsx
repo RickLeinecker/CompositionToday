@@ -80,7 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState("AdminAdminManager");
+    const [currentPage, setCurrentPage] = useState("Admin Manager");
 
     const { handleLogout } = useLogout();
     
@@ -107,7 +107,7 @@ export default function PersistentDrawerLeft() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Admin Page
+                        {currentPage}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -130,25 +130,25 @@ export default function PersistentDrawerLeft() {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <ListItem button key={"AdminAdminManager"} onClick={() => setCurrentPage("AdminAdminManager")}>
+                <ListItem button key={"AdminAdminManager"} onClick={() => setCurrentPage("Admin Manager")}>
                     <ListItemIcon>
                         <AdminPanelSettingsIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Admin Manager"} />
                 </ListItem>
-                <ListItem button key={"AdminUserManager"} onClick={() => setCurrentPage("AdminUserManager")}>
+                <ListItem button key={"AdminUserManager"} onClick={() => setCurrentPage("User Manager")}>
                     <ListItemIcon>
                         <ManageAccountsIcon />
                     </ListItemIcon>
                     <ListItemText primary={"User Manager"} />
                 </ListItem>
-                <ListItem button key={"AdminTagsManager"} onClick={() => setCurrentPage("AdminTagsManager")}>
+                <ListItem button key={"AdminTagsManager"} onClick={() => setCurrentPage("Tags/Genres Manager")}>
                     <ListItemIcon>
                         <LocalOfferIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Tags/Genres Manager"} />
                 </ListItem>
-                <ListItem button key={"AdminRelatedProjectsManager"} onClick={() => setCurrentPage("AdminRelatedProjectsManager")}>
+                <ListItem button key={"AdminRelatedProjectsManager"} onClick={() => setCurrentPage("Related Projects Manager")}>
                     <ListItemIcon>
                         <AccountTreeIcon />
                     </ListItemIcon>
@@ -165,10 +165,10 @@ export default function PersistentDrawerLeft() {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {currentPage === "AdminAdminManager" && <AdminManager />}
-                {currentPage === "AdminUserManager" && <AdminUserManager />}
-                {currentPage === "AdminTagsManager" && <AdminTagsManager />}
-                {currentPage === "AdminRelatedProjectsManager" && <AdminRelatedProjectsManager />}
+                {currentPage === "Admin Manager" && <AdminManager />}
+                {currentPage === "User Manager" && <AdminUserManager />}
+                {currentPage === "Tags/Genres Manager" && <AdminTagsManager />}
+                {currentPage === "Related Projects Manager" && <AdminRelatedProjectsManager />}
             </Main>
         </Box>
     );
