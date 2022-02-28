@@ -14,7 +14,7 @@ export default function AdminTagCard({ tags, isGenre, notifyChange, notifyVirtua
 
     return (
         <div>
-          {isGenre}
+          {tagName}
         </div>
     )
 }

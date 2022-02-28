@@ -1,3 +1,4 @@
+import { Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import { TagType } from '../../ObjectInterface';
@@ -61,7 +62,7 @@ export default function AdminTagsManager() {
     return (
         <>
             <div>
-                <p>
+                <p style={{textDecoration: "underline"}}>
                     Tags
                 </p>
                 <AdminTagsVirtualizedList
@@ -72,9 +73,11 @@ export default function AdminTagsManager() {
                     type={"tag"}
                 />
             </div>
-
+            <br></br>
+            <Divider></Divider>
+            <br></br>
             <div>
-                <p>
+                <p style={{textDecoration: "underline"}}>
                     Genres
                 </p>
                 <AdminTagsVirtualizedList
