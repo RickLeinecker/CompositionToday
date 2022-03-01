@@ -1,25 +1,23 @@
 // mysql connection
+
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getTagsForContent
-exports.getTagsForContent = async (req, res) => {
-  // incoming: contentID
-  // outgoing: content, error
-  // to
+// listAdmins - gets all admins from the database
+exports.listAdmins = async (req, res) => {
+  // incoming: nothing
+  // outgoing: users, error
 
+  // declaring variables for errors and results
   var error = "";
   var results = [];
   var responseCode = 0;
 
-  const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      `SELECT tag.id,contentTag.contentID,tag.tagName,contentTag.id AS contentTagID 
-      FROM contentTag INNER JOIN tag ON contentTag.tagID=tag.id WHERE contentID=?`,
-      [contentID],
+      "SELECT * FROM user WHERE isAdmin=1",
       function (err, result) {
         if (err) {
-          error = "SQL Search Error";
+          error = err;
           responseCode = 500;
           console.log(err);
         } else {
@@ -27,7 +25,7 @@ exports.getTagsForContent = async (req, res) => {
             results = result;
             responseCode = 200;
           } else {
-            error = "This content has no tags";
+            error = "No Admins";
             responseCode = 500;
           }
         }
