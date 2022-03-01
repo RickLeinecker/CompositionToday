@@ -2,10 +2,10 @@
 var express = require("express");
 var router = express.Router();
 
-const addProjectController = require("../controllers/likeTypeControllers/addProjectController.ts");
-const editProjectController = require("../controllers/likeTypeControllers/editProjectController.ts");
-const removeProjectController = require("../controllers/likeTypeControllers/removeProjectController.ts");
-const getProjectsController = require("../controllers/likeTypeControllers/getProjectsController.ts");
+const addProjectController = require("../controllers/relatedProjectsControllers/addProjectController.ts");
+const editProjectController = require("../controllers/relatedProjectsControllers/editProjectController.ts");
+const removeProjectController = require("../controllers/relatedProjectsControllers/removeProjectController.ts");
+const getProjectsController = require("../controllers/relatedProjectsControllers/getProjectsController.ts");
 
 router.post("/api/addProject", addProjectController.addProject);
 router.patch("/api/editProject", editProjectController.editProject);

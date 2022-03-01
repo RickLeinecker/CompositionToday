@@ -16,6 +16,7 @@ var tagRoutes = require("./api/routes/tagRoutes.ts");
 var likeRoutes = require("./api/routes/likeRoutes.ts");
 var likeTypeRoutes = require("./api/routes/likeTypeRoutes.ts");
 var fileRoutes = require("./api/routes/fileRoutes.ts");
+var relatedProjectsRoutes = require("./api/routes/relatedProjectsRoutes.ts");
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,7 @@ app.use("/", tagRoutes);
 app.use("/", likeRoutes);
 app.use("/", likeTypeRoutes);
 app.use("/", fileRoutes);
+app.use("/", relatedProjectsRoutes);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
