@@ -17,9 +17,11 @@ const getComposersForShowcaseController = require("../controllers/userController
 const readUserByUsernameController = require("../controllers/userControllers/readUserByUsernameController.ts");
 const searchComposersController = require("../controllers/userControllers/searchComposersController.ts");
 const isAdminController = require("../controllers/userControllers/isAdminController.ts");
+const makeAdminController = require("../controllers/userControllers/makeAdminController.ts");
 
 router.post("/api/createUser", createUserController.createUser);
 router.post("/api/isAdmin", isAdminController.isAdmin);
+router.post("/api/makeAdmin", makeAdminController.makeAdmin);
 router.post("/api/createComposer", createComposerController.createComposer);
 router.post(
   "/api/createScrapedComposer",
