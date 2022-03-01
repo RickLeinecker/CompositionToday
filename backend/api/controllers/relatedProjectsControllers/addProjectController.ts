@@ -10,11 +10,12 @@ exports.addProject = async (req, res) => {
   var results = [];
   var responseCode = 0;
 
-  const { url, imageFilepath, projectTitle, description } = req.body;
+  const { url, imageFilepath, imageFilename, projectTitle, description } =
+    req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "INSERT INTO relatedProjects(url, imageFilepath, projectTitle, description) VALUES (?,?,?,?);",
-      [url, imageFilepath, projectTitle, description],
+      "INSERT INTO relatedProjects(url, imageFilepath, imageFilename, projectTitle, description) VALUES (?,?,?,?,?);",
+      [url, imageFilepath, imageFilename, projectTitle, description],
       function (err, result) {
         if (err) {
           error = "SQL Insert Error";

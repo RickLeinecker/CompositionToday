@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // editProject
 exports.editProject = async (req, res) => {
-  // incoming: projectID, url, img_path, title, desc
+  // incoming: projectID, url, imageFilepath, imageFilename, projectTitle, description
   // outgoing: error
 
   var error = "";
@@ -11,7 +11,14 @@ exports.editProject = async (req, res) => {
   var insertArray = [];
   var responseCode = 0;
 
-  const { projectID, url, img_path, title, desc } = req.body;
+  const {
+    projectID,
+    url,
+    imageFilepath,
+    imageFilename,
+    projectTitle,
+    description,
+  } = req.body;
 
   // build update string with non null fields
   var insertString = "UPDATE relatedProjects SET ";
@@ -19,17 +26,21 @@ exports.editProject = async (req, res) => {
     insertString += "url=?,";
     insertArray.push(url);
   }
-  if (img_path !== null && img_path !== undefined) {
-    insertString += "img_path=?,";
-    insertArray.push(img_path);
+  if (imageFilepath !== null && imageFilepath !== undefined) {
+    insertString += "imageFilepath=?,";
+    insertArray.push(imageFilepath);
   }
-  if (title !== null && title !== undefined) {
-    insertString += "title=?,";
-    insertArray.push(title);
+  if (imageFilename !== null && imageFilename !== undefined) {
+    insertString += "imageFilename=?,";
+    insertArray.push(imageFilename);
   }
-  if (desc !== null && desc !== undefined) {
-    insertString += "desc=?,";
-    insertArray.push(desc);
+  if (projectTitle !== null && projectTitle !== undefined) {
+    insertString += "projectTitle=?,";
+    insertArray.push(projectTitle);
+  }
+  if (description !== null && description !== undefined) {
+    insertString += "description=?,";
+    insertArray.push(description);
   }
 
   insertString = insertString.slice(0, -1);
