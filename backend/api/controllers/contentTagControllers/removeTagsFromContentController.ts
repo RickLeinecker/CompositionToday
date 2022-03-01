@@ -19,28 +19,24 @@ exports.removeTagsFromContent = async (req, res) => {
           [contentTagIDArray[index].contentTagID],
           function (err, result) {
             if (err) {
-              error = "SQL Delete Error";
-              responseCode = 500;
               console.log(err);
-            } else {
-              if (result.affectedRows > 0) {
-                results.push("Success");
-                responseCode = 200;
-              } else {
-                error = "Content with this tag does not exist";
-              }
             }
-            // package data
-            var ret = {
-              result: results,
-              error: error,
-            };
-            // send data
-            res.status(responseCode).json(ret);
             connection.release();
           }
         );
       });
     }
+    results.push("Success");
+    responseCode = 200;
+    finishProcess();
+  }
+  function finishProcess() {
+    // package data
+    var ret = {
+      result: results,
+      error: error,
+    };
+    // send data
+    res.status(responseCode).json(ret);
   }
 };

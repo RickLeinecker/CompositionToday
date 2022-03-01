@@ -23,24 +23,24 @@ exports.addTagsToContent = async (req, res) => {
           [contentTagArray[index].contentID, contentTagArray[index].tagID],
           function (err, result) {
             if (err) {
-              error = "SQL Insert Error";
-              responseCode = 500;
               console.log(err);
-            } else {
-              results.push("Success");
-              responseCode = 201;
             }
-            // package data
-            var ret = {
-              result: results,
-              error: error,
-            };
-            // send data
-            res.status(responseCode).json(ret);
             connection.release();
           }
         );
       });
     }
+    results.push("Success");
+    responseCode = 201;
+    finishProcess();
+  }
+  function finishProcess() {
+    // package data
+    var ret = {
+      result: results,
+      error: error,
+    };
+    // send data
+    res.status(responseCode).json(ret);
   }
 };
