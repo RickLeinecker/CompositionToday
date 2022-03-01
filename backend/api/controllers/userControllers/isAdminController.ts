@@ -1,21 +1,23 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// getContentTagsForContent
-exports.getContentTagsForContent = async (req, res) => {
-  // incoming: contentID
-  // outgoing: content, error
-  // to
+// isAdmin - read user from database
+exports.isAdmin = async (req, res) => {
+  // incoming: uid
+  // outgoing: isAdmin boolean
 
+  // declaring variables for errors and results
   var error = "";
-  var results = [];
+  var results;
   var responseCode = 0;
+  // reading data from frontend
+  const { uid } = req.body;
 
-  const { contentID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
+    // query database, handle errors, return JSON
     connection.query(
-      "SELECT * FROM contentTag WHERE contentID=?",
-      [contentID],
+      "SELECT * FROM user WHERE uid=?",
+      [uid],
       function (err, result) {
         if (err) {
           error = "SQL Search Error";
@@ -23,10 +25,10 @@ exports.getContentTagsForContent = async (req, res) => {
           console.log(err);
         } else {
           if (result[0]) {
-            results = result;
+            results = result[0].isAdmin === 0 ? false : true;
             responseCode = 200;
           } else {
-            error = "This content has no tags";
+            error = "User does not exist";
             responseCode = 500;
           }
         }

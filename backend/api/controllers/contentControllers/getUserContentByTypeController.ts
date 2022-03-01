@@ -72,6 +72,7 @@ exports.getUserContentByType = async (req, res) => {
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,content.isEdited,
   user.username,userProfile.displayName,userProfile.profilePicPath,COUNT(likes.id) AS likeCount,
+  (SELECT COUNT(comment.id) FROM comment WHERE comment.contentID=content.id) AS commentCount,
   SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content
   INNER JOIN user ON content.userID=user.id
