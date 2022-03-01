@@ -7,7 +7,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   // outgoing: content, error
 
   // get data from frontend
-  const { uid, contentTypeArray, sortBy, startIndex, endIndex } = req.body;
+  const { uid, contentTypeArray, sortBy, startIndex, endIndex, tagArray } =
+    req.body;
   var numberOfRecords = endIndex - startIndex + 1;
 
   var error = "";
@@ -30,9 +31,16 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile ON content.userID=userProfile.userID 
   LEFT JOIN likes ON content.id=likes.contentID `;
-
+  if (tagArray && tagArray.length > 0) {
+    insertString += "INNER JOIN contentTag ON ";
+    for (var tag of tagArray) {
+      insertString += "contentTag.tagID=" + tag.id + " OR ";
+    }
+    insertString = insertString.slice(0, -3);
+    insertString += "AND contentTag.contentID=content.id ";
+  }
   // if contentTypeArray has contentTypes, build string
-  if (contentTypeArray.length > 0) {
+  if (contentTypeArray && contentTypeArray.length > 0) {
     insertString += "WHERE ";
     for (var contentT of contentTypeArray) {
       insertString += `contentType='${contentT}' OR `;
