@@ -16,7 +16,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   var results = [];
   var responseCode = 0;
 
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT DISTINCT content.id,user.uid,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -27,7 +27,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   user.username,userProfile.displayName,userProfile.profilePicPath,content.isEdited,
   COUNT(likes.id) AS likeCount, 
   (SELECT COUNT(comment.id) FROM comment WHERE comment.contentID=content.id) AS commentCount,
-  SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser,
+  JSON_ARRAYAGG(JSON_OBJECT('id',tag.id,'tagName',tag.tagName)) AS tagArray 
   FROM content 
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile ON content.userID=userProfile.userID 
@@ -39,6 +40,10 @@ exports.getHomefeedContentInBatches = async (req, res) => {
     }
     insertString = insertString.slice(0, -3);
     insertString += "AND contentTag.contentID=content.id ";
+    insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
+  } else {
+    insertString += "LEFT JOIN contentTag ON contentTag.contentID=content.id ";
+    insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
   }
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray && contentTypeArray.length > 0) {
