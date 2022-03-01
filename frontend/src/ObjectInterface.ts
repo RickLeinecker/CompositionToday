@@ -159,6 +159,7 @@ export type GenericGetHandlerType = {
 export type TagType = {
     id: number;
     tagName: string;
+    imageFilepath?: string;
 }
 
 export type composerType = {
