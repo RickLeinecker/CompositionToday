@@ -12,13 +12,17 @@ const getContentByTypeController = require("../controllers/contentControllers/ge
 const getUserContentByTypeController = require("../controllers/contentControllers/getUserContentByTypeController.ts");
 const getContentByTypeInBatchesController = require("../controllers/contentControllers/getContentByTypeInBatchesController.ts");
 const getHomefeedContentInBatchesController = require("../controllers/contentControllers/getHomefeedContentInBatchesController.ts");
+const createContentWithTagsController = require("../controllers/contentControllers/createContentWithTagsController.ts");
 
 router.post("/api/createContent", createContentController.createContent);
 router.post(
   "/api/createContentAndTag",
   createContentAndTagController.createContentAndTag
 );
-
+router.post(
+  "/api/createContentWithTags",
+  createContentWithTagsController.createContentWithTags
+);
 router.post(
   "/api/getContentByTypeInBatches",
   getContentByTypeInBatchesController.getContentByTypeInBatches
