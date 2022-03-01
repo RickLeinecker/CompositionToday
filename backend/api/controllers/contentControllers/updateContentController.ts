@@ -186,51 +186,53 @@ exports.updateContent = async (req, res) => {
                         // for each tag in tagArray:
                         // if tag is linked to content -> remove tag
                         // else -> add tag
-                        for (var i = 0; i < tagArray.length; ++i) {
-                          sqlQuery(i);
-                          function sqlQuery(index) {
-                            mysql_pool.getConnection(function (
-                              err,
-                              connection
-                            ) {
-                              connection.query(
-                                "SELECT id FROM contentTag WHERE contentTag.contentID=? AND tagID=?",
-                                [contentID, tagArray[index].id],
-                                function (err, result) {
-                                  if (err) {
-                                    console.log(err);
-                                    connection.release();
-                                    processChanges();
-                                  } else {
-                                    if (result[0]) {
-                                      // if tag exists, remove it
-                                      connection.query(
-                                        "DELETE FROM contentTag WHERE id=?",
-                                        [result[0].id],
-                                        function (err, result) {
-                                          if (err) {
-                                            console.log(err);
-                                          }
-                                          connection.release();
-                                        }
-                                      );
+                        if (tagArray && tagArray.length > 0) {
+                          for (var i = 0; i < tagArray.length; ++i) {
+                            sqlQuery(i);
+                            function sqlQuery(index) {
+                              mysql_pool.getConnection(function (
+                                err,
+                                connection
+                              ) {
+                                connection.query(
+                                  "SELECT id FROM contentTag WHERE contentTag.contentID=? AND tagID=?",
+                                  [contentID, tagArray[index].id],
+                                  function (err, result) {
+                                    if (err) {
+                                      console.log(err);
+                                      connection.release();
+                                      processChanges();
                                     } else {
-                                      // tag doesn't exist, add it
-                                      connection.query(
-                                        "INSERT INTO contentTag(contentID, tagID) VALUES (?,?)",
-                                        [contentID, tagArray[index].id],
-                                        function (err, result) {
-                                          if (err) {
-                                            console.log(err);
+                                      if (result[0]) {
+                                        // if tag exists, remove it
+                                        connection.query(
+                                          "DELETE FROM contentTag WHERE id=?",
+                                          [result[0].id],
+                                          function (err, result) {
+                                            if (err) {
+                                              console.log(err);
+                                            }
+                                            connection.release();
                                           }
-                                          connection.release();
-                                        }
-                                      );
+                                        );
+                                      } else {
+                                        // tag doesn't exist, add it
+                                        connection.query(
+                                          "INSERT INTO contentTag(contentID, tagID) VALUES (?,?)",
+                                          [contentID, tagArray[index].id],
+                                          function (err, result) {
+                                            if (err) {
+                                              console.log(err);
+                                            }
+                                            connection.release();
+                                          }
+                                        );
+                                      }
                                     }
                                   }
-                                }
-                              );
-                            });
+                                );
+                              });
+                            }
                           }
                         }
                         results.push("Success");
