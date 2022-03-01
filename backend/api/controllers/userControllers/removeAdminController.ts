@@ -1,8 +1,8 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// makeAdmin - makes a user an admin
-exports.makeAdmin = async (req, res) => {
+// removeAdmin - makes a user an admin
+exports.removeAdmin = async (req, res) => {
   // incoming: uid
   // outgoing: success or error
 
@@ -11,7 +11,7 @@ exports.makeAdmin = async (req, res) => {
   var results = [];
   var insertArray = [];
   var responseCode = 0;
-  var isAdmin = 1;
+  var isAdmin = 0;
   // reading data from frontend
   var { uid } = req.body;
 
