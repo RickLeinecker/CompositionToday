@@ -7,10 +7,16 @@ const getTagsForContentController = require("../controllers/contentTagController
 const updateContentTagController = require("../controllers/contentTagControllers/updateContentTagController.ts");
 const deleteContentTagController = require("../controllers/contentTagControllers/deleteContentTagController.ts");
 const getContentTagsController = require("../controllers/contentTagControllers/getContentTagsController.ts");
+const addTagsToContentController = require("../controllers/contentTagControllers/addTagsToContentController.ts");
+const removeTagsFromContentController = require("../controllers/contentTagControllers/removeTagsFromContentController.ts");
 
 router.post(
   "/api/createContentTag",
   createContentTagController.createContentTag
+);
+router.post(
+  "/api/addTagsToContent",
+  addTagsToContentController.addTagsToContent
 );
 router.post(
   "/api/getTagsForContent",
@@ -23,6 +29,10 @@ router.patch(
 router.delete(
   "/api/deleteContentTag",
   deleteContentTagController.deleteContentTag
+);
+router.delete(
+  "/api/removeTagsFromContent",
+  removeTagsFromContentController.removeTagsFromContent
 );
 router.get("/api/getContentTags", getContentTagsController.getContentTags);
 
