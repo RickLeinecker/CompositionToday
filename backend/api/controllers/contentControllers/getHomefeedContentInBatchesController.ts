@@ -3,7 +3,8 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // getHomefeedContentInBatches
 exports.getHomefeedContentInBatches = async (req, res) => {
-  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc."
+  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc.",
+  //           tagArray: array [classical, edm, etc.]
   // outgoing: content, error
 
   // get data from frontend
