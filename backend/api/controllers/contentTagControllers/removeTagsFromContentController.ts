@@ -26,17 +26,14 @@ exports.removeTagsFromContent = async (req, res) => {
         );
       });
     }
-    results.push("Success");
-    responseCode = 200;
-    finishProcess();
   }
-  function finishProcess() {
-    // package data
-    var ret = {
-      result: results,
-      error: error,
-    };
-    // send data
-    res.status(responseCode).json(ret);
-  }
+  results.push("Success");
+  responseCode = 200;
+  // package data
+  var ret = {
+    result: results,
+    error: error,
+  };
+  // send data
+  res.status(responseCode).json(ret);
 };
