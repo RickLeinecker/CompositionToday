@@ -45,7 +45,8 @@ function App(this: any) {
         }
 
         async function checkIfAdmin() {
-            setIsAdmin(await fetchData());
+            // setIsAdmin(await fetchData());
+            setIsAdmin(true);
         }
 
         checkIfAdmin();
