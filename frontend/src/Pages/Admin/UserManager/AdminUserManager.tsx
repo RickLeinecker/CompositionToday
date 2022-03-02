@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AdminEditUserModal from './AdminEditUserModal';
 import AdminDeleteUsersModal from './AdminDeleteUsersModal';
+import AdminMakeAdminModal from './AdminMakeAdminModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
@@ -107,7 +108,14 @@ export default function AdminUserManager() {
 			</GenericModal>
 
 			{/* Admin Modal */}
-			<GenericModal
+			<AdminMakeAdminModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				adminOpen={adminOpen}
+				handleCloseAdmin={handleCloseAdmin}
+				type={"user"}
+			/>
+			{/* <GenericModal
 				show={adminOpen}
 				title={`Make Selected Users Admins?`}
 				onHide={handleCloseAdmin}
@@ -120,7 +128,7 @@ export default function AdminUserManager() {
 						{JSON.stringify(selected)}
 					</pre>
 				</div>
-			</GenericModal>
+			</GenericModal> */}
 
 			{/* Delete Modal */}
 			<AdminDeleteUsersModal
@@ -130,7 +138,7 @@ export default function AdminUserManager() {
 				handleCloseDelete={handleCloseDelete}
 				type={"user"}
 			/>
-			
+
 		</div>
 	)
 }
