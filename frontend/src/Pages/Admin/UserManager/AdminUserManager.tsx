@@ -10,6 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import AdminEditUserModal from './AdminEditUserModal';
+import AdminDeleteUsersModal from './AdminDeleteUsersModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
@@ -77,20 +79,16 @@ export default function AdminUserManager() {
 			/>
 
 			{/* Edit Modal */}
-			<GenericModal
-				show={editOpen}
-				title={`Edit ${selected[0]?.username}`}
-				onHide={handleCloseEdit}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			{selected.length === 1 ?
+				<AdminEditUserModal
+					user={selected[0]}
+					notifyChange={() => { }}
+					editOpen={editOpen}
+					handleCloseEdit={handleCloseEdit}
+				/>
+				:
+				<></>
+			}
 
 			{/* Publisher Modal */}
 			<GenericModal
@@ -125,20 +123,14 @@ export default function AdminUserManager() {
 			</GenericModal>
 
 			{/* Delete Modal */}
-			<GenericModal
-				show={deleteOpen}
-				title={`Delete Selected Users?`}
-				onHide={handleCloseDelete}
-				confirm={() => { }}
-				actionText={"Delete"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			<AdminDeleteUsersModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				deleteOpen={deleteOpen}
+				handleCloseDelete={handleCloseDelete}
+				type={"user"}
+			/>
+			
 		</div>
 	)
 }
