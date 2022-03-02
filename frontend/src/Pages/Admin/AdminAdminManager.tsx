@@ -7,6 +7,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import GenericModal from '../../Helper/Generics/GenericModal';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import AdminColumns from './columnStructure/AdminColumns';
+import AdminRemoveModal from './AdminRemoveModal';
 
 export default function AdminAdminManager() {
     const [rows, setRows] = useState<User[]>([]);
@@ -71,20 +72,7 @@ export default function AdminAdminManager() {
                 checkboxSelection
             />
 
-            <GenericModal
-                show={removeOpen}
-                title={"Demote Admin to User"}
-                onHide={handleCloseRemove}
-                confirm={() => { }}
-                actionText={"Save"}
-                checkForErrors={() => false}
-            >
-                <div>
-                    <pre>
-                        {JSON.stringify(selected)}
-                    </pre>
-                </div>
-            </GenericModal>
+            <AdminRemoveModal userID={selected.map(user => user.id)} notifyChange={() => {}} deleteOpen={removeOpen} handleCloseDelete={handleCloseRemove} type={'admin'}/>
         </div>
     )
 }
