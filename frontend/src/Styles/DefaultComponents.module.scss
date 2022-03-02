@@ -32,6 +32,17 @@ p {
     margin-left: auto;
 }
 
+.card-start{
+    position: relative;
+    display: flex;
+    align-items: center;
+    top: 1%;
+    left: 0.5%;
+    margin: 1% 1%;
+    margin-right: auto;
+    width: 100%;
+}
+
 .card-text-secondary{
     color: $secondary-text;
     overflow-wrap: break-word;

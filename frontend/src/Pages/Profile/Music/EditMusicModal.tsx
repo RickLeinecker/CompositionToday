@@ -23,7 +23,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [newContentValue, setNewContentValue] = useState<MusicType>(music)
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>(JSON.parse(newContentValue.tagArray));
     const [audioFileToDelete, setAudioFileToDelete] = useState<string>("");
     const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
 
@@ -49,6 +49,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const clearFields = (): void => {
         setNewContentValue(music);
+        setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
     const handleChange = (newValue: string, type: string) => {
@@ -153,6 +154,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
+                tagArray: newContentTags,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -213,7 +215,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                         isMultiline={true}
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
                     />
-                    <GenericTagsPicker updateTags={updateTags} />
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                 </>

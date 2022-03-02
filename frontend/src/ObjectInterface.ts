@@ -57,6 +57,9 @@ export type ArticleType = {
 
     likeCount: number;
     isLikedByLoggedInUser: boolean;
+
+    // tagArray: Array<TagType>;
+    tagArray: string;
     
     id: number;
     isEdited: boolean;
@@ -74,6 +77,7 @@ export type MusicType = {
 
     likeCount: number;
     isLikedByLoggedInUser: boolean;
+    tagArray: string;
     
     id: number;
     isEdited: boolean;
@@ -81,7 +85,7 @@ export type MusicType = {
     userID?: number;
     contentText: string;
     contentName: string;
-    timestamp?: string;
+    timestamp: string;
     audioFilepath?: string;
     audioFilename?: string;
     sheetMusicFilepath?: string;
@@ -93,7 +97,7 @@ export type EventType = {
     username: string;
     profilePicPath: string;
     displayName: string;
-
+    tagArray: string;
     likeCount: number;
     isLikedByLoggedInUser: boolean;
     
@@ -102,7 +106,7 @@ export type EventType = {
     uid: string;
     userID?: number;
     contentName: string;
-    timestamp?: string;
+    timestamp: string;
     description?: string;
     fromDate: Date;
     toDate: Date;

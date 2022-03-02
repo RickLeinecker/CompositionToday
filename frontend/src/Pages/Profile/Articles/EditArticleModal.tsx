@@ -18,7 +18,7 @@ type Props = {
 
 export default function EditArticleModal({ article, notifyChange, editOpen, handleCloseEdit }: Props) {
     const [newContentValue, setNewContentValue] = useState<ArticleType>(article)
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>(JSON.parse(newContentValue.tagArray));
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -41,9 +41,10 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
 
     const clearFields = (): void => {
         setNewContentValue(article);
+        setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
-    const handleChange = (newValue: string | Date | null | boolean, type: string) => {
+    const handleChange = (newValue: string | Date | null | boolean | TagType[], type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -70,6 +71,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
     }
 
     async function confirmEditHandler() {
+        console.log(newContentTags);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -77,6 +79,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
                 contentType: "article",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
+                tagArray: newContentTags,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -105,7 +108,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
                 <>
                     <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
                     <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMassive)}/>
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags}/>
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
