@@ -126,3 +126,20 @@
     height: 100%
     // height: auto;
 }
+
+.tagBox{
+    justify-content: center;
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.tagBox::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.tagBox {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}

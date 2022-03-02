@@ -40,16 +40,16 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
     return (
         <div style={{ display: "flex", height:"10vh" }}>
             <div className='card-start'>
-                <div style={{width: "9vh", marginRight: "2%"}}>
+                <div style={{width: "8vh", marginRight: "2%"}}>
                     <Link to={`/profile/${username}`} style={{margin: "0%"}}>
                         <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
                     </Link>
                 </div>
-                <div>
+                <div style={{width: "50%"}}>
                     <Link to={`/profile/${username}`} style={{ textDecoration: 'none', whiteSpace: "nowrap" }}>
                         <h5 className="card-title" style={{ marginLeft: "2%", alignSelf: "center" }}>{displayName}</h5>
                     </Link>
-                    <div style={{ justifyContent: "center", whiteSpace: "nowrap" }}>
+                    <div className="tagBox">
                         {getChips()}
                     </div>
                 </div>
