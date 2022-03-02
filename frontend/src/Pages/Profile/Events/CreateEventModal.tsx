@@ -159,10 +159,11 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                 imageFilename: newContentImageFilename,
                 location: newContentLocation,
                 mapsEnabled: newContentMapsEnabled,
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags,
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {

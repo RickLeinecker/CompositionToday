@@ -139,10 +139,11 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 sheetMusicFilename: newContentSheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentAudioFilename,
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags,
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {

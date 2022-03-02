@@ -16,7 +16,7 @@ type Props = {
 
 
 export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
-    const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser } = music;
+    const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser, tagArray } = music;
     const [showMore, setShowMore] = useState(false);
 
     // Cleanup function gets called when component is unmounted

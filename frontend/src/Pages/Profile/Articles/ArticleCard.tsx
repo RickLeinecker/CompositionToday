@@ -1,5 +1,5 @@
-import { ArticleType, TagType } from '../../../ObjectInterface';
-import { Chip, Divider } from '@mui/material';
+import { ArticleType } from '../../../ObjectInterface';
+import { Divider } from '@mui/material';
 import CardFooter from '../CardFooter';
 import ArticleCardHeader from './ArticleCardHeader';
 import { useState } from 'react';
