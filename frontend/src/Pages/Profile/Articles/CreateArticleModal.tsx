@@ -21,7 +21,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>();
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -45,6 +45,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
     const clearFields = (): void => {
         setNewContentName("")
         setNewContentText("")
+        setNewContentTags(null);
 
         setNameError(false);
         setTextError(false);
@@ -70,6 +71,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
     }
 
     async function confirmCreateHandler() {
+        console.log(newContentTags);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 uid: uid,
@@ -77,7 +79,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
                 contentText: newContentText,
                 contentType: "article",
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                tagArray: newContentTags,
+                tagArray: newContentTags || [],
             }),
             methodType: "POST",
             path: "createContentWithTags",

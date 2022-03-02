@@ -25,7 +25,7 @@ export default function CardHeader({isMyProfile, tagArray, username, profilePicP
             return;
         }
         let tags: TagType[] = JSON.parse(tagArray);
-        return tags?.map(tag => <Chip label={tag.tagName} style={{ marginRight: "2%"}} />);
+        return tags?.map(tag => <Chip label={tag.tagName} color="primary" variant="outlined" style={{ marginRight: "2%"}} />);
     }
 
     return (

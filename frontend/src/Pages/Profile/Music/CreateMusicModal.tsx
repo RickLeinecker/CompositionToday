@@ -25,7 +25,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>(null);
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
@@ -54,6 +54,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         setNewContentSheetMusicFilename("");
         setNewContentAudio(null);
         setNewContentAudioFilename("");
+        setNewContentTags(null);
 
         setNameError(false);
         setTextError(false);
@@ -140,7 +141,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentAudioFilename,
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                tagArray: newContentTags,
+                tagArray: newContentTags || [],
             }),
             methodType: "POST",
             path: "createContentWithTags",
