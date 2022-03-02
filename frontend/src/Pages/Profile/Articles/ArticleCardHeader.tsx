@@ -5,7 +5,7 @@ import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu'
 import moment from 'moment'
 import useOpen from '../../../Helper/CustomHooks/useOpen'
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal'
-import { ArticleType } from '../../../ObjectInterface'
+import { ArticleType, TagType } from '../../../ObjectInterface'
 import EditArticleModal from './EditArticleModal'
 import { Chip } from '@mui/material'
 
@@ -29,27 +29,31 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
         setCurrentUsername(!temp ? "" : temp);
     }, [])
 
-    function getChips(){
-        if(!tagArray){
+    function getChips() {
+        if (!tagArray) {
             return;
         }
-        for(let i = 0; i < tagArray.length; i++){
-            console.log(tagArray[i])
-        }
-        // console.log(typeof tagArray);
-        // return tagArray?.map(tag => <Chip label={tag.tagName} />);
+        let tags: TagType[] = JSON.parse(tagArray);
+        return tags?.map(tag => <Chip label={tag.tagName} style={{marginRight: "2%"}} />);
     }
 
     return (
-        <div style={{ display: "flex" }}>
-            <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
-                <div style={{ display: "flex", alignItems: "center", margin: "2%" }}>
-                    <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} style={{ float: "left" }} roundedCircle />
-                    <h5 className="card-title" style={{ marginLeft: "2%" }}>{displayName}</h5>
+        <div style={{ display: "flex", height:"10vh" }}>
+            <div className='card-start'>
+                <div style={{width: "9vh", marginRight: "2%"}}>
+                    <Link to={`/profile/${username}`} style={{margin: "0%"}}>
+                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
+                    </Link>
                 </div>
-            </Link>
-            {getChips()}
-            <p className='card-text'>{tagArray && tagArray}</p>
+                <div>
+                    <Link to={`/profile/${username}`} style={{ textDecoration: 'none', whiteSpace: "nowrap" }}>
+                        <h5 className="card-title" style={{ marginLeft: "2%", alignSelf: "center" }}>{displayName}</h5>
+                    </Link>
+                    <div style={{ justifyContent: "center", whiteSpace: "nowrap" }}>
+                        {getChips()}
+                    </div>
+                </div>
+            </div>
 
             <div className="card-icons">
                 <div style={{ display: "flex" }}>
@@ -60,7 +64,7 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
                         :
                         <></>
                     }
-                    <p className="card-text-secondary">
+                    <p className="card-text-secondary" style={{whiteSpace: "nowrap"}}>
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
                     <div>
