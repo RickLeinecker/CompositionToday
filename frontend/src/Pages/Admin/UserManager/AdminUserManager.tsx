@@ -80,7 +80,6 @@ export default function AdminUserManager() {
 				checkboxSelection
 			/>
 
-			{/* Edit Modal */}
 			{selected.length === 1 ?
 				<AdminEditUserModal
 					user={selected[0]}
@@ -92,7 +91,6 @@ export default function AdminUserManager() {
 				<></>
 			}
 
-			{/* Publisher Modal */}
 			<AdminMakePublisherModal
 				userID={selected.map(user => user.id)}
 				notifyChange={() => { }}
@@ -100,22 +98,7 @@ export default function AdminUserManager() {
 				handleClosePublish={handleClosePublish}
 				type={"user"}
 			/>
-			{/* <GenericModal
-				show={publishOpen}
-				title={`Make Selected Users Publishers?`}
-				onHide={handleClosePublish}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal> */}
 
-			{/* Admin Modal */}
 			<AdminMakeAdminModal
 				userID={selected.map(user => user.id)}
 				notifyChange={() => { }}
@@ -124,7 +107,6 @@ export default function AdminUserManager() {
 				type={"user"}
 			/>
 
-			{/* Delete Modal */}
 			<AdminDeleteUsersModal
 				userID={selected.map(user => user.id)}
 				notifyChange={() => { }}
