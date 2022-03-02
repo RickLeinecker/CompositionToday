@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
-import DefaultValues from '../../Styles/DefaultValues.module.scss'
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import GenericDiscardModal from '../../Helper/Generics/GenericDiscardModal';
-import GenericInputField from '../../Helper/Generics/GenericInputField';
-import GenericModal from '../../Helper/Generics/GenericModal';
-import { GenericHandlerType } from '../../ObjectInterface';
-import GenericHandler from '../../Handlers/GenericHandler';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
+import GenericInputField from '../../../Helper/Generics/GenericInputField';
+import GenericModal from '../../../Helper/Generics/GenericModal';
+import { GenericHandlerType } from '../../../ObjectInterface';
+import GenericHandler from '../../../Handlers/GenericHandler';
 
 
 type Props = {

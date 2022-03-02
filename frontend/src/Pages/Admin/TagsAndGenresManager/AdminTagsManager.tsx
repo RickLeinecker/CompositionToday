@@ -1,14 +1,14 @@
 import { Button, Divider } from '@mui/material';
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
-import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../Helper/Generics/GenericModal';
-import { TagType } from '../../ObjectInterface';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import { TagType } from '../../../ObjectInterface';
 import AdminTagsVirtualizedList from './AdminTagsVirtualizedList'
 import CreateGenreModal from './CreateGenreModal';
 import CreateTagModal from './CreateTagModal';
 import DeleteIcon from '@mui/icons-material/Delete';
+import GenericModal from '../../../Helper/Generics/GenericModal';
 
 
 export default function AdminTagsManager() {

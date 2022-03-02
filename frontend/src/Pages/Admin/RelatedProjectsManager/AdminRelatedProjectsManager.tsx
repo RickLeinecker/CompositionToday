@@ -1,11 +1,9 @@
 import { Button, Divider, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react'
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../Helper/Generics/GenericModal';
-import RelatedProjectsCard from '../RelatedProjects/RelatedProjectsCard';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericModal from '../../../Helper/Generics/GenericModal';
+import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
 
 
 export default function AdminRelatedProjectsManager() {
