@@ -5,6 +5,11 @@ import useOpen from '../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../Helper/Generics/GenericDiscardModal';
 import GenericInputField from '../../Helper/Generics/GenericInputField';
 import GenericModal from '../../Helper/Generics/GenericModal';
+import { GenericHandlerType } from '../../ObjectInterface';
+import GenericHandler from '../../Handlers/GenericHandler';
+import GenericFileUpload from '../../Helper/Generics/GenericFileUpload';
+import { uploadFile } from '../../Helper/Utils/FileUploadUtil';
+import { Alert } from 'react-bootstrap';
 
 
 type Props = {
@@ -15,9 +20,12 @@ type Props = {
 
 export default function CreateGenreModal({ notifyChange, createOpen, handleCloseCreate}: Props) {
 
-    const [newModalName, setNewModalName] = useState("");
+    const [newGenreName, setNewGenreName] = useState("");
+    const [newImage, setNewImage] = useState<File | null>(null);
+    const [newImageFilename, setNewImageFilename] = useState("");
 
-    const [tagNameError, setTagNameError] = useState(false);
+    const [tagNameError, setGenreNameError] = useState(false);
+    const [missingImageError, setMissingImageError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -32,20 +40,32 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
     }
 
     const clearFields = (): void => {
-        setNewModalName("")
+        setNewGenreName("")
+        setGenreNameError(false);
+        setNewImage(null);
+        setNewImageFilename("");
+    }
 
-        setTagNameError(false);
+    const updateImage = (newFile: File) => {
+        setNewImage(newFile);
+        setNewImageFilename(newFile.name)
+    }
+
+    const deleteImageFile = () => {
+        setNewImage(null);
+        setNewImageFilename("");
     }
 
     const checkForErrors = (): boolean => {
         let error = false;
-        
-        error = checkIfEmpty(newModalName, setTagNameError) || error;
+
+        error = checkIfEmpty(newGenreName, setGenreNameError) || error;
+        error = checkIfEmpty(newImage, setMissingImageError) || error
 
         return(error)
     }
 
-    function checkIfEmpty(value: string, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+    function checkIfEmpty(value: string | File | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if(!value){
             setError(true);
             return true;
@@ -56,7 +76,40 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
     }
 
     async function confirmCreateHandler() {
-        // TODO: CALL CREATE GENRE HERE
+
+        let newContentImagePath = null;
+        if (newImage !== null) {
+            newContentImagePath = await uploadFile(newImage, newImageFilename, "genre image", "uploadImage")
+            if (newContentImagePath === '') {
+                toast.error('Failed to create genre');
+                return;
+            }
+        }
+
+        const handlerObject: GenericHandlerType = {
+            data: JSON.stringify({
+                genre: newGenreName,
+                imageFilepath: newContentImagePath,
+                // imageFilename: newImageFilename,
+            }),
+            methodType: "POST",
+            path: "addGenre",
+        }
+
+        try {
+            let answer = (await GenericHandler(handlerObject));
+            if (answer.error.length > 0) {
+                toast.error('Failed to create genre');
+                return;
+            }
+
+            notifyChange();
+            toast.success('Genre created');
+
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error('Failed to create genre');
+        }
 
         clearFields()
         handleCloseCreate();
@@ -73,7 +126,9 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <GenericInputField title="Genre Name" type="tagName" onChange={setNewModalName} value={newModalName} isRequired={true} error={tagNameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
+                    <GenericInputField title="Genre Name" type="tagName" onChange={setNewGenreName} value={newGenreName} isRequired={true} error={tagNameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
+                    <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newImageFilename} />
+                    {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
                 </div>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard}/>
