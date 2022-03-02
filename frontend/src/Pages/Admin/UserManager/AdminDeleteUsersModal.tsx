@@ -9,20 +9,20 @@ type Props = {
     type: string;
 }
 
-export default function AdminRemoveModal({ userID, notifyChange, deleteOpen, handleCloseDelete, type}: Props) {
+export default function AdminDeleteUsersModal({ userID, notifyChange, deleteOpen, handleCloseDelete, type}: Props) {
 
     async function confirmDeleteHandler() {
-        console.log("delete admins")
-
+        console.log("delete users")
+        console.log(userID);
         handleCloseDelete();
     }
 
     return (
         <div>
-            <GenericModal show={deleteOpen} title={"Remove"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Remove"} >
+            <GenericModal show={deleteOpen} title={"Delete"} onHide={handleCloseDelete} confirm={confirmDeleteHandler} actionText={"Delete"} >
                 <>
                     <p>
-                        Are you sure you want to remove admin privileges for these users?
+                        Are you sure you want to PERMANENTLY delete these users?
                     </p>
                 </>
             </GenericModal>
