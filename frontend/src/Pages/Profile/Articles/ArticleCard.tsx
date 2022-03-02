@@ -18,23 +18,11 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
 
     const [showMore, setShowMore] = useState(false);
 
-    function getChips() {
-        if (!tagArray) {
-            return;
-        }
-        let tags: TagType[] = JSON.parse(tagArray);
-        return tags?.map(tag => <Chip label={tag.tagName} style={{ marginRight: "1%", float: "right" }} />);
-    }
-
     return (
         <div className="card">
             <ArticleCardHeader article={article} isMyProfile={false} notifyChange={notifyChange} />
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
-{/* 
-            <div className="tagBox">
-                {getChips()}
-            </div> */}
 
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <h1 className="card-title">{contentName}</h1>
