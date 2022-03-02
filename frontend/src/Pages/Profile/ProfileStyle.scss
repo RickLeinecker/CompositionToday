@@ -125,9 +125,13 @@
 }
 
 .tagBox{
-    justify-content: center;
+    display: flex;
+    // justify-content: flex-end;
+    flex-direction: row-reverse;
+    overflow-x: scroll; 
     white-space: nowrap;
-    overflow-x: scroll;
+    margin: 0.5% 1%;
+    scroll-margin-inline-start: 0;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

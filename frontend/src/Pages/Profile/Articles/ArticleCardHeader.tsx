@@ -34,29 +34,34 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
             return;
         }
         let tags: TagType[] = JSON.parse(tagArray);
-        return tags?.map(tag => <Chip label={tag.tagName} style={{marginRight: "2%"}} />);
+        return tags?.map(tag => <Chip label={tag.tagName} style={{ marginRight: "2%"}} />);
     }
 
     return (
-        <div style={{ display: "flex", height:"10vh" }}>
-            <div className='card-start'>
-                <div style={{width: "8vh", marginRight: "2%"}}>
-                    <Link to={`/profile/${username}`} style={{margin: "0%"}}>
-                        <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
-                    </Link>
-                </div>
-                <div style={{width: "50%"}}>
-                    <Link to={`/profile/${username}`} style={{ textDecoration: 'none', whiteSpace: "nowrap" }}>
-                        <h5 className="card-title" style={{ marginLeft: "2%", alignSelf: "center" }}>{displayName}</h5>
-                    </Link>
-                    <div className="tagBox">
-                        {getChips()}
+        <div style={{ display: "flex" }}>
+            <div style={{ flex: "7 0 0" }}>
+                {/* <div style={{ flexDirection: "column" }}> */}
+                <div className='card-start'>
+                    <div style={{ width: "8vh", marginRight: "2%" }}>
+                        <Link to={`/profile/${username}`} style={{ margin: "0%" }}>
+                            <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
+                        </Link>
+                    </div>
+                    <div style={{ width: "30%" }}>
+                        <Link to={`/profile/${username}`} style={{ textDecoration: 'none', whiteSpace: "nowrap" }}>
+                            <h5 className="card-title" style={{ marginLeft: "2%", alignSelf: "center" }}>{displayName}</h5>
+                        </Link>
                     </div>
                 </div>
+                {/* <div className="tagBox">
+                        {getChips()}
+                    </div> */}
+                {/* </div> */}
             </div>
 
-            <div className="card-icons">
-                <div style={{ display: "flex" }}>
+
+            <div className="card-icons" style={{display: "flex", flexDirection: "column", width: "50%",}}>
+                <div style={{ display: "flex", float: "right", justifyContent: "flex-end"}}>
                     {isEdited ?
                         <p className="card-text-secondary">
                             (edited)&nbsp;
@@ -64,7 +69,7 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
                         :
                         <></>
                     }
-                    <p className="card-text-secondary" style={{whiteSpace: "nowrap"}}>
+                    <p className="card-text-secondary" style={{ whiteSpace: "nowrap" }}>
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
                     <div>
@@ -72,6 +77,10 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
                             <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                         }
                     </div>
+
+                </div>
+                <div className="tagBox">
+                    {getChips()}
                 </div>
             </div>
 
