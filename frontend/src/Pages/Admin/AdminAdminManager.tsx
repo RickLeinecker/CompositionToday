@@ -1,28 +1,20 @@
 import { Button } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams, GridRowParams, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import GenericGetHandler from '../../Handlers/GenericGetHandler';
 import { User } from '../../ObjectInterface';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import GenericModal from '../../Helper/Generics/GenericModal';
 import useOpen from '../../Helper/CustomHooks/useOpen';
 import AdminColumns from './columnStructure/AdminColumns';
 
 export default function AdminAdminManager() {
-    const [row, setRow] = useState<User[]>([]);
-    const [user, setUser] = useState<User>();
-	const [pageSize, setPageSize] = useState<number>(10);
-	const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
+    const [rows, setRows] = useState<User[]>([]);
+    const [selected, setSelected] = useState<User[]>([]);
+    const [pageSize, setPageSize] = useState<number>(10);
+    const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
 
-    const handleButtonClick = (userData: GridRenderCellParams<any, any, any>, type: string) => {
-		console.log("Admindata",userData);
-		setUser(userData.row);
-		if (type === "remove") handleOpenRemove();
-	}
-
-	const columns = AdminColumns(handleButtonClick);
+    const columns = AdminColumns();
 
     async function fetchAdmins() {
         try {
@@ -32,7 +24,7 @@ export default function AdminAdminManager() {
             }
 
             const result = await answer.result;
-            setRow(result);
+            setRows(result);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
         }
@@ -42,52 +34,57 @@ export default function AdminAdminManager() {
         fetchAdmins();
     }, [])
 
-    // const handleClick = () => {
-    //     handleOpenAdd();
-    // }
-
-    // const handleRowClick = (params: GridRowParams<{[key: string]: any;}>) => {
-	// 	console.log("Clicked", params.row);
-	// 	setUser(params.row as User);
-	// 	handleOpenAdd();
-	// }
-
-    // UserColumns();
+    function AdminToolbar() {
+        return (
+            <GridToolbarContainer style={{ display: "flex", justifyContent: "space-around" }}>
+                {
+                    selected.length === 1 &&
+                    <Button color="error" variant="contained" onClick={handleOpenRemove} endIcon={<PersonRemoveIcon />}>
+                        Remove Admin
+                    </Button>
+                }
+            </GridToolbarContainer>
+        );
+    }
 
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
-                rows={row}
+                sx={{
+                    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
+                        display: "none"
+                    }
+                }}
+                rows={rows}
                 columns={columns}
-				pageSize={pageSize}
-				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				onCellEditCommit={(params) => {console.log("Commited", params);}}
-				// onRowClick={handleRowClick}
-				rowsPerPageOptions={[10, 50, 100]}
+                pageSize={pageSize}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                components={{
+                    Toolbar: AdminToolbar,
+                }}
+                onSelectionModelChange={(ids) => {
+                    const selectedIDs = new Set(ids);
+                    const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
+                    setSelected(selectedRows);
+                }}
+                rowsPerPageOptions={[10, 50, 100]}
+                checkboxSelection
             />
 
-            {/* <div style={{ display: "flex", justifyContent: "space-around", marginTop: "50px" }}>
-                <Button color={"primary"} variant="contained" endIcon={<AddIcon />} onClick={handleClick}>
-                    Make User an Admin
-                </Button>
-                <Button color={"error"} variant="contained" endIcon={<DeleteIcon />} onClick={handleClick}>
-                    Remove an Admin
-                </Button>
-            </div> */}
             <GenericModal
-				show={removeOpen}
-				title={"Demote Admin to User"}
-				onHide={handleCloseRemove}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
+                show={removeOpen}
+                title={"Demote Admin to User"}
+                onHide={handleCloseRemove}
+                confirm={() => { }}
+                actionText={"Save"}
+                checkForErrors={() => false}
+            >
+                <div>
                     <pre>
-					    {JSON.stringify(user)}
+                        {JSON.stringify(selected)}
                     </pre>
-				</div>
-			</GenericModal>
+                </div>
+            </GenericModal>
         </div>
     )
 }
