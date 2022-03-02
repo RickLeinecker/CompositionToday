@@ -20,7 +20,7 @@ export default function AdminUserManager() {
 	const { open: adminOpen, handleClick: handleOpenAdmin, handleClose: handleCloseAdmin } = useOpen();
 	const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
 
-	const columns = UserColumns();
+	const columns = UserColumns;
 
 	async function fetchAdmins() {
 		try {

@@ -14,7 +14,7 @@ export default function AdminAdminManager() {
     const [pageSize, setPageSize] = useState<number>(10);
     const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
 
-    const columns = AdminColumns();
+    const columns = AdminColumns;
 
     async function fetchAdmins() {
         try {
