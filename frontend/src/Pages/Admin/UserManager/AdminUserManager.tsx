@@ -13,6 +13,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AdminEditUserModal from './AdminEditUserModal';
 import AdminDeleteUsersModal from './AdminDeleteUsersModal';
 import AdminMakeAdminModal from './AdminMakeAdminModal';
+import AdminMakePublisherModal from './AdminMakePublisherModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
@@ -92,7 +93,14 @@ export default function AdminUserManager() {
 			}
 
 			{/* Publisher Modal */}
-			<GenericModal
+			<AdminMakePublisherModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				publishOpen={publishOpen}
+				handleClosePublish={handleClosePublish}
+				type={"user"}
+			/>
+			{/* <GenericModal
 				show={publishOpen}
 				title={`Make Selected Users Publishers?`}
 				onHide={handleClosePublish}
@@ -105,7 +113,7 @@ export default function AdminUserManager() {
 						{JSON.stringify(selected)}
 					</pre>
 				</div>
-			</GenericModal>
+			</GenericModal> */}
 
 			{/* Admin Modal */}
 			<AdminMakeAdminModal
@@ -115,20 +123,6 @@ export default function AdminUserManager() {
 				handleCloseAdmin={handleCloseAdmin}
 				type={"user"}
 			/>
-			{/* <GenericModal
-				show={adminOpen}
-				title={`Make Selected Users Admins?`}
-				onHide={handleCloseAdmin}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal> */}
 
 			{/* Delete Modal */}
 			<AdminDeleteUsersModal
