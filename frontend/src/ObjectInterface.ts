@@ -57,6 +57,8 @@ export type ArticleType = {
 
     likeCount: number;
     isLikedByLoggedInUser: boolean;
+
+    tagArray: Array<TagType>;
     
     id: number;
     isEdited: boolean;

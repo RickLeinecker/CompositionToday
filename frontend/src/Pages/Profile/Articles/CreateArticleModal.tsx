@@ -76,10 +76,11 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "article",
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags,
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {

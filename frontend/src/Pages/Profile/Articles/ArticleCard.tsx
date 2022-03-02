@@ -14,7 +14,7 @@ type Props = {
 
 
 export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
-    const { id, contentName, contentText, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser, isEdited } = article;
+    const { id, contentName, contentText, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser, isEdited, tagArray} = article;
 
     const [showMore, setShowMore] = useState(false);
 
