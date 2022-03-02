@@ -1,22 +1,21 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// createTag
-exports.createTag = async (req, res) => {
-  // incoming: tagName, imageFilepath, imageFilename
+// addProject
+exports.addProject = async (req, res) => {
+  // incoming: url, img_path, title, desc
   // outgoing: error
 
   var error = "";
   var results = [];
   var responseCode = 0;
 
-  const { tagName, imageFilepath, imageFilename } = req.body;
+  const { url, imageFilepath, imageFilename, projectTitle, description } =
+    req.body;
   mysql_pool.getConnection(function (err, connection) {
-    const sqlInsert =
-      "INSERT INTO tag(tagName,imageFilepath,imageFilename) VALUES (?,?,?)";
     connection.query(
-      sqlInsert,
-      [tagName, imageFilepath, imageFilename],
+      "INSERT INTO relatedProjects(url, imageFilepath, imageFilename, projectTitle, description) VALUES (?,?,?,?,?);",
+      [url, imageFilepath, imageFilename, projectTitle, description],
       function (err, result) {
         if (err) {
           error = "SQL Insert Error";

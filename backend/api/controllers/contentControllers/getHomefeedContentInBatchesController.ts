@@ -3,11 +3,13 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // getHomefeedContentInBatches
 exports.getHomefeedContentInBatches = async (req, res) => {
-  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc."
+  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc.",
+  //           tagArray: array [classical, edm, etc.]
   // outgoing: content, error
 
   // get data from frontend
-  const { uid, contentTypeArray, sortBy, startIndex, endIndex } = req.body;
+  const { uid, contentTypeArray, sortBy, startIndex, endIndex, tagArray } =
+    req.body;
   var numberOfRecords = endIndex - startIndex + 1;
 
   var error = "";
@@ -25,14 +27,27 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   user.username,userProfile.displayName,userProfile.profilePicPath,content.isEdited,
   COUNT(likes.id) AS likeCount, 
   (SELECT COUNT(comment.id) FROM comment WHERE comment.contentID=content.id) AS commentCount,
+  (SELECT JSON_ARRAYAGG(JSON_OBJECT('id',t.id,'tagName',t.tagName)) AS tagArray1 FROM (SELECT DISTINCT tag.id, tag.tagName FROM tag INNER JOIN contentTag ON tag.id=contentTag.tagID AND contentTag.contentID=content.id) AS t) AS tagArray,
   SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
   FROM content 
   INNER JOIN user ON content.userID=user.id
   INNER JOIN userProfile ON content.userID=userProfile.userID 
   LEFT JOIN likes ON content.id=likes.contentID `;
-
+  if (tagArray && tagArray.length > 0) {
+    insertString += "INNER JOIN contentTag ON ";
+    for (var tag of tagArray) {
+      insertString += "contentTag.tagID=" + tag.id + " OR ";
+    }
+    insertString = insertString.slice(0, -3);
+    insertString += "AND contentTag.contentID=content.id ";
+    // insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
+  } //else {
+  console.log(insertString);
+  //  insertString += "LEFT JOIN contentTag ON contentTag.contentID=content.id ";
+  // insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
+  //}
   // if contentTypeArray has contentTypes, build string
-  if (contentTypeArray.length > 0) {
+  if (contentTypeArray && contentTypeArray.length > 0) {
     insertString += "WHERE ";
     for (var contentT of contentTypeArray) {
       insertString += `contentType='${contentT}' OR `;

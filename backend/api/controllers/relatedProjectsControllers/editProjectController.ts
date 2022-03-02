@@ -1,9 +1,9 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// updateTag
-exports.updateTag = async (req, res) => {
-  // incoming: tagName, tagID
+// editProject
+exports.editProject = async (req, res) => {
+  // incoming: projectID, url, imageFilepath, imageFilename, projectTitle, description
   // outgoing: error
 
   var error = "";
@@ -11,14 +11,20 @@ exports.updateTag = async (req, res) => {
   var insertArray = [];
   var responseCode = 0;
 
-  const { tagName, tagID, imageFilepath, imageFilename, approvedGenre } =
-    req.body;
+  const {
+    projectID,
+    url,
+    imageFilepath,
+    imageFilename,
+    projectTitle,
+    description,
+  } = req.body;
 
   // build update string with non null fields
-  var insertString = "UPDATE tag SET ";
-  if (tagName !== null && tagName !== undefined) {
-    insertString += "tagName=?,";
-    insertArray.push(tagName);
+  var insertString = "UPDATE relatedProjects SET ";
+  if (url !== null && url !== undefined) {
+    insertString += "url=?,";
+    insertArray.push(url);
   }
   if (imageFilepath !== null && imageFilepath !== undefined) {
     insertString += "imageFilepath=?,";
@@ -28,14 +34,18 @@ exports.updateTag = async (req, res) => {
     insertString += "imageFilename=?,";
     insertArray.push(imageFilename);
   }
-  if (approvedGenre !== null && approvedGenre !== undefined) {
-    insertString += "approvedGenre=?,";
-    insertArray.push(approvedGenre);
+  if (projectTitle !== null && projectTitle !== undefined) {
+    insertString += "projectTitle=?,";
+    insertArray.push(projectTitle);
+  }
+  if (description !== null && description !== undefined) {
+    insertString += "description=?,";
+    insertArray.push(description);
   }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";
-  insertArray.push(tagID);
+  insertArray.push(projectID);
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
@@ -48,7 +58,7 @@ exports.updateTag = async (req, res) => {
           results.push("Success");
           responseCode = 200;
         } else {
-          error = "This tag does not exist";
+          error = "Project does not exist";
           responseCode = 500;
         }
       }
