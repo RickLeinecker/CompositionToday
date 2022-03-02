@@ -1,9 +1,9 @@
 import { Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
-import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import { TagType } from '../../ObjectInterface';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import { TagType } from '../../../ObjectInterface';
 import AdminTagsVirtualizedList from './AdminTagsVirtualizedList'
 import CreateGenreModal from './CreateGenreModal';
 import CreateTagModal from './CreateTagModal';

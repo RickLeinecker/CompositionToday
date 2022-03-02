@@ -1,15 +1,15 @@
-import { TagType } from '../../ObjectInterface';
+import { TagType } from '../../../ObjectInterface';
 
 type Props = {
-    genre: TagType;
+    tag: TagType;
     notifyChange: () => void;
     notifyVirtualizer: () => void;
     clearCache: () => void;
 }
 
 
-export default function AdminGenreCard({ genre, notifyChange, notifyVirtualizer, clearCache }: Props) {
-    const { id, tagName, imageFilepath } = genre;
+export default function AdminTagCard({ tag, notifyChange, notifyVirtualizer, clearCache }: Props) {
+    const { id, tagName } = tag;
 
     return (
         <div className="card">

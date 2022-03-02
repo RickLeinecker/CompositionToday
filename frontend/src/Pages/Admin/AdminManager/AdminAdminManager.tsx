@@ -1,12 +1,11 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import { User } from '../../ObjectInterface';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import { User } from '../../../ObjectInterface';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import GenericModal from '../../Helper/Generics/GenericModal';
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import AdminColumns from './columnStructure/AdminColumns';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import AdminColumns from '../columnStructure/AdminColumns';
 import AdminRemoveModal from './AdminRemoveModal';
 
 export default function AdminAdminManager() {

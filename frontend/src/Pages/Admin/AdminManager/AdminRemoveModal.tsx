@@ -1,5 +1,5 @@
 import React from 'react'
-import GenericModal from '../../Helper/Generics/GenericModal';
+import GenericModal from '../../../Helper/Generics/GenericModal';
 
 type Props = {
     userID: number[];
