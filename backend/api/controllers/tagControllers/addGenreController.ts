@@ -11,7 +11,7 @@ exports.addGenre = async (req, res) => {
   var insertArray = [];
   var responseCode = 0;
 
-  const { genre, imageFilepath } = req.body;
+  const { genre, imageFilepath, imageFilename } = req.body;
 
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
@@ -61,10 +61,10 @@ exports.addGenre = async (req, res) => {
           } else {
             mysql_pool.getConnection(function (err, connection) {
               const sqlInsert =
-                "INSERT INTO tag(tagName,approvedGenre,imageFilepath) VALUES (?,?,?)";
+                "INSERT INTO tag(tagName,approvedGenre,imageFilepath,imageFilename) VALUES (?,?,?,?)";
               connection.query(
                 sqlInsert,
-                [genre, 1, imageFilepath],
+                [genre, 1, imageFilepath, imageFilename],
                 function (err, result) {
                   if (err) {
                     error = "Genre already exists";

@@ -1,30 +1,32 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// createTag
-exports.createTag = async (req, res) => {
-  // incoming: tagName, imageFilepath, imageFilename
+// removeProject
+exports.removeProject = async (req, res) => {
+  // incoming: projectID
   // outgoing: error
 
   var error = "";
   var results = [];
   var responseCode = 0;
 
-  const { tagName, imageFilepath, imageFilename } = req.body;
+  const { projectID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
-    const sqlInsert =
-      "INSERT INTO tag(tagName,imageFilepath,imageFilename) VALUES (?,?,?)";
     connection.query(
-      sqlInsert,
-      [tagName, imageFilepath, imageFilename],
+      "DELETE FROM relatedProjects WHERE id=?",
+      [projectID],
       function (err, result) {
         if (err) {
-          error = "SQL Insert Error";
+          error = "SQL Delete Error";
           responseCode = 500;
           console.log(err);
         } else {
-          results.push("Success");
-          responseCode = 201;
+          if (result.affectedRows > 0) {
+            results.push("Success");
+            responseCode = 200;
+          } else {
+            error = "Project does not exist";
+          }
         }
         // package data
         var ret = {

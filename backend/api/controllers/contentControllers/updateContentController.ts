@@ -39,6 +39,7 @@ exports.updateContent = async (req, res) => {
     mapsEnabled,
     imageFilepath,
     imageFilename,
+    tagArray,
   } = req.body;
 
   mysql_pool.getConnection(function (err, connection) {
@@ -58,98 +59,107 @@ exports.updateContent = async (req, res) => {
             // update isEdited to true;
             isEdited = 1;
             var insertString = "UPDATE content SET ";
-            if (result[0].id !== null) {
+            if (result[0].id !== null && result[0].id !== undefined) {
               insertString += "userID=?,";
               insertArray.push(result[0].id);
             }
 
-            if (imageFilepathArray !== null) {
+            if (
+              imageFilepathArray !== null &&
+              imageFilepathArray !== undefined
+            ) {
               insertString += "imageFilepathArray=?,";
               insertArray.push(imageFilepathArray);
             }
 
-            if (contentText !== null) {
+            if (contentText !== null && contentText !== undefined) {
               insertString += "contentText=?,";
               insertArray.push(contentText);
             }
 
-            if (location !== null) {
+            if (location !== null && location !== undefined) {
               insertString += "location=?,";
               insertArray.push(location);
             }
             // remove edit timestamp
-            // if (timestamp !== null) {
+            // if (timestamp !== null && timestamp !== undefined) {
             //   insertString += "timestamp=?,";
             //   insertArray.push(timestamp);
             // }
 
-            if (audioFilepath !== null) {
+            if (audioFilepath !== null && audioFilepath !== undefined) {
               insertString += "audioFilepath=?,";
               insertArray.push(audioFilepath);
             }
 
-            if (sheetMusicFilepath !== null) {
+            if (
+              sheetMusicFilepath !== null &&
+              sheetMusicFilepath !== undefined
+            ) {
               insertString += "sheetMusicFilepath=?,";
               insertArray.push(sheetMusicFilepath);
             }
 
-            if (contentType !== null) {
+            if (contentType !== null && contentType !== undefined) {
               insertString += "contentType=?,";
               insertArray.push(contentType);
             }
 
-            if (contentName !== null) {
+            if (contentName !== null && contentName !== undefined) {
               insertString += "contentName=?,";
               insertArray.push(contentName);
             }
 
-            if (websiteLink !== null) {
+            if (websiteLink !== null && websiteLink !== undefined) {
               insertString += "websiteLink=?,";
               insertArray.push(websiteLink);
             }
 
-            if (collaborators !== null) {
+            if (collaborators !== null && collaborators !== undefined) {
               insertString += "collaborators=?,";
               insertArray.push(collaborators);
             }
 
-            if (description !== null) {
+            if (description !== null && description !== undefined) {
               insertString += "description=?,";
               insertArray.push(description);
             }
-            if (toDate !== null) {
+            if (toDate !== null && toDate !== undefined) {
               insertString += "toDate=?,";
               insertArray.push(toDate);
             }
-            if (fromDate !== null) {
+            if (fromDate !== null && fromDate !== undefined) {
               insertString += "fromDate=?,";
               insertArray.push(fromDate);
             }
-            if (isDateCurrent !== null) {
+            if (isDateCurrent !== null && isDateCurrent !== undefined) {
               insertString += "isDateCurrent=?,";
               insertArray.push(isDateCurrent);
             }
-            if (price !== null) {
+            if (price !== null && price !== undefined) {
               insertString += "price=?,";
               insertArray.push(price);
             }
-            if (audioFilename !== null) {
+            if (audioFilename !== null && audioFilename !== undefined) {
               insertString += "audioFilename=?,";
               insertArray.push(audioFilename);
             }
-            if (sheetMusicFilename !== null) {
+            if (
+              sheetMusicFilename !== null &&
+              sheetMusicFilename !== undefined
+            ) {
               insertString += "sheetMusicFilename=?,";
               insertArray.push(sheetMusicFilename);
             }
-            if (mapsEnabled !== null) {
+            if (mapsEnabled !== null && mapsEnabled !== undefined) {
               insertString += "mapsEnabled=?,";
               insertArray.push(mapsEnabled);
             }
-            if (imageFilepath !== null) {
+            if (imageFilepath !== null && imageFilepath !== undefined) {
               insertString += "imageFilepath=?,";
               insertArray.push(imageFilepath);
             }
-            if (imageFilename !== null) {
+            if (imageFilename !== null && imageFilename !== undefined) {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
             }
@@ -173,26 +183,70 @@ exports.updateContent = async (req, res) => {
                       console.log(err);
                     } else {
                       if (result.affectedRows > 0) {
+                        // for each tag in tagArray:
+                        // if tag is linked to content -> remove tag
+                        // else -> add tag
+                        if (tagArray && tagArray.length > 0) {
+                          for (var i = 0; i < tagArray.length; ++i) {
+                            sqlQuery(i);
+                            function sqlQuery(index) {
+                              mysql_pool.getConnection(function (
+                                err,
+                                connection
+                              ) {
+                                connection.query(
+                                  "SELECT id FROM contentTag WHERE contentTag.contentID=? AND tagID=?",
+                                  [contentID, tagArray[index].id],
+                                  function (err, result) {
+                                    if (err) {
+                                      console.log(err);
+                                      connection.release();
+                                      processChanges();
+                                    } else {
+                                      if (result[0]) {
+                                        // if tag exists, remove it
+                                        connection.query(
+                                          "DELETE FROM contentTag WHERE id=?",
+                                          [result[0].id],
+                                          function (err, result) {
+                                            if (err) {
+                                              console.log(err);
+                                            }
+                                            connection.release();
+                                          }
+                                        );
+                                      } else {
+                                        // tag doesn't exist, add it
+                                        connection.query(
+                                          "INSERT INTO contentTag(contentID, tagID) VALUES (?,?)",
+                                          [contentID, tagArray[index].id],
+                                          function (err, result) {
+                                            if (err) {
+                                              console.log(err);
+                                            }
+                                            connection.release();
+                                          }
+                                        );
+                                      }
+                                    }
+                                  }
+                                );
+                              });
+                            }
+                          }
+                        }
                         results.push("Success");
                         responseCode = 200;
+                        connection.release();
                         processChanges();
                       } else {
                         error = "Content does not exist";
                         responseCode = 500;
                         console.log(error);
+                        connection.release();
                         processChanges();
                       }
-                      // log result
-                      // console.log(result);
                     }
-                    // package data
-                    // var ret = {
-                    //   result: results,
-                    //   error: error,
-                    // };
-                    // // send data
-                    // res.status(responseCode).json(ret);
-                    connection.release();
                   }
                 );
               });
