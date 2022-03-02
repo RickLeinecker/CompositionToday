@@ -1,11 +1,11 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import GenericGetHandler from '../../Handlers/GenericGetHandler';
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../Helper/Generics/GenericModal';
-import { User } from '../../ObjectInterface';
-import UserColumns from './columnStructure/UserColumns';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import useOpen from '../../../Helper/CustomHooks/useOpen';
+import GenericModal from '../../../Helper/Generics/GenericModal';
+import { User } from '../../../ObjectInterface';
+import UserColumns from '../columnStructure/UserColumns';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
