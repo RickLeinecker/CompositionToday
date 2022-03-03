@@ -2,22 +2,42 @@ import { Button } from '@mui/material';
 import CreateTagModal from './CreateTagModal';
 import GenericModal from '../../../Helper/Generics/GenericModal';
 import DataGridMaker from '../DataGridMaker';
-import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { GridToolbarContainer } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import { TagType } from '../../../ObjectInterface';
 import DeleteIcon from '@mui/icons-material/Delete';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import TagAndGenreColumns from '../columnStructure/TagAndGenreColumns';
 
-
-interface Props {
-    columns: GridColDef[];
-}
-
-const TagSection = ({columns}: Props) => {
+const TagComponent = () => {
     const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
     const [responseTags, setResponseTags] = useState<Array<TagType>>([]);
+    const [tagsChanged, setTagsChanged] = useState<boolean>(false);
     const { open: createTagOpen, handleClick: handleOpenCreateTag, handleClose: handleCloseCreateTag } = useOpen();
     const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
+
+    const notifyChange = () => {
+        setTagsChanged(value => !value);
+    }
+
+    useEffect(() => {
+        async function fetchTags() {
+            try {
+                let answer: any = (await GenericGetHandler("getTags"));
+                if (answer.error.length > 0) {
+                    return;
+                }
+
+                const result = await answer.result;
+                setResponseTags(result);
+            } catch (e: any) {
+                console.error("Frontend Error: " + e);
+            }
+        }
+
+        fetchTags();
+    }, [tagsChanged])
 
     function TagsToolbar() {
         return (
@@ -40,9 +60,9 @@ const TagSection = ({columns}: Props) => {
             <Button variant="contained" onClick={handleOpenCreateTag}>
                 Create Tag
             </Button>
-            {/* <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} /> */}
+            <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} />
 
-            <DataGridMaker rows={responseTags} columns={columns} setSelected={setSelectedTags} CustomToolbar={TagsToolbar} />
+            <DataGridMaker rows={responseTags} columns={TagAndGenreColumns} setSelected={setSelectedTags} CustomToolbar={TagsToolbar} />
 
             <GenericModal
                 show={removeOpen}
@@ -62,5 +82,4 @@ const TagSection = ({columns}: Props) => {
     );
 }
 
-// export default TagSection;
-export {};
+export default TagComponent;

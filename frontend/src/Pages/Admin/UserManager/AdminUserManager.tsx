@@ -56,15 +56,17 @@ export default function AdminUserManager() {
 			<DataGridMaker rows={rows} columns={UserColumns} setSelected={setSelected} CustomToolbar={UserToolbar} />
 
 			{/* Edit Modal */}
-			{selected.length === 1 ?
-				<AdminEditUserModal
-					user={selected[0]}
-					notifyChange={() => { }}
-					editOpen={editOpen}
-					handleCloseEdit={handleCloseEdit}
-				/>
-				:
-				<></>
+			{
+				selected.length === 1
+					?
+					<AdminEditUserModal
+						user={selected[0]}
+						notifyChange={() => { }}
+						editOpen={editOpen}
+						handleCloseEdit={handleCloseEdit}
+					/>
+					:
+					<></>
 			}
 
 			{/* Publisher Modal */}
