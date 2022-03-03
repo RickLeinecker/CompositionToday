@@ -45,19 +45,28 @@ function App(this: any) {
         }
 
         async function checkIfAdmin() {
-            // setIsAdmin(await fetchData());
-            setIsAdmin(true);
+            setIsAdmin(await fetchData());
+            // setIsAdmin(true);
         }
 
         checkIfAdmin();
     }, [currentUser])
 
+    console.log(currentUser)
+
     return (
         <>
-            {(!isAdmin || !currentUser) ?
+            {
                 <>
-                    <TopNavBar />
+                    <TopNavBar isAdmin={isAdmin} currentUser={currentUser} />
                     <Routes>
+                        {
+                            isAdmin &&
+                            <Route element={<PrivateRoute isLogged={currentUser} />}>
+                                <Route path='/dashboard' element={<AdminDashboard />} />
+                            </Route>
+                        }
+
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/' element={<Home />} />
                         </Route>
@@ -78,19 +87,21 @@ function App(this: any) {
                             <Route path='/related-projects' element={<RelatedProjects />} />
                         </Route>
 
+                        {/* Fail-safe */}
+                        {/* <Route path="/profile/" element={<Home />} />  */}
+
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/profile/:username' element={<Profile />} />
                         </Route>
-                        <Route path="*" element={<Registration />} />
-                    </Routes>
-                </>
-                :
-                <>
-                    <Routes>
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/dashboard' element={<AdminDashboard />} />
-                            <Route path='*' element={<ToAdmin />} />
-                        </Route>
+                        {
+                            isAdmin
+                                ? <Route path='*' element={<ToAdmin />} />
+                                : (!currentUser || currentUser.isAnonymous) 
+                                    ? <Route path='*' element={<Registration />} />
+                                    : <Route element={<PrivateRoute isLogged={currentUser} />}>
+                                        <Route path='*' element={<Home />} />
+                                    </Route>
+                        }
                     </Routes>
                 </>
             }

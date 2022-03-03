@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
-import { TagType, User } from '../../../ObjectInterface';
+import { User } from '../../../ObjectInterface';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 

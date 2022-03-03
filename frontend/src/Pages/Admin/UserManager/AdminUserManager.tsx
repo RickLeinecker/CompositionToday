@@ -1,9 +1,8 @@
 import { Button } from '@mui/material';
-import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
+import { GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../../Helper/Generics/GenericModal';
 import { User } from '../../../ObjectInterface';
 import UserColumns from '../columnStructure/UserColumns';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,19 +11,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AdminEditUserModal from './AdminEditUserModal';
 import AdminDeleteUsersModal from './AdminDeleteUsersModal';
-import AdminMakeAdminModal from './AdminMakeAdminModal';
+import DataGridMaker from '../DataGridMaker';
 import AdminMakePublisherModal from './AdminMakePublisherModal';
+import AdminMakeAdminModal from './AdminMakeAdminModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
 	const [selected, setSelected] = useState<User[]>([]);
-	const [pageSize, setPageSize] = useState<number>(10);
 	const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
 	const { open: publishOpen, handleClick: handleOpenPublish, handleClose: handleClosePublish } = useOpen();
 	const { open: adminOpen, handleClick: handleOpenAdmin, handleClose: handleCloseAdmin } = useOpen();
 	const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
-
-	const columns = UserColumns;
 
 	async function fetchAdmins() {
 		try {
@@ -57,38 +54,20 @@ export default function AdminUserManager() {
 
 	return (
 		<div style={{ height: 400, width: '100%' }}>
-			<DataGrid
-				sx={{
-					"& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-						display: "none"
-					}
-				}}
-				rows={rows}
-				columns={columns}
-				pageSize={pageSize}
-				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				components={{
-					Toolbar: UserToolbar,
-				}}
-				onSelectionModelChange={(ids) => {
-					const selectedIDs = new Set(ids);
-					const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
-					setSelected(selectedRows);
-				}}
-				// disableSelectionOnClick
-				rowsPerPageOptions={[10, 50, 100]}
-				checkboxSelection
-			/>
+			<DataGridMaker rows={rows} columns={UserColumns} setSelected={setSelected} CustomToolbar={UserToolbar} />
 
-			{selected.length === 1 ?
-				<AdminEditUserModal
-					user={selected[0]}
-					notifyChange={() => { }}
-					editOpen={editOpen}
-					handleCloseEdit={handleCloseEdit}
-				/>
-				:
-				<></>
+			{/* Edit Modal */}
+			{
+				selected.length === 1
+					?
+					<AdminEditUserModal
+						user={selected[0]}
+						notifyChange={() => { }}
+						editOpen={editOpen}
+						handleCloseEdit={handleCloseEdit}
+					/>
+					:
+					<></>
 			}
 
 			<AdminMakePublisherModal
