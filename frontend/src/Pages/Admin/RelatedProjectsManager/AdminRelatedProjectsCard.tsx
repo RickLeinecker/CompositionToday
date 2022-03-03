@@ -1,16 +1,19 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import "../../RelatedProjects/RelatedProjects.scss";
 import {
     Paper,
     CardActionArea,
     Grid,
     Link,
     Typography,
+    IconButton,
 } from "@mui/material";
 
-import "./RelatedProjects.scss";
+
 type Props = {
     path: string;
     img: string;
@@ -20,7 +23,7 @@ type Props = {
     description: string;
 };
 
-export default function RelatedProjectsCard({ img, path, className, title, altText, description }: Props) {
+export default function AdminRelatedProjectsCard({ img, path, className, title, altText, description }: Props) {
     return (
         <>
             <Grid item xs={12} md={6} >
@@ -43,6 +46,15 @@ export default function RelatedProjectsCard({ img, path, className, title, altTe
                             <Typography variant="body2" color="text.secondary">
                                 {description}
                             </Typography>
+                            <div style={{ display:"flex", justifyContent:"flex-end"}}>
+                                <IconButton>
+                                    <EditIcon />
+                                </IconButton>
+                                <IconButton>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </div>
+
                         </CardContent>
                     </Card>
                 </Paper>

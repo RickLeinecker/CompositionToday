@@ -2,10 +2,10 @@ import { Button, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import React, { useEffect, useState } from 'react'
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
 import { RelatedProjectType } from '../../../ObjectInterface';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import AdminCreateRelatedProjectModal from './AdminCreateRelatedProjectModal';
+import AdminRelatedProjectsCard from './AdminRelatedProjectsCard';
 
 
 export default function AdminRelatedProjectsManager() {
@@ -94,7 +94,7 @@ export default function AdminRelatedProjectsManager() {
 					marginBottom="4rem"
 				>
 					{response?.map(project => 
-						<RelatedProjectsCard
+						<AdminRelatedProjectsCard
 							path={project.url}
 							img={project.imageFilepath}
 							altText={project.description}
