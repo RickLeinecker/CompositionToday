@@ -12,6 +12,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AdminEditUserModal from './AdminEditUserModal';
 import AdminDeleteUsersModal from './AdminDeleteUsersModal';
+import AdminMakeAdminModal from './AdminMakeAdminModal';
+import AdminMakePublisherModal from './AdminMakePublisherModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
@@ -78,7 +80,6 @@ export default function AdminUserManager() {
 				checkboxSelection
 			/>
 
-			{/* Edit Modal */}
 			{selected.length === 1 ?
 				<AdminEditUserModal
 					user={selected[0]}
@@ -90,39 +91,22 @@ export default function AdminUserManager() {
 				<></>
 			}
 
-			{/* Publisher Modal */}
-			<GenericModal
-				show={publishOpen}
-				title={`Make Selected Users Publishers?`}
-				onHide={handleClosePublish}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			<AdminMakePublisherModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				publishOpen={publishOpen}
+				handleClosePublish={handleClosePublish}
+				type={"user"}
+			/>
 
-			{/* Admin Modal */}
-			<GenericModal
-				show={adminOpen}
-				title={`Make Selected Users Admins?`}
-				onHide={handleCloseAdmin}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			<AdminMakeAdminModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				adminOpen={adminOpen}
+				handleCloseAdmin={handleCloseAdmin}
+				type={"user"}
+			/>
 
-			{/* Delete Modal */}
 			<AdminDeleteUsersModal
 				userID={selected.map(user => user.id)}
 				notifyChange={() => { }}
@@ -130,7 +114,7 @@ export default function AdminUserManager() {
 				handleCloseDelete={handleCloseDelete}
 				type={"user"}
 			/>
-			
+
 		</div>
 	)
 }
