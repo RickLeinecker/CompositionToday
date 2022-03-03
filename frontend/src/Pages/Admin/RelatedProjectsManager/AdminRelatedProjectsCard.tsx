@@ -12,18 +12,26 @@ import {
     Typography,
     IconButton,
 } from "@mui/material";
+import useOpen from "../../../Helper/CustomHooks/useOpen";
+import AdminDeleteRelatedProjectmodal from "./AdminDeleteRelatedProjectModal";
 
 
 type Props = {
+    id: number;
     path: string;
     img: string;
     className: string;
     title: string;
     altText: string;
     description: string;
+    notifyChange: () => void;
 };
 
-export default function AdminRelatedProjectsCard({ img, path, className, title, altText, description }: Props) {
+export default function AdminRelatedProjectsCard({ img, path, className, title, altText, description, id, notifyChange }: Props) {
+
+    const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
+    const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+
     return (
         <>
             <Grid item xs={12} md={6} >
@@ -46,11 +54,11 @@ export default function AdminRelatedProjectsCard({ img, path, className, title, 
                             <Typography variant="body2" color="text.secondary">
                                 {description}
                             </Typography>
-                            <div style={{ display:"flex", justifyContent:"flex-end"}}>
-                                <IconButton>
+                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                <IconButton onClick={handleOpenEdit}>
                                     <EditIcon />
                                 </IconButton>
-                                <IconButton>
+                                <IconButton onClick={handleOpenDelete}>
                                     <DeleteIcon />
                                 </IconButton>
                             </div>
@@ -60,6 +68,14 @@ export default function AdminRelatedProjectsCard({ img, path, className, title, 
                 </Paper>
 
             </Grid>
+
+            <AdminDeleteRelatedProjectmodal
+                projectID={id}
+                notifyChange={notifyChange}
+                deleteOpen={deleteOpen}
+                handleCloseDelete={handleCloseDelete}
+                type={"related project"}
+            />
         </>
     );
 }
