@@ -54,10 +54,17 @@ function App(this: any) {
 
     return (
         <>
-            {(!isAdmin || !currentUser) ?
+            {
                 <>
                     <TopNavBar />
                     <Routes>
+                        {
+                            isAdmin &&
+                            <Route element={<PrivateRoute isLogged={currentUser} />}>
+                                <Route path='/dashboard' element={<AdminDashboard />} />
+                            </Route>
+                        }
+
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/' element={<Home />} />
                         </Route>
@@ -78,19 +85,17 @@ function App(this: any) {
                             <Route path='/related-projects' element={<RelatedProjects />} />
                         </Route>
 
+                        {/* Fail-safe */}
+                        <Route path="/profile/" element={<Home />} /> 
+
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/profile/:username' element={<Profile />} />
                         </Route>
-                        <Route path="*" element={<Registration />} />
-                    </Routes>
-                </>
-                :
-                <>
-                    <Routes>
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/dashboard' element={<AdminDashboard />} />
-                            <Route path='*' element={<ToAdmin />} />
-                        </Route>
+                        {
+                            isAdmin
+                                ? <Route path='*' element={<ToAdmin />} />
+                                : <Route path='*' element={<Registration />} />
+                        }
                     </Routes>
                 </>
             }

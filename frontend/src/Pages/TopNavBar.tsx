@@ -23,7 +23,22 @@ export default function TopNavBar() {
         setUsername(!temp ? "" : temp);
     }, [])
 
-    let notInSignUp = location.pathname !== "/registration" && location.pathname !== "/profile/" && location.pathname !== "/email-sent";
+    let notInSignUp;
+
+    switch (location.pathname) {
+        case "/":
+        case "/blog":
+        case "/showcase":
+        case "/related-projects":
+            notInSignUp = true;
+            break;
+        default:
+            if (location.pathname.includes("/profile/"))
+                notInSignUp = true;
+            else
+                notInSignUp = false;
+    }
+
     return (
         <>
             {
@@ -70,6 +85,7 @@ export default function TopNavBar() {
                                     </Nav.Link>
                                     <NavDropdown align="end" title={username}>
                                         <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to={`/dashboard`}>Admin Dashboard</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                                     </NavDropdown>

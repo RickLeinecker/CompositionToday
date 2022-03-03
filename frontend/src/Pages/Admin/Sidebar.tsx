@@ -20,10 +20,12 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HomeIcon from '@mui/icons-material/Home';
 import AdminRelatedProjectsManager from './RelatedProjectsManager/AdminRelatedProjectsManager';
 import AdminTagsManager from './TagsAndGenresManager/AdminTagsManager';
 import AdminUserManager from './UserManager/AdminUserManager';
 import useLogout from '../../Helper/CustomHooks/useLogout';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -82,7 +84,7 @@ export default function PersistentDrawerLeft() {
     const [currentPage, setCurrentPage] = useState("Admin Manager");
 
     const { handleLogout } = useLogout();
-    
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -155,6 +157,14 @@ export default function PersistentDrawerLeft() {
                 </ListItem>
 
                 <Divider />
+                <Link to="/" style={{ textDecoration: "none", color: "#272727" }}>
+                    <ListItem button key={"Back Home"} >
+                        <ListItemIcon>
+                            <HomeIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Back to Home"} />
+                    </ListItem>
+                </Link>
                 <ListItem button key={"AdminLogout"} onClick={handleLogout}>
                     <ListItemIcon>
                         <LogoutIcon />
