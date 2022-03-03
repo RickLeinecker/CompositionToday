@@ -1,11 +1,11 @@
-import { Button, Divider, Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import React, { useEffect, useState } from 'react'
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../../Helper/Generics/GenericModal';
 import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
-import { GenericHandlerType, RelatedProjectType } from '../../../ObjectInterface';
+import { RelatedProjectType } from '../../../ObjectInterface';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import AdminCreateRelatedProjectModal from './AdminCreateRelatedProjectModal';
 
 
 export default function AdminRelatedProjectsManager() {
@@ -47,7 +47,12 @@ export default function AdminRelatedProjectsManager() {
 
 	return (
 		<div>
-			<GenericModal
+			<AdminCreateRelatedProjectModal
+				createOpen={addOpen}
+				handleCloseCreate={handleCloseAdd}
+				notifyChange={notifyChange}
+			/>
+			{/* <GenericModal
 				show={addOpen}
 				title={"Add A New Project"}
 				onHide={handleCloseAdd}
@@ -71,7 +76,7 @@ export default function AdminRelatedProjectsManager() {
 						/>
 					</div>
 				</div>
-			</GenericModal>
+			</GenericModal> */}
 			<div style={{ display: "flex", justifyContent: "center" }}>
 				<Button color={"primary"} variant="contained" endIcon={<AddIcon />} onClick={handleAdd} >
 					Add A New Project
