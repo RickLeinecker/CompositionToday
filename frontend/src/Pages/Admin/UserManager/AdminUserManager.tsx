@@ -3,7 +3,6 @@ import { GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../../Helper/Generics/GenericModal';
 import { User } from '../../../ObjectInterface';
 import UserColumns from '../columnStructure/UserColumns';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,6 +12,8 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AdminEditUserModal from './AdminEditUserModal';
 import AdminDeleteUsersModal from './AdminDeleteUsersModal';
 import DataGridMaker from '../DataGridMaker';
+import AdminMakePublisherModal from './AdminMakePublisherModal';
+import AdminMakeAdminModal from './AdminMakeAdminModal';
 
 export default function AdminUserManager() {
 	const [rows, setRows] = useState<User[]>([]);
@@ -69,39 +70,22 @@ export default function AdminUserManager() {
 					<></>
 			}
 
-			{/* Publisher Modal */}
-			<GenericModal
-				show={publishOpen}
-				title={`Make Selected Users Publishers?`}
-				onHide={handleClosePublish}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			<AdminMakePublisherModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				publishOpen={publishOpen}
+				handleClosePublish={handleClosePublish}
+				type={"user"}
+			/>
 
-			{/* Admin Modal */}
-			<GenericModal
-				show={adminOpen}
-				title={`Make Selected Users Admins?`}
-				onHide={handleCloseAdmin}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<pre>
-						{JSON.stringify(selected)}
-					</pre>
-				</div>
-			</GenericModal>
+			<AdminMakeAdminModal
+				userID={selected.map(user => user.id)}
+				notifyChange={() => { }}
+				adminOpen={adminOpen}
+				handleCloseAdmin={handleCloseAdmin}
+				type={"user"}
+			/>
 
-			{/* Delete Modal */}
 			<AdminDeleteUsersModal
 				userID={selected.map(user => user.id)}
 				notifyChange={() => { }}
