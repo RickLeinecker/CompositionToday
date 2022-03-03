@@ -9,7 +9,7 @@ type Props = {
     isRequired: boolean
     isMultiline?: boolean
     onChange: (newValue: string, type: string) => void;
-    maxLength: number;
+    maxLength?: number;
 }
 
 export default function GenericInputField({title, value, onChange, type, isRequired, error, isMultiline, maxLength}: Props) {

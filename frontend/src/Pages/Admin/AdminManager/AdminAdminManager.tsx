@@ -71,7 +71,12 @@ export default function AdminAdminManager() {
                 checkboxSelection
             />
 
-            <AdminRemoveModal userID={selected.map(user => user.id)} notifyChange={() => {}} deleteOpen={removeOpen} handleCloseDelete={handleCloseRemove} type={'admin'}/>
+            <AdminRemoveModal
+                userID={selected.map(user => user.id)}
+                notifyChange={() => { }}
+                deleteOpen={removeOpen}
+                handleCloseDelete={handleCloseRemove} type={'admin'}
+            />
         </div>
     )
 }
