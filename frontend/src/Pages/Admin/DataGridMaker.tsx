@@ -1,17 +1,11 @@
-import { Button } from "@mui/material";
-import { DataGrid, GridColumns, GridToolbarContainer } from "@mui/x-data-grid";
+import { DataGrid, GridColumns } from "@mui/x-data-grid";
 import { useState } from "react";
-import { TagType, User } from "../../ObjectInterface";
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
-
-type Selectables = User | TagType;
-
-type Props = {
-    rows: Selectables[];
+type Props<T extends {id: number}> = {
+    rows: T[];
     columns: GridColumns;
-    type: string;
-    handleOpenRemove?: () => void;
+    setSelected: React.Dispatch<React.SetStateAction<T[]>>;
+    CustomToolbar?: React.JSXElementConstructor<any>;
 }
 
 /**
@@ -19,32 +13,8 @@ type Props = {
  * Here, you can add different
  * CustomToolbars to appear when selecting a row.
  */
-const DataGridMaker = ({ rows, columns, type, handleOpenRemove }: Props) => {
-    const [selected, setSelected] = useState<Selectables[]>([]);
+const DataGridMaker = <T extends {id: number}>({ rows, columns, setSelected, CustomToolbar= () => <></> }: Props<T>) => {
     const [pageSize, setPageSize] = useState<number>(10);
-
-    function AdminToolbar() {
-        return (
-            <GridToolbarContainer style={{ display: "flex", justifyContent: "space-around" }}>
-                {
-                    selected.length === 1 &&
-                    <Button color="error" variant="contained" onClick={handleOpenRemove} endIcon={<PersonRemoveIcon />}>
-                        Remove Admin
-                    </Button>
-                }
-            </GridToolbarContainer>
-        );
-    }
-
-    let CustomToolbar: () => JSX.Element;
-
-    switch (type) {
-        case 'admin':
-            CustomToolbar = AdminToolbar;
-            break;
-        default:
-            CustomToolbar = () => <></>;
-    }
 
     return (
         <div style={{ height: 400, width: '100%' }}>
@@ -63,7 +33,7 @@ const DataGridMaker = ({ rows, columns, type, handleOpenRemove }: Props) => {
                 }}
                 onSelectionModelChange={(ids) => {
                     const selectedIDs = new Set(ids);
-                    const selectedRows = rows.filter((row: Selectables) => selectedIDs.has(row.id));
+                    const selectedRows = rows.filter((row: T) => selectedIDs.has(row.id));
                     setSelected(selectedRows);
                 }}
                 rowsPerPageOptions={[10, 50, 100]}

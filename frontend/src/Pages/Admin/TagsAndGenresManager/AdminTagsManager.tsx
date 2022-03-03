@@ -8,6 +8,7 @@ import CreateGenreModal from './CreateGenreModal';
 import CreateTagModal from './CreateTagModal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GenericModal from '../../../Helper/Generics/GenericModal';
+import DataGridMaker from '../DataGridMaker';
 
 export default function AdminTagsManager() {
     const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
@@ -99,27 +100,8 @@ export default function AdminTagsManager() {
                 </Button>
                 <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} />
                 <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        sx={{
-                            "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-                                display: "none"
-                            }
-                        }}
-                        rows={responseTags}
-                        columns={columns}
-                        pageSize={pageSizeTags}
-                        onPageSizeChange={(newPageSize) => setPageSizeTags(newPageSize)}
-                        components={{
-                            Toolbar: TagsToolbar,
-                        }}
-                        onSelectionModelChange={(ids) => {
-                            const selectedIDs = new Set(ids);
-                            const selectedRows = responseTags.filter((row) => selectedIDs.has(row.id));
-                            setSelectedTags(selectedRows);
-                        }}
-                        rowsPerPageOptions={[10, 50, 100]}
-                        checkboxSelection
-                    />
+
+                    <DataGridMaker rows={responseTags} columns={columns} setSelected={setSelectedTags} CustomToolbar={TagsToolbar} />
 
                     <GenericModal
                         show={removeOpen}
@@ -150,27 +132,7 @@ export default function AdminTagsManager() {
                 <CreateGenreModal notifyChange={notifyChange} createOpen={createGenreOpen} handleCloseCreate={handleCloseCreateGenre} />
 
                 <div style={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        sx={{
-                            "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-                                display: "none"
-                            }
-                        }}
-                        rows={responseGenres}
-                        columns={columns}
-                        pageSize={pageSizeGenres}
-                        onPageSizeChange={(newPageSize) => setPageSizeGenres(newPageSize)}
-                        components={{
-                            Toolbar: GenresToolbar,
-                        }}
-                        onSelectionModelChange={(ids) => {
-                            const selectedIDs = new Set(ids);
-                            const selectedRows = responseTags.filter((row) => selectedIDs.has(row.id));
-                            setSelectedGenres(selectedRows);
-                        }}
-                        rowsPerPageOptions={[10, 50, 100]}
-                        checkboxSelection
-                    />
+                    <DataGridMaker rows={responseGenres} columns={columns} setSelected={setSelectedGenres} CustomToolbar={GenresToolbar} />
 
                     <GenericModal
                         show={removeOpen}
