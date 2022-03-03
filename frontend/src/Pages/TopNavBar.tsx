@@ -5,7 +5,12 @@ import GenericSearch from '../Helper/Generics/GenericSearch';
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 
-export default function TopNavBar() {
+type Props = {
+    isAdmin: boolean;
+    currentUser: any;
+}
+
+export default function TopNavBar({ isAdmin, currentUser }: Props) {
     const location: any = useLocation();
     const { handleLogout } = useLogout();
     const [username, setUsername] = useState("");
@@ -17,13 +22,16 @@ export default function TopNavBar() {
         { url: '/blog', page: 'Blog' }
     ];
 
+    let temp = window.sessionStorage.getItem("username");
     useEffect(() => {
-        let temp = window.sessionStorage.getItem("username");
 
+        console.log("Attempt", temp)
         setUsername(!temp ? "" : temp);
-    }, [])
+
+    }, [temp])
 
     let notInSignUp;
+    console.log(!currentUser)
 
     switch (location.pathname) {
         case "/":
@@ -33,10 +41,13 @@ export default function TopNavBar() {
             notInSignUp = true;
             break;
         default:
-            if (location.pathname.includes("/profile/"))
-                notInSignUp = true;
-            else
+            if (!currentUser)
                 notInSignUp = false;
+            else
+                if (currentUser.isAnonymous)
+                    notInSignUp = false;
+                else
+                    notInSignUp = true;
     }
 
     return (
@@ -85,7 +96,7 @@ export default function TopNavBar() {
                                     </Nav.Link>
                                     <NavDropdown align="end" title={username}>
                                         <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
-                                        <NavDropdown.Item as={Link} to={`/dashboard`}>Admin Dashboard</NavDropdown.Item>
+                                        {isAdmin && <NavDropdown.Item as={Link} to={`/dashboard`}>Admin Dashboard</NavDropdown.Item>}
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                                     </NavDropdown>

@@ -52,11 +52,13 @@ function App(this: any) {
         checkIfAdmin();
     }, [currentUser])
 
+    console.log(currentUser)
+
     return (
         <>
             {
                 <>
-                    <TopNavBar />
+                    <TopNavBar isAdmin={isAdmin} currentUser={currentUser} />
                     <Routes>
                         {
                             isAdmin &&
@@ -86,7 +88,7 @@ function App(this: any) {
                         </Route>
 
                         {/* Fail-safe */}
-                        <Route path="/profile/" element={<Home />} /> 
+                        {/* <Route path="/profile/" element={<Home />} />  */}
 
                         <Route element={<PrivateRoute isLogged={currentUser} />}>
                             <Route path='/profile/:username' element={<Profile />} />
@@ -94,7 +96,11 @@ function App(this: any) {
                         {
                             isAdmin
                                 ? <Route path='*' element={<ToAdmin />} />
-                                : <Route path='*' element={<Registration />} />
+                                : (!currentUser || currentUser.isAnonymous) 
+                                    ? <Route path='*' element={<Registration />} />
+                                    : <Route element={<PrivateRoute isLogged={currentUser} />}>
+                                        <Route path='*' element={<Home />} />
+                                    </Route>
                         }
                     </Routes>
                 </>
