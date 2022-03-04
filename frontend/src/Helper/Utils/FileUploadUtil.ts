@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandlerFile from '../../Handlers/GenericHanderFile'
 
-export async function uploadFile(newFile: File, newFileName: string | undefined, type: string, path: string): Promise<string>{
+export async function uploadFile(newFile: File | Blob, newFileName: string | undefined, type: string, path: string): Promise<string>{
     const fd = new FormData()
     fd.append("userFile", newFile || "", newFileName);
     

@@ -18,9 +18,10 @@ type Props = {
     title: string;
     altText: string;
     description: string;
+    backgroundColor?: string;
 };
 
-export default function RelatedProjectsCard({ img, path, className, title, altText, description }: Props) {
+export default function RelatedProjectsCard({ img, path, className, title, altText, description, backgroundColor }: Props) {
     return (
         <>
             <Grid item xs={12} md={6} >
@@ -34,7 +35,7 @@ export default function RelatedProjectsCard({ img, path, className, title, altTe
                                 alt={altText}
                             />
                         </CardActionArea>
-                        <CardContent className={`related-projects ${className}`}>
+                        <CardContent style={{background: backgroundColor}}>
                             <Typography gutterBottom variant="h5" component="div">
                                 <Link href={path} color="inherit" underline="none">
                                     {title}
