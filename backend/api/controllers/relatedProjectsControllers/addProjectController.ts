@@ -3,19 +3,32 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // addProject
 exports.addProject = async (req, res) => {
-  // incoming: url, img_path, title, desc
+  // incoming: url, imageFilepath, imageFilename, projectTitle, description, backgroundColor
   // outgoing: error
 
   var error = "";
   var results = [];
   var responseCode = 0;
 
-  const { url, imageFilepath, imageFilename, projectTitle, description } =
-    req.body;
+  const {
+    url,
+    imageFilepath,
+    imageFilename,
+    projectTitle,
+    description,
+    backgroundColor,
+  } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "INSERT INTO relatedProjects(url, imageFilepath, imageFilename, projectTitle, description) VALUES (?,?,?,?,?);",
-      [url, imageFilepath, imageFilename, projectTitle, description],
+      "INSERT INTO relatedProjects(url, imageFilepath, imageFilename, projectTitle, description, backgroundColor) VALUES (?,?,?,?,?,?);",
+      [
+        url,
+        imageFilepath,
+        imageFilename,
+        projectTitle,
+        description,
+        backgroundColor,
+      ],
       function (err, result) {
         if (err) {
           error = "SQL Insert Error";
