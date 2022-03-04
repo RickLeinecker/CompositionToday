@@ -19,7 +19,7 @@ export default function AdminRelatedProjectsManager() {
 
 	const notifyChange = () => { setHasChanged(value => !value); }
 
-    // get tags
+    // get projects
     useEffect(() => {
         fetchProjects();
         async function fetchProjects() {
@@ -52,31 +52,6 @@ export default function AdminRelatedProjectsManager() {
 				handleCloseCreate={handleCloseAdd}
 				notifyChange={notifyChange}
 			/>
-			{/* <GenericModal
-				show={addOpen}
-				title={"Add A New Project"}
-				onHide={handleCloseAdd}
-				confirm={() => { }}
-				actionText={"Save"}
-				checkForErrors={() => false}
-			>
-				<div>
-					<h3>
-						Preview Project
-					</h3>
-					<Divider sx={{ marginBottom: "10px" }} />
-					<div style={{ display: "flex", justifyContent: "space-around" }}>
-						<RelatedProjectsCard
-							path="https://johncagetribute.org/"
-							img="resized_john_cage.jpg"
-							altText="John Cage Tribute Project"
-							className="john-cage"
-							title="John Cage"
-							description="This is the John Cage Tribute Project."
-						/>
-					</div>
-				</div>
-			</GenericModal> */}
 			<div style={{ display: "flex", justifyContent: "center" }}>
 				<Button color={"primary"} variant="contained" endIcon={<AddIcon />} onClick={handleAdd} >
 					Add A New Project
@@ -96,7 +71,6 @@ export default function AdminRelatedProjectsManager() {
 					{response?.map(project => 
 						<AdminRelatedProjectsCard
 							relatedProject={project}
-							className="john-cage"
 							notifyChange={notifyChange}
 						/>
 					)}

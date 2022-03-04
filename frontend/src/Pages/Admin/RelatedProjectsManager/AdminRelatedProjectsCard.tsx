@@ -20,11 +20,10 @@ import { RelatedProjectType } from "../../../ObjectInterface";
 
 type Props = {
     relatedProject: RelatedProjectType;
-    className: string;
     notifyChange: () => void;
 };
 
-export default function AdminRelatedProjectsCard({ className, notifyChange, relatedProject }: Props) {
+export default function AdminRelatedProjectsCard({ notifyChange, relatedProject }: Props) {
     const { id, url, imageFilepath, imageFilename, projectTitle, description, backgroundColor } = relatedProject;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();

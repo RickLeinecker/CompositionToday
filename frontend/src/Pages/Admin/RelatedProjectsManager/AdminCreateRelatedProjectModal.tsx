@@ -163,7 +163,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                             <GenericInputField title="URL" type="url" onChange={setNewContentUrl} value={newContentUrl} isRequired={true} error={urlError} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
 
                             <div style={{ display: "flex", alignItems: "center", margin: "3%" }}>
-                                <p style={{margin: "0%"}}>Color picker:&nbsp;</p>
+                                <p style={{ margin: "0%" }}>Color picker:&nbsp;</p>
                                 <Form.Control
                                     type="color"
                                     value={newContentBackgroundColor}
@@ -185,14 +185,15 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                             </h3>
                             <Divider sx={{ marginBottom: "10px" }} />
                             <div style={{ display: "flex", justifyContent: "space-around" }}>
-                                <RelatedProjectsCard
-                                    path={newContentUrl || "www.compositiontoday.net"}
-                                    img={newImageTempPath || "http://www.compositiontoday.com/images/logo60c.gif"}
-                                    altText={newContentDescription || "Missing description"}
-                                    backgroundColor={newContentBackgroundColor}
-                                    className="john-cage"
-                                    title={newContentProjectTitle || "Missing title"}
-                                    description={newContentDescription || "Missing description"}
+                                <RelatedProjectsCard relatedProject={{
+                                    id: 0,
+                                    url: newContentUrl || "www.compositiontoday.net",
+                                    imageFilepath: newImageTempPath || "http://www.compositiontoday.com/images/logo60c.gif",
+                                    imageFilename: newContentImageFilename,
+                                    projectTitle: newContentProjectTitle || "Missing title",
+                                    description: newContentDescription || "Missing description",
+                                    backgroundColor: newContentBackgroundColor || "#FFFFFF"
+                                }}
                                 />
                             </div>
                             <Button onClick={() => setViewPreview(false)}>
