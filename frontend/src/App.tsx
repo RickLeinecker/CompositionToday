@@ -35,7 +35,7 @@ function App(this: any) {
                 if (answer.error.length > 0) {
                     return;
                 }
-                console.log(answer.result);
+
                 return await answer.result;
             } catch (e: any) {
                 console.error("Frontend Error: " + e);
@@ -45,14 +45,12 @@ function App(this: any) {
         }
 
         async function checkIfAdmin() {
-            // setIsAdmin(await fetchData());
-            setIsAdmin(true);
+            setIsAdmin(await fetchData());
+            // setIsAdmin(true);
         }
 
         checkIfAdmin();
     }, [currentUser])
-
-    console.log(currentUser)
 
     return (
         <>

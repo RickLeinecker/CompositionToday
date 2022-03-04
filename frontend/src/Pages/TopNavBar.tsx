@@ -4,6 +4,8 @@ import useLogout from "../Helper/CustomHooks/useLogout";
 import GenericSearch from '../Helper/Generics/GenericSearch';
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
+import { GenericHandlerType } from "../ObjectInterface";
+import GenericHandler from "../Handlers/GenericHandler";
 
 type Props = {
     isAdmin: boolean;
@@ -14,6 +16,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
     const location: any = useLocation();
     const { handleLogout } = useLogout();
     const [username, setUsername] = useState("");
+    const [profileImagePath, setProfileImagePath] = useState("");
 
     const urlToPage = [
         { url: '/', page: 'Home' },
@@ -22,16 +25,40 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
         { url: '/blog', page: 'Blog' }
     ];
 
-    let temp = window.sessionStorage.getItem("username");
-    useEffect(() => {
 
-        console.log("Attempt", temp)
-        setUsername(!temp ? "" : temp);
+    let temp = window.localStorage.getItem("username");
+    useEffect(() => {
+        async function fetchData(user: string) {
+            const handlerObject: GenericHandlerType = {
+                data: JSON.stringify({ username: user }),
+                methodType: "POST",
+                path: "readUserByUsername",
+            }
+
+            try {
+                let answer = (await GenericHandler(handlerObject));
+                if (answer.error.length > 0) {
+                    return;
+                }
+
+                setProfileImagePath(answer.result.profilePicPath)
+                return await answer.result;
+            } catch (e: any) {
+                console.error("Frontend Error: " + e);
+            }
+
+            return false;
+        }
+
+
+        if (!!temp) {
+            setUsername(temp);
+            fetchData(temp);
+        }
 
     }, [temp])
 
     let notInSignUp;
-    console.log(!currentUser)
 
     switch (location.pathname) {
         case "/":
@@ -88,7 +115,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
                                     <Nav.Link as={Link} to={`/profile/${username}`}>
                                         <Image
                                             className={"d-inline-block align-top me-2"}
-                                            src="img_avatar.png"
+                                            src={profileImagePath || "img_avatar.png"}
                                             width="40vw"
                                             height="40vh"
                                             roundedCircle

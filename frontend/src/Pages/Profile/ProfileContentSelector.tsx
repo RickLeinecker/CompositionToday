@@ -8,7 +8,7 @@ import ProfileContent from './ProfileContent';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ProfileContext } from './ProfileContext';
-import { Button, Fab, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
@@ -51,7 +51,7 @@ const Tab = styled(TabUnstyled)`
     color: #fff;
     border-radius: 0.5em;
     outline: 1em solid ${blue[200]};
-    outline-offset: 1em;
+    outline-offset: -0.5em;
   }
 
   &.${tabUnstyledClasses.selected} {

@@ -20,7 +20,7 @@ export default function ArticleCardHeader({ article, isMyProfile, notifyChange }
     const [currentUsername, setCurrentUsername] = useState("");
 
     useEffect(() => {
-        let temp = window.sessionStorage.getItem("username");
+        let temp = window.localStorage.getItem("username");
 
         setCurrentUsername(!temp ? "" : temp);
     }, [])
