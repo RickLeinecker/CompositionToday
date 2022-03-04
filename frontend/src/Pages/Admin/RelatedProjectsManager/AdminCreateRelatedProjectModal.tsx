@@ -10,8 +10,6 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Alert, Button, Form } from 'react-bootstrap';
-import { Divider } from '@mui/material';
-import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
 import AdminRelatedProjectModalPreview from './AdminRelatedProjectModalPreview';
 
 
