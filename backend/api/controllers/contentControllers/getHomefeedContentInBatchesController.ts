@@ -40,12 +40,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
     }
     insertString = insertString.slice(0, -3);
     insertString += ") AS ct1 ON ct1.contentID=content.id ";
-    // insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
-  } //else {
-  console.log(insertString);
-  //  insertString += "LEFT JOIN contentTag ON contentTag.contentID=content.id ";
-  // insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
-  //}
+  }
+
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray && contentTypeArray.length > 0) {
     insertString += "WHERE ";
