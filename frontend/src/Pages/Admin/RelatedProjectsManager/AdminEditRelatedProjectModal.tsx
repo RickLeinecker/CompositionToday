@@ -11,8 +11,6 @@ import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Alert, Button, Form } from 'react-bootstrap';
-import { Divider } from '@mui/material';
-import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
 import AdminRelatedProjectModalPreview from './AdminRelatedProjectModalPreview';
 
 type Props = {
