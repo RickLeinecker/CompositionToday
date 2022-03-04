@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
@@ -9,9 +9,8 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Alert } from 'react-bootstrap';
-import { Divider } from '@mui/material';
-import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
+import { Alert, Button, Form } from 'react-bootstrap';
+import AdminRelatedProjectModalPreview from './AdminRelatedProjectModalPreview';
 
 
 type Props = {
@@ -26,7 +25,10 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
     const [newContentProjectTitle, setNewContentProjectTitle] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
-    const [newImage, setNewImage] = useState<File | null>(null);
+    const [newContentBackgroundColor, setNewContentBackgroundColor] = useState("");
+    const [newImage, setNewImage] = useState<Blob | null>(null);
+    const [newImageTempPath, setNewImageTempPath] = useState("");
+    const [viewPreview, setViewPreview] = useState(false);
 
     const [missingImageError, setMissingImageError] = useState(false);
 
@@ -35,6 +37,13 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
     const [descriptionError, setDescriptionError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    useEffect(() => {
+        function getFilepath() {
+            newImage && setNewImageTempPath(URL.createObjectURL(newImage))
+        }
+        getFilepath()
+    }, [newImage])
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -62,7 +71,9 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
     const deleteImageFile = () => {
         setNewImage(null);
         setNewContentImageFilename("");
+
     }
+
 
     const checkForErrors = (): boolean => {
         let error = false;
@@ -75,7 +86,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
         return (error)
     }
 
-    function checkIfEmpty(value: string | File | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
+    function checkIfEmpty(value: string | Blob | null, setError: React.Dispatch<React.SetStateAction<boolean>>): boolean {
         if (!value) {
             setError(true);
             return true;
@@ -103,6 +114,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                 imageFilename: newContentImageFilename,
                 projectTitle: newContentProjectTitle,
                 description: newContentDescription,
+                backgroundColor: newContentBackgroundColor,
             }),
             methodType: "POST",
             path: "addProject",
@@ -127,8 +139,13 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
         handleCloseCreate();
     }
 
+    const handleColorChange = (event: any) => {
+        setNewContentBackgroundColor(event.target.value);
+    };
+
     return (
         <div>
+
             <GenericModal
                 show={createOpen}
                 title={"Create"}
@@ -138,29 +155,38 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <div>
-                        <GenericInputField title="Title" type="title" onChange={setNewContentProjectTitle} value={newContentProjectTitle} isRequired={true} error={projectTitleError} maxLength={parseInt(DefaultValues.maxLengthShort)} />
-                        <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={true} error={descriptionError} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
-                        <GenericInputField title="URL" type="url" onChange={setNewContentUrl} value={newContentUrl} isRequired={true} error={urlError} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
-                        <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentImageFilename} />
-                        {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
-                    </div>
-                    {/* <div>
-                        <h3>
-                            Preview Project
-                        </h3>
-                        <Divider sx={{ marginBottom: "10px" }} />
-                        <div style={{ display: "flex", justifyContent: "space-around" }}>
-                            <RelatedProjectsCard
-                                path="https://johncagetribute.org/"
-                                img="resized_john_cage.jpg"
-                                altText="John Cage Tribute Project"
-                                className="john-cage"
-                                title="John Cage"
-                                description="This is the John Cage Tribute Project."
-                            />
+                    {!viewPreview ?
+                        <div>
+                            <GenericInputField title="Title" type="title" onChange={setNewContentProjectTitle} value={newContentProjectTitle} isRequired={true} error={projectTitleError} maxLength={parseInt(DefaultValues.maxLengthShort)} />
+                            <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={true} error={descriptionError} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
+                            <GenericInputField title="URL" type="url" onChange={setNewContentUrl} value={newContentUrl} isRequired={true} error={urlError} maxLength={parseInt(DefaultValues.maxLengthMedium)} />
+
+                            <div style={{ display: "flex", alignItems: "center", margin: "3%" }}>
+                                <p style={{ margin: "0%" }}>Color picker:&nbsp;</p>
+                                <Form.Control
+                                    type="color"
+                                    value={newContentBackgroundColor}
+                                    onChange={handleColorChange}
+                                    title="Choose your color"
+                                />
+                            </div>
+
+                            <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentImageFilename} />
+                            {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
+                            <Button onClick={() => setViewPreview(true)}>
+                                View Preview
+                            </Button>
                         </div>
-                    </div> */}
+                        :
+                        <AdminRelatedProjectModalPreview
+                            url={newContentUrl || "www.compositiontoday.net"} 
+                            imageFilepath={newImageTempPath || "http://www.compositiontoday.com/images/logo60c.gif"} 
+                            projectTitle={newContentProjectTitle || "Missing title"} 
+                            description={newContentDescription || "Missing description"} 
+                            backgroundColor={newContentBackgroundColor || "#FFFFFF"}   
+                            updateViewPreview={() => {setViewPreview(false)}}                         
+                        />
+                    }
                 </div>
 
             </GenericModal>

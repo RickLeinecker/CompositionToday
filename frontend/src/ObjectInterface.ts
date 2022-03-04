@@ -147,6 +147,7 @@ export type RelatedProjectType = {
     imageFilename: string;
     projectTitle: string;
     description: string;
+    backgroundColor: string;
 }
 
 /**
