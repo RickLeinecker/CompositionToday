@@ -115,6 +115,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                 imageFilename: newContentImageFilename,
                 projectTitle: newContentProjectTitle,
                 description: newContentDescription,
+                backgroundColor: newContentBackgroundColor,
             }),
             methodType: "POST",
             path: "addProject",

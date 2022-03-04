@@ -10,7 +10,7 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Alert } from 'react-bootstrap';
+import { Alert, Form } from 'react-bootstrap';
 
 type Props = {
     relatedProject: RelatedProjectType;
@@ -75,7 +75,7 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
         error = checkIfEmpty(newContentValue.url, setUrlError) || error;
         error = checkIfEmpty(newContentValue.projectTitle, setProjectTitleError) || error;
         error = checkIfEmpty(newContentValue.description, setDescriptionError) || error;
-        error = checkIfEmpty(newContentImage, setMissingImageError) || error;
+        error = checkIfEmpty(newContentValue.imageFilename, setMissingImageError) || error;
 
         return (error)
     }
@@ -105,7 +105,7 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
                 return;
             }
         }
-        
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 projectID: newContentValue.id,
@@ -114,6 +114,7 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
                 imageFilename: newContentValue.imageFilename,
                 projectTitle: newContentValue.projectTitle,
                 description: newContentValue.description,
+                backgroundColor: newContentValue.backgroundColor,
             }),
             methodType: "PATCH",
             path: "editProject",
@@ -137,6 +138,10 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
         handleCloseEdit();
     }
 
+    const handleColorChange = (event: any) => {
+        handleChange(event.target.value, "backgroundColor");
+    };
+    
     return (
         <div>
             <GenericModal
@@ -174,6 +179,15 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
                         error={urlError}
                         maxLength={parseInt(DefaultValues.maxLengthMedium)}
                     />
+                    <div style={{ display: "flex", alignItems: "center", margin: "3%" }}>
+                        <p style={{ margin: "0%" }}>Color picker:&nbsp;</p>
+                        <Form.Control
+                            type="color"
+                            value={newContentValue.backgroundColor}
+                            onChange={handleColorChange}
+                            title="Choose your color"
+                        />
+                    </div>
                     <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
                     {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
                 </>
