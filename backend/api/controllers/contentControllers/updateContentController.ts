@@ -187,7 +187,10 @@ exports.updateContent = async (req, res) => {
                         // if tag is linked to content -> remove tag
                         // else -> add tag
                         if (tagArray && tagArray.length > 0) {
+                          var updatedTagsStringUsedForDeletion = "";
                           for (var i = 0; i < tagArray.length; ++i) {
+                            updatedTagsStringUsedForDeletion +=
+                              "tagID=" + tagArray[i].id + " OR ";
                             sqlQuery(i);
                             function sqlQuery(index) {
                               mysql_pool.getConnection(function (
@@ -204,17 +207,7 @@ exports.updateContent = async (req, res) => {
                                       processChanges();
                                     } else {
                                       if (result[0]) {
-                                        // if tag exists, remove it
-                                        connection.query(
-                                          "DELETE FROM contentTag WHERE id=?",
-                                          [result[0].id],
-                                          function (err, result) {
-                                            if (err) {
-                                              console.log(err);
-                                            }
-                                            connection.release();
-                                          }
-                                        );
+                                        // if tag exists, do nothing
                                       } else {
                                         // tag doesn't exist, add it
                                         connection.query(
@@ -234,6 +227,41 @@ exports.updateContent = async (req, res) => {
                               });
                             }
                           }
+                          // remove last OR from sql statement
+                          updatedTagsStringUsedForDeletion =
+                            updatedTagsStringUsedForDeletion.slice(0, -3);
+                          mysql_pool.getConnection(function (err, connection) {
+                            connection.query(
+                              "DELETE FROM contentTag ct1 WHERE ct1.contentID=? AND ct1.id NOT IN (SELECT id FROM (SELECT id FROM contentTag WHERE " +
+                                updatedTagsStringUsedForDeletion +
+                                ")c)",
+                              [contentID],
+                              function (err, result) {
+                                if (err) {
+                                  error = "SQL Delete Error";
+                                  responseCode = 500;
+                                  console.log(err);
+                                } else {
+                                  if (result.affectedRows > 0) {
+                                    // results.push("Success");
+                                    // responseCode = 200;
+                                  } else {
+                                    error =
+                                      "Content with this tag does not exist";
+                                  }
+                                  // console.log(result);
+                                }
+                                // // package data
+                                // var ret = {
+                                //   result: results,
+                                //   error: error,
+                                // };
+                                // // send data
+                                // res.status(responseCode).json(ret);
+                                connection.release();
+                              }
+                            );
+                          });
                         }
                         results.push("Success");
                         responseCode = 200;

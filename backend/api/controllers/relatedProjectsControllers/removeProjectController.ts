@@ -27,6 +27,7 @@ exports.removeProject = async (req, res) => {
           } else {
             error = "Project does not exist";
           }
+          responseCode = 200;
         }
         // package data
         var ret = {
