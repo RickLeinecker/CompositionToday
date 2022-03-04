@@ -95,13 +95,8 @@ export default function AdminRelatedProjectsManager() {
 				>
 					{response?.map(project => 
 						<AdminRelatedProjectsCard
-							id={project.id}
-							path={project.url}
-							img={project.imageFilepath}
-							altText={project.description}
+							relatedProject={project}
 							className="john-cage"
-							title={project.projectTitle}
-							description={project.description}
 							notifyChange={notifyChange}
 						/>
 					)}

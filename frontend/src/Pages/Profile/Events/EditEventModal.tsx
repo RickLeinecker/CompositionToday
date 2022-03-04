@@ -145,7 +145,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
             if (newContentImagePath === '') {
-                toast.error('Failed to create event');
+                toast.error('Failed to update event');
                 return;
             }
         }

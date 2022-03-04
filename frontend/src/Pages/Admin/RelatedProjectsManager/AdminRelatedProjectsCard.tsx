@@ -14,20 +14,18 @@ import {
 } from "@mui/material";
 import useOpen from "../../../Helper/CustomHooks/useOpen";
 import AdminDeleteRelatedProjectmodal from "./AdminDeleteRelatedProjectModal";
+import AdminEditRelatedProjectmodal from "./AdminEditRelatedProjectModal";
+import { RelatedProjectType } from "../../../ObjectInterface";
 
 
 type Props = {
-    id: number;
-    path: string;
-    img: string;
+    relatedProject: RelatedProjectType;
     className: string;
-    title: string;
-    altText: string;
-    description: string;
     notifyChange: () => void;
 };
 
-export default function AdminRelatedProjectsCard({ img, path, className, title, altText, description, id, notifyChange }: Props) {
+export default function AdminRelatedProjectsCard({ className, notifyChange, relatedProject }: Props) {
+    const { id, url, imageFilepath, imageFilename, projectTitle, description, } = relatedProject;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -37,18 +35,18 @@ export default function AdminRelatedProjectsCard({ img, path, className, title, 
             <Grid item xs={12} md={6} >
                 <Paper elevation={3} sx={{ margin: "auto", maxWidth: 375, maxHeight: 400 }}>
                     <Card sx={{ maxWidth: 375 }}>
-                        <CardActionArea href={path}>
+                        <CardActionArea href={url}>
                             <CardMedia
                                 component="img"
                                 height="250"
-                                image={img}
-                                alt={altText}
+                                image={imageFilepath}
+                                alt={description}
                             />
                         </CardActionArea>
                         <CardContent className={`related-projects ${className}`}>
                             <Typography gutterBottom variant="h5" component="div">
-                                <Link href={path} color="inherit" underline="none">
-                                    {title}
+                                <Link href={url} color="inherit" underline="none">
+                                    {projectTitle}
                                 </Link>
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -75,6 +73,13 @@ export default function AdminRelatedProjectsCard({ img, path, className, title, 
                 deleteOpen={deleteOpen}
                 handleCloseDelete={handleCloseDelete}
                 type={"related project"}
+            />
+
+            <AdminEditRelatedProjectmodal
+                relatedProject={relatedProject}
+                notifyChange={notifyChange}
+                editOpen={editOpen}
+                handleCloseEdit={handleCloseEdit}
             />
         </>
     );
