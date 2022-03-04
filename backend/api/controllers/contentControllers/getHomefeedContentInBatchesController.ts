@@ -16,7 +16,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   var results = [];
   var responseCode = 0;
 
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT content.id,user.uid,user.isPublisher,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
