@@ -1,10 +1,10 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+
 import {
     Paper,
     CardActionArea,
-    Container,
     Grid,
     Link,
     Typography,
@@ -23,9 +23,9 @@ type Props = {
 export default function RelatedProjectsCard({ img, path, className, title, altText, description }: Props) {
     return (
         <>
-            <Grid item xs={12} sm={6} md={5}>
-                <Paper elevation={3} sx={{ maxWidth: 375, height: 350 }}>
-                    <Card sx={{ maxWidth: 375, height: 350 }}>
+            <Grid item xs={12} md={6} >
+                <Paper elevation={3} sx={{ margin: "auto", maxWidth: 375, maxHeight: 400 }}>
+                    <Card sx={{ maxWidth: 375 }}>
                         <CardActionArea href={path}>
                             <CardMedia
                                 component="img"
@@ -46,6 +46,7 @@ export default function RelatedProjectsCard({ img, path, className, title, altTe
                         </CardContent>
                     </Card>
                 </Paper>
+
             </Grid>
         </>
     );

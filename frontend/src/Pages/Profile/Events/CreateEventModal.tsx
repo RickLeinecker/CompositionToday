@@ -30,7 +30,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
     const [newContentToDate, setNewContentToDate] = useState<Date | null>(null);
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>();
     const [newContentLocation, setNewContentLocation] = useState("");
     const [newContentMapsEnabled, setNewContentMapsEnabled] = useState(false);
 
@@ -66,6 +66,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
         setNewContentImageFilename("");
         setNewContentLocation("");
         setNewContentMapsEnabled(false);
+        setNewContentTags(null);
 
         setNameError(false);
         setToDateError(false);
@@ -159,10 +160,11 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                 imageFilename: newContentImageFilename,
                 location: newContentLocation,
                 mapsEnabled: newContentMapsEnabled,
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags || [],
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {

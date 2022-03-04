@@ -32,7 +32,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
     const [fromDateErrorMessage, setFromDateErrorMessage] = useState("");
     const [toDateErrorMessage, setToDateErrorMessage] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>(JSON.parse(newContentValue.tagArray));
     const [missingLocationError, setMissingLocationError] = useState(false);
     const [imageFileToDelete, setImageFileToDelete] = useState<string>("");
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
@@ -53,6 +53,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     const clearFields = (): void => {
         setNewContentValue(event);
+        setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
     const handleChange = (newValue: string | boolean | File | Date | null, type: string) => {
@@ -144,7 +145,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
             if (newContentImagePath === '') {
-                toast.error('Failed to create event');
+                toast.error('Failed to update event');
                 return;
             }
         }
@@ -164,6 +165,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 imageFilename: newContentValue.imageFilename,
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
+                tagArray: newContentTags,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -226,7 +228,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         error={toDateError}
                         errorMessage={toDateErrorMessage}
                     />
-                    <GenericTagsPicker updateTags={updateTags} />
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
                     <PlacesAutocomplete location={newContentValue.location} updateLocation={handleChange} />
                     <FormControlLabel
                         control={<Checkbox checked={newContentValue.mapsEnabled}

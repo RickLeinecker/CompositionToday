@@ -1,4 +1,4 @@
-import { TagType } from '../../ObjectInterface';
+import { TagType } from '../../../ObjectInterface';
 
 type Props = {
     genre: TagType;
