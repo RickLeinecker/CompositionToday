@@ -13,6 +13,7 @@ import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { Divider } from '@mui/material';
 import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
+import AdminRelatedProjectModalPreview from './AdminRelatedProjectModalPreview';
 
 type Props = {
     relatedProject: RelatedProjectType;
@@ -209,27 +210,14 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
                             </Button>
                         </>
                         :
-                        <div>
-                            <h3>
-                                Preview Project
-                            </h3>
-                            <Divider sx={{ marginBottom: "10px" }} />
-                            <div style={{ display: "flex", justifyContent: "space-around" }}>
-                                <RelatedProjectsCard relatedProject={{
-                                    id: 0,
-                                    url: newContentValue.url,
-                                    imageFilepath: newImageTempPath || newContentValue.imageFilepath,
-                                    imageFilename: newContentValue.imageFilename,
-                                    projectTitle: newContentValue.projectTitle,
-                                    description: newContentValue.description,
-                                    backgroundColor: newContentValue.backgroundColor,
-                                }}
-                                />
-                            </div>
-                            <Button onClick={() => setViewPreview(false)}>
-                                Back
-                            </Button>
-                        </div>
+                        <AdminRelatedProjectModalPreview 
+                        url={newContentValue.url} 
+                        imageFilepath={newImageTempPath || newContentValue.imageFilepath} 
+                        projectTitle={newContentValue.projectTitle} 
+                        description={newContentValue.description} 
+                        backgroundColor={newContentValue.backgroundColor} 
+                        updateViewPreview={() => setViewPreview(false)}
+                        />
                     }
                 </>
             </GenericModal>

@@ -12,6 +12,7 @@ import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { Divider } from '@mui/material';
 import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
+import AdminRelatedProjectModalPreview from './AdminRelatedProjectModalPreview';
 
 
 type Props = {
@@ -179,27 +180,14 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
                             </Button>
                         </div>
                         :
-                        <div>
-                            <h3>
-                                Preview Project
-                            </h3>
-                            <Divider sx={{ marginBottom: "10px" }} />
-                            <div style={{ display: "flex", justifyContent: "space-around" }}>
-                                <RelatedProjectsCard relatedProject={{
-                                    id: 0,
-                                    url: newContentUrl || "www.compositiontoday.net",
-                                    imageFilepath: newImageTempPath || "http://www.compositiontoday.com/images/logo60c.gif",
-                                    imageFilename: newContentImageFilename,
-                                    projectTitle: newContentProjectTitle || "Missing title",
-                                    description: newContentDescription || "Missing description",
-                                    backgroundColor: newContentBackgroundColor || "#FFFFFF"
-                                }}
-                                />
-                            </div>
-                            <Button onClick={() => setViewPreview(false)}>
-                                Back
-                            </Button>
-                        </div>
+                        <AdminRelatedProjectModalPreview
+                            url={newContentUrl || "www.compositiontoday.net"} 
+                            imageFilepath={newImageTempPath || "http://www.compositiontoday.com/images/logo60c.gif"} 
+                            projectTitle={newContentProjectTitle || "Missing title"} 
+                            description={newContentDescription || "Missing description"} 
+                            backgroundColor={newContentBackgroundColor || "#FFFFFF"}   
+                            updateViewPreview={() => {setViewPreview(false)}}                         
+                        />
                     }
                 </div>
 
