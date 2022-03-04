@@ -15,10 +15,11 @@ type Props = {
     sortBy: string;
     updateSortBy: (newValue: string) => void;
     updateTags: (newValue: Array<TagType>) => void;
+    tags: Array<TagType>;
     uid: string;
 }
 
-export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, updateTags }: Props) {
+export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, updateTags, tags }: Props) {
 
     const { open: createArticleOpen, handleClick: handleArticleOpenCreate, handleClose: handleArticleCloseCreate } = useOpen();
     const { open: createMusicOpen, handleClick: handleMusicOpenCreate, handleClose: handleMusicCloseCreate } = useOpen();
@@ -40,7 +41,7 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, 
                     </Button>
                 </div>
                 <div className="icons-box">
-                    <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags} />
+                    <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags} tags={tags} />
                     <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} /> 
                 </div> 
             </div>
