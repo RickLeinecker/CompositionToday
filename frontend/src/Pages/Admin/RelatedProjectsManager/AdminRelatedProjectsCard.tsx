@@ -20,12 +20,11 @@ import { RelatedProjectType } from "../../../ObjectInterface";
 
 type Props = {
     relatedProject: RelatedProjectType;
-    className: string;
     notifyChange: () => void;
 };
 
-export default function AdminRelatedProjectsCard({ className, notifyChange, relatedProject }: Props) {
-    const { id, url, imageFilepath, imageFilename, projectTitle, description, } = relatedProject;
+export default function AdminRelatedProjectsCard({ notifyChange, relatedProject }: Props) {
+    const { id, url, imageFilepath, imageFilename, projectTitle, description, backgroundColor } = relatedProject;
 
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
@@ -43,7 +42,7 @@ export default function AdminRelatedProjectsCard({ className, notifyChange, rela
                                 alt={description}
                             />
                         </CardActionArea>
-                        <CardContent className={`related-projects ${className}`}>
+                        <CardContent style={{ background: backgroundColor }}>
                             <Typography gutterBottom variant="h5" component="div">
                                 <Link href={url} color="inherit" underline="none">
                                     {projectTitle}

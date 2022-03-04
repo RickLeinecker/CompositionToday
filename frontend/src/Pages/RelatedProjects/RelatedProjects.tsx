@@ -2,10 +2,41 @@ import {
 	Container,
 	Grid,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import GenericGetHandler from "../../Handlers/GenericGetHandler";
+import { RelatedProjectType } from "../../ObjectInterface";
 import "./RelatedProjects.scss";
 import RelatedProjectsCard from "./RelatedProjectsCard";
 
 export default function RelatedProjects() {
+	const [response, setResponse] = useState<Array<RelatedProjectType> | undefined>(undefined);
+
+	// get projects
+	useEffect(() => {
+		fetchProjects();
+		async function fetchProjects() {
+
+			try {
+				let answer = (await GenericGetHandler("getProjects"));
+				if (answer.error.length > 0) {
+					// setError(answer.error);
+					return;
+				}
+
+				// setError("");
+				const result = await answer.result;
+				setResponse(result);
+
+				// setLoading(false);
+
+
+			} catch (e: any) {
+				console.error("Frontend Error: " + e);
+				// setError(DefaultValues.apiErrorMessage);
+			}
+		}
+	}, []);
+
 	return (
 		<>
 			<Container className="related-projects-container" maxWidth="lg">
@@ -18,45 +49,11 @@ export default function RelatedProjects() {
 					columnSpacing={{ xs: 1 }}
 					marginBottom="4rem"
 				>
-					{/* John Cage */}
-					<RelatedProjectsCard
-						path="https://johncagetribute.org/"
-						img="resized_john_cage.jpg"
-						altText="John Cage Tribute Project"
-						className="john-cage"
-						title="John Cage"
-						description="This is the John Cage Tribute Project."
-					/>
-
-					{/* Microtonal */}
-					<RelatedProjectsCard
-						path="http://microtonality.net/"
-						img="music_clip_art.png"
-						altText="Microtonal Music"
-						className="microtonal"
-						title="Microtonal Music Project"
-						description="This is the Microtonal Music Project."
-					/>
-
-					{/* Schillinger */}
-					<RelatedProjectsCard
-						path="https://learnschillinger.com/"
-						img="schillinger.jpg"
-						altText="Learn Schillinger Project"
-						className="schillinger"
-						title="Learn Schillinger"
-						description="This is the Learn Schillinger Project."
-					/>
-
-					{/* Miscellaneous Project */}
-					<RelatedProjectsCard
-						path="#"
-						img="temp_thumb3.png"
-						altText="Miscellaneous Project"
-						className="misc"
-						title="Miscellaneous Project"
-						description="This is a Miscellaneous Project."
-					/>
+					{response?.map(project =>
+						<RelatedProjectsCard
+							relatedProject={project}
+						/>
+					)}
 				</Grid>
 			</Container>
 
