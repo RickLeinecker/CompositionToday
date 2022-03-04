@@ -4,6 +4,7 @@ var router = express.Router();
 
 const createUserController = require("../controllers/userControllers/createUserController.ts");
 const createComposerController = require("../controllers/userControllers/createComposerController.ts");
+const removePublisherController = require("../controllers/userControllers/removePublisherController.ts");
 const createScrapedComposerController = require("../controllers/userControllers/createScrapedComposerController.ts");
 const createPublisherController = require("../controllers/userControllers/createPublisherController.ts");
 const readUserController = require("../controllers/userControllers/readUserController.ts");
@@ -27,6 +28,8 @@ router.post("/api/isAdmin", isAdminController.isAdmin);
 router.post("/api/makeAdmin", makeAdminController.makeAdmin);
 router.delete("/api/removeAdmin", removeAdminController.removeAdmin);
 router.post("/api/createComposer", createComposerController.createComposer);
+router.post("/api/removePublisher", removePublisherController.removePublisher);
+
 router.post(
   "/api/createScrapedComposer",
   createScrapedComposerController.createScrapedComposer

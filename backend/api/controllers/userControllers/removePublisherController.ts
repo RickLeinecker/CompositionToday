@@ -1,8 +1,8 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// createPublisher - update the status of user in the database to publisher
-exports.createPublisher = async (req, res) => {
+// removePublisher - update the status of user in the database to not a publisher
+exports.removePublisher = async (req, res) => {
   // incoming: uid
   // outgoing: success or error
 
@@ -15,7 +15,7 @@ exports.createPublisher = async (req, res) => {
   var { uid } = req.body;
 
   // build update string with non null fields
-  var insertString = "UPDATE user SET isPublisher=1";
+  var insertString = "UPDATE user SET isPublisher=0";
   insertString += " WHERE uid=?";
   insertArray.push(uid);
 
