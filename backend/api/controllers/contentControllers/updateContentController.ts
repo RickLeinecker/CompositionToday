@@ -243,21 +243,33 @@ exports.updateContent = async (req, res) => {
                                   console.log(err);
                                 } else {
                                   if (result.affectedRows > 0) {
-                                    // results.push("Success");
-                                    // responseCode = 200;
+                                    responseCode = 200;
                                   } else {
                                     error =
                                       "Content with this tag does not exist";
                                   }
-                                  // console.log(result);
                                 }
-                                // // package data
-                                // var ret = {
-                                //   result: results,
-                                //   error: error,
-                                // };
-                                // // send data
-                                // res.status(responseCode).json(ret);
+                                connection.release();
+                              }
+                            );
+                          });
+                        } else {
+                          mysql_pool.getConnection(function (err, connection) {
+                            connection.query(
+                              "DELETE FROM contentTag WHERE contentID=?",
+                              [contentID],
+                              function (err, result) {
+                                if (err) {
+                                  error = "SQL Delete Error";
+                                  responseCode = 500;
+                                  console.log(err);
+                                } else {
+                                  if (result.affectedRows > 0) {
+                                    responseCode = 200;
+                                  } else {
+                                    error = "Content does not exist";
+                                  }
+                                }
                                 connection.release();
                               }
                             );
