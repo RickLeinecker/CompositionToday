@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // editProject
 exports.editProject = async (req, res) => {
-  // incoming: projectID, url, imageFilepath, imageFilename, projectTitle, description
+  // incoming: projectID, url, imageFilepath, imageFilename, projectTitle, description, backgroundColor
   // outgoing: error
 
   var error = "";
@@ -18,6 +18,7 @@ exports.editProject = async (req, res) => {
     imageFilename,
     projectTitle,
     description,
+    backgroundColor,
   } = req.body;
 
   // build update string with non null fields
@@ -41,6 +42,10 @@ exports.editProject = async (req, res) => {
   if (description !== null && description !== undefined) {
     insertString += "description=?,";
     insertArray.push(description);
+  }
+  if (backgroundColor !== null && backgroundColor !== undefined) {
+    insertString += "backgroundColor=?,";
+    insertArray.push(backgroundColor);
   }
 
   insertString = insertString.slice(0, -1);
