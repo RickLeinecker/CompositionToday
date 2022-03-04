@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function RelatedProjectsCard({ relatedProject }: Props) {
-    const { id, url, imageFilepath, imageFilename, projectTitle, description, backgroundColor } = relatedProject;
+    const { url, imageFilepath, projectTitle, description, backgroundColor } = relatedProject;
 
     return (
         <>
