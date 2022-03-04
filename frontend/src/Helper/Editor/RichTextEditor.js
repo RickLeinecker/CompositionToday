@@ -39,8 +39,7 @@ export default function RichTextEditor() {
   
   const options = ['inline', 'blockType', 'fontSize',
    'fontFamily', 'list', 'textAlign',
-    'colorPicker', 'link',
-     'image', 'remove', 'history']
+    'colorPicker', 'link','image',]
 
   return (
     <div className="App">
@@ -53,8 +52,8 @@ export default function RichTextEditor() {
           list: { inDropdown: true },
           textAlign: { inDropdown: true },
           link: { inDropdown: true },
-          history: { inDropdown: false },
         }}
+
         wrapperClassName="wrapper-class"
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"

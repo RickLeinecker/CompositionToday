@@ -8,6 +8,7 @@ import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
 import SlateEditor from '../../../Helper/Editor/SlateEditor';
+import TipTap from '../../../Helper/Editor/TipTap';
 
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 
@@ -28,6 +29,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
+    const [description, setDescription] = useState("");
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
     function updateTags(newValue: Array<TagType>){
@@ -115,7 +117,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    <RichTextEditor />
+                    <TipTap setDescription={setDescription}/>
                     <GenericTagsPicker updateTags={updateTags}/>
                 </div>
             </GenericModal>
