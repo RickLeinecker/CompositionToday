@@ -140,6 +140,15 @@ export type LikeType = {
     isLiked: boolean;
 }
 
+export type RelatedProjectType = {
+    id: number;
+    url: string;
+    imageFilepath: string;
+    imageFilename: string;
+    projectTitle: string;
+    description: string;
+}
+
 /**
  * Example
  * @property data: JSON.stringify({contentType: "experience"})

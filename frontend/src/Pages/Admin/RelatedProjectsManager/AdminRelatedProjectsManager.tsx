@@ -1,21 +1,58 @@
-import { Button, Divider, Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import GenericModal from '../../../Helper/Generics/GenericModal';
-import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
+import { RelatedProjectType } from '../../../ObjectInterface';
+import GenericGetHandler from '../../../Handlers/GenericGetHandler';
+import AdminCreateRelatedProjectModal from './AdminCreateRelatedProjectModal';
+import AdminRelatedProjectsCard from './AdminRelatedProjectsCard';
 
 
 export default function AdminRelatedProjectsManager() {
 	const { open: addOpen, handleClick: handleOpenAdd, handleClose: handleCloseAdd } = useOpen();
+	const [response, setResponse] = useState<Array<RelatedProjectType> | undefined>(undefined);
+	const [hasChanged, setHasChanged] = useState(false);
 
 	const handleAdd = () => {
 		handleOpenAdd();
 	}
 
+	const notifyChange = () => { setHasChanged(value => !value); }
+
+    // get tags
+    useEffect(() => {
+        fetchProjects();
+        async function fetchProjects() {
+
+            try {
+                let answer = (await GenericGetHandler("getProjects"));
+                if (answer.error.length > 0) {
+                    // setError(answer.error);
+                    return;
+                }
+
+                // setError("");
+                const result = await answer.result;
+                setResponse(result);
+
+                // setLoading(false);
+
+
+            } catch (e: any) {
+                console.error("Frontend Error: " + e);
+                // setError(DefaultValues.apiErrorMessage);
+            }
+        }
+    }, [hasChanged]);
+
 	return (
 		<div>
-			<GenericModal
+			<AdminCreateRelatedProjectModal
+				createOpen={addOpen}
+				handleCloseCreate={handleCloseAdd}
+				notifyChange={notifyChange}
+			/>
+			{/* <GenericModal
 				show={addOpen}
 				title={"Add A New Project"}
 				onHide={handleCloseAdd}
@@ -39,7 +76,7 @@ export default function AdminRelatedProjectsManager() {
 						/>
 					</div>
 				</div>
-			</GenericModal>
+			</GenericModal> */}
 			<div style={{ display: "flex", justifyContent: "center" }}>
 				<Button color={"primary"} variant="contained" endIcon={<AddIcon />} onClick={handleAdd} >
 					Add A New Project
@@ -56,45 +93,13 @@ export default function AdminRelatedProjectsManager() {
 					columnSpacing={{ xs: 1 }}
 					marginBottom="4rem"
 				>
-					{/* John Cage */}
-					<RelatedProjectsCard
-						path="https://johncagetribute.org/"
-						img="resized_john_cage.jpg"
-						altText="John Cage Tribute Project"
-						className="john-cage"
-						title="John Cage"
-						description="This is the John Cage Tribute Project."
-					/>
-
-					{/* Microtonal */}
-					<RelatedProjectsCard
-						path="http://microtonality.net/"
-						img="music_clip_art.png"
-						altText="Microtonal Music"
-						className="microtonal"
-						title="Microtonal Music Project"
-						description="This is the Microtonal Music Project."
-					/>
-
-					{/* Schillinger */}
-					<RelatedProjectsCard
-						path="https://learnschillinger.com/"
-						img="schillinger.jpg"
-						altText="Learn Schillinger Project"
-						className="schillinger"
-						title="Learn Schillinger"
-						description="This is the Learn Schillinger Project."
-					/>
-
-					{/* Miscellaneous Project */}
-					<RelatedProjectsCard
-						path="#"
-						img="temp_thumb3.png"
-						altText="Miscellaneous Project"
-						className="misc"
-						title="Miscellaneous Project"
-						description="This is a Miscellaneous Project."
-					/>
+					{response?.map(project => 
+						<AdminRelatedProjectsCard
+							relatedProject={project}
+							className="john-cage"
+							notifyChange={notifyChange}
+						/>
+					)}
 				</Grid>
 			</div>
 		</div>

@@ -1,15 +1,13 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import {
     Paper,
     CardActionArea,
     Grid,
     Link,
     Typography,
-    IconButton,
 } from "@mui/material";
 
 import "./RelatedProjects.scss";
@@ -45,16 +43,6 @@ export default function RelatedProjectsCard({ img, path, className, title, altTe
                             <Typography variant="body2" color="text.secondary">
                                 {description}
                             </Typography>
-                            <div style={{ display:"flex", justifyContent:"flex-end"}}>
-
-                                <IconButton>
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </div>
-
                         </CardContent>
                     </Card>
                 </Paper>
