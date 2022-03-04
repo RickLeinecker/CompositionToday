@@ -1,7 +1,7 @@
 import SignIn from "./SignIn";
 import SignUp from "./Signup";
 import './RegistrationStyle.scss';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../FirebaseAuth/firebase'
 
@@ -9,10 +9,15 @@ export default function Registration() {
     const [currentUser, setCurrentUser] = useState({});
     const container = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        return () => {};
+    }, [])
+
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser != null)
             setCurrentUser(currentUser);
     })
+
     const handleSignUp = () => {
         container?.current?.classList.add("right-panel-active");
     }

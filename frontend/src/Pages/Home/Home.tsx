@@ -9,6 +9,7 @@ export default function Home() {
 
     const [sortBy, setSortBy] = useState<string>("newest");
     const [filterByType, setFilterByType] = useState<Array<string>>([]);
+    const [filterByTags, setFilterByTags] = useState<TagType[]>([]);
     const [key, setKey] = useState<number>(0);
     const currentUid = getAuth().currentUser?.uid;
 
@@ -31,7 +32,9 @@ export default function Home() {
     }
 
     function updateTags(newValue: Array<TagType>) {
-        console.log("here we get the tags")
+        console.log("here we get the tags", newValue);
+        setFilterByTags(newValue);
+        setKey(prev => prev + 1);
     }
 
     return (
@@ -41,11 +44,18 @@ export default function Home() {
                     getAuth().currentUser?.isAnonymous ?
                         <></>
                         :
-                        <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""} />
+                        <HomeHeader
+                            updateFilterBy={updateFilterBy}
+                            updateSortBy={updateSortBy}
+                            updateTags={updateTags}
+                            tags={filterByTags}
+                            sortBy={sortBy}
+                            uid={currentUid || ""}
+                        />
                 }
 
             </div>
-            <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
+            <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} tags={filterByTags} sortBy={sortBy} />
         </div>
     )
 }

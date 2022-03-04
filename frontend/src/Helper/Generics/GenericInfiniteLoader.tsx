@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader, InfiniteLoaderChildProps, List } from 'react-virtualized';
 import GenericHandler from "../../Handlers/GenericHandler";
-import { GenericHandlerType } from "../../ObjectInterface";
+import { GenericHandlerType, TagType } from "../../ObjectInterface";
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
@@ -10,15 +10,15 @@ import MusicCard from '../../Pages/Profile/Music/MusicCard';
 type Props = {
     uid: string | undefined;
     contentType: string[];
+    tags: TagType[];
     sortBy: string;
 }
 
-export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Props) {
+export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }: Props) {
     const [items, setItems] = useState<any[]>([null]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
-
-    console.log("did change", items)
 
     type loadedParam = {
         index: number
@@ -37,10 +37,8 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
 
     // return promise from api
     const loadMoreItems = async ({ startIndex, stopIndex }: loadParam) => {
-        console.log(sortBy, contentType);
-        console.log(startIndex, stopIndex);
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({ uid: uid, contentTypeArray: contentType, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
+            data: JSON.stringify({ uid: uid, contentTypeArray: contentType, tagArray: tags, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
             path: "getHomefeedContentInBatches",
         }
@@ -48,10 +46,6 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
         try {
             let answer = await GenericHandler(handlerObject);
 
-            console.log("Api Call", startIndex, stopIndex);
-            // answer.then(res => { setItems(res.result) }).catch(err => err);
-            console.log(answer);
-            console.log(items);
             setItems(prev => {
                 let temp = [...prev, ...answer.result];
                 return [...new Set<string>(temp.map(x => JSON.stringify(x)))].map(x => JSON.parse(x));
@@ -113,7 +107,6 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
                                     const type = result?.contentType;
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
-                                    // console.log("scrolling")
                                     // virtualizedRef.current?.recomputeRowHeights();
 
                                     return (

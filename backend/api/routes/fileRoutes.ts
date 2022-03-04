@@ -213,8 +213,8 @@ router.post("/api/uploadSheetMusic", function (req, res) {
   });
 });
 
-// uploadImage
-router.post("/api/uploadImage", function (req, res) {
+// uploadProfileImage
+router.post("/api/uploadProfileImage", function (req, res) {
   var error = "";
   var results = [];
   var responseCode;
@@ -238,6 +238,55 @@ router.post("/api/uploadImage", function (req, res) {
         height: 256,
         fit: sharp.fit.cover,
         position: sharp.strategy.entropy,
+      };
+      await sharp(req.file.path)
+        .resize(options)
+        .jpeg()
+        .toFile(path.resolve(req.file.destination, "rs" + image));
+      fs.unlinkSync(req.file.path);
+
+      // return res.send("SUCCESS!");
+      let fileInfo = {
+        filename: req.file.filename,
+        filepath:
+          "http://compositiontoday.net/images/" + "rs" + req.file.filename,
+      };
+      results.push(fileInfo);
+    }
+    // package data
+    var ret = {
+      result: results,
+      error: error,
+    };
+    // send data
+    res.status(responseCode).json(ret);
+  });
+});
+
+// uploadImage
+router.post("/api/uploadImage", function (req, res) {
+  var error = "";
+  var results = [];
+  var responseCode;
+  uploadImage(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      error = err.message;
+      responseCode = 500;
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      error = err;
+      responseCode = 500;
+    } else {
+      // Everything went fine.
+      responseCode = 200;
+      console.log(req.file);
+      console.log(req.file.path);
+      const { filename: image } = req.file;
+      var options = {
+        width: 1024,
+        height: 1024,
+        fit: sharp.fit.inside,
       };
       await sharp(req.file.path)
         .resize(options)
