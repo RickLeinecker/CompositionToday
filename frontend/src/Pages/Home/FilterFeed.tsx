@@ -7,9 +7,10 @@ import { TagType } from '../../ObjectInterface';
 type Props = {
     updateFilterBy: (newValue: string) => void
     updateTags: (newValue: Array<TagType>) => void;
+    tags: Array<TagType>;
 }
 
-export default function FilterFeed({ updateFilterBy, updateTags}: Props) {
+export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -64,7 +65,7 @@ export default function FilterFeed({ updateFilterBy, updateTags}: Props) {
                         />
                     </FormGroup>
                     <FormLabel component="legend">Filter by tags</FormLabel>
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={tags}/>
                 </Container>
             </Popover>
         </div>

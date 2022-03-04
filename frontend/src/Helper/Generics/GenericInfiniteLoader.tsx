@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRef } from 'react';
 import { AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader, InfiniteLoaderChildProps, List } from 'react-virtualized';
 import GenericHandler from "../../Handlers/GenericHandler";
-import { GenericHandlerType } from "../../ObjectInterface";
+import { GenericHandlerType, TagType } from "../../ObjectInterface";
 import ArticleCard from '../../Pages/Profile/Articles/ArticleCard';
 import EventCard from '../../Pages/Profile/Events/EventCard';
 import MusicCard from '../../Pages/Profile/Music/MusicCard';
@@ -10,15 +10,16 @@ import MusicCard from '../../Pages/Profile/Music/MusicCard';
 type Props = {
     uid: string | undefined;
     contentType: string[];
+    tags: TagType[];
     sortBy: string;
 }
 
-export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Props) {
+export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }: Props) {
     const [items, setItems] = useState<any[]>([null]);
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
 
-    console.log("did change", items)
+    console.log("did change", items, tags)
 
     type loadedParam = {
         index: number
@@ -40,7 +41,7 @@ export default function GenericInfiniteLoader({ uid, contentType, sortBy }: Prop
         console.log(sortBy, contentType);
         console.log(startIndex, stopIndex);
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({ uid: uid, contentTypeArray: contentType, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
+            data: JSON.stringify({ uid: uid, contentTypeArray: contentType, tagArray: tags, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
             path: "getHomefeedContentInBatches",
         }
