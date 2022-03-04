@@ -26,7 +26,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
     ];
 
 
-    let temp = window.sessionStorage.getItem("username");
+    let temp = window.localStorage.getItem("username");
     useEffect(() => {
         async function fetchData(user: string) {
             const handlerObject: GenericHandlerType = {

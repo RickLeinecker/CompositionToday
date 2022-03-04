@@ -16,6 +16,7 @@ type Props = {
 
 export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }: Props) {
     const [items, setItems] = useState<any[]>([null]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
 
