@@ -11,9 +11,10 @@ export default function SlateEditor() {
   const [value, setValue] = useState([
     {
       type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.' }],
+      children: [{ text: 'Enter content here...' }],
     },
   ])
+  
   return (
     // Add the editable component inside the context.
     <Slate

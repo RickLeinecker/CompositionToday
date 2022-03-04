@@ -115,9 +115,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
-                    {/* <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/> */}
-                    <SlateEditor />
-                    <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true}/>
+                    <RichTextEditor />
                     <GenericTagsPicker updateTags={updateTags}/>
                 </div>
             </GenericModal>
