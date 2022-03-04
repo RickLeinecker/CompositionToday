@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GenericHandler from '../../../Handlers/GenericHandler';
 import GenericInputField from '../../../Helper/Generics/GenericInputField';
 import GenericModal from '../../../Helper/Generics/GenericModal'
@@ -10,7 +10,9 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import { uploadFile } from '../../../Helper/Utils/FileUploadUtil';
 import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
-import { Alert, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
+import { Divider } from '@mui/material';
+import RelatedProjectsCard from '../../RelatedProjects/RelatedProjectsCard';
 
 type Props = {
     relatedProject: RelatedProjectType;
@@ -27,10 +29,20 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
     const [descriptionError, setDescriptionError] = useState(false);
 
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
+    const [newImageTempPath, setNewImageTempPath] = useState("");
     const [imageFileToDelete, setImageFileToDelete] = useState<string>("");
     const [missingImageError, setMissingImageError] = useState(false);
 
+    const [viewPreview, setViewPreview] = useState(false);
+
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
+
+    useEffect(() => {
+        function getFilepath() {
+            newContentImage && setNewImageTempPath(URL.createObjectURL(newContentImage))
+        }
+        getFilepath()
+    }, [newContentImage])
 
     const onHide = (): void => {
         handleOpenDiscard()
@@ -141,7 +153,7 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
     const handleColorChange = (event: any) => {
         handleChange(event.target.value, "backgroundColor");
     };
-    
+
     return (
         <div>
             <GenericModal
@@ -152,44 +164,73 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
                 actionText={"Edit"}
                 checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField
-                        title="Title"
-                        type="projectTitle"
-                        onChange={handleChange}
-                        value={newContentValue.projectTitle}
-                        isRequired={true}
-                        error={projectTitleError}
-                        maxLength={parseInt(DefaultValues.maxLengthShort)}
-                    />
-                    <GenericInputField
-                        title="Description"
-                        type="description"
-                        onChange={handleChange}
-                        value={newContentValue.description}
-                        isRequired={true}
-                        error={descriptionError}
-                        maxLength={parseInt(DefaultValues.maxLengthMedium)}
-                    />
-                    <GenericInputField
-                        title="URL"
-                        type="url"
-                        onChange={handleChange}
-                        value={newContentValue.url}
-                        isRequired={true}
-                        error={urlError}
-                        maxLength={parseInt(DefaultValues.maxLengthMedium)}
-                    />
-                    <div style={{ display: "flex", alignItems: "center", margin: "3%" }}>
-                        <p style={{ margin: "0%" }}>Color picker:&nbsp;</p>
-                        <Form.Control
-                            type="color"
-                            value={newContentValue.backgroundColor}
-                            onChange={handleColorChange}
-                            title="Choose your color"
-                        />
-                    </div>
-                    <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
-                    {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
+                    {!viewPreview ?
+                        <>
+                            <GenericInputField
+                                title="Title"
+                                type="projectTitle"
+                                onChange={handleChange}
+                                value={newContentValue.projectTitle}
+                                isRequired={true}
+                                error={projectTitleError}
+                                maxLength={parseInt(DefaultValues.maxLengthShort)}
+                            />
+                            <GenericInputField
+                                title="Description"
+                                type="description"
+                                onChange={handleChange}
+                                value={newContentValue.description}
+                                isRequired={true}
+                                error={descriptionError}
+                                maxLength={parseInt(DefaultValues.maxLengthMedium)}
+                            />
+                            <GenericInputField
+                                title="URL"
+                                type="url"
+                                onChange={handleChange}
+                                value={newContentValue.url}
+                                isRequired={true}
+                                error={urlError}
+                                maxLength={parseInt(DefaultValues.maxLengthMedium)}
+                            />
+                            <div style={{ display: "flex", alignItems: "center", margin: "3%" }}>
+                                <p style={{ margin: "0%" }}>Color picker:&nbsp;</p>
+                                <Form.Control
+                                    type="color"
+                                    value={newContentValue.backgroundColor}
+                                    onChange={handleColorChange}
+                                    title="Choose your color"
+                                />
+                            </div>
+                            <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
+                            {missingImageError && <Alert variant="danger">{"You must upload an image"}</Alert>}
+                            <Button onClick={() => setViewPreview(true)}>
+                                View Preview
+                            </Button>
+                        </>
+                        :
+                        <div>
+                            <h3>
+                                Preview Project
+                            </h3>
+                            <Divider sx={{ marginBottom: "10px" }} />
+                            <div style={{ display: "flex", justifyContent: "space-around" }}>
+                                <RelatedProjectsCard relatedProject={{
+                                    id: 0,
+                                    url: newContentValue.url,
+                                    imageFilepath: newImageTempPath || newContentValue.imageFilepath,
+                                    imageFilename: newContentValue.imageFilename,
+                                    projectTitle: newContentValue.projectTitle,
+                                    description: newContentValue.description,
+                                    backgroundColor: newContentValue.backgroundColor,
+                                }}
+                                />
+                            </div>
+                            <Button onClick={() => setViewPreview(false)}>
+                                Back
+                            </Button>
+                        </div>
+                    }
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
