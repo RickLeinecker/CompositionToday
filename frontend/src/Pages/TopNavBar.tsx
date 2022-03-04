@@ -40,7 +40,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
                 if (answer.error.length > 0) {
                     return;
                 }
-                console.log(answer.result);
+
                 setProfileImagePath(answer.result.profilePicPath)
                 return await answer.result;
             } catch (e: any) {
@@ -50,7 +50,6 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
             return false;
         }
 
-        console.log("Attempt", temp)
 
         if (!!temp) {
             setUsername(temp);
@@ -60,7 +59,6 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
     }, [temp])
 
     let notInSignUp;
-    console.log("Yellow: ", currentUser)
 
     switch (location.pathname) {
         case "/":

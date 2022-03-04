@@ -19,8 +19,6 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
     const [rerender, setRerender] = useState<boolean>(false);
     const virtualizedRef = useRef<List | null>(null);
 
-    console.log("did change", items, tags)
-
     type loadedParam = {
         index: number
     };
@@ -38,8 +36,6 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
 
     // return promise from api
     const loadMoreItems = async ({ startIndex, stopIndex }: loadParam) => {
-        console.log(sortBy, contentType);
-        console.log(startIndex, stopIndex);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({ uid: uid, contentTypeArray: contentType, tagArray: tags, sortBy: sortBy, startIndex: startIndex, endIndex: stopIndex }),
             methodType: "POST",
@@ -49,10 +45,6 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
         try {
             let answer = await GenericHandler(handlerObject);
 
-            console.log("Api Call", startIndex, stopIndex);
-            // answer.then(res => { setItems(res.result) }).catch(err => err);
-            console.log(answer);
-            console.log(items);
             setItems(prev => {
                 let temp = [...prev, ...answer.result];
                 return [...new Set<string>(temp.map(x => JSON.stringify(x)))].map(x => JSON.parse(x));
@@ -114,7 +106,6 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
                                     const type = result?.contentType;
                                     const individualStyle = { padding: "1% 20% 20px" };
                                     const isMyProfile = false;
-                                    // console.log("scrolling")
                                     // virtualizedRef.current?.recomputeRowHeights();
 
                                     return (
