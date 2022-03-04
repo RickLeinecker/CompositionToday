@@ -34,12 +34,12 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   INNER JOIN userProfile ON content.userID=userProfile.userID 
   LEFT JOIN likes ON content.id=likes.contentID `;
   if (tagArray && tagArray.length > 0) {
-    insertString += "INNER JOIN contentTag ON ";
+    insertString += "INNER JOIN (SELECT * FROM contentTag WHERE ";
     for (var tag of tagArray) {
-      insertString += "contentTag.tagID=" + tag.id + " OR ";
+      insertString += "tagID=" + tag.id + " OR ";
     }
     insertString = insertString.slice(0, -3);
-    insertString += "AND contentTag.contentID=content.id ";
+    insertString += ") AS ct1 ON ct1.contentID=content.id ";
     // insertString += "LEFT JOIN tag ON contentTag.tagID=tag.id ";
   } //else {
   console.log(insertString);
