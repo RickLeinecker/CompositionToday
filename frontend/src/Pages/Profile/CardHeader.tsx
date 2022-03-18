@@ -34,7 +34,7 @@ export default function CardHeader({ isMyProfile, tagArray, username, profilePic
         <div style={{ display: "flex" }}>
             <div style={{ flex: "7 0 0" }}>
                 <div className='card-start'>
-                    <div style={{ width: "8vh", marginRight: "2%" }}>
+                    <div style={{ width: "calc(15% + 14px)", margin: "auto 2%" }}>
                         <Link to={`/profile/${username}`} style={{ margin: "0%" }}>
                             <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
                         </Link>
