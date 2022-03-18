@@ -13,6 +13,34 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
+@media (max-width: 1000px) {
+    .homefeed-header-box {
+        background-color: $white;
+        border-radius: 1em;
+        margin: 1% auto;
+        width: 75vw;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        flex-wrap: wrap;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+}
+
+@media (max-width: 700px) {
+    .homefeed-header-box {
+        background-color: $white;
+        border-radius: 1em;
+        margin: 1% auto;
+        width: 90vw;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        flex-wrap: wrap;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+}
+
 .create-content-box{
     flex: 10 0 0;
     align-items: center;
