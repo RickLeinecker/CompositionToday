@@ -1,5 +1,5 @@
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 5vh;
   display: flex;
   flex-direction: column;
@@ -11,14 +11,58 @@
   text-align: center;
 }
 
+.preview {
+  padding-left: 4%;
+  padding-right: 4%;
+  margin-top: 2%;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
 .wrapper-class {
-  padding: 1rem;
-  border: 1px solid #ccc;
+  padding-left: 3%;
+  padding-right: 3%;
 }
-.editor-class {
-  background-color:lightgray;
-  border: 1px solid #ccc;
-}
+
 .toolbar-class {
   border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.editor-class {
+  /* background-color:lightgray; */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+
+.rdw-dropdown-carettoopen{
+  border-right: none;
+}
+.rdw-dropdown-carettoclose {
+  border-right: none;
+}
+
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }
