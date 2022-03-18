@@ -107,6 +107,7 @@
 
 .user-name{
     display: inline;
+    word-break: break-all;
     padding: 2%;
     font-size: calc(10px + 3vw);
     font-family: Work Sans;
