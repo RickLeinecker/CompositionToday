@@ -32,15 +32,15 @@ export default function CardHeader({ isMyProfile, tagArray, username, profilePic
 
     return (
         <div style={{ display: "flex" }}>
-            <div style={{ flex: "7 0 0" }}>
+            <div style={{ width: "90%" }}>
                 <div className='card-start'>
-                    <div style={{ width: "calc(15% + 14px)", margin: "auto 2%" }}>
+                    <div style={{ width: "calc(10% + 14px)", margin: "auto 2%" }}>
                         <Link to={`/profile/${username}`} style={{ margin: "0%" }}>
                             <Image className="profile-pic-card" src={profilePicPath || "img_avatar.png"} roundedCircle />
                         </Link>
                     </div>
-                    <div style={{ width: "30%" }}>
-                        <Link to={`/profile/${username}`} style={{ textDecoration: 'none', whiteSpace: "nowrap" }}>
+                    <div style={{ width: "80%" }}>
+                        <Link to={`/profile/${username}`} style={{ textDecoration: 'none' }}>
                             <h5 className="card-title" style={{ marginLeft: "2%", alignSelf: "center" }}>{displayName}</h5>
                         </Link>
                     </div>
@@ -48,7 +48,7 @@ export default function CardHeader({ isMyProfile, tagArray, username, profilePic
             </div>
 
 
-            <div className="card-icons" style={{ display: "flex", flexDirection: "column", width: "50%", }}>
+            <div className="card-icons" style={{ display: "flex", flexDirection: "column", width: "40%", }}>
                 <div style={{ display: "flex", float: "right", justifyContent: "flex-end" }}>
                     {isEdited ?
                         <p className="card-text-secondary">
@@ -62,21 +62,25 @@ export default function CardHeader({ isMyProfile, tagArray, username, profilePic
                     </p>
                     <div>
                         {type === "comment" ?
-                        
+
                             <>
-                            {isMyProfile}
                                 {(isMyProfile && username !== currentUsername) && <CommentOptionsMenu handleOpenDelete={handleOpenDelete} />}
                                 {(username === currentUsername) && <CommentOptionsMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />}
                             </>
-                        :
+                            :
                             (isMyProfile || username === currentUsername) && <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                         }
                     </div>
 
                 </div>
-                <div className="tagBox">
-                    {getChips()}
-                </div>
+                {
+                    window.innerWidth > 1000 ? 
+                    <div className="tagBox">
+                        {getChips()}
+                    </div>
+                    :
+                    <></>
+                }
             </div>
         </div>
     )
