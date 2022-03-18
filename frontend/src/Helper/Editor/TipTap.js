@@ -76,6 +76,9 @@ const MenuBar = ({ editor }) => {
         >
           <FaQuoteLeft />
         </button>
+        <button>
+            <FaFileImage/>
+        </button>
 
       </div>
       <div>
