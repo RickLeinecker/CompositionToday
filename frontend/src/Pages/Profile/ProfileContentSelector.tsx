@@ -32,7 +32,7 @@ const Tab = styled(TabUnstyled)`
   font-family: IBM Plex Sans, sans-serif;
   color: white;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: calc(0.5rem + 0.5vw);
   font-weight: bold;
   background-color: transparent;
   width: 100%;
