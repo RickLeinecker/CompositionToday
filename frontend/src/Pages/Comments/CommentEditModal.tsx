@@ -15,7 +15,7 @@ type Props = {
     handleCloseEdit: () => void;
 }
 
-export default function CommetnEditModal({ comment, notifyChange, editOpen, handleCloseEdit}: Props) {
+export default function CommentEditModal({ comment, notifyChange, editOpen, handleCloseEdit}: Props) {
     const [newContentValue, setNewContentValue] = useState<string>(comment.comment)
 
     const [contentError, setContentError] = useState(false);

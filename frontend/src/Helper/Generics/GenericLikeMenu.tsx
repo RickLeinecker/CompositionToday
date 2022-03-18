@@ -190,7 +190,7 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
 
         }
         fetchData();
-    }, [contentID, currentUid])
+    }, [contentID, currentUid, isComment])
     
     useEffect(() => {
         if(didMountRef.current){
