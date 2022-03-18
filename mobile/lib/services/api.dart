@@ -41,8 +41,9 @@ Future<UserData> getLoggedInUser(String uid) async {
   }
 }
 
-Future<List<ContentType>> getHomefeedContentInBatches(
+Future<List<Map<String, dynamic>>> getHomefeedContentInBatches(
     List<String> contentTypeArray,
+    List<String> tagArray,
     String sortBy,
     int startIndex,
     int endIndex) async {
@@ -53,21 +54,17 @@ Future<List<ContentType>> getHomefeedContentInBatches(
     },
     body: jsonEncode(<String, dynamic>{
       'contentTypeArray': contentTypeArray,
+      'tagArray': tagArray,
       'sortBy': sortBy,
       'startIndex': startIndex,
       'endIndex': endIndex,
     }),
   );
   if (response.statusCode == 200) {
-    return contentResponseFromJson(response.body);
+    return List<Map<String, dynamic>>.from(jsonDecode(response.body)['result']);
   } else if (response.statusCode == 404) {
     throw Exception('Failed to load content from API. ${response.statusCode}');
   } else {
     throw Exception('API call timed out. ${response.statusCode}');
   }
 }
-
-List<ContentType> contentResponseFromJson(String response) =>
-    List<ContentType>.from(jsonDecode(response)
-        .entries
-        .map<ContentType>((data) => ContentType.fromJson(data.value))).toList();

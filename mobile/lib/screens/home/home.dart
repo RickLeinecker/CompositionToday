@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
 
+import 'package:composition_today/models/content.dart';
 import 'package:composition_today/models/user.dart';
 import 'package:composition_today/screens/home/related_projects.dart';
 import 'package:composition_today/screens/home/settings.dart';
@@ -9,7 +10,8 @@ import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:composition_today/models/content_card.dart';
+
+import '../../shared/loading.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,9 +25,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final TextEditingController _controller = TextEditingController();
+  late Future<List<Map<String, dynamic>>> contentCard;
   Future<UserData>? _futureUser;
 
-  void initState() {}
+  void initState() {
+    super.initState();
+    contentCard = getHomefeedContentInBatches(
+        ['music', 'event', 'article'], [], "newest", 0, 50);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,13 +43,29 @@ class _HomeState extends State<Home> {
         actions: const <Widget>[],
       ),
       body: Center(
-        child: Container(
-          child: ListView.builder(
-              itemCount: 50,
-              itemBuilder: (BuildContext context, int index) {
-                return const ContentCard();
-              }),
-        ),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: contentCard,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Map<String, dynamic>> content = snapshot.data!;
+                return ListView.builder(
+                  itemCount: content.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = snapshot.data![index];
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(item['profilePicPath']),
+                      ),
+                      title: Text(item['displayName']),
+                      subtitle: Text(item['contentType']),
+                      isThreeLine: true,
+                    );
+                  },
+                );
+              } else {
+                return Loading();
+              }
+            }),
       ),
       drawer: Drawer(
         child: ListView(
