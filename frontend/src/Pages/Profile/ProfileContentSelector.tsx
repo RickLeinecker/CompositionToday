@@ -96,14 +96,14 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
         <>
             <div className="container-profile">
                 <div className="my-profile-box">
-                    <div style={{ position: "relative", display: "flex", marginLeft: "2%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
-                        <div style={{ flex: "1.2 0 0" }}>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "1%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
+                        <div style={{ flex: "1.2 0 0", padding: "1%" }}>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                         </div>
                         <div style={{ flex: "7 0 0" }}>
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div>
-                                <p style={{ fontSize: "calc(10px + 1vw)", marginLeft: "5%"}}>{userProfile.bio}</p>
+                                <p style={{ fontSize: "calc(10px + 1vw)", marginLeft: "5%", wordBreak: "break-all"}}>{userProfile.bio}</p>
                             </div>
                         </div>
                         {isMyProfile &&
