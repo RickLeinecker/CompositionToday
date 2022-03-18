@@ -52,13 +52,15 @@ class _HomeState extends State<Home> {
                   itemCount: content.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = snapshot.data![index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(item['profilePicPath']),
+                    return Card(
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(item['profilePicPath']),
+                        ),
+                        title: Text(item['displayName']),
+                        subtitle: Text(item['contentName']),
+                        isThreeLine: true,
                       ),
-                      title: Text(item['displayName']),
-                      subtitle: Text(item['contentType']),
-                      isThreeLine: true,
                     );
                   },
                 );
