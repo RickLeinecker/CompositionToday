@@ -231,7 +231,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
                     <PlacesAutocomplete location={newContentValue.location} updateLocation={handleChange} />
                     <FormControlLabel
-                        control={<Checkbox checked={newContentValue.mapsEnabled}
+                        control={<Checkbox checked={!!newContentValue.mapsEnabled}
                             onChange={() => handleChange(!newContentValue.mapsEnabled, "mapsEnabled")} />}
                         label="Enable map"
                     />

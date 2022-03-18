@@ -52,6 +52,7 @@ export default function RelatedProjects() {
 					{response?.map(project =>
 						<RelatedProjectsCard
 							relatedProject={project}
+							key={project.id}
 						/>
 					)}
 				</Grid>
