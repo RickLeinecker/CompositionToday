@@ -45,7 +45,7 @@ exports.updateContent = async (req, res) => {
   mysql_pool.getConnection(function (err, connection) {
     // query database, handle errors, return JSON
     connection.query(
-      "SELECT user.id,content.imageFilepathArray,content.audioFilepath,content.sheetMusicFilepath FROM user INNER JOIN content ON content.id=? WHERE uid=?",
+      "SELECT user.id,content.imageFilepath,content.audioFilepath,content.sheetMusicFilepath FROM user INNER JOIN content ON content.id=? WHERE uid=?",
       [contentID, uid],
       function (err, result) {
         if (err) {
@@ -60,6 +60,7 @@ exports.updateContent = async (req, res) => {
             // delete audio file
             if (
               result[0].audioFilepath !== null &&
+              result[0].audioFilepath !== "" &&
               result[0].audioFilepath !== undefined &&
               result[0].audioFilepath !== audioFilepath
             ) {
@@ -81,6 +82,7 @@ exports.updateContent = async (req, res) => {
             // delete image file
             if (
               result[0].imageFilepath !== null &&
+              result[0].imageFilepath !== "" &&
               result[0].imageFilepath !== undefined &&
               result[0].imageFilepath !== imageFilepath
             ) {
@@ -102,6 +104,7 @@ exports.updateContent = async (req, res) => {
             // delete sheetmusic file
             if (
               result[0].sheetMusicFilepath !== null &&
+              result[0].sheetMusicFilepath !== "" &&
               result[0].sheetMusicFilepath !== undefined &&
               result[0].sheetMusicFilepath !== sheetMusicFilepath
             ) {
