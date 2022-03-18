@@ -4,6 +4,7 @@ import moment from 'moment'
 import { Chip } from '@mui/material'
 import { TagType } from '../../ObjectInterface'
 import GenericCardMenu from '../Comments/CommentOptionsMenu'
+import CommentOptionsMenu from '../Comments/CommentOptionsMenu'
 
 type Props = {
     isMyProfile: boolean;
@@ -14,18 +15,19 @@ type Props = {
     timestamp: string;
     displayName: string;
     currentUsername: string;
+    type?: string;
     handleOpenDelete: () => void;
     handleOpenEdit: () => void;
 }
 
-export default function CardHeader({isMyProfile, tagArray, username, profilePicPath, isEdited, timestamp, currentUsername, handleOpenEdit, handleOpenDelete, displayName}: Props) {
+export default function CardHeader({ isMyProfile, tagArray, username, profilePicPath, isEdited, timestamp, currentUsername, handleOpenEdit, handleOpenDelete, displayName, type }: Props) {
 
     function getChips() {
         if (!tagArray) {
             return;
         }
         let tags: TagType[] = JSON.parse(tagArray);
-        return tags?.map(tag => <Chip label={tag.tagName} color="primary" variant="outlined" style={{ marginRight: "2%"}} />);
+        return tags?.map(tag => <Chip label={tag.tagName} color="primary" variant="outlined" style={{ marginRight: "2%" }} />);
     }
 
     return (
@@ -46,8 +48,8 @@ export default function CardHeader({isMyProfile, tagArray, username, profilePicP
             </div>
 
 
-            <div className="card-icons" style={{display: "flex", flexDirection: "column", width: "50%",}}>
-                <div style={{ display: "flex", float: "right", justifyContent: "flex-end"}}>
+            <div className="card-icons" style={{ display: "flex", flexDirection: "column", width: "50%", }}>
+                <div style={{ display: "flex", float: "right", justifyContent: "flex-end" }}>
                     {isEdited ?
                         <p className="card-text-secondary">
                             (edited)&nbsp;
@@ -59,8 +61,15 @@ export default function CardHeader({isMyProfile, tagArray, username, profilePicP
                         {timestamp && moment(new Date(timestamp).toUTCString()).fromNow()}
                     </p>
                     <div>
-                        {(isMyProfile || username === currentUsername) &&
-                            <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
+                        {type === "comment" ?
+                        
+                            <>
+                            {isMyProfile}
+                                {(isMyProfile && username !== currentUsername) && <CommentOptionsMenu handleOpenDelete={handleOpenDelete} />}
+                                {(username === currentUsername) && <CommentOptionsMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />}
+                            </>
+                        :
+                            (isMyProfile || username === currentUsername) && <GenericCardMenu handleOpenDelete={handleOpenDelete} handleOpenEdit={handleOpenEdit} />
                         }
                     </div>
 

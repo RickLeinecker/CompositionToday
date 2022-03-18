@@ -10,7 +10,7 @@ type Props = {
     handleOpenEdit?: () => void;
 }
 
-export default function GenericCardMenu({ handleOpenDelete, handleOpenEdit }: Props) {
+export default function CommentOptionsMenu({ handleOpenDelete, handleOpenEdit }: Props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
