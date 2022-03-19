@@ -36,6 +36,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    bool profilePicIsNull = false;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: MyAppBar(
@@ -52,14 +53,43 @@ class _HomeState extends State<Home> {
                   itemCount: content.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = snapshot.data![index];
+                    if (item['profilePicPath'] == null) {
+                      debugPrint('profile picture path is null');
+                      profilePicIsNull = true;
+                    } else {
+                      profilePicIsNull = false;
+                    }
                     return Card(
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(item['profilePicPath']),
-                        ),
-                        title: Text(item['displayName']),
-                        subtitle: Text(item['contentName']),
-                        isThreeLine: true,
+                      margin: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: CircleAvatar(
+                                  backgroundImage: profilePicIsNull
+                                      ? const AssetImage(
+                                          'assets/img_avatar.png')
+                                      : NetworkImage(item['profilePicPath'])
+                                          as ImageProvider,
+                                ),
+                              ),
+                              const SizedBox(width: 10.0),
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  item['displayName'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     );
                   },
