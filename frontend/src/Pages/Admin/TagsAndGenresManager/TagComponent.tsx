@@ -1,23 +1,21 @@
 import { Button } from '@mui/material';
 import CreateTagModal from './CreateTagModal';
-import GenericModal from '../../../Helper/Generics/GenericModal';
 import DataGridMaker from '../DataGridMaker';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import { GenericHandlerType, TagType } from '../../../ObjectInterface';
-import GenericHandler from '../../../Handlers/GenericHandler';
+import { TagType } from '../../../ObjectInterface';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import TagAndGenreColumns from '../columnStructure/TagAndGenreColumns';
-import { toast } from 'react-toastify';
+import RemoveTagModal from './RemoveTagModal';
 
 const TagComponent = () => {
     const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
     const [responseTags, setResponseTags] = useState<Array<TagType>>([]);
     const [tagsChanged, setTagsChanged] = useState<boolean>(false);
     const { open: createTagOpen, handleClick: handleOpenCreateTag, handleClose: handleCloseCreateTag } = useOpen();
-    const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
+    const { open: removeTagOpen, handleClick: handleOpenRemoveTag, handleClose: handleCloseRemoveTag } = useOpen();
 
     const notifyChange = () => {
         setTagsChanged(value => !value);
@@ -46,46 +44,12 @@ const TagComponent = () => {
             <GridToolbarContainer style={{ display: "flex", justifyContent: "space-around" }}>
                 {
                     selectedTags.length > 0 &&
-                    <Button color="error" variant="contained" onClick={handleOpenRemove} endIcon={<DeleteIcon />}>
+                    <Button color="error" variant="contained" onClick={handleOpenRemoveTag} endIcon={<DeleteIcon />}>
                         Delete Tags
                     </Button>
                 }
             </GridToolbarContainer>
         );
-    }
-
-    // TODO
-    async function fetchRemove(tag: TagType) {
-        const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({
-                tagID: tag.id
-            }),
-            methodType: "DELETE",
-            path: "deleteTag",
-        }
-
-        try {
-            let answer = (await GenericHandler(handlerObject));
-            if (answer.error.length > 0) {
-                toast.error("Failed to remove " + tag.tagName);
-                console.error(answer.error);
-                return;
-            }
-
-            toast.success("Successfully removed " + tag.tagName);
-            notifyChange();
-        } catch (e: any) {
-            console.error("Frontend Error: " + e);
-            toast.error("Failed to remove " + tag.tagName);
-        }
-    }
-
-    function confirmDeleteHandler() {
-        console.log("delete admins", selectedTags)
-
-        selectedTags.map((tag: TagType) => fetchRemove(tag));
-
-        handleCloseRemove();
     }
 
     return (
@@ -97,23 +61,9 @@ const TagComponent = () => {
                 Create Tag
             </Button>
             <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} />
+            <RemoveTagModal selectedTags={selectedTags} notifyChange={notifyChange} removeOpen={removeTagOpen} handleCloseRemove={handleCloseRemoveTag}/>
 
             <DataGridMaker rows={responseTags} columns={TagAndGenreColumns} setSelected={setSelectedTags} CustomToolbar={TagsToolbar} />
-
-            <GenericModal
-                show={removeOpen}
-                title={"Delete Tags"}
-                onHide={handleCloseRemove}
-                confirm={confirmDeleteHandler}
-                actionText={"Delete"}
-                checkForErrors={() => false}
-            >
-                <div>
-                    <pre>
-                        {JSON.stringify(selectedTags)}
-                    </pre>
-                </div>
-            </GenericModal>
         </div>
     );
 }

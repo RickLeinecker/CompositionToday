@@ -104,7 +104,7 @@ export default function AdminUserManager() {
 			/>
 
 			<AdminDeleteUsersModal
-				userID={selected.map(user => user.id)}
+				users={selected}
 				notifyChange={notifyChange}
 				deleteOpen={deleteOpen}
 				handleCloseDelete={handleCloseDelete}
