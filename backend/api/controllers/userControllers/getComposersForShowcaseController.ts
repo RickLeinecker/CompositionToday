@@ -37,22 +37,20 @@ exports.getComposersForShowcase = async (req, res) => {
         } else {
           if (result[0]) {
             responseCode = 200;
-            console.log(result[0].count);
-            var num1 = getRandomInt(result[0].count - 4);
             mysql_pool.getConnection(function (err, connection) {
               connection.query(
-                `SELECT DISTINCT user.id,user.uid,user.firstName,user.lastName,user.username,user.email,user.isPublisher,userProfile.profilePicPath,content.audioFilename,content.audioFilepath
+                `SELECT DISTINCT user.id,user.uid,user.firstName,user.lastName,user.username,user.email,user.isPublisher,userProfile.profilePicPath,c1.audioFilename,c1.audioFilepath
                 FROM user INNER JOIN userProfile ON user.id=userProfile.userID
-                LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE isFeaturedSong=1) content ON user.id=content.userID LIMIT ?,?`,
-                [num1, 4],
-                function (err, result) {
+                LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE isFeaturedSong=1) AS c1 ON user.id=c1.userID`,
+                function (err, result2) {
                   if (err) {
                     error = err;
                     responseCode = 500;
                     console.log(err);
                   } else {
-                    if (result[0]) {
-                      results = result;
+                    if (result2[0]) {
+                      var num1 = getRandomInt(result2.length - 5);
+                      results = result2.slice(num1, num1 + 4);
                       responseCode = 200;
                     } else {
                       error = "No Composers Found";

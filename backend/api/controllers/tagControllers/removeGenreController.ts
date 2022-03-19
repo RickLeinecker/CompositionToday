@@ -1,27 +1,28 @@
 // mysql connection
 var { mysql_pool } = require("../../../database/database.ts");
 
-// createPublisher - update the status of user in the database to publisher
-exports.createPublisher = async (req, res) => {
-  // incoming: uid
-  // outgoing: success or error
+// removeGenre
+exports.removeGenre = async (req, res) => {
+  // incoming: tagID
+  // outgoing: error
 
-  // declaring variables for errors and results
   var error = "";
   var results = [];
   var insertArray = [];
   var responseCode = 0;
-  // reading data from frontend
-  var { uid } = req.body;
+
+  const { tagID } = req.body;
 
   // build update string with non null fields
-  var insertString = "UPDATE user SET isPublisher=1";
-  insertString += " WHERE uid=?";
-  insertArray.push(uid);
+  var insertString = "UPDATE tag SET ";
+
+  insertString += "approvedGenre=0,";
+
+  insertString = insertString.slice(0, -1);
+  insertString += " WHERE id=?";
+  insertArray.push(tagID);
 
   mysql_pool.getConnection(function (err, connection) {
-    // preparing MySQL string
-    // query database, handle errors, return JSON
     connection.query(insertString, insertArray, function (err, result) {
       if (err) {
         error = "SQL Update Error";
@@ -32,7 +33,7 @@ exports.createPublisher = async (req, res) => {
           results.push("Success");
           responseCode = 200;
         } else {
-          error = "User does not exist";
+          error = "This tag does not exist";
           responseCode = 500;
         }
       }
