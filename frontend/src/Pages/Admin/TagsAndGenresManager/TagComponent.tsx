@@ -5,10 +5,12 @@ import DataGridMaker from '../DataGridMaker';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
-import { TagType } from '../../../ObjectInterface';
+import { GenericHandlerType, TagType } from '../../../ObjectInterface';
+import GenericHandler from '../../../Handlers/GenericHandler';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import TagAndGenreColumns from '../columnStructure/TagAndGenreColumns';
+import { toast } from 'react-toastify';
 
 const TagComponent = () => {
     const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
@@ -52,6 +54,40 @@ const TagComponent = () => {
         );
     }
 
+    // TODO
+    async function fetchRemove(tag: TagType) {
+        const handlerObject: GenericHandlerType = {
+            data: JSON.stringify({
+                tagID: tag.id
+            }),
+            methodType: "DELETE",
+            path: "deleteTag",
+        }
+
+        try {
+            let answer = (await GenericHandler(handlerObject));
+            if (answer.error.length > 0) {
+                toast.error("Failed to remove " + tag.tagName);
+                console.error(answer.error);
+                return;
+            }
+
+            toast.success("Successfully removed " + tag.tagName);
+            notifyChange();
+        } catch (e: any) {
+            console.error("Frontend Error: " + e);
+            toast.error("Failed to remove " + tag.tagName);
+        }
+    }
+
+    function confirmDeleteHandler() {
+        console.log("delete admins", selectedTags)
+
+        selectedTags.map((tag: TagType) => fetchRemove(tag));
+
+        handleCloseRemove();
+    }
+
     return (
         <div>
             <p style={{ textDecoration: "underline" }}>
@@ -68,8 +104,8 @@ const TagComponent = () => {
                 show={removeOpen}
                 title={"Delete Tags"}
                 onHide={handleCloseRemove}
-                confirm={() => { }}
-                actionText={"Save"}
+                confirm={confirmDeleteHandler}
+                actionText={"Delete"}
                 checkForErrors={() => false}
             >
                 <div>
