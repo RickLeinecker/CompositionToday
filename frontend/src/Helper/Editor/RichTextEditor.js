@@ -1,10 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor, } from 'react-draft-wysiwyg';
 import { convertToHTML, } from 'draft-convert';
 import DOMPurify from 'dompurify';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './RichTextStyle.css'
+
+export function RichTextConverter({content}){
+  const html = convertToHTML(convertFromRaw(JSON.parse(content)));
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html)
+    }
+  }
+  return(
+    <div className="preview" dangerouslySetInnerHTML={createMarkup(html)}></div>
+    )
+
+}
+
 
 
 export default function RichTextEditor({ handleChange, content }) {
@@ -17,18 +31,6 @@ export default function RichTextEditor({ handleChange, content }) {
 
   if (content) {
     setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(content))));
-  }
-
-  // const  [convertedContent, setConvertedContent] = useState(null);
-  // const convertContentToHTML = () => {
-  //   let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-  //   setConvertedContent(currentContentAsHTML);
-  // }
-
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html)
-    }
   }
 
   const handleEditorChange = (state) => {
@@ -66,7 +68,6 @@ export default function RichTextEditor({ handleChange, content }) {
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
       />
-      {/* <div className="preview" dangerouslySetInnerHTML={createMarkup(convertedContent)}></div> */}
     </div>
   )
 }

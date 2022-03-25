@@ -5,6 +5,7 @@ import EditArticleModal from './EditArticleModal';
 import { Divider } from '@mui/material';
 import CardFooter from '../CardFooter';
 import ArticleCardHeader from './ArticleCardHeader';
+import {RichTextConverter } from '../../../Helper/Editor/RichTextEditor';
 
 type Props = {
     article: ArticleType;
@@ -26,7 +27,9 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
 
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <h1 className="card-title">{contentName}</h1>
-                <p className="card-text">{contentText}</p>
+                {/* <p className="card-text">{contentText}</p> */}
+                <RichTextConverter content={contentText}/>
+
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
