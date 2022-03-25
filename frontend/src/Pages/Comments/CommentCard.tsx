@@ -1,12 +1,4 @@
-import { Link } from 'react-router-dom';
-import { Image } from 'react-bootstrap'
-import moment from 'moment';
 import { CommentType } from '../../ObjectInterface';
-import CommentOptionsMenu from './CommentOptionsMenu';
-import useOpen from '../../Helper/CustomHooks/useOpen';
-import CommentDeleteModal from './CommentDeleteModal';
-import { useEffect, useState } from 'react';
-import CommentEditModal from './CommentEditModal';
 import { Divider } from '@mui/material';
 import GenericLike from '../../Helper/Generics/GenericLike';
 import CommentCardHeader from './CommentCardHeader';
