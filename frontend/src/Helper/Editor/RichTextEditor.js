@@ -6,16 +6,27 @@ import DOMPurify from 'dompurify';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './RichTextStyle.css'
 
-export function RichTextConverter({content}){
-  const html = convertToHTML(convertFromRaw(JSON.parse(content)));
+export function RichTextConverter({ content }) {
+  const json = JSON.parse(content);
+  console.log(json);
+  
+  const contentState = convertFromRaw(JSON.parse(content))
+  console.log("contentState: " + contentState);
+  
+  const html = convertToHTML(contentState);
+  
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html)
     }
   }
-  return(
-    <div className="preview" dangerouslySetInnerHTML={createMarkup(html)}></div>
-    )
+  return (
+    <> 
+      <div className="card-text">
+        <div className="preview" dangerouslySetInnerHTML={createMarkup(html)}></div>
+      </div>
+    </>
+  )
 
 }
 
@@ -46,10 +57,10 @@ export default function RichTextEditor({ handleChange, content }) {
     return contentItem;
   }
 
-  
+
   const options = ['inline', 'blockType', 'fontSize',
-   'fontFamily', 'list', 'textAlign',
-    'colorPicker', 'link','image',]
+    'fontFamily', 'list', 'textAlign',
+    'colorPicker', 'link', 'image',]
 
   return (
     <div className="App">
