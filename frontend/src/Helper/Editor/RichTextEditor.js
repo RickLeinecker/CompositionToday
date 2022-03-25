@@ -8,9 +8,8 @@ import './RichTextStyle.css'
 
 export function RichTextConverter({ content }) {
   const contentState = convertFromRaw(JSON.parse(content))
-  
   const html = convertToHTML(contentState);
-
+  
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html)
