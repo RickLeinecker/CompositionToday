@@ -12,47 +12,47 @@ type Props = {
     type: string;
 }
 
-export default function AdminMakePublisherModal({ userID, notifyChange, publishOpen, handleClosePublish, type}: Props) {
+export default function AdminRemovePublisherModal({ userID, notifyChange, publishOpen, handleClosePublish, type}: Props) {
 
-    async function makePublisher(uid: string) {
+    async function removePublisher(uid: string) {
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 uid: uid
             }),
             methodType: "POST",
-            path: "createPublisher",
+            path: "removePublisher",
         }
 
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error("Failed to make user a publisher");
+                toast.error("Failed to remove as publisher");
                 console.error(answer.error);
                 return;
             }
 
-            toast.success("User is now a publisher");
-            notifyChange();
+            toast.success("User is not a anymore publisher");
+			notifyChange();
         } catch (e: any) {
             console.error("Frontend Error: " + e);
-            toast.error("Failed to make user a publisher");
+            toast.error("Failed to remove as publisher");
         }
     }
 
-    async function confirmHandler() {
-        console.log("make users publishers")
+    async function confirmDeleteHandler() {
+        console.log("remove users publishers")
         console.log(userID);
-        userID.map((uid: string) => makePublisher(uid));
+        userID.map((uid: string) => removePublisher(uid));
 
         handleClosePublish();
     }
 
     return (
         <div>
-            <GenericModal show={publishOpen} title={"Confirm"} onHide={handleClosePublish} confirm={confirmHandler} actionText={"Confirm"} >
+            <GenericModal show={publishOpen} title={"Confirm"} onHide={handleClosePublish} confirm={confirmDeleteHandler} actionText={"Remove"} >
                 <>
                     <p>
-                        Are you sure you want to make these users publishers?
+                        Are you sure you want to remove these users' status as publishers?
                     </p>
                 </>
             </GenericModal>

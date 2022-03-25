@@ -12,6 +12,7 @@ import DataGridMaker from '../DataGridMaker';
 export default function AdminAdminManager() {
     const [rows, setRows] = useState<User[]>([]);
     const [selected, setSelected] = useState<User[]>([]);
+    const [refresh, setRefresh] = useState<number>(0);
     const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
 
     async function fetchAdmins() {
@@ -28,9 +29,13 @@ export default function AdminAdminManager() {
         }
     }
 
+    function notifyChange() {
+        setRefresh(p => p + 1);
+    }
+
     useEffect(() => {
         fetchAdmins();
-    }, [])
+    }, [refresh])
 
     function AdminToolbar() {
         return (
@@ -50,8 +55,8 @@ export default function AdminAdminManager() {
             <DataGridMaker rows={rows} columns={AdminColumns} setSelected={setSelected} CustomToolbar={AdminToolbar} />
 
             <AdminRemoveModal
-                userID={selected.map(user => user.id)}
-                notifyChange={() => { }}
+                userID={selected.map((user: User) => user.uid!)}
+                notifyChange={notifyChange}
                 deleteOpen={removeOpen}
                 handleCloseDelete={handleCloseRemove} type={'admin'}
             />

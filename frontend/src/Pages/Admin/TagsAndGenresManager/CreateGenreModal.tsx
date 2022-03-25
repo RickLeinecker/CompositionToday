@@ -99,7 +99,7 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
         try {
             let answer = (await GenericHandler(handlerObject));
             if (answer.error.length > 0) {
-                toast.error('Failed to create genre');
+                toast.error(answer.error);
                 return;
             }
 
