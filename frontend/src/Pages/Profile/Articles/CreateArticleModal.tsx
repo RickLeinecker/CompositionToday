@@ -8,6 +8,7 @@ import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 
 type Props = {
@@ -21,7 +22,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
 
     const [newContentName, setNewContentName] = useState("");
     const [newContentText, setNewContentText] = useState("");
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>();
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -45,6 +46,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
     const clearFields = (): void => {
         setNewContentName("")
         setNewContentText("")
+        setNewContentTags(null);
 
         setNameError(false);
         setTextError(false);
@@ -70,16 +72,18 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
     }
 
     async function confirmCreateHandler() {
+        console.log(newContentTags);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 uid: uid,
                 contentName: newContentName,
                 contentText: newContentText,
                 contentType: "article",
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags || [],
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {
@@ -112,7 +116,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
                 checkForErrors={checkForErrors}
             >
                 <div>
-                    <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError}/>
+                    <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
                     <RichTextEditor handleChange={setNewContentText} content={undefined}/>
                     <GenericTagsPicker updateTags={updateTags}/>
                 </div>

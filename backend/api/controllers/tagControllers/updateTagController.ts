@@ -11,20 +11,32 @@ exports.updateTag = async (req, res) => {
   var insertArray = [];
   var responseCode = 0;
 
-  const { tagName, tagID } = req.body;
+  const { tagName, tagID, imageFilepath, imageFilename, approvedGenre } =
+    req.body;
 
   // build update string with non null fields
   var insertString = "UPDATE tag SET ";
-  if (tagName !== null) {
+  if (tagName !== null && tagName !== undefined) {
     insertString += "tagName=?,";
     insertArray.push(tagName);
+  }
+  if (imageFilepath !== null && imageFilepath !== undefined) {
+    insertString += "imageFilepath=?,";
+    insertArray.push(imageFilepath);
+  }
+  if (imageFilename !== null && imageFilename !== undefined) {
+    insertString += "imageFilename=?,";
+    insertArray.push(imageFilename);
+  }
+  if (approvedGenre !== null && approvedGenre !== undefined) {
+    insertString += "approvedGenre=?,";
+    insertArray.push(approvedGenre);
   }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";
   insertArray.push(tagID);
 
-  // var sqlInsert = "UPDATE tag SET tagName=? WHERE id=?";
   mysql_pool.getConnection(function (err, connection) {
     connection.query(insertString, insertArray, function (err, result) {
       if (err) {
@@ -39,7 +51,6 @@ exports.updateTag = async (req, res) => {
           error = "This tag does not exist";
           responseCode = 500;
         }
-        // console.log(result);
       }
       // package data
       var ret = {

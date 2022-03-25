@@ -5,9 +5,10 @@ import { TagType } from '../../ObjectInterface';
 
 type Props = {
     updateTags: (newValue: Array<TagType>) => void;
+    defaultValue?: TagType[];
 }
 
-export default function GenericTagsPicker({updateTags}: Props) {
+export default function GenericTagsPicker({defaultValue, updateTags}: Props) {
 
     const [tagOptions, setTagOptions] = useState<TagType[]>([]);
 
@@ -42,6 +43,7 @@ export default function GenericTagsPicker({updateTags}: Props) {
         <Autocomplete
             multiple
             id="tags-standard"
+            defaultValue={defaultValue || []}
             options={tagOptions}
             onChange={(event, newValue) => updateTags(newValue)}
             getOptionLabel={(option) => option.tagName}

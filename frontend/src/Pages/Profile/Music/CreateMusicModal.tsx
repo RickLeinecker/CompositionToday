@@ -10,6 +10,7 @@ import GenericFileUpload from '../../../Helper/Generics/GenericFileUpload';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     uid: string;
@@ -24,14 +25,14 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentText, setNewContentText] = useState("");
     const [newContentDescription, setNewContentDescription] = useState("");
     const [newContentSheetMusic, setNewContentSheetMusic] = useState<File | null>(null);
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>(null);
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
-    function updateTags(newValue: Array<TagType>){
+    function updateTags(newValue: Array<TagType>) {
         setNewContentTags(newValue);
     }
 
@@ -53,6 +54,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         setNewContentSheetMusicFilename("");
         setNewContentAudio(null);
         setNewContentAudioFilename("");
+        setNewContentTags(null);
 
         setNameError(false);
         setTextError(false);
@@ -138,10 +140,11 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 sheetMusicFilename: newContentSheetMusicFilename,
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentAudioFilename,
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                tagArray: newContentTags || [],
             }),
             methodType: "POST",
-            path: "createContent",
+            path: "createContentWithTags",
         }
 
         try {
@@ -161,7 +164,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
 
         clearFields();
         handleCloseCreate();
-        
+
     }
 
     return (
@@ -175,10 +178,34 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 checkForErrors={checkForErrors}
             >
                 <>
-                    <GenericInputField title="Song Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} />
-                    <GenericInputField title="Title" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} />
-                    <GenericInputField title="Description" type="description" onChange={setNewContentDescription} value={newContentDescription} isRequired={false} />
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericInputField
+                        title="Song Title"
+                        type="contentName"
+                        onChange={setNewContentName}
+                        value={newContentName}
+                        isRequired={true}
+                        error={nameError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Title"
+                        type="contentText"
+                        onChange={setNewContentText}
+                        value={newContentText}
+                        isRequired={true}
+                        error={textError}
+                        maxLength={parseInt(DefaultValues.maxLengthShort)}
+                    />
+                    <GenericInputField
+                        title="Description"
+                        type="description"
+                        onChange={setNewContentDescription}
+                        value={newContentDescription}
+                        isRequired={false}
+                        isMultiline={true}
+                        maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
+                    <GenericTagsPicker updateTags={updateTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
                     {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}

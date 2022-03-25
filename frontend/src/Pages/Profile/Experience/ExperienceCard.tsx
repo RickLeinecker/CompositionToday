@@ -4,19 +4,22 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import './ExperienceStyle.scss';
 import GenericDeleteModal from '../../../Helper/Generics/GenericDeleteModal';
 import GenericCardMenu from '../../../Helper/Generics/GenericCardMenu';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Props = {
     experience: ExperienceType;
     isMyProfile: boolean;
     notifyChange: () => void;
+    notifyVirtualizer: () => void;
+    clearCache: () => void;
 }
 
 
-export default function ExperienceCard({ experience, isMyProfile, notifyChange }: Props) {
+export default function ExperienceCard({ experience, isMyProfile, notifyChange, notifyVirtualizer, clearCache }: Props) {
     const { id, contentName, contentText, description, fromDate, toDate, isDateCurrent } = experience;
     const { open: editOpen, handleClick: handleOpenEdit, handleClose: handleCloseEdit } = useOpen();
     const { open: deleteOpen, handleClick: handleOpenDelete, handleClose: handleCloseDelete } = useOpen();
+    const [showMore, setShowMore] = useState(false);
     
 
     const startDate =  !fromDate ? undefined : new Date(fromDate);
@@ -56,7 +59,11 @@ export default function ExperienceCard({ experience, isMyProfile, notifyChange }
                     + (isDateCurrent ? "Current" : (endDate && ((endDate.getUTCMonth() + 1).toString() 
                     + "/" + endDate.getUTCFullYear().toString())))}
                 </p>
-                <p className="card-text-secondary">{description}</p>
+                <p className="card-text-secondary" style={{marginBottom: "0%"}}>{(showMore || !description || description.length <= 250) ? description : description?.substring(0, 250) + "..."}</p>
+                <div style={{float: "right"}}>
+                    {(!showMore && description && description.length > 250) && <p style={{cursor: "pointer", textDecoration: "underline"}} onClick={() => {setShowMore(true); clearCache(); notifyVirtualizer()}}>Show more</p>}
+                    {(showMore && description && description.length > 250) && <p style={{cursor: "pointer", textDecoration: "underline"}} onClick={() => {setShowMore(false); clearCache(); notifyVirtualizer()}}>Show less</p>}
+                </div>
             </div>
         </div>
     )

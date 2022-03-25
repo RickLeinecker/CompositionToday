@@ -9,14 +9,16 @@ type Props = {
     isRequired: boolean
     isMultiline?: boolean
     onChange: (newValue: string, type: string) => void;
+    maxLength?: number;
 }
 
-export default function GenericInputField({title, value, onChange, type, isRequired, error, isMultiline}: Props) {
+export default function GenericInputField({title, value, onChange, type, isRequired, error, isMultiline, maxLength}: Props) {
     return (
         <div className='modal-field'>
             <TextField
                 label={title}
                 variant="outlined"
+                inputProps={{maxLength: maxLength}}
                 fullWidth
                 required={isRequired}
                 onChange={e => onChange(e.target.value, type)}

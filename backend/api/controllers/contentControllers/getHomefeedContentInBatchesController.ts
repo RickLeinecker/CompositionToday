@@ -3,17 +3,20 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // getHomefeedContentInBatches
 exports.getHomefeedContentInBatches = async (req, res) => {
-  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc."
+  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc.",
+  //           tagArray: array [classical, edm, etc.]
   // outgoing: content, error
 
   // get data from frontend
-  const { uid, contentTypeArray, sortBy, startIndex, endIndex } = req.body;
+  const { uid, contentTypeArray, sortBy, startIndex, endIndex, tagArray } =
+    req.body;
   var numberOfRecords = endIndex - startIndex + 1;
 
   var error = "";
   var results = [];
   var responseCode = 0;
-  /* `SELECT content.id,user.uid,content.imageFilepathArray,
+
+  var insertString = `SELECT content.id,user.uid,user.isPublisher,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -21,39 +24,32 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.fromDate,content.toDate,content.isDateCurrent,
   content.price,content.audioFilename,content.sheetMusicFilename,
   content.imageFilepath,content.imageFilename,content.isFeaturedSong,
-  user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, (CASE WHEN likes.contentID = content.id AND likes.uid = user.uid THEN true ELSE false END) AS isLikedByLoggedInUser
-  FROM content
+  user.username,userProfile.displayName,userProfile.profilePicPath,content.isEdited,
+  COUNT(likes.id) AS likeCount, 
+  (SELECT COUNT(comment.id) FROM comment WHERE comment.contentID=content.id) AS commentCount,
+  (SELECT JSON_ARRAYAGG(JSON_OBJECT('id',t.id,'tagName',t.tagName)) AS tagArray1 FROM (SELECT DISTINCT tag.id, tag.tagName FROM tag INNER JOIN contentTag ON tag.id=contentTag.tagID AND contentTag.contentID=content.id) AS t) AS tagArray,
+  SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
+  FROM content 
   INNER JOIN user ON content.userID=user.id
-  INNER JOIN userProfile 
-  ON content.userID=userProfile.userID 
-  LEFT JOIN likes ON likes.contentID=content.id
-  WHERE content.contentType=? AND user.uid=?
-  GROUP BY likes.uid, content.id;`;
-*/
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
-  content.contentText,content.location,content.timestamp,
-  content.audioFilepath,content.sheetMusicFilepath,content.contentType,
-  content.websiteLink,content.contentType,content.contentName,
-  content.mapsEnabled,content.collaborators,content.description,
-  content.fromDate,content.toDate,content.isDateCurrent,
-  content.price,content.audioFilename,content.sheetMusicFilename,
-  content.imageFilepath,content.imageFilename,content.isFeaturedSong,
-  user.username,userProfile.displayName,userProfile.profilePicPath,
-  COUNT(likes.id) AS likeCount, SUM(CASE WHEN likes.contentID = content.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser
-  FROM content INNER JOIN user ON content.userID=user.id
-  INNER JOIN userProfile 
-  ON content.userID=userProfile.userID 
+  INNER JOIN userProfile ON content.userID=userProfile.userID 
   LEFT JOIN likes ON content.id=likes.contentID `;
-  // var array = JSON.parse(contentTypeArray);
+  if (tagArray && tagArray.length > 0) {
+    insertString += "INNER JOIN (SELECT * FROM contentTag WHERE ";
+    for (var tag of tagArray) {
+      insertString += "tagID=" + tag.id + " OR ";
+    }
+    insertString = insertString.slice(0, -3);
+    insertString += ") AS ct1 ON ct1.contentID=content.id ";
+  }
+
   // if contentTypeArray has contentTypes, build string
-  if (contentTypeArray.length > 0) {
+  if (contentTypeArray && contentTypeArray.length > 0) {
     insertString += "WHERE ";
     for (var contentT of contentTypeArray) {
       insertString += `contentType='${contentT}' OR `;
     }
     insertString = insertString.slice(0, -4);
-    insertString += " GROUP BY content.id ";
+    insertString += " GROUP BY content.id";
   } else {
     insertString += "WHERE ";
     insertString +=
@@ -73,8 +69,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   // limit for batches
   insertString += " LIMIT ?,?;";
 
-  mysql_pool.getConnection(function (err, connection) {
-    connection.query(
+  mysql_pool.getConnection(function (err, connection2) {
+    connection2.query(
       insertString,
       [uid, startIndex, numberOfRecords],
       function (err, result) {
@@ -91,17 +87,14 @@ exports.getHomefeedContentInBatches = async (req, res) => {
             responseCode = 500;
           }
         }
-        // package data
         var ret = {
           result: results,
           error: error,
         };
         // send data
         res.status(responseCode).json(ret);
-        connection.release();
+        connection2.release();
       }
     );
   });
 };
-
-// NOTE: reverse scrolling, stretch goal? -- slow loading when > 6000 posts

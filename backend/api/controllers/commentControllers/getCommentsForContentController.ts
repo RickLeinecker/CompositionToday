@@ -16,7 +16,7 @@ exports.getCommentsForContent = async (req, res) => {
     connection.query(
       `SELECT comment.id,comment.contentID,comment.commenterUID,
       comment.timestamp,comment.comment,comment.approved,userProfile.profilePicPath,
-      userProfile.displayName,user.username,
+      userProfile.displayName,user.username,comment.isEdited,
       COUNT(likes.id) AS likeCount, 
       SUM(CASE WHEN likes.commentID = comment.id AND likes.uid = ? THEN true ELSE false END) AS isLikedByLoggedInUser 
       FROM comment

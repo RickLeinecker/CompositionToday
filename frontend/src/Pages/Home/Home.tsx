@@ -1,4 +1,3 @@
-import TopNavBar from '../TopNavBar';
 import GenericInfiniteLoader from '../../Helper/Generics/GenericInfiniteLoader';
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
@@ -10,6 +9,7 @@ export default function Home() {
 
     const [sortBy, setSortBy] = useState<string>("newest");
     const [filterByType, setFilterByType] = useState<Array<string>>([]);
+    const [filterByTags, setFilterByTags] = useState<TagType[]>([]);
     const [key, setKey] = useState<number>(0);
     const currentUid = getAuth().currentUser?.uid;
 
@@ -31,17 +31,31 @@ export default function Home() {
         setKey(prev => prev + 1);
     }
 
-    function updateTags(newValue: Array<TagType>){
-        console.log("here we get the tags")
+    function updateTags(newValue: Array<TagType>) {
+        console.log("here we get the tags", newValue);
+        setFilterByTags(newValue);
+        setKey(prev => prev + 1);
     }
 
     return (
         <div>
-            <TopNavBar />
             <div className='container-home'>
-                <HomeHeader updateFilterBy={updateFilterBy} updateSortBy={updateSortBy} updateTags={updateTags} sortBy={sortBy} uid={currentUid || ""}/>
+                {
+                    getAuth().currentUser?.isAnonymous ?
+                        <></>
+                        :
+                        <HomeHeader
+                            updateFilterBy={updateFilterBy}
+                            updateSortBy={updateSortBy}
+                            updateTags={updateTags}
+                            tags={filterByTags}
+                            sortBy={sortBy}
+                            uid={currentUid || ""}
+                        />
+                }
+
             </div>
-            <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} sortBy={sortBy} />
+            <GenericInfiniteLoader key={key} uid={currentUid} contentType={filterByType} tags={filterByTags} sortBy={sortBy} />
         </div>
     )
 }

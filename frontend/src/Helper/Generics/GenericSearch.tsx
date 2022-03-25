@@ -1,9 +1,10 @@
-import { Form, FormControl } from "react-bootstrap";
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { GenericHandlerType } from "../../ObjectInterface";
 import GenericHandler from "../../Handlers/GenericHandler";
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import { Link } from 'react-router-dom';
 
 type Props = {
     placeHolder: string;
@@ -20,48 +21,95 @@ type Props = {
  * @param getPayload optional () => void that allows to get playload.
  * @returns JSX Search box
  */
-const GenericSearch = ({ placeHolder, apiEndpoint, genre='', getPayload }: Props) => {
+const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Props) => {
+    const [options, setOptions] = useState<object[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [search, setSearch] = useState("");
 
-    const handlerObject: GenericHandlerType = {
-        data: JSON.stringify({ searchQuery: search, genre: genre }),
-        methodType: "POST",
-        path: apiEndpoint,
-    }
+    const searchComposers = async (query: string) => {
+        let handlerObject: GenericHandlerType = {
+            data: JSON.stringify({ searchQuery: query, genre: genre }),
+            methodType: "POST",
+            path: apiEndpoint,
+        }
 
-    const searchComposers = async () => {
         try {
+            setIsLoading(true);
             let answer = await GenericHandler(handlerObject);
 
-            // console.log(typeof(answer));
+            let tempArr = answer.result.map((x: any) => x.item);
+
             if (!answer.error)
-                getPayload(answer.result);
+                getPayload(tempArr);
+            else if (answer.error === "No composers found" || answer.error === "Genre doesn't exist")
+                getPayload([]);
+
+            setOptions(tempArr);
+            setIsLoading(false);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
         }
     }
 
-    const handleSearch = (e: any) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
-        console.log("SEARCHING:", search);
-        searchComposers();
+        searchComposers(search);
     }
 
-    return (
-        <Form className="d-flex" onSubmit={handleSearch}>
-            <FormControl
-                type="search"
-                placeholder={placeHolder}
-                className="me-2"
-                aria-label="Search"
-                onChange={e => setSearch(e.target.value)}
-                value={search}
-            />
+    const handleSearch = useCallback((query: string) => {
+        query = (query.length < 2) ? "" : query;
+        setSearch(query);
+        searchComposers(query);
+    }, [])
 
-            <IconButton color="primary" component="span" onClick={handleSearch}>
-                <SearchIcon />
-            </IconButton>
-        </Form>
+    const handleInputChange = (text: string) => {
+        setSearch(text);
+    };
+
+    // Bypass client-side filtering by returning `true`. Results are already
+    // filtered by the search endpoint, so no need to do it again.
+    const filterBy = () => true;
+
+    return (
+        <>
+            <AsyncTypeahead
+                id="Composer Search"
+                style={{ display: !genre ? "inline-flex" : "inline" }}
+                filterBy={filterBy}
+                isLoading={isLoading}
+                labelKey="firstName" // This uses composer's uid for unique key
+                maxResults={10}
+                minLength={0}
+                open={!genre ? undefined : false}
+                onSearch={handleSearch}
+                options={options}
+                onInputChange={handleInputChange}
+                placeholder={placeHolder}
+                renderMenuItemChildren={(option: any) => {
+                    return (
+                        <Link key={option.uid} to={`/profile/${option.username}`} style={{ color: "#000", textDecoration: 'none' }}>
+                            <img
+                                alt={option.lastName}
+                                src={option.profilePicPath}
+                                style={{
+                                    height: '24px',
+                                    marginRight: '10px',
+                                    width: '24px',
+                                }}
+                            />
+                            <span>{`${option.displayName}`}</span>
+                        </Link>
+                    );
+                }}
+                useCache={false}
+            />
+            {
+                !genre &&
+                <IconButton color="primary" component="span" onClick={handleSubmit}>
+                    <SearchIcon />
+                </IconButton>
+            }
+        </>
     );
 }
 

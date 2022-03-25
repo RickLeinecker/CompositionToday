@@ -8,6 +8,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
+import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     article: ArticleType;
@@ -18,7 +19,7 @@ type Props = {
 
 export default function EditArticleModal({ article, notifyChange, editOpen, handleCloseEdit }: Props) {
     const [newContentValue, setNewContentValue] = useState<ArticleType>(article)
-    const [newContentTags, setNewContentTags] = useState<Array<TagType>>();
+    const [newContentTags, setNewContentTags] = useState<Array<TagType>>(JSON.parse(newContentValue.tagArray));
 
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
@@ -41,9 +42,10 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
 
     const clearFields = (): void => {
         setNewContentValue(article);
+        setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
-    const handleChange = (newValue: string | Date | null | boolean, type: string) => {
+    const handleChange = (newValue: string | Date | null | boolean | TagType[], type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -70,6 +72,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
     }
 
     async function confirmEditHandler() {
+        console.log(newContentTags);
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -77,6 +80,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
                 contentType: "article",
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
+                tagArray: newContentTags,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -103,9 +107,9 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
         <div>
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
-                    <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} />
+                    <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
                     <RichTextEditor handleChange={handleChange} content={article.contentText}/>
-                    <GenericTagsPicker updateTags={updateTags}/>
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags}/>
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />

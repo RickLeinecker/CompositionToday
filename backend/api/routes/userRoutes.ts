@@ -4,6 +4,7 @@ var router = express.Router();
 
 const createUserController = require("../controllers/userControllers/createUserController.ts");
 const createComposerController = require("../controllers/userControllers/createComposerController.ts");
+const removePublisherController = require("../controllers/userControllers/removePublisherController.ts");
 const createScrapedComposerController = require("../controllers/userControllers/createScrapedComposerController.ts");
 const createPublisherController = require("../controllers/userControllers/createPublisherController.ts");
 const readUserController = require("../controllers/userControllers/readUserController.ts");
@@ -16,9 +17,19 @@ const getComposersByGenreController = require("../controllers/userControllers/ge
 const getComposersForShowcaseController = require("../controllers/userControllers/getComposersForShowcaseController.ts");
 const readUserByUsernameController = require("../controllers/userControllers/readUserByUsernameController.ts");
 const searchComposersController = require("../controllers/userControllers/searchComposersController.ts");
+const isAdminController = require("../controllers/userControllers/isAdminController.ts");
+const makeAdminController = require("../controllers/userControllers/makeAdminController.ts");
+const removeAdminController = require("../controllers/userControllers/removeAdminController.ts");
+const listAdminsController = require("../controllers/userControllers/listAdminsController.ts");
 
 router.post("/api/createUser", createUserController.createUser);
+router.get("/api/listAdmins", listAdminsController.listAdmins);
+router.post("/api/isAdmin", isAdminController.isAdmin);
+router.post("/api/makeAdmin", makeAdminController.makeAdmin);
+router.delete("/api/removeAdmin", removeAdminController.removeAdmin);
 router.post("/api/createComposer", createComposerController.createComposer);
+router.post("/api/removePublisher", removePublisherController.removePublisher);
+
 router.post(
   "/api/createScrapedComposer",
   createScrapedComposerController.createScrapedComposer

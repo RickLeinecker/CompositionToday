@@ -55,10 +55,10 @@ exports.updateUser = async (req, res) => {
     insertArray.push(isPublisher);
   }
 
-  if (userProfileID !== null) {
-    insertString += "userProfileID=?,";
-    insertArray.push(userProfileID);
-  }
+  // if (userProfileID !== null) {
+  //   insertString += "userProfileID=?,";
+  //   insertArray.push(userProfileID);
+  // }
 
   insertString = insertString.slice(0, -1);
   insertString += " WHERE id=?";
