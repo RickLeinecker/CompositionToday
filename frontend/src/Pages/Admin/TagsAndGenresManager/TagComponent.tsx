@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
 import CreateTagModal from './CreateTagModal';
-import GenericModal from '../../../Helper/Generics/GenericModal';
 import DataGridMaker from '../DataGridMaker';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
@@ -9,13 +8,14 @@ import { TagType } from '../../../ObjectInterface';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GenericGetHandler from '../../../Handlers/GenericGetHandler';
 import TagAndGenreColumns from '../columnStructure/TagAndGenreColumns';
+import RemoveTagModal from './RemoveTagModal';
 
 const TagComponent = () => {
     const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
     const [responseTags, setResponseTags] = useState<Array<TagType>>([]);
     const [tagsChanged, setTagsChanged] = useState<boolean>(false);
     const { open: createTagOpen, handleClick: handleOpenCreateTag, handleClose: handleCloseCreateTag } = useOpen();
-    const { open: removeOpen, handleClick: handleOpenRemove, handleClose: handleCloseRemove } = useOpen();
+    const { open: removeTagOpen, handleClick: handleOpenRemoveTag, handleClose: handleCloseRemoveTag } = useOpen();
 
     const notifyChange = () => {
         setTagsChanged(value => !value);
@@ -44,7 +44,7 @@ const TagComponent = () => {
             <GridToolbarContainer style={{ display: "flex", justifyContent: "space-around" }}>
                 {
                     selectedTags.length > 0 &&
-                    <Button color="error" variant="contained" onClick={handleOpenRemove} endIcon={<DeleteIcon />}>
+                    <Button color="error" variant="contained" onClick={handleOpenRemoveTag} endIcon={<DeleteIcon />}>
                         Delete Tags
                     </Button>
                 }
@@ -61,23 +61,9 @@ const TagComponent = () => {
                 Create Tag
             </Button>
             <CreateTagModal notifyChange={notifyChange} createOpen={createTagOpen} handleCloseCreate={handleCloseCreateTag} />
+            <RemoveTagModal selectedTags={selectedTags} notifyChange={notifyChange} removeOpen={removeTagOpen} handleCloseRemove={handleCloseRemoveTag}/>
 
             <DataGridMaker rows={responseTags} columns={TagAndGenreColumns} setSelected={setSelectedTags} CustomToolbar={TagsToolbar} />
-
-            <GenericModal
-                show={removeOpen}
-                title={"Delete Tags"}
-                onHide={handleCloseRemove}
-                confirm={() => { }}
-                actionText={"Save"}
-                checkForErrors={() => false}
-            >
-                <div>
-                    <pre>
-                        {JSON.stringify(selectedTags)}
-                    </pre>
-                </div>
-            </GenericModal>
         </div>
     );
 }
