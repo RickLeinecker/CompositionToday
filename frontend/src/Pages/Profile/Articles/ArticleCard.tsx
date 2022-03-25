@@ -30,7 +30,7 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
                 {/* <p className="card-text">{contentText}</p> */}
                 <RichTextConverter content={contentText}/>
 
-                <p className="card-text">{(showMore || contentText.length <= 250) ? contentText : contentText.substring(0, 250) + "..."}</p>
+                {/* <p className="card-text">{(showMore || contentText.length <= 250) ? contentText : contentText.substring(0, 250) + "..."}</p> */}
                 <div style={{ float: "right" }}>
                     {(!showMore && contentText.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(true); clearCache(); notifyVirtualizer() }}>Show more</p>}
                     {(showMore && contentText.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(false); clearCache(); notifyVirtualizer() }}>Show less</p>}
