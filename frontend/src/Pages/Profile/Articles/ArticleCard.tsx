@@ -28,6 +28,7 @@ export default function ArticleCard({ article, isMyProfile, notifyVirtualizer, n
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <h1 className="card-title">{contentName}</h1>
                 {/* <p className="card-text">{contentText}</p> */}
+                
                 <RichTextConverter content={contentText}/>
 
                 {/* <p className="card-text">{(showMore || contentText.length <= 250) ? contentText : contentText.substring(0, 250) + "..."}</p> */}

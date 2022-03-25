@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor, } from 'react-draft-wysiwyg';
 import { convertToHTML, } from 'draft-convert';
@@ -7,25 +7,28 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './RichTextStyle.css'
 
 export function RichTextConverter({ content }) {
-  const contentState = convertFromRaw(JSON.parse(content))
+  const json = JSON.parse(content);
+  const contentState = convertFromRaw(json);
+  const editorState = EditorState.createWithContent(contentState);
+
+
   const html = convertToHTML(contentState);
-  
+
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html)
     }
   }
+
   return (
-    <> 
-      <div className="card-text">
-        <div className="preview" dangerouslySetInnerHTML={createMarkup(html)}></div>
+    <> <div>
+        <Editor editorState={editorState} readOnly={true} toolbarHidden={true} />
       </div>
+      {/* <div className="preview" dangerouslySetInnerHTML={createMarkup(html)}></div> */}
     </>
   )
 
 }
-
-
 
 export default function RichTextEditor({ handleChange, content }) {
 
@@ -35,19 +38,22 @@ export default function RichTextEditor({ handleChange, content }) {
     () => EditorState.createEmpty(),
   );
 
-  if (content) {
-    setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(content))));
-  }
+  useEffect(() => {
+    if (content) {
+      console.log("into if");
+      setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(content))));
+    }
+  }, [])
 
   const handleEditorChange = (state) => {
     setEditorState(state);
     const contentState = editorState.getCurrentContent();
     // const rawState = convertToRaw(contentState);
     // const convertedContent = convertFromRaw(rawState);
-    handleChange(saveContent(contentState), "contentText")
+    handleChange(contentToString(contentState), "contentText")
   }
 
-  const saveContent = (content) => {
+  const contentToString = (content) => {
     const contentItem = JSON.stringify(convertToRaw(content));
     return contentItem;
   }
