@@ -7,14 +7,10 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './RichTextStyle.css'
 
 export function RichTextConverter({ content }) {
-  const json = JSON.parse(content);
-  console.log(json);
-  
   const contentState = convertFromRaw(JSON.parse(content))
-  console.log("contentState: " + contentState);
   
   const html = convertToHTML(contentState);
-  
+
   const createMarkup = (html) => {
     return {
       __html: DOMPurify.sanitize(html)
