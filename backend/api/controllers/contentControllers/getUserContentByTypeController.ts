@@ -57,6 +57,7 @@ exports.getUserContentByType = async (req, res) => {
   var results = [];
   var responseCode = 0;
   // get profilepicpath and username
+  // accept userProfileUID and the loggedInUserUID
   const { contentType, uid } = req.body;
 
   console.log(
