@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:composition_today/models/content.dart';
+import 'package:composition_today/models/tag.dart';
 import 'package:composition_today/models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,6 +65,23 @@ Future<List<Map<String, dynamic>>> getHomefeedContentInBatches(
     return List<Map<String, dynamic>>.from(jsonDecode(response.body)['result']);
   } else if (response.statusCode == 404) {
     throw Exception('Failed to load content from API. ${response.statusCode}');
+  } else {
+    throw Exception('API call timed out. ${response.statusCode}');
+  }
+}
+
+Future<List<Map<String, dynamic>>> getTags() async {
+  final response = await http.get(
+    Uri.parse(_baseUrl + "getTags"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+  );
+
+  if (response.statusCode == 200) {
+    return List<Map<String, dynamic>>.from(jsonDecode(response.body)['result']);
+  } else if (response.statusCode == 404) {
+    throw Exception('Failed to load tags from API. ${response.statusCode}');
   } else {
     throw Exception('API call timed out. ${response.statusCode}');
   }

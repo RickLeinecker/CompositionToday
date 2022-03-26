@@ -9,9 +9,12 @@ import 'package:composition_today/services/auth.dart';
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
+import 'package:composition_today/services/time.dart';
 
 import '../../shared/loading.dart';
+import 'notification_feed.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,10 +27,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   late Future<List<Map<String, dynamic>>> contentCard;
   Future<UserData>? _futureUser;
 
+  @override
   void initState() {
     super.initState();
     contentCard = getHomefeedContentInBatches(
@@ -37,6 +41,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     bool profilePicIsNull = false;
+    bool isContentEdited = false;
+    bool isMusic = false;
+    bool isEvent = false;
+    bool isArticle = false;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: MyAppBar(
@@ -49,50 +57,136 @@ class _HomeState extends State<Home> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Map<String, dynamic>> content = snapshot.data!;
-                return ListView.builder(
-                  itemCount: content.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final item = snapshot.data![index];
-                    if (item['profilePicPath'] == null) {
-                      debugPrint('profile picture path is null');
-                      profilePicIsNull = true;
-                    } else {
-                      profilePicIsNull = false;
-                    }
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: CircleAvatar(
-                                  backgroundImage: profilePicIsNull
-                                      ? const AssetImage(
-                                          'assets/img_avatar.png')
-                                      : NetworkImage(item['profilePicPath'])
-                                          as ImageProvider,
-                                ),
-                              ),
-                              const SizedBox(width: 10.0),
-                              Expanded(
-                                flex: 5,
-                                child: Text(
-                                  item['displayName'],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
+                return Scrollbar(
+                  thickness: 10.0,
+                  isAlwaysShown: true,
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: content.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final item = snapshot.data![index];
+
+                      if (item['profilePicPath'] == null) {
+                        profilePicIsNull = true;
+                      } else {
+                        profilePicIsNull = false;
+                      }
+
+                      if (item['isEdited'] == 1) {
+                        isContentEdited = true;
+                      } else {
+                        isContentEdited = false;
+                      }
+
+                      switch (item['contentType']) {
+                        case 'article':
+                          isArticle = true;
+                          isEvent = false;
+                          isMusic = false;
+                          break;
+                        case 'event':
+                          isEvent = true;
+                          isArticle = false;
+                          isMusic = false;
+                          break;
+                        case 'music':
+                          isMusic = true;
+                          isArticle = false;
+                          isEvent = false;
+                          break;
+                        default:
+                      }
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: CircleAvatar(
+                                      radius: 30.0,
+                                      backgroundImage: profilePicIsNull
+                                          ? const AssetImage(
+                                              'assets/img_avatar.png')
+                                          : NetworkImage(item['profilePicPath'])
+                                              as ImageProvider,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                                const SizedBox(width: 5.0),
+                                Expanded(
+                                  flex: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(
+                                      item['displayName'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: isContentEdited
+                                        ? const Text("(edited)")
+                                        : const Text(""),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(
+                                        TimeAgo.timeAgoSinceDate(
+                                            item['timestamp']),
+                                        textAlign: TextAlign.right),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(item['contentType']),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: LikeButton(
+                                    padding: EdgeInsets.all(5.0),
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    isLiked: item['isLikedByLoggedInUser'] == 0
+                                        ? false
+                                        : true,
+                                    size: 20.0,
+                                    likeCount: item['likeCount'],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 );
               } else {
                 return Loading();
@@ -137,6 +231,20 @@ class _HomeState extends State<Home> {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Settings()));
+              },
+            ),
+            const SizedBox(height: 10.0),
+            ListTile(
+              leading: const Icon(Icons.notifications, color: Colors.white),
+              title: const Text('Notification Feed'),
+              tileColor: primaryColorSemi,
+              textColor: Colors.white,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NotificationFeed()));
               },
             ),
             const SizedBox(height: 10.0),
