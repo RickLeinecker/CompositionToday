@@ -41,7 +41,7 @@ exports.getComposersForShowcase = async (req, res) => {
               connection.query(
                 `SELECT DISTINCT user.id,user.uid,userProfile.displayName,user.firstName,user.lastName,user.username,user.email,user.isPublisher,userProfile.profilePicPath,c1.audioFilename,c1.audioFilepath
                 FROM user INNER JOIN userProfile ON user.id=userProfile.userID
-                LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content LIMIT 1) AS c1 ON user.id=c1.userID`,
+                LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE audioFilepath IS NOT NULL ORDER BY audioFilePath ASC LIMIT 1) AS c1 ON user.id=c1.userID`,
                 function (err, result2) {
                   if (err) {
                     error = err;

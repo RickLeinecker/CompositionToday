@@ -21,7 +21,7 @@ exports.getComposersByGenre = async (req, res) => {
       FROM user INNER JOIN specializationTag ON user.uid=specializationTag.uid 
       INNER JOIN tag ON specializationTag.tagID=tag.id AND tag.tagName=? AND tag.approvedGenre=1 
       INNER JOIN userProfile ON user.id=userProfile.userID
-      LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content LIMIT 1) content ON user.id=content.userID`,
+      LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content WHERE audioFilepath IS NOT NULL LIMIT 1) content ON user.id=content.userID`,
       [genre],
       function (err, result) {
         if (err) {
