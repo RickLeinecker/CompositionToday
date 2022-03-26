@@ -52,7 +52,7 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
 
         }
         fetchData();
-    }, [clearCache, commentHasChanged, contentID, currentUid, notifyParent])
+    }, [commentHasChanged, contentID, currentUid])
     
     return (
         <div>
