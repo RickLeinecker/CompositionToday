@@ -47,3 +47,8 @@ p {
     color: $secondary-text;
     overflow-wrap: break-word;
 }
+
+// For AsyncTypeahead
+.rbt-close-content {
+    display: none;
+}

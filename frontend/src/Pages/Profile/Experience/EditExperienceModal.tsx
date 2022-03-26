@@ -175,7 +175,7 @@ export default function EditExperienceModal({ experience, notifyChange, editOpen
                         />
                     }
                     <FormControlLabel
-                        control={<Checkbox checked={newContentValue.isDateCurrent}
+                        control={<Checkbox checked={!!newContentValue.isDateCurrent}
                             onChange={() => handleChange(!newContentValue.isDateCurrent, "isDateCurrent")} />}
                         label="I currently hold this position"
                     />

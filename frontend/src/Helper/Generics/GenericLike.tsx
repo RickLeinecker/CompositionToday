@@ -70,7 +70,7 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
 
         }
         didUserLikeContent();
-    }, [contentID, currentUid, isRefresh])
+    }, [contentID, currentUid, isComment, isRefresh])
 
     return (
         <div style={{ cursor: 'pointer', float: "right", display: "flex", marginRight: "1%" }}>

@@ -15,8 +15,10 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   var error = "";
   var results = [];
   var responseCode = 0;
+  var insertArray = [];
+  insertArray.push(uid);
 
-  var insertString = `SELECT content.id,user.uid,content.imageFilepathArray,
+  var insertString = `SELECT content.id,user.uid,user.isPublisher,content.imageFilepathArray,
   content.contentText,content.location,content.timestamp,
   content.audioFilepath,content.sheetMusicFilepath,content.contentType,
   content.websiteLink,content.contentType,content.contentName,
@@ -42,6 +44,17 @@ exports.getHomefeedContentInBatches = async (req, res) => {
     insertString += ") AS ct1 ON ct1.contentID=content.id ";
   }
 
+  // if sort by relevant content, then do necessary joins
+  if (sortBy === "relevant") {
+    // filter by relevancy -> show content with tags liked by user
+    // join some tables based on tags
+    insertString += ` INNER JOIN (SELECT contentTag.contentID FROM contentTag INNER JOIN (SELECT likes.uid, contentTag.contentID, contentTag.tagID 
+      FROM likes INNER JOIN contentTag ON likes.contentID=contentTag.contentID WHERE likes.uid=?) AS relevantContent1
+      ON relevantContent1.tagID=contentTag.tagID) AS relevantContent2
+      ON relevantContent2.contentID=content.id `;
+    insertArray.push(uid);
+  }
+
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray && contentTypeArray.length > 0) {
     insertString += "WHERE ";
@@ -56,45 +69,43 @@ exports.getHomefeedContentInBatches = async (req, res) => {
       "contentType='music' OR contentType='event' OR contentType='article'";
     insertString += " GROUP BY content.id";
   }
-  if (sortBy == "newest" || !sortBy) {
-    // append order by desc
-    insertString += " ORDER BY timestamp DESC";
-  } else {
-    // do some algos
-    // filter by popularity -> show the content w/largest likeCount in DESC order
-    // get likeCount for content and show most liked first
-    //SELECT DISTINCT COUNT(id) FROM
+
+  // sort by popular or else sort by timestamp
+  if (sortBy === "popular") {
+    // filter by popularity -> show content w/largest likeCount in DESC order
     insertString += " ORDER BY likeCount DESC";
+  } else {
+    // by defeault, show results in descending order
+    insertString += " ORDER BY timestamp DESC";
   }
+
   // limit for batches
+  insertArray.push(startIndex);
+  insertArray.push(numberOfRecords);
   insertString += " LIMIT ?,?;";
 
   mysql_pool.getConnection(function (err, connection2) {
-    connection2.query(
-      insertString,
-      [uid, startIndex, numberOfRecords],
-      function (err, result) {
-        if (err) {
-          error = "SQL Search Error";
-          responseCode = 500;
-          console.log(err);
+    connection2.query(insertString, insertArray, function (err, result) {
+      if (err) {
+        error = "SQL Search Error";
+        responseCode = 500;
+        console.log(err);
+      } else {
+        if (result[0]) {
+          results = result;
+          responseCode = 200;
         } else {
-          if (result[0]) {
-            results = result;
-            responseCode = 200;
-          } else {
-            error = "Content does not exist";
-            responseCode = 500;
-          }
+          error = "Content does not exist";
+          responseCode = 500;
         }
-        var ret = {
-          result: results,
-          error: error,
-        };
-        // send data
-        res.status(responseCode).json(ret);
-        connection2.release();
       }
-    );
+      var ret = {
+        result: results,
+        error: error,
+      };
+      // send data
+      res.status(responseCode).json(ret);
+      connection2.release();
+    });
   });
 };

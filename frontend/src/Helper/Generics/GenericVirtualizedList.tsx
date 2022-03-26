@@ -22,6 +22,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
 
     useEffect(() => {
         clearCache();
+        return () => {};
     }, [items])
 
     const notifyVirtualizer = () => setRerender(value => !value);

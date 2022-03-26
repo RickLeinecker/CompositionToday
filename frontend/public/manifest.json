@@ -8,14 +8,14 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "compositiontoday.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "404x43"
     },
     {
-      "src": "logo512.png",
+      "src": "compositiontoday.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "404x43"
     }
   ],
   "start_url": ".",

@@ -44,7 +44,7 @@ exports.searchComposers = async (req, res) => {
           if (searchQuery.length > 0) {
             const options = {
               minMatchCharLength: 1,
-              keys: ["username", "firstName", "lastName", "displayName"],
+              keys: ["username", "displayName"],
             };
             const fuse = new Fuse(result, options);
             results = fuse.search(searchQuery);

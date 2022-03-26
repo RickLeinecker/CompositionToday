@@ -13,7 +13,7 @@ exports.deleteTag = async (req, res) => {
   const { tagID } = req.body;
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
-      "DELETE FROM tag WHERE tagID=?",
+      "DELETE FROM tag WHERE id=?",
       [tagID],
       function (err, result) {
         if (err) {
