@@ -6,6 +6,7 @@ import { GenericHandlerType, TagType } from '../../../ObjectInterface';
 import { toast } from 'react-toastify';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
+import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
@@ -116,7 +117,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
             >
                 <div>
                     <GenericInputField title="Title" type="contentName" onChange={setNewContentName} value={newContentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
-                    <GenericInputField title="Content" type="contentText" onChange={setNewContentText} value={newContentText} isRequired={true} error={textError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMassive)}/>
+                    <RichTextEditor handleChange={setNewContentText} content={undefined}/>
                     <GenericTagsPicker updateTags={updateTags}/>
                 </div>
             </GenericModal>

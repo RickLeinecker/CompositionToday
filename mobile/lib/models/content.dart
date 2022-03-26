@@ -13,7 +13,7 @@ class ContentType {
   final String? contentName;
   final String? timestamp;
   final String? description;
-  final bool? isEdited;
+  final int? isEdited;
 
   ContentType({
     required this.id,

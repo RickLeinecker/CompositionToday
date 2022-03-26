@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:composition_today/models/content.dart';
+import 'package:composition_today/models/tag.dart';
 import 'package:composition_today/models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,8 +42,9 @@ Future<UserData> getLoggedInUser(String uid) async {
   }
 }
 
-Future<List<ContentType>> getHomefeedContentInBatches(
+Future<List<Map<String, dynamic>>> getHomefeedContentInBatches(
     List<String> contentTypeArray,
+    List<String> tagArray,
     String sortBy,
     int startIndex,
     int endIndex) async {
@@ -53,13 +55,14 @@ Future<List<ContentType>> getHomefeedContentInBatches(
     },
     body: jsonEncode(<String, dynamic>{
       'contentTypeArray': contentTypeArray,
+      'tagArray': tagArray,
       'sortBy': sortBy,
       'startIndex': startIndex,
       'endIndex': endIndex,
     }),
   );
   if (response.statusCode == 200) {
-    return contentResponseFromJson(response.body);
+    return List<Map<String, dynamic>>.from(jsonDecode(response.body)['result']);
   } else if (response.statusCode == 404) {
     throw Exception('Failed to load content from API. ${response.statusCode}');
   } else {
@@ -67,7 +70,19 @@ Future<List<ContentType>> getHomefeedContentInBatches(
   }
 }
 
-List<ContentType> contentResponseFromJson(String response) =>
-    List<ContentType>.from(jsonDecode(response)
-        .entries
-        .map<ContentType>((data) => ContentType.fromJson(data.value))).toList();
+Future<List<Map<String, dynamic>>> getTags() async {
+  final response = await http.get(
+    Uri.parse(_baseUrl + "getTags"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+  );
+
+  if (response.statusCode == 200) {
+    return List<Map<String, dynamic>>.from(jsonDecode(response.body)['result']);
+  } else if (response.statusCode == 404) {
+    throw Exception('Failed to load tags from API. ${response.statusCode}');
+  } else {
+    throw Exception('API call timed out. ${response.statusCode}');
+  }
+}

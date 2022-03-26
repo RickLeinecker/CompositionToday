@@ -93,6 +93,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
                                         className="me-2"
                                         as={Link}
                                         to={u2p.url}
+                                        key={u2p.url}
                                     >
                                         {u2p.page}
                                     </Nav.Link>

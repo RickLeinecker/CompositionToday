@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
+import RichTextEditor from '../../../Helper/Editor/RichTextEditor';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
@@ -107,7 +108,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
             <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
-                    <GenericInputField title="Content" type="contentText" onChange={handleChange} value={newContentValue.contentText} isRequired={true} error={textError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMassive)}/>
+                    <RichTextEditor handleChange={handleChange} content={article.contentText}/>
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags}/>
                 </>
             </GenericModal>

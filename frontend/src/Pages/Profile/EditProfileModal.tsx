@@ -72,7 +72,7 @@ export default function EditProfileModal({ userProfile, notifyChange, editOpen, 
 
         let newProfilePicPath = userProfile.profilePicPath;
         if (newProfilePic !== null) {
-            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
+            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadProfileImage")
             if (newProfilePicPath === '') {
                 toast.error('Failed to update profile pic');
                 return;

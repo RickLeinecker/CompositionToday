@@ -72,12 +72,19 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
 
     return (
         <>
+            {
+                !genre &&
+                <IconButton color="primary" component="span" onClick={handleSubmit}>
+                    <SearchIcon />
+                </IconButton>
+            }
             <AsyncTypeahead
                 id="Composer Search"
                 style={{ display: !genre ? "inline-flex" : "inline" }}
+                clearButton
                 filterBy={filterBy}
                 isLoading={isLoading}
-                labelKey="firstName" // This uses composer's uid for unique key
+                labelKey={(option: any) => `${option.displayName}`} // This uses composer's uid for unique key
                 maxResults={10}
                 minLength={0}
                 open={!genre ? undefined : false}
@@ -103,12 +110,6 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                 }}
                 useCache={false}
             />
-            {
-                !genre &&
-                <IconButton color="primary" component="span" onClick={handleSubmit}>
-                    <SearchIcon />
-                </IconButton>
-            }
         </>
     );
 }
