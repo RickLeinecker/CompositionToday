@@ -18,7 +18,7 @@ exports.getComposersByGenre = async (req, res) => {
   mysql_pool.getConnection(function (err, connection) {
     connection.query(
       `SELECT DISTINCT user.id,user.uid,userProfile.displayName,user.firstName,user.lastName,user.username,user.email,user.isPublisher,specializationTag.tagID,tag.tagName,userProfile.profilePicPath,content.audioFilename,content.audioFilepath 
-      FROM user INNER JOIN specializationTag ON user.id=specializationTag.userID 
+      FROM user INNER JOIN specializationTag ON user.uid=specializationTag.uid 
       INNER JOIN tag ON specializationTag.tagID=tag.id AND tag.tagName=? AND tag.approvedGenre=1 
       INNER JOIN userProfile ON user.id=userProfile.userID
       LEFT JOIN (SELECT DISTINCT userID,audioFilepath,audioFilename FROM content LIMIT 1) content ON user.id=content.userID`,
