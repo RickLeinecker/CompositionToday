@@ -12,7 +12,14 @@ export function RichTextConverter({ content }) {
   const editorState = EditorState.createWithContent(contentState);
 
 
-  const html = convertToHTML(contentState);
+  let html;
+
+  try {
+    html = convertToHTML(contentState);
+  } catch (e) {
+    // console.log(e);
+    html = convertToHTML("<div></div>");
+  }
 
   const createMarkup = (html) => {
     return {
