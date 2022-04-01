@@ -132,7 +132,7 @@ export default function CreateExperienceModal({ uid, notifyChange, createOpen, h
         <div>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Experience"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

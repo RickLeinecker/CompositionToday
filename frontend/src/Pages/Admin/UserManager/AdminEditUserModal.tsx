@@ -95,7 +95,7 @@ export default function AdminEditUserModal({ user, notifyChange, editOpen, handl
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit user"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     {() => console.log(newContentValue)}
                     <GenericInputField title="Username" type="username" onChange={handleChange} value={newContentValue.username} isRequired={true} error={usernameError}/>

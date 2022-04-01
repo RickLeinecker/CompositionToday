@@ -182,10 +182,10 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         <div>
             <GenericModal
                 show={editOpen}
-                title={"Edit"}
+                title={"Edit Music"}
                 onHide={onHide}
                 confirm={confirmEditHandler}
-                actionText={"Edit"}
+                actionText={"Update"}
                 checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField

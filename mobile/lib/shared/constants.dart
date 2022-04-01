@@ -12,7 +12,7 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
-List<TagType> selectedTags = [];
+List<Map<String, dynamic>> selectedTags = [];
 const secondaryColor = Color(0xff9affd3);
 const secondaryColorSemi = Color(0x1f9affd3);
 const primaryColor = Color(0xff3981FF);

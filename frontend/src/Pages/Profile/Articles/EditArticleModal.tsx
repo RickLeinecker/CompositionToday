@@ -105,7 +105,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit Article"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Title" type="contentName" onChange={handleChange} value={newContentValue.contentName} isRequired={true} error={nameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>
                     <RichTextEditor handleChange={handleChange} content={article.contentText}/>
