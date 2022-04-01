@@ -109,7 +109,7 @@ export default function CreateArticleModal({ uid, notifyChange, createOpen, hand
         <div>
             <GenericModal 
                 show={createOpen} 
-                title={"Create"} 
+                title={"Create Article"} 
                 onHide={onHide} 
                 confirm={confirmCreateHandler} 
                 actionText={"Save"} 

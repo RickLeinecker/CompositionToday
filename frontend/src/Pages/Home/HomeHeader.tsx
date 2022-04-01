@@ -9,6 +9,7 @@ import CreateEventModal from '../Profile/Events/CreateEventModal';
 import CreateArticleModal from '../Profile/Articles/CreateArticleModal';
 import CreateMusicModal from '../Profile/Music/CreateMusicModal';
 import { TagType } from '../../ObjectInterface';
+import { getAuth } from 'firebase/auth';
 
 type Props = {
     updateFilterBy: (newValue: string) => void;
@@ -28,22 +29,29 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, 
     return (
         <div>
             <div className="homefeed-header-box">
-                <div className="create-content-box">
-                    <h2 className="create-content-header">Create new: </h2>
-                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleArticleOpenCreate} startIcon={<ArticleIcon />}>
-                        Article
-                    </Button>
-                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleMusicOpenCreate} startIcon={<MusicNoteIcon />}>
-                        Music
-                    </Button>
-                    <Button style={{margin: "2%"}} variant="outlined" onClick={handleEventOpenCreate} startIcon={<TodayIcon />}>
-                        Event
-                    </Button>
-                </div>
+                {
+                    getAuth().currentUser?.isAnonymous ?
+                        <div className="create-content-box">
+                        </div>
+                        :
+                        <div className="create-content-box">
+                            <h2 className="create-content-header">Create new: </h2>
+                            <Button style={{ margin: "2%" }} variant="outlined" onClick={handleArticleOpenCreate} startIcon={<ArticleIcon />}>
+                                Article
+                            </Button>
+                            <Button style={{ margin: "2%" }} variant="outlined" onClick={handleMusicOpenCreate} startIcon={<MusicNoteIcon />}>
+                                Music
+                            </Button>
+                            <Button style={{ margin: "2%" }} variant="outlined" onClick={handleEventOpenCreate} startIcon={<TodayIcon />}>
+                                Event
+                            </Button>
+                        </div>
+                }
+
                 <div className="icons-box">
                     <FilterFeed updateFilterBy={updateFilterBy} updateTags={updateTags} tags={tags} />
-                    <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} /> 
-                </div> 
+                    <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
+                </div>
             </div>
             <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { }} />
             <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={() => { }} />

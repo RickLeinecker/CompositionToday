@@ -92,7 +92,7 @@ export default function CommentEditModal({ comment, notifyChange, editOpen, hand
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit Comment"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Comment" type="commentText" onChange={handleChange} value={newContentValue} isRequired={true} error={contentError} isMultiline={true} maxLength={parseInt(DefaultValues.maxLengthMedium)}/>
                 </>

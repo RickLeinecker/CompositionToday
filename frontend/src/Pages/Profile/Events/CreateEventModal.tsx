@@ -190,7 +190,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
         <>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Event"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

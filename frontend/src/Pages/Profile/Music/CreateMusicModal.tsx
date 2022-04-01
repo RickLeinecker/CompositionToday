@@ -171,7 +171,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         <div>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Music"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}
