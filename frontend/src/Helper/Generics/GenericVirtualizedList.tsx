@@ -19,6 +19,7 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
     const [rerender, setRerender] = useState<boolean>(false);
     const cache = useRef(new CellMeasurerCache({ fixedWidth: true }));
     const { isMyProfile } = useContext(ProfileContext);
+    const [isFirstRender, setIsFirstRender] = useState(true);
 
     useEffect(() => {
         clearCache();
@@ -37,6 +38,14 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
         parent: any;
     }
 
+    function checkIfFirstRender(): boolean{
+        if(type === "comment" && isFirstRender){
+            return true;
+        }
+
+        return false;
+    }
+
     return (
         <div style={bodyStyle}>
             <AutoSizer>
@@ -46,7 +55,8 @@ export default function GenericVirtualizedList({ bodyStyle, individualStyle, ite
                             style={{ scrollbarWidth: "none" }}
                             width={width}
                             height={height}
-                            scrollToIndex={type === "comment" ? items.length : undefined}
+                            scrollToIndex={checkIfFirstRender() ? items.length : undefined}
+                            onRowsRendered={() => setIsFirstRender(false)}
                             rowHeight={cache.current.rowHeight}
                             deferredMeasurementCache={cache.current}
                             rowCount={!items ? 0 : items.length}
