@@ -98,11 +98,12 @@ class _SettingsListState extends State<SettingsList> {
                                         setState(() {
                                           item.isChecked = val!;
                                           if (item.isChecked == true) {
-                                            selectedTags.add(
-                                                item.toJson()['id']['tagName']);
+                                            selectedTags.add(item.toJson());
                                           } else {
-                                            selectedTags.remove(
-                                                item.toJson()['id']['tagName']);
+                                            selectedTags.remove(item.toJson()[{
+                                              ['id'],
+                                              ['tagName']
+                                            }]);
                                           }
                                         });
                                       }),

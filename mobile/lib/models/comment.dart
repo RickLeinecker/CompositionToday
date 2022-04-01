@@ -8,7 +8,9 @@ class CommentType {
   final String timestamp;
   final String comment;
   final int approved;
-  final bool? isEdited;
+  final bool isEdited;
+  final int likeCount;
+  final bool isLikedByLoggedInUser;
 
   CommentType({
     required this.username,
@@ -20,7 +22,9 @@ class CommentType {
     required this.timestamp,
     required this.comment,
     required this.approved,
-    this.isEdited,
+    required this.isEdited,
+    required this.likeCount,
+    required this.isLikedByLoggedInUser,
   });
   factory CommentType.fromJson(Map<String, dynamic> parsedJson) => CommentType(
         username: parsedJson['username'],
@@ -33,6 +37,8 @@ class CommentType {
         comment: parsedJson['comment'],
         approved: parsedJson['approved'],
         isEdited: parsedJson['isEdited'],
+        likeCount: parsedJson['likeCount'],
+        isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
       );
   Map<String, dynamic> toJson() => {
         "username": username,
@@ -45,5 +51,7 @@ class CommentType {
         "comment": comment,
         "approved": approved,
         "isEdited": isEdited,
+        "likeCount": likeCount,
+        "isisLikedByLoggedInUser": isLikedByLoggedInUser,
       };
 }

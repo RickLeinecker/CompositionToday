@@ -1,6 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
 
+import 'package:composition_today/models/article.dart';
+import 'package:composition_today/models/article_card.dart';
 import 'package:composition_today/models/content.dart';
+import 'package:composition_today/models/event.dart';
+import 'package:composition_today/models/event_card.dart';
+import 'package:composition_today/models/music.dart';
+import 'package:composition_today/models/music_card.dart';
 import 'package:composition_today/models/user.dart';
 import 'package:composition_today/screens/home/related_projects.dart';
 import 'package:composition_today/screens/home/settings.dart';
@@ -42,9 +48,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     bool profilePicIsNull = false;
     bool isContentEdited = false;
-    bool isMusic = false;
-    bool isEvent = false;
-    bool isArticle = false;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: MyAppBar(
@@ -52,146 +55,64 @@ class _HomeState extends State<Home> {
         actions: const <Widget>[],
       ),
       body: Center(
-        child: FutureBuilder<List<Map<String, dynamic>>>(
-            future: contentCard,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Map<String, dynamic>> content = snapshot.data!;
-                return Scrollbar(
-                  thickness: 10.0,
-                  isAlwaysShown: true,
-                  controller: _scrollController,
-                  child: ListView.builder(
+        child: RefreshIndicator(
+          onRefresh: () async {
+            contentCard = getHomefeedContentInBatches(
+                ['music', 'event', 'article'], [], "newest", 0, 100);
+          },
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: contentCard,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Map<String, dynamic>> content = snapshot.data!;
+                  return Scrollbar(
+                    thickness: 10.0,
+                    isAlwaysShown: true,
                     controller: _scrollController,
-                    itemCount: content.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final item = snapshot.data![index];
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: content.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var item = snapshot.data![index];
 
-                      if (item['profilePicPath'] == null) {
-                        profilePicIsNull = true;
-                      } else {
-                        profilePicIsNull = false;
-                      }
+                        if (item['profilePicPath'] == null) {
+                          profilePicIsNull = true;
+                        } else {
+                          profilePicIsNull = false;
+                        }
 
-                      if (item['isEdited'] == 1) {
-                        isContentEdited = true;
-                      } else {
-                        isContentEdited = false;
-                      }
+                        if (item['isEdited'] == 1) {
+                          isContentEdited = true;
+                        } else {
+                          isContentEdited = false;
+                        }
 
-                      switch (item['contentType']) {
-                        case 'article':
-                          isArticle = true;
-                          isEvent = false;
-                          isMusic = false;
-                          break;
-                        case 'event':
-                          isEvent = true;
-                          isArticle = false;
-                          isMusic = false;
-                          break;
-                        case 'music':
-                          isMusic = true;
-                          isArticle = false;
-                          isEvent = false;
-                          break;
-                        default:
-                      }
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: CircleAvatar(
-                                      radius: 30.0,
-                                      backgroundImage: profilePicIsNull
-                                          ? const AssetImage(
-                                              'assets/img_avatar.png')
-                                          : NetworkImage(item['profilePicPath'])
-                                              as ImageProvider,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5.0),
-                                Expanded(
-                                  flex: 5,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      item['displayName'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5.0),
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: isContentEdited
-                                        ? const Text("(edited)")
-                                        : const Text(""),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                        TimeAgo.timeAgoSinceDate(
-                                            item['timestamp']),
-                                        textAlign: TextAlign.right),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Text(item['contentType']),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: LikeButton(
-                                    padding: EdgeInsets.all(5.0),
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    isLiked: item['isLikedByLoggedInUser'] == 0
-                                        ? false
-                                        : true,
-                                    size: 20.0,
-                                    likeCount: item['likeCount'],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return Loading();
-              }
-            }),
+                        if (item['contentType'] == 'article') {
+                          return ArticleCard(
+                              item: item,
+                              profilePicIsNull: profilePicIsNull,
+                              isContentEdited: isContentEdited);
+                        } else if (item['contentType'] == 'event') {
+                          return EventCard(
+                              item: item,
+                              profilePicIsNull: profilePicIsNull,
+                              isContentEdited: isContentEdited);
+                        } else if (item['contentType'] == 'music') {
+                          return MusicCard(
+                              item: item,
+                              profilePicIsNull: profilePicIsNull,
+                              isContentEdited: isContentEdited);
+                        } else {
+                          return Loading();
+                        }
+                      },
+                    ),
+                  );
+                } else {
+                  return Loading();
+                }
+              }),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -244,7 +165,7 @@ class _HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NotificationFeed()));
+                        builder: (context) => const NotificationFeed()));
               },
             ),
             const SizedBox(height: 10.0),
