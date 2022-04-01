@@ -84,7 +84,7 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                 clearButton
                 filterBy={filterBy}
                 isLoading={isLoading}
-                labelKey={(option: any) => `${option.displayName}`} // This uses composer's uid for unique key
+                labelKey={(option: any) => `${option.username}`} // This uses composer's uid for unique key
                 maxResults={10}
                 minLength={0}
                 open={!genre ? undefined : false}
@@ -95,16 +95,18 @@ const GenericSearch = ({ placeHolder, apiEndpoint, genre = '', getPayload }: Pro
                 renderMenuItemChildren={(option: any) => {
                     return (
                         <Link key={option.uid} to={`/profile/${option.username}`} style={{ color: "#000", textDecoration: 'none' }}>
-                            <img
-                                alt={option.lastName}
-                                src={option.profilePicPath}
-                                style={{
-                                    height: '24px',
-                                    marginRight: '10px',
-                                    width: '24px',
-                                }}
-                            />
-                            <span>{`${option.displayName}`}</span>
+                            <div>
+                                <img
+                                    alt={option.lastName}
+                                    src={option.profilePicPath}
+                                    style={{
+                                        height: '24px',
+                                        marginRight: '10px',
+                                        width: '24px',
+                                    }}
+                                />
+                                <span>{option.displayName ? `${option.displayName}` : `${option.username}`}</span>
+                            </div>
                         </Link>
                     );
                 }}
