@@ -190,7 +190,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit Event"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField
                         title="Experience Title"

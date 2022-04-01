@@ -126,7 +126,7 @@ export default function EditExperienceModal({ experience, notifyChange, editOpen
 
     return (
         <div>
-            <GenericModal show={editOpen} title={"Edit"} onHide={onHide} confirm={confirmEditHandler} actionText={"Edit"} checkForErrors={checkForErrors}>
+            <GenericModal show={editOpen} title={"Edit Experience"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField
                         title="Experience Title"
