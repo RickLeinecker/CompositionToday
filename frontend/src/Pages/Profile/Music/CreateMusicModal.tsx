@@ -59,12 +59,10 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         setNewContentTags(null);
 
         setNameError(false);
-        setTextError(false);
     }
 
 
     const [nameError, setNameError] = useState(false);
-    const [textError, setTextError] = useState(false);
     const [missingFileError, setMissingFileError] = useState(false);
 
     const updateImage = (newFile: File) => {
@@ -101,7 +99,6 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         let error = false;
 
         error = checkIfEmpty(newContentName, setNameError) || error;
-        error = checkIfEmpty(newContentText, setTextError) || error;
 
         let isFileMissing = false;
         isFileMissing = !newContentAudio && !newContentSheetMusic;
@@ -211,12 +208,11 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField
-                        title="Title"
+                        title="Role/Instrument"
                         type="contentText"
                         onChange={setNewContentText}
                         value={newContentText}
-                        isRequired={true}
-                        error={textError}
+                        isRequired={false}
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField

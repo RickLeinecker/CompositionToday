@@ -33,7 +33,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
     const [missingFileError, setMissingFileError] = useState(false);
     const [nameError, setNameError] = useState(false);
-    const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -67,7 +66,6 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         let error = false;
 
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
-        error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
 
         let isFileMissing = false;
         isFileMissing = !newContentValue.audioFilename && !newContentValue.sheetMusicFilename;
@@ -240,12 +238,11 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField
-                        title="Title"
+                        title="Role/Instrument"
                         type="contentText"
                         onChange={handleChange}
                         value={newContentValue.contentText}
-                        isRequired={true}
-                        error={textError}
+                        isRequired={false}
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField
