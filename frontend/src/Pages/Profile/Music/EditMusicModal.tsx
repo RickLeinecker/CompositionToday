@@ -173,7 +173,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
         let newContentImagePath = newContentValue.imageFilepath;
         if (newContentImage !== null) {
-            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
+            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to update event');
                 return;

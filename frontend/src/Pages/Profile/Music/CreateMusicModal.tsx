@@ -140,7 +140,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
 
         let newContentImagePath = null;
         if (newContentImage !== null) {
-            newContentImagePath = await uploadFile(newContentImage, newContentImageFilename, "event image", "uploadImage")
+            //"uploadProfileImage" enforces 1x1 aspect ratio
+            newContentImagePath = await uploadFile(newContentImage, newContentImageFilename, "image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to create music');
                 return;
