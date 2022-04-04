@@ -57,22 +57,31 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
 
-            <div className="card-body" style={{ paddingBottom: "0%" }}>
-                <div style={{ display: "flex", margin: "0 0" }}>
-                    <div style={{ flex: "1 0 0" }}>
-                        <h5 className="card-title">{contentName}</h5>
-                        <p className="card-text">{contentText}</p>
-                        <p className="card-text-secondary" style={{ marginBottom: "0%" }}>{(showMore || !description || description.length <= 250) ? description : description?.substring(0, 250) + "..."}</p>
-                        <div style={{ float: "right" }}>
-                            {(!showMore && description && description.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(true); clearCache(); notifyVirtualizer() }}>Show more</p>}
-                            {(showMore && description && description.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(false); clearCache(); notifyVirtualizer() }}>Show less</p>}
+            <div className="card-body" style={{ paddingBottom: "0%", display: "flex" }}>
+                <div>
+                    {imageFilepath ?
+                        <div>
+                            <Image src={imageFilepath} style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%", overflow: "hidden", float: "left" }} />
                         </div>
-                        <br />
-                        {sheetMusicFilepath &&
-                            <a href={sheetMusicFilepath} target="_blank" rel="noreferrer">
-                                Open sheet music
-                            </a>
-                        }
+                        :
+                        <></>
+                    }
+                </div>
+
+                <div style={{ marginLeft: "5%", display: "flex", flexDirection: "column", flexGrow: "1" }}>
+                    <h5 className="card-title" style={{ margin: "0%" }}>{contentName}</h5>
+                    <p className="card-text" style={{ margin: "0%" }}>{contentText}</p>
+                    <p className="card-text-secondary" style={{ margin: "0%" }}>{(showMore || !description || description.length <= 250) ? description : description?.substring(0, 250) + "..."}</p>
+                    <div style={{ float: "right" }}>
+                        {(!showMore && description && description.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(true); clearCache(); notifyVirtualizer() }}>Show more</p>}
+                        {(showMore && description && description.length > 250) && <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setShowMore(false); clearCache(); notifyVirtualizer() }}>Show less</p>}
+                    </div>
+                    {sheetMusicFilepath &&
+                        <a href={sheetMusicFilepath} style={{textDecoration:"underline", color: "blue"}} target="_blank" rel="noreferrer">
+                            Open sheet music
+                        </a>
+                    }
+                    <div>
                         {audioFilepath &&
                             <>
                                 {/* <ReactAudioPlayer
@@ -80,19 +89,14 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                                     autoPlay={false}
                                     controls
                                 /> */}
-                                <Waveform url={audioFilepath} />
+                                <Waveform url={"https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3"} />
                             </>
 
                         }
                     </div>
-                    {imageFilepath ?
-                        <div style={{ flex: "1 0 0", flexDirection: "column", justifyContent: "flex-end" }}>
-                            <Image src={imageFilepath} style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%", overflow: "hidden", float: "right" }} />
-                        </div>
-                        :
-                        <></>
-                    }
                 </div>
+
+
             </div>
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "1% auto", width: "95%" }} />
