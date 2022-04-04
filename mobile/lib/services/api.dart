@@ -86,3 +86,10 @@ Future<List<Map<String, dynamic>>> getTags() async {
     throw Exception('API call timed out. ${response.statusCode}');
   }
 }
+
+/*Future<List<Map<String,dynamic>>> createLike(
+  String uid,
+
+) async {
+
+}*/

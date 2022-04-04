@@ -4,12 +4,13 @@ class TimeAgo {
   static String timeAgoSinceDate(String dateString,
       {bool numericDates = true}) {
     DateTime notificationDate =
-        DateFormat("yyyy-MM-ddThh:mm:ssZ").parse(dateString);
+        DateFormat("yyyy-MM-ddThh:mm:ssZ").parseUtc(dateString);
+    final notifDate = notificationDate.toLocal();
     final date2 = DateTime.now();
-    final difference = date2.difference(notificationDate);
+    final difference = date2.difference(notifDate);
 
     if (difference.inDays > 7) {
-      return "${notificationDate.month.toString().padLeft(2, '0')}/${notificationDate.day.toString().padLeft(2, '0')}/${notificationDate.year.toString()}";
+      return "${notifDate.month.toString().padLeft(2, '0')}/${notifDate.day.toString().padLeft(2, '0')}/${notifDate.year.toString()}";
     }
     if (difference.inDays > 0) {
       return "${difference.inDays} ${difference.inDays == 1 ? "day" : "days"} ago";
@@ -29,10 +30,27 @@ class TimeAgo {
 
 class DisplayDate {
   static String displayDate(String dateString, {bool numericDates = true}) {
-    DateTime date = DateFormat("yyyy-MM-ddThh:mm:ssZ").parse(dateString);
+    DateTime date =
+        DateFormat("yyyy-MM-ddThh:mm:ssZ").parseUtc(dateString).toUtc();
+    date = date.toLocal();
+    bool isPM = false;
+    int calcHour = date.hour;
+    if (date.hour > 12) {
+      isPM = true;
+      calcHour = date.hour % 12;
+    }
 
+    String displayMonth = "${date.month.toString().padLeft(2, '0')}";
+    String displayDay = "${date.day.toString().padLeft(2, '0')}";
+    String displayYear = "${date.year.toString()}";
+    if (calcHour == 0) {
+      calcHour = 12;
+    }
+    String displayHour = "${calcHour.toString().padLeft(2, '0')}";
+    String displayMinute = "${date.minute.toString().padLeft(2, '0')}";
+    String timeOfDay = isPM ? "PM" : "AM";
     String convertedDisplayDate =
-        "${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}/${date.year.toString()}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+        "$displayMonth/$displayDay/$displayYear, $displayHour:$displayMinute $timeOfDay";
     return convertedDisplayDate;
   }
 }
