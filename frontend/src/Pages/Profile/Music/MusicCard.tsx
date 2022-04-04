@@ -4,6 +4,7 @@ import { Divider } from '@mui/material';
 import CardFooter from '../CardFooter';
 import MusicCardHeader from './MusicCardHeader';
 import { useState } from 'react';
+import { Image } from 'react-bootstrap'
 
 
 type Props = {
@@ -16,7 +17,23 @@ type Props = {
 
 
 export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
-    const { id, contentName, description, audioFilepath, sheetMusicFilepath, timestamp, contentText, username, profilePicPath, displayName, likeCount, isLikedByLoggedInUser, tagArray } = music;
+    const { 
+        id, 
+        contentName,
+        description, 
+        audioFilepath, 
+        sheetMusicFilepath, 
+        timestamp, 
+        contentText, 
+        username, 
+        profilePicPath, 
+        displayName, 
+        likeCount, 
+        isLikedByLoggedInUser, 
+        tagArray,
+        imageFilepath,
+        imageFilename,
+    } = music;
     const [showMore, setShowMore] = useState(false);
 
     // Cleanup function gets called when component is unmounted
@@ -62,6 +79,13 @@ export default function MusicCard({ music, isMyProfile, notifyVirtualizer, notif
                             />
                         }
                     </div>
+                    {imageFilepath ?
+                        <div style={{ flex: "1 0 0", flexDirection: "column", justifyContent: "flex-end" }}>
+                            <Image src={imageFilepath} style={{ height: "auto", width: "auto", maxHeight: "30vh", maxWidth: "100%", overflow: "hidden", float: "right" }} />
+                        </div>
+                        :
+                        <></>
+                    }
                 </div>    
             </div>
 

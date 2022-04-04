@@ -27,6 +27,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [newContentTags, setNewContentTags] = useState<Array<TagType>>(JSON.parse(newContentValue.tagArray));
     const [audioFileToDelete, setAudioFileToDelete] = useState<string>("");
     const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
+    const [imageFileToDelete, setImageFileToDelete] = useState<string>("");
+    const [newContentImage, setNewContentImage] = useState<File | null>(null);
 
 
     const [missingFileError, setMissingFileError] = useState(false);
@@ -95,6 +97,11 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         handleChange(file.name, "audioFilename")
     }
 
+    const updateImage = (file: File) => {
+        setNewContentImage(file);
+        handleChange(file.name, "imageFilename")
+    }
+
     const deleteSheetMusic = () => {
         let fileToDelete = newContentValue.sheetMusicFilepath
         if (fileToDelete !== undefined) {
@@ -117,6 +124,17 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         setNewContentAudio(null);
     }
 
+    const deleteImageFile = () => {
+        let fileToDelete = newContentValue.imageFilepath
+        if (fileToDelete !== undefined) {
+            setImageFileToDelete(fileToDelete)
+            handleChange("", "imageFilepath")
+        }
+
+        handleChange("", "imageFilename");
+        setNewContentImage(null)
+    }
+
     async function confirmEditHandler() {
 
         let audioFileToDeleteTemp = audioFileToDelete;
@@ -129,6 +147,12 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         if (sheetMusicFileToDeleteTemp !== "" && sheetMusicFileToDeleteTemp !== null) {
             deleteFile(sheetMusicFileToDeleteTemp);
             setSheetMusicFileToDelete("");
+        }
+
+        let imageFileToDeleteTemp = imageFileToDelete;
+        if (imageFileToDeleteTemp !== "" && imageFileToDeleteTemp !== null) {
+            deleteFile(imageFileToDeleteTemp);
+            setImageFileToDelete("");
         }
 
         let newContentSheetMusicPath = newContentValue.sheetMusicFilepath;
@@ -149,6 +173,15 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
             }
         }
 
+        let newContentImagePath = newContentValue.imageFilepath;
+        if (newContentImage !== null) {
+            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
+            if (newContentImagePath === '') {
+                toast.error('Failed to update event');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 contentID: newContentValue.id,
@@ -157,6 +190,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 contentName: newContentValue.contentName,
                 contentText: newContentValue.contentText,
                 description: newContentValue.description,
+                imageFilepath: newContentImagePath || "",
+                imageFilename: newContentValue.imageFilename,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentValue.sheetMusicFilename,
                 audioFilepath: newContentAudioPath,
@@ -225,6 +260,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
+                    <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
                     {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
                 </>
             </GenericModal>
