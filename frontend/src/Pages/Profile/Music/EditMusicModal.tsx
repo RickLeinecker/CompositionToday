@@ -11,6 +11,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
+import { Alert } from 'react-bootstrap';
 
 type Props = {
     music: MusicType;
@@ -28,6 +29,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
     const [sheetMusicFileToDelete, setSheetMusicFileToDelete] = useState<string>("");
 
 
+    const [missingFileError, setMissingFileError] = useState(false);
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
 
@@ -64,6 +66,11 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
         error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
+
+        let isFileMissing = false;
+        isFileMissing = !newContentValue.audioFilename && !newContentValue.sheetMusicFilename;
+        setMissingFileError(isFileMissing)
+        error = isFileMissing || error;
 
         return (error)
     }
@@ -218,6 +225,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
+                    {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
