@@ -15,7 +15,7 @@ export default function ComposerPaper({ composer }: ComposerProps) {
                 <Marquee style={{ ...marqueeStyle, top: '10px' }} delay={2} pauseOnHover gradientWidth={"20%"} gradientColor={[69, 171, 255]}>
                     {composer.audioFilename !== null ? composer.audioFilename : "Composer has no featured piece"}
                 </Marquee>
-                <ComposerSubPaper imagePath={composer.profilePicPath} username={composer.username} />
+                <ComposerSubPaper audioFilename={composer.audioFilename} audioFilepath={composer.audioFilepath} imagePath={composer.profilePicPath} username={composer.username} />
                 {/* TODO: Change from username to displayname */}
                 <Marquee style={{ ...marqueeStyle, bottom: '10px' }} delay={2} pauseOnHover gradientWidth={"20%"} gradientColor={[69, 171, 255]}>
                     {`${composer.username}`}
