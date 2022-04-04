@@ -157,10 +157,10 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
         <div>
             <GenericModal
                 show={editOpen}
-                title={"Edit"}
+                title={"Edit Related Project"}
                 onHide={onHide}
                 confirm={confirmEditHandler}
-                actionText={"Edit"}
+                actionText={"Update"}
                 checkForErrors={checkForErrors}>
                 <>
                     {!viewPreview ?

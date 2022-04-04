@@ -148,7 +148,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
 
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Related Project"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

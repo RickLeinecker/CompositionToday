@@ -41,17 +41,14 @@ export default function Home() {
         <div>
             <div className='container-home'>
                 {
-                    getAuth().currentUser?.isAnonymous ?
-                        <></>
-                        :
-                        <HomeHeader
-                            updateFilterBy={updateFilterBy}
-                            updateSortBy={updateSortBy}
-                            updateTags={updateTags}
-                            tags={filterByTags}
-                            sortBy={sortBy}
-                            uid={currentUid || ""}
-                        />
+                    <HomeHeader
+                        updateFilterBy={updateFilterBy}
+                        updateSortBy={updateSortBy}
+                        updateTags={updateTags}
+                        tags={filterByTags}
+                        sortBy={sortBy}
+                        uid={currentUid || ""}
+                    />
                 }
 
             </div>

@@ -14,7 +14,7 @@ export default function GenericDiscardModal({ notifyChange, discardOpen, handleC
             <GenericModal show={discardOpen} title={"Discard"} onHide={handleCloseDiscard} confirm={handleConfirmDiscard} actionText={"Discard"} >
                 <>
                     <p>
-                        Are you sure you want to discard this?
+                        Are you sure you want to discard this? Changes made won't be saved.
                     </p>
                 </>
             </GenericModal>

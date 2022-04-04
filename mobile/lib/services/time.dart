@@ -26,3 +26,13 @@ class TimeAgo {
     return "just now";
   }
 }
+
+class DisplayDate {
+  static String displayDate(String dateString, {bool numericDates = true}) {
+    DateTime date = DateFormat("yyyy-MM-ddThh:mm:ssZ").parse(dateString);
+
+    String convertedDisplayDate =
+        "${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}/${date.year.toString()}, ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+    return convertedDisplayDate;
+  }
+}

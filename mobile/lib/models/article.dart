@@ -10,6 +10,7 @@ class ArticleType {
   final String timestamp;
   final int likeCount;
   final bool isLikedByLoggedInUser;
+  final String tagArray;
 
   ArticleType({
     required this.username,
@@ -23,6 +24,7 @@ class ArticleType {
     required this.timestamp,
     required this.likeCount,
     required this.isLikedByLoggedInUser,
+    required this.tagArray,
   });
 
   factory ArticleType.fromJson(Map<String, dynamic> parsedJson) => ArticleType(
@@ -37,6 +39,7 @@ class ArticleType {
         timestamp: parsedJson['timestamp'],
         likeCount: parsedJson['likeCount'],
         isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
+        tagArray: parsedJson['tagArray'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,5 +54,6 @@ class ArticleType {
         "timestamp": timestamp,
         "likeCount": likeCount,
         "isLikedByLoggedInUser": isLikedByLoggedInUser,
+        "tagArray": tagArray,
       };
 }

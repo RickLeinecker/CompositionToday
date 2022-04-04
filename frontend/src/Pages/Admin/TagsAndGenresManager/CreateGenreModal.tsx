@@ -119,7 +119,7 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
         <div>
             <GenericModal 
                 show={createOpen} 
-                title={"Create"} 
+                title={"Create Genre"} 
                 onHide={onHide} 
                 confirm={confirmCreateHandler} 
                 actionText={"Save"} 

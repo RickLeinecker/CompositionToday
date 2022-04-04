@@ -16,6 +16,8 @@ class EventType {
   final bool mapsEnabled;
   final int likeCount;
   final bool isLikedByLoggedInUser;
+  final bool isEdited;
+  final String tagArray;
 
   EventType({
     required this.username,
@@ -35,6 +37,8 @@ class EventType {
     required this.mapsEnabled,
     required this.likeCount,
     required this.isLikedByLoggedInUser,
+    required this.isEdited,
+    required this.tagArray,
   });
   factory EventType.fromJson(Map<String, dynamic> parsedJson) => EventType(
         username: parsedJson['username'],
@@ -54,6 +58,8 @@ class EventType {
         mapsEnabled: parsedJson['mapsEnabled'],
         likeCount: parsedJson['likeCount'],
         isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
+        isEdited: parsedJson['isEdited'],
+        tagArray: parsedJson['tagArray'],
       );
   Map<String, dynamic> toJson() => {
         "username": username,
@@ -73,5 +79,7 @@ class EventType {
         "mapsEnabled": mapsEnabled,
         "likeCount": likeCount,
         "isLikedByLoggedInUser": isLikedByLoggedInUser,
+        "isEdited": isEdited,
+        "tagArray": tagArray,
       };
 }
