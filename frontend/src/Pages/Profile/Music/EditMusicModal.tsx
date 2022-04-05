@@ -12,6 +12,7 @@ import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { Alert } from 'react-bootstrap';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
     music: MusicType;
@@ -32,6 +33,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
 
     const [missingFileError, setMissingFileError] = useState(false);
+    const [missingAudioError, setMissingAudioError] = useState(false);
     const [nameError, setNameError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
@@ -55,7 +57,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
-    const handleChange = (newValue: string, type: string) => {
+    const handleChange = (newValue: string | boolean, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
@@ -71,6 +73,10 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         isFileMissing = !newContentValue.audioFilename && !newContentValue.sheetMusicFilename;
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
+
+        let isAudioMissing = newContentValue.isFeatured && !newContentValue.audioFilename;
+        setMissingAudioError(isAudioMissing)
+        error = isAudioMissing || error;
 
         return (error)
     }
@@ -195,6 +201,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
                 tagArray: newContentTags,
+                isFeatured: newContentValue.isFeatured,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -255,6 +262,16 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
                     />
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
+
+                    <FormControlLabel style={{marginLeft: "1.7%"}} control={
+                        <Checkbox
+                            checked={newContentValue.isFeatured}
+                            onChange={() => handleChange(!newContentValue.isFeatured, "isFeatured")}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    } label="Make this your featured song" />
+                    {missingAudioError && <Alert variant="danger">{"You must upload audio to make it your featured music"}</Alert>}
+                    
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />

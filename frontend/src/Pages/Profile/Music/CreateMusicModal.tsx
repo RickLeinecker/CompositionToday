@@ -11,6 +11,7 @@ import useOpen from '../../../Helper/CustomHooks/useOpen';
 import GenericDiscardModal from '../../../Helper/Generics/GenericDiscardModal';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
     uid: string;
@@ -31,6 +32,11 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
+    const [newContentIsFeatured, setNewContentIsFeatured] = useState(false);
+
+    const [nameError, setNameError] = useState(false);
+    const [missingFileError, setMissingFileError] = useState(false);
+    const [missingAudioError, setMissingAudioError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -60,10 +66,6 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
 
         setNameError(false);
     }
-
-
-    const [nameError, setNameError] = useState(false);
-    const [missingFileError, setMissingFileError] = useState(false);
 
     const updateImage = (newFile: File) => {
         setNewContentImage(newFile);
@@ -104,6 +106,10 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         isFileMissing = !newContentAudio && !newContentSheetMusic;
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
+
+        let isAudioMissing = newContentIsFeatured && !newContentAudio;
+        setMissingAudioError(isAudioMissing)
+        error = isAudioMissing || error;
 
         return (error)
     }
@@ -163,6 +169,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 audioFilename: newContentAudioFilename,
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 tagArray: newContentTags || [],
+                isFeatured: newContentIsFeatured,
             }),
             methodType: "POST",
             path: "createContentWithTags",
@@ -226,10 +233,20 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
                     />
                     <GenericTagsPicker updateTags={updateTags} />
+                    <FormControlLabel style={{marginLeft: "1.7%"}} control={
+                        <Checkbox
+                            checked={newContentIsFeatured}
+                            onChange={() => setNewContentIsFeatured(!newContentIsFeatured)}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    } label="Make this your featured song" />
+                    {missingAudioError && <Alert variant="danger">{"You must upload audio to make it your featured music"}</Alert>}
+
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
                     <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentImageFilename} />
-                    {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
+                    {missingFileError && <Alert variant="danger">{"You must upload sheet music or audio"}</Alert>}
+                    
                 </>
             </GenericModal>
             <GenericDiscardModal notifyChange={notifyChange} discardOpen={discardOpen} handleCloseDiscard={handleCloseDiscard} handleConfirmDiscard={handleConfirmDiscard} />
