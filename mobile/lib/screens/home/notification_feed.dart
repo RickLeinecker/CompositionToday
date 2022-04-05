@@ -24,7 +24,16 @@ class _NotificationFeedState extends State<NotificationFeed> {
   void initState() {
     super.initState();
     contentCard = getHomefeedContentInBatches(
-        ['music', 'event', 'article'], selectedTags, "popular", 0, 50);
+        ['music', 'event', 'article'], selectedTags, "popular", 0, 100);
+  }
+
+  Future<void> _pullRefresh() async {
+    Future<List<Map<String, dynamic>>> newContent = getHomefeedContentInBatches(
+        ['music', 'event', 'article'], selectedTags, "popular", 0, 100);
+
+    setState(() {
+      contentCard = newContent;
+    });
   }
 
   @override
@@ -42,14 +51,7 @@ class _NotificationFeedState extends State<NotificationFeed> {
         ),
         body: Center(
           child: RefreshIndicator(
-            onRefresh: () async {
-              contentCard = getHomefeedContentInBatches(
-                  ['music', 'event', 'article'],
-                  selectedTags,
-                  "popular",
-                  0,
-                  100);
-            },
+            onRefresh: _pullRefresh,
             child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: contentCard,
                 builder: (context, snapshot) {

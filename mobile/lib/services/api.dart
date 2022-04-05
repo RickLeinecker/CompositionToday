@@ -25,6 +25,42 @@ Future<UserData> createUser(String uid, String username, String email) async {
   }
 }
 
+Future<UserData> updateUser(int userID, String uid, String email) async {
+  final response = await http.patch(
+    Uri.parse(_baseUrl + "updateUser"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    body: jsonEncode(<String, dynamic>{
+      'userID': userID,
+      'uid': uid,
+      'email': email,
+    }),
+  );
+  if (response.statusCode == 200) {
+    return UserData.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to update user. ${response.statusCode}');
+  }
+}
+
+Future<UserData> deleteUser(String uid) async {
+  final response = await http.delete(
+    Uri.parse(_baseUrl + "deleteUser"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8'
+    },
+    body: jsonEncode(<String, String>{
+      'uid': uid,
+    }),
+  );
+  if (response.statusCode == 200) {
+    return UserData.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to delete user. ${response.statusCode}');
+  }
+}
+
 Future<UserData> getLoggedInUser(String uid) async {
   final response = await http.post(
     Uri.parse(_baseUrl + "getLoggedInUser"),

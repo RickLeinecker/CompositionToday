@@ -55,6 +55,7 @@ class _SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     UserData _currentUserID = Provider.of<UserData?>(context)!;
+    var currentUser = _auth.user;
     String email = '';
     String error = '';
     return Scaffold(
@@ -99,11 +100,8 @@ class _SettingsListState extends State<SettingsList> {
                                           item.isChecked = val!;
                                           if (item.isChecked == true) {
                                             selectedTags.add(item.toJson());
-                                          } else {
-                                            selectedTags.remove(item.toJson()[{
-                                              ['id'],
-                                              ['tagName']
-                                            }]);
+                                          } else if (item.isChecked == false) {
+                                            selectedTags.remove(item.toJson());
                                           }
                                         });
                                       }),
@@ -198,7 +196,7 @@ class _SettingsListState extends State<SettingsList> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              // _auth.resetPassword();
+              _auth.resetPassword(_currentUserID.email!);
             },
             style: ElevatedButton.styleFrom(
               primary: primaryColor,
@@ -210,8 +208,9 @@ class _SettingsListState extends State<SettingsList> {
               'Delete Account',
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
-              // implement ability to delete account
+            onPressed: () async {
+              deleteUser(_currentUserID.uid!);
+              _auth.deleteFirebaseUser(_currentUserID.email!);
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.red,

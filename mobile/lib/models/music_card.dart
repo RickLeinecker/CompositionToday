@@ -112,7 +112,11 @@ class _MusicCardState extends State<MusicCard> {
                         color: Colors.grey[500],
                       ),
                     ),
-                    // TODO: audio player if not null
+                    widget.item['audioFilepath'] != null
+                        ? Audio(
+                            audioFilepath: widget.item['audioFilepath'],
+                          )
+                        : Text(''),
                   ],
                 ),
               ),
