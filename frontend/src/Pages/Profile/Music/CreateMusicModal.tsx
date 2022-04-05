@@ -29,6 +29,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentSheetMusicFilename, setNewContentSheetMusicFilename] = useState("");
     const [newContentAudio, setNewContentAudio] = useState<File | null>(null);
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
+    const [newContentImage, setNewContentImage] = useState<File | null>(null);
+    const [newContentImageFilename, setNewContentImageFilename] = useState("");
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -64,6 +66,16 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [nameError, setNameError] = useState(false);
     const [textError, setTextError] = useState(false);
     const [missingFileError, setMissingFileError] = useState(false);
+
+    const updateImage = (newFile: File) => {
+        setNewContentImage(newFile);
+        setNewContentImageFilename(newFile.name)
+    }
+
+    const deleteImageFile = () => {
+        setNewContentImage(null);
+        setNewContentImageFilename("");
+    }
 
     const updateSheetMusic = (newFile: File) => {
         setNewContentSheetMusic(newFile);
@@ -129,6 +141,15 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
             }
         }
 
+        let newContentImagePath = null;
+        if (newContentImage !== null) {
+            newContentImagePath = await uploadFile(newContentImage, newContentImageFilename, "event image", "uploadImage")
+            if (newContentImagePath === '') {
+                toast.error('Failed to create music');
+                return;
+            }
+        }
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 uid: uid,
@@ -136,6 +157,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 contentText: newContentText,
                 contentType: "music",
                 description: newContentDescription,
+                imageFilepath: newContentImagePath,
+                imageFilename: newContentImageFilename,
                 sheetMusicFilepath: newContentSheetMusicPath,
                 sheetMusicFilename: newContentSheetMusicFilename,
                 audioFilepath: newContentAudioPath,
@@ -171,7 +194,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         <div>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Music"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}
@@ -208,6 +231,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                     <GenericTagsPicker updateTags={updateTags} />
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusicFile} type={".pdf"} name="sheet music" filename={newContentSheetMusicFilename} />
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudioFile} type={".mp3"} name="audio" filename={newContentAudioFilename} />
+                    <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentImageFilename} />
                     {missingFileError && <Alert variant="danger">{"You must upload at least 1 file"}</Alert>}
                 </>
             </GenericModal>

@@ -110,7 +110,7 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
 
         let newContentImagePath = newContentValue.imageFilepath;
         if (newContentImage !== null) {
-            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
+            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to update related project');
                 return;
@@ -157,10 +157,10 @@ export default function AdminEditRelatedProjectModal({ relatedProject, notifyCha
         <div>
             <GenericModal
                 show={editOpen}
-                title={"Edit"}
+                title={"Edit Related Project"}
                 onHide={onHide}
                 confirm={confirmEditHandler}
-                actionText={"Edit"}
+                actionText={"Update"}
                 checkForErrors={checkForErrors}>
                 <>
                     {!viewPreview ?

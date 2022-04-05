@@ -143,7 +143,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
         if (newContentImage !== null) {
             newContentImagePath = await uploadFile(newContentImage, newContentImageFilename, "event image", "uploadImage")
             if (newContentImagePath === '') {
-                toast.error('Failed to create music');
+                toast.error('Failed to create event');
                 return;
             }
         }
@@ -190,7 +190,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
         <>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Event"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

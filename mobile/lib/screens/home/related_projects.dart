@@ -37,7 +37,7 @@ class RelatedProjects extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         children: [
                           IconButton(
-                            icon: Image.asset('assets/johncage.jpg'),
+                            icon: Image.asset('assets/resized_john_cage.jpg'),
                             iconSize: 500,
                             onPressed: () {
                               launchJohnCage();
@@ -66,7 +66,7 @@ class RelatedProjects extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         children: [
                           IconButton(
-                            icon: Image.asset('assets/microtonality.png'),
+                            icon: Image.asset('assets/microtonality.jpg'),
                             iconSize: 500,
                             onPressed: () {
                               launchMicrotonality();
@@ -95,7 +95,7 @@ class RelatedProjects extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         children: [
                           IconButton(
-                            icon: Image.asset('assets/JosephSchillinger.png'),
+                            icon: Image.asset('assets/schillinger.jpg'),
                             iconSize: 500,
                             onPressed: () {
                               launchSchillinger();

@@ -100,7 +100,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
 
         let newContentImagePath = null;
         if (newImage !== null) {
-            newContentImagePath = await uploadFile(newImage, newContentImageFilename, "related project image", "uploadImage")
+            newContentImagePath = await uploadFile(newImage, newContentImageFilename, "related project image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to create related project');
                 return;
@@ -148,7 +148,7 @@ export default function AdminCreateRelatedProjectModal({ notifyChange, createOpe
 
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Related Project"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

@@ -88,7 +88,7 @@ export default function CreateTagModal({ notifyChange, createOpen, handleCloseCr
         <div>
             <GenericModal
                 show={createOpen}
-                title={"Create"}
+                title={"Create Tag"}
                 onHide={onHide}
                 confirm={confirmCreateHandler}
                 actionText={"Save"}

@@ -72,7 +72,7 @@ export default function EditProfileModal({ userProfile, notifyChange, editOpen, 
 
         let newProfilePicPath = userProfile.profilePicPath;
         if (newProfilePic !== null) {
-            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadImage")
+            newProfilePicPath = await uploadFile(newProfilePic, newProfilePic?.name, "image", "uploadProfileImage")
             if (newProfilePicPath === '') {
                 toast.error('Failed to update profile pic');
                 return;
@@ -117,10 +117,10 @@ export default function EditProfileModal({ userProfile, notifyChange, editOpen, 
         <>
             <GenericModal
                 show={editOpen}
-                title={"Edit"}
+                title={"Edit Profile"}
                 onHide={onHide}
                 confirm={confirmEditHandler}
-                actionText={"Edit"}
+                actionText={"Update"}
                 checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField title="Display Name" type="displayName" onChange={handleChange} value={newContentValue.displayName} isRequired={true} error={displayNameError} maxLength={parseInt(DefaultValues.maxLengthShort)}/>

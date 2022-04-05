@@ -1,7 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
 
+import 'package:composition_today/models/tag.dart';
+import 'package:composition_today/services/api.dart';
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
+import 'package:composition_today/shared/loading.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
@@ -19,44 +22,100 @@ class Settings extends StatelessWidget {
         title: const Text('Settings'),
       ),
       body: const Center(
-        child: SettingsSwitch(),
+        child: SettingsList(),
       ),
     );
   }
 }
 
-class SettingsSwitch extends StatefulWidget {
-  const SettingsSwitch({Key? key}) : super(key: key);
+class SettingsList extends StatefulWidget {
+  const SettingsList({Key? key}) : super(key: key);
 
   @override
-  _SettingsSwitchState createState() => _SettingsSwitchState();
+  _SettingsListState createState() => _SettingsListState();
 }
 
-class _SettingsSwitchState extends State<SettingsSwitch> {
-  bool _specificNotifs = false;
+class _SettingsListState extends State<SettingsList> {
+  bool _isChecked = false;
   bool loading = false;
+  late Future<List<Map<String, dynamic>>> tagList;
   final AuthService _auth = AuthService();
   final _emailKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+
+  void initState() {
+    super.initState();
+    tagList = getTags();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     UserData _currentUserID = Provider.of<UserData?>(context)!;
     String email = '';
     String error = '';
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          const SizedBox(height: 10.0),
+          const Text(
+            'Select all tags that interest you.',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 20.0),
-          SwitchListTile(
-            title: const Text('Only show notifications about your interests'),
-            value: _specificNotifs,
-            tileColor: primaryColor,
-            activeColor: primaryColor,
-            onChanged: (bool value) {
-              setState(() {
-                _specificNotifs = value;
-              });
-            },
-            secondary: const Icon(Icons.notifications),
+          Expanded(
+            child: Center(
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: tagList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Map<String, dynamic>> tags = snapshot.data!;
+                      return Scrollbar(
+                        thickness: 10.0,
+                        isAlwaysShown: true,
+                        controller: _scrollController,
+                        child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: tags.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item =
+                                  TagType.fromJson(snapshot.data![index]);
+
+                              return StatefulBuilder(
+                                  builder: (context, StateSetter setState) {
+                                return Center(
+                                  child: CheckboxListTile(
+                                      title: Text(item.tagName),
+                                      value: item.isChecked == true,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          item.isChecked = val!;
+                                          if (item.isChecked == true) {
+                                            selectedTags.add(item.toJson());
+                                          } else {
+                                            selectedTags.remove(item.toJson()[{
+                                              ['id'],
+                                              ['tagName']
+                                            }]);
+                                          }
+                                        });
+                                      }),
+                                );
+                              });
+                            }),
+                      );
+                    } else {
+                      return Loading();
+                    }
+                  }),
+            ),
           ),
           const SizedBox(height: 20.0),
           ElevatedButton(

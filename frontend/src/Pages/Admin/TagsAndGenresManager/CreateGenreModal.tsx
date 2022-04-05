@@ -79,7 +79,7 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
 
         let newContentImagePath = null;
         if (newImage !== null) {
-            newContentImagePath = await uploadFile(newImage, newImageFilename, "genre image", "uploadImage")
+            newContentImagePath = await uploadFile(newImage, newImageFilename, "genre image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to create genre');
                 return;
@@ -119,7 +119,7 @@ export default function CreateGenreModal({ notifyChange, createOpen, handleClose
         <div>
             <GenericModal 
                 show={createOpen} 
-                title={"Create"} 
+                title={"Create Genre"} 
                 onHide={onHide} 
                 confirm={confirmCreateHandler} 
                 actionText={"Save"} 
