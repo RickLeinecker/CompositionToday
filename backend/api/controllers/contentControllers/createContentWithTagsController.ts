@@ -7,7 +7,7 @@ exports.createContentWithTags = async (req, res) => {
   // timestamp, audioFilepath, sheetMusicFilepath, contentType,
   // contentName, websiteLink, collaborators, description, mapsEnabled
   // toDate, fromDate, isDateCurrent, price, audioFilename, sheetMusicFilename
-  // imageFilepath, imageFilename, tagArray, isFeaturedSong
+  // imageFilepath, imageFilename, tagArray, isFeaturedSong, isContest
   // outgoing: error
 
   var error = "";
@@ -38,6 +38,7 @@ exports.createContentWithTags = async (req, res) => {
     imageFilename,
     tagArray,
     isFeaturedSong,
+    isContest,
   } = req.body;
 
   mysql_pool.getConnection(async function (err, connection) {
@@ -56,7 +57,7 @@ exports.createContentWithTags = async (req, res) => {
             responseCode = 200;
             mysql_pool.getConnection(async function (err, connection) {
               const sqlInsert =
-                "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent,price,audioFilename,sheetMusicFilename,imageFilepath,imageFilename,isFeaturedSong) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent,price,audioFilename,sheetMusicFilename,imageFilepath,imageFilename,isFeaturedSong,isContest) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
               connection.query(
                 sqlInsert,
                 [
@@ -82,6 +83,7 @@ exports.createContentWithTags = async (req, res) => {
                   imageFilepath,
                   imageFilename,
                   isFeaturedSong,
+                  isContest,
                 ],
                 await function (err, result) {
                   if (err) {

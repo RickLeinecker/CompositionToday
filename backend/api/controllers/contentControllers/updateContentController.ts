@@ -7,7 +7,7 @@ exports.updateContent = async (req, res) => {
   // incoming: uid, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
   // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
   // toDate, fromDate, isDateCurrent, price, audioFilename, sheetMusicFilename, mapsEnabled
-  // imageFilepath, imageFilename, isFeaturedSong
+  // imageFilepath, imageFilename, isFeaturedSong, isContest
   // outgoing: error
 
   var error = "";
@@ -41,6 +41,7 @@ exports.updateContent = async (req, res) => {
     imageFilename,
     tagArray,
     isFeaturedSong,
+    isContest,
   } = req.body;
 
   mysql_pool.getConnection(function (err, connection) {
@@ -237,6 +238,11 @@ exports.updateContent = async (req, res) => {
               insertString += "isFeaturedSong=?,";
               insertArray.push(isFeaturedSong);
             }
+            if (isContest !== null && isContest !== undefined) {
+              insertString += "isContest=?,";
+              insertArray.push(isContest);
+            }
+
             if (isFeaturedSong === true || isFeaturedSong === 1) {
               mysql_pool.getConnection(function (err, connection) {
                 connection.query(
