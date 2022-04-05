@@ -61,6 +61,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             ...prevState,
             [type]: newValue
         }));
+        console.table(newContentValue)
     }
 
     const updateImage = (file: File) => {

@@ -62,6 +62,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
             ...prevState,
             [type]: newValue
         }));
+
+        console.table(newContentValue);
     }
 
     const checkForErrors = (): boolean => {
@@ -74,7 +76,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
 
-        let isAudioMissing = newContentValue.isFeatured && !newContentValue.audioFilename;
+        let isAudioMissing = newContentValue.isFeaturedSong && !newContentValue.audioFilename;
         setMissingAudioError(isAudioMissing)
         error = isAudioMissing || error;
 
@@ -201,7 +203,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
                 tagArray: newContentTags,
-                isFeatured: newContentValue.isFeatured,
+                isFeaturedSong: newContentValue.isFeaturedSong,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -263,13 +265,11 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                     />
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
 
-                    <FormControlLabel style={{marginLeft: "1.7%"}} control={
-                        <Checkbox
-                            checked={newContentValue.isFeatured}
-                            onChange={() => handleChange(!newContentValue.isFeatured, "isFeatured")}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                    } label="Make this your featured song" />
+                    <FormControlLabel
+                        control={<Checkbox checked={!!newContentValue.isFeaturedSong}
+                            onChange={() => handleChange(!newContentValue.isFeaturedSong, "isFeaturedSong")} />}
+                        label="Make this your featured song"
+                    />
                     {missingAudioError && <Alert variant="danger">{"You must upload audio to make it your featured music"}</Alert>}
                     
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>

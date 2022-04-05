@@ -32,7 +32,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
     const [newContentAudioFilename, setNewContentAudioFilename] = useState("");
     const [newContentImage, setNewContentImage] = useState<File | null>(null);
     const [newContentImageFilename, setNewContentImageFilename] = useState("");
-    const [newContentIsFeatured, setNewContentIsFeatured] = useState(false);
+    const [newContentIsFeaturedSong, setNewContentIsFeaturedSong] = useState(false);
 
     const [nameError, setNameError] = useState(false);
     const [missingFileError, setMissingFileError] = useState(false);
@@ -63,6 +63,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         setNewContentAudio(null);
         setNewContentAudioFilename("");
         setNewContentTags(null);
+        setNewContentImage(null);
+        setNewContentImageFilename("");
 
         setNameError(false);
     }
@@ -107,7 +109,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
 
-        let isAudioMissing = newContentIsFeatured && !newContentAudio;
+        let isAudioMissing = newContentIsFeaturedSong && !newContentAudio;
         setMissingAudioError(isAudioMissing)
         error = isAudioMissing || error;
 
@@ -154,6 +156,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
             }
         }
 
+        console.log("isFeatued: " + newContentIsFeaturedSong)
+
         const handlerObject: GenericHandlerType = {
             data: JSON.stringify({
                 uid: uid,
@@ -169,7 +173,7 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                 audioFilename: newContentAudioFilename,
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 tagArray: newContentTags || [],
-                isFeatured: newContentIsFeatured,
+                isFeaturedSong: newContentIsFeaturedSong,
             }),
             methodType: "POST",
             path: "createContentWithTags",
@@ -235,9 +239,8 @@ export default function CreateMusicModal({ uid, notifyChange, createOpen, handle
                     <GenericTagsPicker updateTags={updateTags} />
                     <FormControlLabel style={{marginLeft: "1.7%"}} control={
                         <Checkbox
-                            checked={newContentIsFeatured}
-                            onChange={() => setNewContentIsFeatured(!newContentIsFeatured)}
-                            inputProps={{ 'aria-label': 'controlled' }}
+                            checked={newContentIsFeaturedSong}
+                            onChange={() => setNewContentIsFeaturedSong(!newContentIsFeaturedSong)}
                         />
                     } label="Make this your featured song" />
                     {missingAudioError && <Alert variant="danger">{"You must upload audio to make it your featured music"}</Alert>}

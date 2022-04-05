@@ -93,7 +93,7 @@ export type MusicType = {
     imageFilepath?: string;
     imageFilename?: string;
     description?: string;
-    isFeatured: boolean;
+    isFeaturedSong: boolean;
 }
 
 export type EventType = {
