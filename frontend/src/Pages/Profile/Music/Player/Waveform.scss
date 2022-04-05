@@ -1,6 +1,10 @@
+@import "../../../../Styles/DefaultValues.module.scss";
+@import "../../../..//Styles/DefaultComponents.module.scss";
+
+
 .wave-button {
-  background: OrangeRed;
-  color: white;
+  background: $primary-color;
+  color: $white;
   border: none;
   width: 60px;
   height: 60px;
@@ -11,7 +15,7 @@
 }
 
 .wave-button:hover {
-  background: #d63d05;
+  background: $primary-color;
 }
 
 .playlist {
@@ -35,6 +39,6 @@
 }
 
 .controls {
-  text-align: left;
+  float: right;
   padding: 1em;
 }
