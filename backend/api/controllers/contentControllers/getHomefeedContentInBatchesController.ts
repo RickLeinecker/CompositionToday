@@ -3,7 +3,7 @@ var { mysql_pool } = require("../../../database/database.ts");
 
 // getHomefeedContentInBatches
 exports.getHomefeedContentInBatches = async (req, res) => {
-  // incoming: contentTypeArray: array [music, events, etc.], sortBy: string -> "newest", "popular", "etc.",
+  // incoming: contentTypeArray: array [music, event, article, contest], sortBy: string -> "newest", "popular", "relevant",
   //           tagArray: array [classical, edm, etc.]
   // outgoing: content, error
 
@@ -57,11 +57,15 @@ exports.getHomefeedContentInBatches = async (req, res) => {
 
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray && contentTypeArray.length > 0) {
-    insertString += "WHERE ";
-    for (var contentT of contentTypeArray) {
-      insertString += `contentType='${contentT}' OR `;
+    if (contentTypeArray.find((string) => string === "contest")) {
+      insertString += "WHERE isContest=1 ";
+    } else {
+      insertString += "WHERE ";
+      for (var contentT of contentTypeArray) {
+        insertString += `contentType='${contentT}' OR `;
+      }
+      insertString = insertString.slice(0, -4);
     }
-    insertString = insertString.slice(0, -4);
     insertString += " GROUP BY content.id";
   } else {
     insertString += "WHERE ";
