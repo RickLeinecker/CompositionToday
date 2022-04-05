@@ -17,21 +17,21 @@ const formWaveSurferOptions = ref => ({
   barRadius: 3,
   responsive: true,
   height: 150,
-  // backend: "MediaElement",
+  backend: "MediaElement",
   // If true, normalize by the maximum peak instead of 1.0.
   normalize: true,
   // Use the PeakCache to improve rendering speed of large waveforms.
   partialRender: true,
-  // xhr: {
-  //   cache: "default",
-  //   mode: "cors",
-  //   method: "GET",
-  //   credentials: "include",
-  //   headers: [
-  //     { key: "cache-control", value: "no-cache" },
-  //     { key: "pragma", value: "no-cache" },
-  //   ],
-  // },
+  xhr: {
+    cache: "default",
+    mode: "cors",
+    method: "GET",
+    credentials: "include",
+    headers: [
+      { key: "cache-control", value: "no-cache" },
+      { key: "pragma", value: "no-cache" },
+    ],
+  },
 });
 
 export default function Waveform({ url }) {
