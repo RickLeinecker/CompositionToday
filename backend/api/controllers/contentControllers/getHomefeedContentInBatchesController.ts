@@ -25,7 +25,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   content.mapsEnabled,content.collaborators,content.description,
   content.fromDate,content.toDate,content.isDateCurrent,
   content.price,content.audioFilename,content.sheetMusicFilename,
-  content.imageFilepath,content.imageFilename,content.isFeaturedSong,
+  content.imageFilepath,content.imageFilename,content.isFeaturedSong,content.isContest,
   user.username,userProfile.displayName,userProfile.profilePicPath,content.isEdited,
   COUNT(likes.id) AS likeCount, 
   (SELECT COUNT(comment.id) FROM comment WHERE comment.contentID=content.id) AS commentCount,
