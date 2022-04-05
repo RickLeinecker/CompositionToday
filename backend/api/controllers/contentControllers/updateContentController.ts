@@ -7,7 +7,7 @@ exports.updateContent = async (req, res) => {
   // incoming: uid, contentID, imageFilePathArray, contentText, location, timestamp, audioFilepath,
   // sheetMusicFilepath, contentType, contentName, websiteLink, collaborators, description
   // toDate, fromDate, isDateCurrent, price, audioFilename, sheetMusicFilename, mapsEnabled
-  // imageFilepath, imageFilename
+  // imageFilepath, imageFilename, isFeaturedSong
   // outgoing: error
 
   var error = "";
@@ -40,6 +40,7 @@ exports.updateContent = async (req, res) => {
     imageFilepath,
     imageFilename,
     tagArray,
+    isFeaturedSong,
   } = req.body;
 
   mysql_pool.getConnection(function (err, connection) {
@@ -231,6 +232,47 @@ exports.updateContent = async (req, res) => {
             if (imageFilename !== null && imageFilename !== undefined) {
               insertString += "imageFilename=?,";
               insertArray.push(imageFilename);
+            }
+            if (isFeaturedSong !== null && isFeaturedSong !== undefined) {
+              insertString += "isFeaturedSong=?,";
+              insertArray.push(isFeaturedSong);
+            }
+            if (isFeaturedSong === true || isFeaturedSong === 1) {
+              mysql_pool.getConnection(function (err, connection) {
+                connection.query(
+                  "SELECT * FROM content WHERE userID=? AND isFeaturedSong=1;",
+                  [result[0].id],
+                  function (err, resultForUpdate) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      if (resultForUpdate[0]) {
+                        mysql_pool.getConnection(function (err, connection) {
+                          connection.query(
+                            "UPDATE content SET isFeaturedSong=0 WHERE id=?",
+                            [resultForUpdate[0].id],
+                            function (err, resultAfterUpdate) {
+                              if (err) {
+                                console.log(err);
+                              } else {
+                                if (resultAfterUpdate.affectedRows > 0) {
+                                  // success
+                                } else {
+                                  console.log("Content does not exists");
+                                }
+                              }
+                              connection.release();
+                            }
+                          );
+                        });
+                      } else {
+                        console.log("Content does not exists");
+                      }
+                    }
+                    connection.release();
+                  }
+                );
+              });
             }
 
             if (insertString.length > 19) {
