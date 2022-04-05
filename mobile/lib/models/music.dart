@@ -15,6 +15,7 @@ class MusicType {
   final String? description;
   final int likeCount;
   final bool isLikedByLoggedInUser;
+  final String tagArray;
 
   MusicType({
     required this.username,
@@ -33,26 +34,27 @@ class MusicType {
     this.description,
     required this.likeCount,
     required this.isLikedByLoggedInUser,
+    required this.tagArray,
   });
 
   factory MusicType.fromJson(Map<String, dynamic> parsedJson) => MusicType(
-        username: parsedJson['username'],
-        profilePicPath: parsedJson['profilePicPath'],
-        displayName: parsedJson['displayName'],
-        id: parsedJson['id'],
-        uid: parsedJson['uid'],
-        userID: parsedJson['userID'],
-        contentText: parsedJson['contentText'],
-        contentName: parsedJson['contentName'],
-        timestamp: parsedJson['timestamp'],
-        audioFilepath: parsedJson['audioFilepath'],
-        audioFilename: parsedJson['audioFilename'],
-        sheetMusicFilepath: parsedJson['sheetMusicFilepath'],
-        sheetMusicFilename: parsedJson['sheetMusicFilename'],
-        description: parsedJson['description'],
-        likeCount: parsedJson['likeCount'],
-        isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
-      );
+      username: parsedJson['username'],
+      profilePicPath: parsedJson['profilePicPath'],
+      displayName: parsedJson['displayName'],
+      id: parsedJson['id'],
+      uid: parsedJson['uid'],
+      userID: parsedJson['userID'],
+      contentText: parsedJson['contentText'],
+      contentName: parsedJson['contentName'],
+      timestamp: parsedJson['timestamp'],
+      audioFilepath: parsedJson['audioFilepath'],
+      audioFilename: parsedJson['audioFilename'],
+      sheetMusicFilepath: parsedJson['sheetMusicFilepath'],
+      sheetMusicFilename: parsedJson['sheetMusicFilename'],
+      description: parsedJson['description'],
+      likeCount: parsedJson['likeCount'],
+      isLikedByLoggedInUser: parsedJson['isLikedByLoggedInUser'],
+      tagArray: parsedJson['tagArray']);
   Map<String, dynamic> toJson() => {
         "username": username,
         "profilePicPath": profilePicPath,
@@ -70,5 +72,6 @@ class MusicType {
         "description": description,
         "likeCount": likeCount,
         "isLikedByLoggedInUser": isLikedByLoggedInUser,
+        "tagArray": tagArray,
       };
 }

@@ -44,7 +44,7 @@ Future<UserData> getLoggedInUser(String uid) async {
 
 Future<List<Map<String, dynamic>>> getHomefeedContentInBatches(
     List<String> contentTypeArray,
-    List<String> tagArray,
+    List<Map<String, dynamic>> tagArray,
     String sortBy,
     int startIndex,
     int endIndex) async {
