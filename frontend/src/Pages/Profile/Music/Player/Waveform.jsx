@@ -2,17 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 
 import WaveSurfer from "wavesurfer.js";
 
+import DefaultValues from "../../../../Styles/DefaultValues.module.scss"
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import moment from 'moment'
 import './Waveform.scss'
 
 const formWaveSurferOptions = ref => ({
   container: ref,
   waveColor: "#eee",
-  progressColor: "OrangeRed",
-  cursorColor: "OrangeRed",
+  progressColor: DefaultValues.primaryColor,
+  cursorColor: DefaultValues.primaryColor,
   barWidth: 3,
   barRadius: 3,
   responsive: true,
   height: 150,
+  backend: "MediaElement",
   // If true, normalize by the maximum peak instead of 1.0.
   normalize: true,
   // Use the PeakCache to improve rendering speed of large waveforms.
@@ -24,18 +29,17 @@ const formWaveSurferOptions = ref => ({
     credentials: "include",
     headers: [
       { key: "cache-control", value: "no-cache" },
-      { key: "pragma", value: "no-cache" }
-    ]
-  }
-  // xhr: { cache: 'default', mode: 'cors', method: 'GET', credentials: 'same-origin', redirect: 'follow', referrer: 'client', headers: [{ key: "cache-control", value: "no-cache" }, { key: "pragma", value: "no-cache" }] }
-
+      { key: "pragma", value: "no-cache" },
+    ],
+  },
 });
 
 export default function Waveform({ url }) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
   const [playing, setPlay] = useState(false);
-  const [volume, setVolume] = useState(0.5);
+  const [totalTime, setTotalTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
   // create new WaveSurfer instance
   // On component mount and when url changes
@@ -51,13 +55,29 @@ export default function Waveform({ url }) {
       // https://wavesurfer-js.org/docs/methods.html
       // wavesurfer.current.play();
       // setPlay(true);
+      setTotalTime(Math.round(wavesurfer.current.getDuration() * 1000));
+    });
 
-      // make sure object stillavailable when file loaded
-      if (wavesurfer.current) {
-        wavesurfer.current.setVolume(volume);
-        setVolume(volume);
+
+
+    wavesurfer.current.on('audioprocess', function () {
+      if (wavesurfer.current.isPlaying()) {
+        var currentTime = wavesurfer.current.getCurrentTime();
+        setCurrentTime(Math.round(currentTime * 1000));
       }
     });
+
+    wavesurfer.current.on('finish', function () {
+      wavesurfer.current.stop();
+      setCurrentTime(0);
+      setPlay(false);
+    });
+
+    // wavesurfer.current.on('interaction', function () {
+
+    //   var currentTime = wavesurfer.current.getCurrentTime();
+    //   setCurrentTime(Math.round(currentTime * 1000));
+    // });
 
     // Removes events, elements and disconnects Web Audio nodes.
     // when component unmount
@@ -69,35 +89,20 @@ export default function Waveform({ url }) {
     wavesurfer.current.playPause();
   };
 
-  const onVolumeChange = e => {
-    const { target } = e;
-    const newVolume = +target.value;
-
-    if (newVolume) {
-      setVolume(newVolume);
-      wavesurfer.current.setVolume(newVolume || 1);
-    }
-  };
 
   return (
     <div>
       <div id="waveform" ref={waveformRef} />
-      <div className="controls">
-        <button className="wave-button" onClick={handlePlayPause}>{!playing ? "Play" : "Pause"}</button>
-        <input
-          type="range"
-          id="volume"
-          name="volume"
-          // waveSurfer recognize value of `0` same as `1`
-          //  so we need to set some zero-ish value for silence
-          min="0.01"
-          max="1"
-          step=".025"
-          onChange={onVolumeChange}
-          defaultValue={volume}
-        />
-        <label htmlFor="volume">Volume</label>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+        <div>
+          <p style={{ margin: "0" }}>{moment(currentTime).format("mm:ss") + "/" + moment(totalTime).format("mm:ss")} </p>
+        </div>
+        <div className="controls">
+          {!playing ? <PlayCircleIcon style={{ fontSize: "3rem" }} onClick={handlePlayPause}></PlayCircleIcon> : <PauseCircleIcon style={{ fontSize: "3rem" }} onClick={handlePlayPause}></PauseCircleIcon>}
+        </div>
+
       </div>
+
     </div>
   );
 }
