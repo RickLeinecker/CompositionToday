@@ -167,6 +167,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
                 tagArray: newContentTags,
+                isContest: newContentValue.isContest,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -194,7 +195,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             <GenericModal show={editOpen} title={"Edit Event"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField
-                        title="Experience Title"
+                        title="Event Title"
                         type="contentName"
                         onChange={handleChange}
                         value={newContentValue.contentName}
@@ -210,6 +211,11 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isMultiline={true}
                         isRequired={false}
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
+                    <FormControlLabel style={{marginLeft: "1.7%"}}
+                        control={<Checkbox checked={!!newContentValue.isContest}
+                            onChange={() => handleChange(!newContentValue.isContest, "isContest")} />}
+                        label="This event is a contest"
                     />
                     <GenericDateTimePicker
                         title={'Start date'}
