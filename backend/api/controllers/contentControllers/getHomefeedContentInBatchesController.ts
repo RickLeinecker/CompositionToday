@@ -57,14 +57,20 @@ exports.getHomefeedContentInBatches = async (req, res) => {
 
   // if contentTypeArray has contentTypes, build string
   if (contentTypeArray && contentTypeArray.length > 0) {
-    if (contentTypeArray.find((string) => string === "contest")) {
+    if (
+      contentTypeArray.find((string) => string === "contest") &&
+      contentTypeArray.length === 1
+    ) {
       insertString += "WHERE isContest=1 ";
     } else {
       insertString += "WHERE ";
       for (var contentT of contentTypeArray) {
-        insertString += `contentType='${contentT}' OR `;
+        if (contentT !== "contest") {
+          insertString += `contentType='${contentT}' OR `;
+        }
       }
-      insertString = insertString.slice(0, -4);
+      insertString += " isContest=1 ";
+      // insertString = insertString.slice(0, -4);
     }
     insertString += " GROUP BY content.id";
   } else {
