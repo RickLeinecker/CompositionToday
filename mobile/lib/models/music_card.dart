@@ -1,6 +1,9 @@
+import 'package:composition_today/models/generic_card.dart';
 import 'package:composition_today/services/audio.dart';
 import 'package:composition_today/services/time.dart';
+import 'package:composition_today/services/web.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:like_button/like_button.dart';
 
 class MusicCard extends StatefulWidget {
@@ -26,61 +29,10 @@ class _MusicCardState extends State<MusicCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: CircleAvatar(
-                    radius: 30.0,
-                    backgroundImage: widget.profilePicIsNull
-                        ? const AssetImage('assets/img_avatar.png')
-                        : NetworkImage(widget.item['profilePicPath'])
-                            as ImageProvider,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5.0),
-              Flexible(
-                flex: 5,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    widget.item['displayName'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5.0),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: widget.isContentEdited
-                      ? const Text("(edited)")
-                      : const Text(""),
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                      TimeAgo.timeAgoSinceDate(widget.item['timestamp']),
-                      textAlign: TextAlign.right),
-                ),
-              ),
-            ],
-          ),
+          GenericCardHead(
+              item: widget.item,
+              profilePicIsNull: widget.profilePicIsNull,
+              isContentEdited: widget.isContentEdited),
           const Divider(
             thickness: 0.5,
             color: Colors.black,
@@ -112,6 +64,14 @@ class _MusicCardState extends State<MusicCard> {
                         color: Colors.grey[500],
                       ),
                     ),
+                    widget.item['sheetMusicFilepath'] != null
+                        ? TextButton(
+                            child: Text('Open sheet music'),
+                            onPressed: () async {
+                              await launchUrl(
+                                  widget.item['sheetMusicFilepath']);
+                            })
+                        : Text(''),
                     widget.item['audioFilepath'] != null
                         ? Audio(
                             audioFilepath: widget.item['audioFilepath'],
@@ -126,23 +86,7 @@ class _MusicCardState extends State<MusicCard> {
             thickness: 0.5,
             color: Colors.black,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: LikeButton(
-                  padding: EdgeInsets.all(5.0),
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  isLiked:
-                      widget.item['isLikedByLoggedInUser'] == 0 ? false : true,
-                  size: 20.0,
-                  likeCount: widget.item['likeCount'],
-                ),
-              ),
-            ],
-          ),
+          GenericCardTail(item: widget.item),
         ],
       ),
     );

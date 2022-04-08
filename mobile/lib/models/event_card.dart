@@ -1,9 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:composition_today/models/generic_card.dart';
+import 'package:composition_today/models/user.dart';
+import 'package:composition_today/services/api.dart';
 import 'package:composition_today/services/time.dart';
+import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 
 class EventCard extends StatefulWidget {
   Map<String, dynamic> item = {};
@@ -21,6 +27,13 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
+  bool _isLiked = false;
+  bool get isLiked => _isLiked;
+
+  set isLiked(bool isLiked) {
+    _isLiked = isLiked;
+  }
+
   @override
   Widget build(BuildContext context) {
     bool imageExists = false;
@@ -39,66 +52,18 @@ class _EventCardState extends State<EventCard> {
       locationExists = false;
     }
 
+    String eventStatus =
+        TimeAgo.eventProgress(widget.item['fromDate'], widget.item['toDate']);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: CircleAvatar(
-                    radius: 30.0,
-                    backgroundImage: widget.profilePicIsNull
-                        ? const AssetImage('assets/img_avatar.png')
-                        : NetworkImage(widget.item['profilePicPath'])
-                            as ImageProvider,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5.0),
-              Flexible(
-                flex: 5,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    widget.item['displayName'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5.0),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: widget.isContentEdited
-                      ? const Text("(edited)")
-                      : const Text(""),
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                      TimeAgo.timeAgoSinceDate(widget.item['timestamp']),
-                      textAlign: TextAlign.right),
-                ),
-              ),
-            ],
-          ),
+          GenericCardHead(
+              item: widget.item,
+              profilePicIsNull: widget.profilePicIsNull,
+              isContentEdited: widget.isContentEdited),
           const Divider(
             thickness: 0.5,
             color: Colors.black,
@@ -113,6 +78,31 @@ class _EventCardState extends State<EventCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          padding:
+                              MaterialStateProperty.all(EdgeInsets.all(10)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          )),
+                          backgroundColor: (eventStatus == "Scheduled"
+                              ? MaterialStateProperty.all(Colors.green)
+                              : eventStatus == "Ongoing"
+                                  ? MaterialStateProperty.all(Colors.blue)
+                                  : eventStatus == "Completed"
+                                      ? MaterialStateProperty.all(Colors.red)
+                                      : MaterialStateProperty.all(
+                                          Colors.white)),
+                        ),
+                        child: Text(eventStatus,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.0,
+                            )),
+                      ),
                       Text(
                         widget.item['contentName'],
                         style: TextStyle(
@@ -141,6 +131,8 @@ class _EventCardState extends State<EventCard> {
                               width: 800.0,
                               height: 200.0)
                           : const Text(''),
+                      SizedBox(height: 10.0),
+                      locationExists ? Text('insert map here') : Text(''),
                     ],
                   ),
                 ),
@@ -151,23 +143,7 @@ class _EventCardState extends State<EventCard> {
             thickness: 0.5,
             color: Colors.black,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: LikeButton(
-                  padding: EdgeInsets.all(5.0),
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  isLiked:
-                      widget.item['isLikedByLoggedInUser'] == 0 ? false : true,
-                  size: 20.0,
-                  likeCount: widget.item['likeCount'],
-                ),
-              ),
-            ],
-          ),
+          GenericCardTail(item: widget.item),
         ],
       ),
     );
