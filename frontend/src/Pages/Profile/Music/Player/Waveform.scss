@@ -1,0 +1,44 @@
+@import "../../../../Styles/DefaultValues.module.scss";
+@import "../../../..//Styles/DefaultComponents.module.scss";
+
+
+.wave-button {
+  background: $primary-color;
+  color: $white;
+  border: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  outline: none;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.wave-button:hover {
+  background: $primary-color;
+}
+
+.playlist {
+  text-align: left;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.playlist-item {
+  color: #444;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding: 1em;
+}
+
+.playlist-item.selected {
+  font-weight: bold;
+}
+
+.playlist-item:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  float: right;
+  padding: 1em;
+}

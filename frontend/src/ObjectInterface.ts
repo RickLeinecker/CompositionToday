@@ -90,7 +90,10 @@ export type MusicType = {
     audioFilename?: string;
     sheetMusicFilepath?: string;
     sheetMusicFilename?: string;
+    imageFilepath?: string;
+    imageFilename?: string;
     description?: string;
+    isFeaturedSong: boolean;
 }
 
 export type EventType = {
