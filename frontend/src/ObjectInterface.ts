@@ -93,6 +93,7 @@ export type MusicType = {
     imageFilepath?: string;
     imageFilename?: string;
     description?: string;
+    isFeaturedSong: boolean;
 }
 
 export type EventType = {
@@ -104,6 +105,7 @@ export type EventType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
+    isContest: boolean;
     isEdited: boolean;
     uid: string;
     userID?: number;

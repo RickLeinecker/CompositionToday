@@ -12,6 +12,7 @@ import { deleteFile } from '../../../Helper/Utils/FileDeleteUtil';
 import GenericTagsPicker from '../../../Helper/Generics/GenericTagsPicker';
 import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 import { Alert } from 'react-bootstrap';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
     music: MusicType;
@@ -32,8 +33,8 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
 
     const [missingFileError, setMissingFileError] = useState(false);
+    const [missingAudioError, setMissingAudioError] = useState(false);
     const [nameError, setNameError] = useState(false);
-    const [textError, setTextError] = useState(false);
 
     const { open: discardOpen, handleClick: handleOpenDiscard, handleClose: handleCloseDiscard } = useOpen();
 
@@ -56,23 +57,28 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
         setNewContentTags(JSON.parse(newContentValue.tagArray));
     }
 
-    const handleChange = (newValue: string, type: string) => {
+    const handleChange = (newValue: string | boolean, type: string) => {
         setNewContentValue(prevState => ({
             ...prevState,
             [type]: newValue
         }));
+
+        console.table(newContentValue);
     }
 
     const checkForErrors = (): boolean => {
         let error = false;
 
         error = checkIfEmpty(newContentValue.contentName, setNameError) || error;
-        error = checkIfEmpty(newContentValue.contentText, setTextError) || error;
 
         let isFileMissing = false;
         isFileMissing = !newContentValue.audioFilename && !newContentValue.sheetMusicFilename;
         setMissingFileError(isFileMissing)
         error = isFileMissing || error;
+
+        let isAudioMissing = newContentValue.isFeaturedSong && !newContentValue.audioFilename;
+        setMissingAudioError(isAudioMissing)
+        error = isAudioMissing || error;
 
         return (error)
     }
@@ -175,7 +181,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
 
         let newContentImagePath = newContentValue.imageFilepath;
         if (newContentImage !== null) {
-            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "event image", "uploadImage")
+            newContentImagePath = await uploadFile(newContentImage, newContentValue.imageFilename, "image", "uploadProfileImage")
             if (newContentImagePath === '') {
                 toast.error('Failed to update event');
                 return;
@@ -197,6 +203,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                 audioFilepath: newContentAudioPath,
                 audioFilename: newContentValue.audioFilename,
                 tagArray: newContentTags,
+                isFeaturedSong: newContentValue.isFeaturedSong,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -240,12 +247,11 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField
-                        title="Title"
+                        title="Role/Instrument"
                         type="contentText"
                         onChange={handleChange}
                         value={newContentValue.contentText}
-                        isRequired={true}
-                        error={textError}
+                        isRequired={false}
                         maxLength={parseInt(DefaultValues.maxLengthShort)}
                     />
                     <GenericInputField
@@ -258,6 +264,14 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
                     />
                     <GenericTagsPicker updateTags={updateTags} defaultValue={newContentTags} />
+
+                    <FormControlLabel
+                        control={<Checkbox checked={!!newContentValue.isFeaturedSong}
+                            onChange={() => handleChange(!newContentValue.isFeaturedSong, "isFeaturedSong")} />}
+                        label="Make this your featured song"
+                    />
+                    {missingAudioError && <Alert variant="danger">{"You must upload audio to make it your featured music"}</Alert>}
+                    
                     <GenericFileUpload updateFile={updateSheetMusic} deleteFile={deleteSheetMusic} type={".pdf"} name="sheet music" filename={newContentValue.sheetMusicFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateAudio} deleteFile={deleteAudio} type={".mp3"} name="audio" filename={newContentValue.audioFilename}></GenericFileUpload>
                     <GenericFileUpload updateFile={updateImage} deleteFile={deleteImageFile} type={"image/*"} name="image" filename={newContentValue.imageFilename} />
