@@ -18,9 +18,10 @@ type Props = {
     updateTags: (newValue: Array<TagType>) => void;
     tags: Array<TagType>;
     uid: string;
+    updateAdd: () => void;
 }
 
-export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, updateTags, tags }: Props) {
+export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, updateTags, tags, updateAdd }: Props) {
 
     const { open: createArticleOpen, handleClick: handleArticleOpenCreate, handleClose: handleArticleCloseCreate } = useOpen();
     const { open: createMusicOpen, handleClick: handleMusicOpenCreate, handleClose: handleMusicCloseCreate } = useOpen();
@@ -53,9 +54,9 @@ export default function HomeHeader({ updateFilterBy, updateSortBy, sortBy, uid, 
                     <SortFeed sortBy={sortBy || ""} updateSortBy={updateSortBy} />
                 </div>
             </div>
-            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={() => { }} />
-            <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={() => { }} />
-            <CreateMusicModal uid={uid} createOpen={createMusicOpen} handleCloseCreate={handleMusicCloseCreate} notifyChange={() => { }} />
+            <CreateEventModal uid={uid} createOpen={createEventOpen} handleCloseCreate={handleEventCloseCreate} notifyChange={updateAdd} />
+            <CreateArticleModal uid={uid} createOpen={createArticleOpen} handleCloseCreate={handleArticleCloseCreate} notifyChange={updateAdd} />
+            <CreateMusicModal uid={uid} createOpen={createMusicOpen} handleCloseCreate={handleMusicCloseCreate} notifyChange={updateAdd} />
         </div>
     )
 }
