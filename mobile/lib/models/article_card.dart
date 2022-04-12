@@ -1,10 +1,9 @@
 import 'package:composition_today/models/generic_card.dart';
 import 'package:composition_today/services/rich_text.dart';
-import 'package:composition_today/services/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:like_button/like_button.dart';
 
+// ignore: must_be_immutable
 class ArticleCard extends StatefulWidget {
   Map<String, dynamic> item = {};
   bool profilePicIsNull = false;
@@ -49,7 +48,7 @@ class _ArticleCardState extends State<ArticleCard> {
                     children: [
                       Text(
                         widget.item['contentName'],
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),

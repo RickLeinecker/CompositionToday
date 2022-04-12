@@ -1,16 +1,10 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:composition_today/models/generic_card.dart';
-import 'package:composition_today/models/user.dart';
 import 'package:composition_today/services/api.dart';
 import 'package:composition_today/services/time.dart';
-import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:like_button/like_button.dart';
-import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class EventCard extends StatefulWidget {
   Map<String, dynamic> item = {};
   bool profilePicIsNull = false;
@@ -27,13 +21,6 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
-  bool _isLiked = false;
-  bool get isLiked => _isLiked;
-
-  set isLiked(bool isLiked) {
-    _isLiked = isLiked;
-  }
-
   @override
   Widget build(BuildContext context) {
     bool imageExists = false;
@@ -81,8 +68,8 @@ class _EventCardState extends State<EventCard> {
                       ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all(EdgeInsets.all(10)),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(10)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -98,14 +85,14 @@ class _EventCardState extends State<EventCard> {
                                           Colors.white)),
                         ),
                         child: Text(eventStatus,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12.0,
                             )),
                       ),
                       Text(
                         widget.item['contentName'],
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -116,7 +103,7 @@ class _EventCardState extends State<EventCard> {
                           color: Colors.grey[500],
                         ),
                       ),
-                      SizedBox(height: 4.0),
+                      const SizedBox(height: 4.0),
                       Text("From: " +
                           DisplayDate.displayDate(widget.item['fromDate'])),
                       Text("To: " +
@@ -124,15 +111,17 @@ class _EventCardState extends State<EventCard> {
                       locationExists
                           ? Text(widget.item['location'])
                           : const SizedBox(height: 0.1, width: 0.1),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       imageExists
                           ? Image(
                               image: NetworkImage(widget.item['imageFilepath']),
                               width: 800.0,
                               height: 200.0)
                           : const Text(''),
-                      SizedBox(height: 10.0),
-                      locationExists ? Text('insert map here') : Text(''),
+                      const SizedBox(height: 10.0),
+                      locationExists
+                          ? const Text('insert map here')
+                          : const Text(''),
                     ],
                   ),
                 ),

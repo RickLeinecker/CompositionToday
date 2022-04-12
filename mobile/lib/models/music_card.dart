@@ -1,11 +1,9 @@
 import 'package:composition_today/models/generic_card.dart';
 import 'package:composition_today/services/audio.dart';
-import 'package:composition_today/services/time.dart';
 import 'package:composition_today/services/web.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:like_button/like_button.dart';
 
+// ignore: must_be_immutable
 class MusicCard extends StatefulWidget {
   Map<String, dynamic> item = {};
   bool profilePicIsNull = false;
@@ -47,14 +45,14 @@ class _MusicCardState extends State<MusicCard> {
                   children: [
                     Text(
                       widget.item['contentName'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       widget.item['contentText'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0,
                       ),
                     ),
@@ -66,17 +64,17 @@ class _MusicCardState extends State<MusicCard> {
                     ),
                     widget.item['sheetMusicFilepath'] != null
                         ? TextButton(
-                            child: Text('Open sheet music'),
+                            child: const Text('Open sheet music'),
                             onPressed: () async {
                               await launchUrl(
                                   widget.item['sheetMusicFilepath']);
                             })
-                        : Text(''),
+                        : const Text(''),
                     widget.item['audioFilepath'] != null
                         ? Audio(
                             audioFilepath: widget.item['audioFilepath'],
                           )
-                        : Text(''),
+                        : const Text(''),
                   ],
                 ),
               ),

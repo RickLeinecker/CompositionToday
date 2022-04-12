@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:composition_today/models/content.dart';
 import 'package:composition_today/models/like.dart';
-import 'package:composition_today/models/tag.dart';
 import 'package:composition_today/models/user.dart';
 import 'package:http/http.dart' as http;
 

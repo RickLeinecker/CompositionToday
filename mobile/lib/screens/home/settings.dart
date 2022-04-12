@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
+// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers, unused_local_variable
 
 import 'package:composition_today/models/tag.dart';
 import 'package:composition_today/services/api.dart';
@@ -36,18 +36,19 @@ class SettingsList extends StatefulWidget {
 }
 
 class _SettingsListState extends State<SettingsList> {
-  bool _isChecked = false;
   bool loading = false;
   late Future<List<Map<String, dynamic>>> tagList;
   final AuthService _auth = AuthService();
   final _emailKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
 
+  @override
   void initState() {
     super.initState();
     tagList = getTags();
   }
 
+  @override
   void dispose() {
     super.dispose();
   }
@@ -55,7 +56,6 @@ class _SettingsListState extends State<SettingsList> {
   @override
   Widget build(BuildContext context) {
     UserData _currentUserID = Provider.of<UserData?>(context)!;
-    var currentUser = _auth.user;
     String email = '';
     String error = '';
     return Scaffold(

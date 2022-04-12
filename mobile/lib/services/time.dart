@@ -65,14 +65,14 @@ class DisplayDate {
       calcHour = date.hour % 12;
     }
 
-    String displayMonth = "${date.month.toString().padLeft(2, '0')}";
-    String displayDay = "${date.day.toString().padLeft(2, '0')}";
-    String displayYear = "${date.year.toString()}";
+    String displayMonth = date.month.toString().padLeft(2, '0');
+    String displayDay = date.day.toString().padLeft(2, '0');
+    String displayYear = date.year.toString();
     if (calcHour == 0) {
       calcHour = 12;
     }
-    String displayHour = "${calcHour.toString().padLeft(2, '0')}";
-    String displayMinute = "${date.minute.toString().padLeft(2, '0')}";
+    String displayHour = calcHour.toString().padLeft(2, '0');
+    String displayMinute = date.minute.toString().padLeft(2, '0');
     String timeOfDay = isPM ? "PM" : "AM";
     String convertedDisplayDate =
         "$displayMonth/$displayDay/$displayYear, $displayHour:$displayMinute $timeOfDay";

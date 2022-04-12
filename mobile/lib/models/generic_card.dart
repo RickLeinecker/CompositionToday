@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:composition_today/models/user.dart';
 import 'package:composition_today/services/api.dart';
 import 'package:composition_today/services/time.dart';
@@ -8,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class GenericCardHead extends StatefulWidget {
   Map<String, dynamic> item = {};
   bool profilePicIsNull = false;
@@ -83,6 +81,7 @@ class _GenericCardHeadState extends State<GenericCardHead> {
   }
 }
 
+// ignore: must_be_immutable
 class GenericCardTail extends StatefulWidget {
   Map<String, dynamic> item = {};
   GenericCardTail({
@@ -107,7 +106,7 @@ class _GenericCardTailState extends State<GenericCardTail> {
         Flexible(
           fit: FlexFit.tight,
           child: LikeButton(
-            padding: EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             isLiked: widget.item['isLikedByLoggedInUser'] == 0 ? false : true,
