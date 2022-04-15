@@ -105,6 +105,7 @@ export type EventType = {
     isLikedByLoggedInUser: boolean;
     
     id: number;
+    isContest: boolean;
     isEdited: boolean;
     uid: string;
     userID?: number;

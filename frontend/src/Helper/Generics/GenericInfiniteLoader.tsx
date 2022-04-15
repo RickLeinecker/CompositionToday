@@ -51,6 +51,7 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
                 let temp = [...prev, ...answer.result];
                 return [...new Set<string>(temp.map(x => JSON.stringify(x)))].map(x => JSON.parse(x));
             });
+
             return new Promise((resolve, reject) => { resolve(answer.result); });
         } catch (e: any) {
             console.error("Frontend Error: " + e);
@@ -69,6 +70,12 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
     const clearCache = () => cache.current.clearAll();
 
     const notifyVirtualizer = () => setRerender(prev => !prev);
+
+    const notifyChange = (dataId: number | null = null) => {
+        if (dataId !== null) {
+            setItems(prev => [prev.map((obj: any) => obj?.id !== dataId)])
+        }
+    };
 
     interface virtualizedType {
         key: any;
@@ -120,9 +127,9 @@ export default function GenericInfiniteLoader({ uid, contentType, tags, sortBy }
                                         >
                                             {({ measure, registerChild }) => (
                                                 <div ref={registerChild} onLoad={measure} style={{ ...style, ...individualStyle}}>
-                                                    {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache} />}
-                                                    {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
-                                                    {!!result && type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyVirtualizer} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
+                                                    {!!result && type === "music" && <MusicCard music={result} isMyProfile={isMyProfile} notifyChange={notifyChange} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache} />}
+                                                    {!!result && type === "event" && <EventCard event={result} isMyProfile={isMyProfile} notifyChange={notifyChange} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
+                                                    {!!result && type === "article" && <ArticleCard article={result} isMyProfile={isMyProfile} notifyChange={notifyChange} notifyVirtualizer={notifyVirtualizer} clearCache={clearCache}/>}
                                                 </div>
                                             )}
                                         </CellMeasurer>
