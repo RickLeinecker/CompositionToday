@@ -18,7 +18,7 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     event: EventType;
-    notifyChange: () => void;
+    notifyChange: (id?: number) => void;
     editOpen: boolean;
     handleCloseEdit: () => void;
 }
@@ -181,7 +181,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             }
 
             toast.success("Event updated")
-            notifyChange();
+            notifyChange(event.id);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to update event")
