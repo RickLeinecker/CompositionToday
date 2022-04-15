@@ -18,7 +18,7 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     event: EventType;
-    notifyChange: () => void;
+    notifyChange: (id?: number) => void;
     editOpen: boolean;
     handleCloseEdit: () => void;
 }
@@ -61,6 +61,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             ...prevState,
             [type]: newValue
         }));
+        console.table(newContentValue)
     }
 
     const updateImage = (file: File) => {
@@ -166,6 +167,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                 location: newContentValue.location,
                 mapsEnabled: newContentValue.mapsEnabled,
                 tagArray: newContentTags,
+                isContest: newContentValue.isContest,
             }),
             methodType: "PATCH",
             path: "updateContent",
@@ -179,7 +181,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             }
 
             toast.success("Event updated")
-            notifyChange();
+            notifyChange(event.id);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to update event")
@@ -193,7 +195,7 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
             <GenericModal show={editOpen} title={"Edit Event"} onHide={onHide} confirm={confirmEditHandler} actionText={"Update"} checkForErrors={checkForErrors}>
                 <>
                     <GenericInputField
-                        title="Experience Title"
+                        title="Event Title"
                         type="contentName"
                         onChange={handleChange}
                         value={newContentValue.contentName}
@@ -209,6 +211,11 @@ export default function EditEvent({ event, notifyChange, editOpen, handleCloseEd
                         isMultiline={true}
                         isRequired={false}
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
+                    />
+                    <FormControlLabel style={{marginLeft: "1.7%"}}
+                        control={<Checkbox checked={!!newContentValue.isContest}
+                            onChange={() => handleChange(!newContentValue.isContest, "isContest")} />}
+                        label="This event is a contest"
                     />
                     <GenericDateTimePicker
                         title={'Start date'}

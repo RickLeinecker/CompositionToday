@@ -12,7 +12,7 @@ import DefaultValues from '../../../Styles/DefaultValues.module.scss'
 
 type Props = {
     article: ArticleType;
-    notifyChange: () => void;
+    notifyChange: (id?: number) => void;
     editOpen: boolean;
     handleCloseEdit: () => void;
 }
@@ -94,7 +94,7 @@ export default function EditArticleModal({ article, notifyChange, editOpen, hand
             }
 
             toast.success("Article updated")
-            notifyChange();
+            notifyChange(article.id);
         } catch (e: any) {
             console.error("Frontend Error: " + e);
             toast.error("Failed to update article")

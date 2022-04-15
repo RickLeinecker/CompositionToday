@@ -33,6 +33,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
     const [newContentTags, setNewContentTags] = useState<Array<TagType> | null>();
     const [newContentLocation, setNewContentLocation] = useState("");
     const [newContentMapsEnabled, setNewContentMapsEnabled] = useState(false);
+    const [newContentIsContest, setNewContentIsContest] = useState(false);
 
     const [nameError, setNameError] = useState(false);
     const [fromDateError, setFromDateError] = useState(false);
@@ -162,6 +163,7 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                 mapsEnabled: newContentMapsEnabled,
                 timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 tagArray: newContentTags || [],
+                isContest: newContentIsContest,
             }),
             methodType: "POST",
             path: "createContentWithTags",
@@ -215,6 +217,12 @@ export default function CreateEventModal({ uid, notifyChange, createOpen, handle
                         isMultiline={true}
                         maxLength={parseInt(DefaultValues.maxLengthLong)}
                     />
+                    <FormControlLabel style={{ marginLeft: "1.7%" }} control={
+                        <Checkbox
+                            checked={newContentIsContest}
+                            onChange={() => setNewContentIsContest(!newContentIsContest)}
+                        />
+                    } label="This event is a contest" />
                     <GenericDateTimePicker
                         title={'Start date'}
                         type={"fromDate"}

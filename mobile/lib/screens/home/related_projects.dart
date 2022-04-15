@@ -40,7 +40,7 @@ class RelatedProjects extends StatelessWidget {
                             icon: Image.asset('assets/resized_john_cage.jpg'),
                             iconSize: 500,
                             onPressed: () {
-                              launchJohnCage();
+                              launchUrl('https://johncagetribute.org');
                             },
                           ),
                           const Text(
@@ -69,7 +69,7 @@ class RelatedProjects extends StatelessWidget {
                             icon: Image.asset('assets/microtonality.jpg'),
                             iconSize: 500,
                             onPressed: () {
-                              launchMicrotonality();
+                              launchUrl('http://microtonality.net/');
                             },
                           ),
                           const Text(
@@ -98,7 +98,7 @@ class RelatedProjects extends StatelessWidget {
                             icon: Image.asset('assets/schillinger.jpg'),
                             iconSize: 500,
                             onPressed: () {
-                              launchSchillinger();
+                              launchUrl('https://learnschillinger.com/');
                             },
                           ),
                           const Text(

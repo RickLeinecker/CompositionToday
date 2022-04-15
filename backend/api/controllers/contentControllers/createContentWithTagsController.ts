@@ -7,7 +7,7 @@ exports.createContentWithTags = async (req, res) => {
   // timestamp, audioFilepath, sheetMusicFilepath, contentType,
   // contentName, websiteLink, collaborators, description, mapsEnabled
   // toDate, fromDate, isDateCurrent, price, audioFilename, sheetMusicFilename
-  // imageFilepath, imageFilename, tagArray
+  // imageFilepath, imageFilename, tagArray, isFeaturedSong, isContest
   // outgoing: error
 
   var error = "";
@@ -37,6 +37,8 @@ exports.createContentWithTags = async (req, res) => {
     imageFilepath,
     imageFilename,
     tagArray,
+    isFeaturedSong,
+    isContest,
   } = req.body;
 
   mysql_pool.getConnection(async function (err, connection) {
@@ -51,10 +53,11 @@ exports.createContentWithTags = async (req, res) => {
           console.log(err);
         } else {
           if (result[0]) {
+            var userID = result[0].id;
             responseCode = 200;
             mysql_pool.getConnection(async function (err, connection) {
               const sqlInsert =
-                "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent,price,audioFilename,sheetMusicFilename,imageFilepath,imageFilename) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "INSERT INTO content(userID,imageFilepathArray,contentName,contentText,location,timestamp,audioFilepath,sheetMusicFilepath,contentType,websiteLink,collaborators,description,mapsEnabled,toDate,fromDate,isDateCurrent,price,audioFilename,sheetMusicFilename,imageFilepath,imageFilename,isFeaturedSong,isContest) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
               connection.query(
                 sqlInsert,
                 [
@@ -79,6 +82,8 @@ exports.createContentWithTags = async (req, res) => {
                   sheetMusicFilename,
                   imageFilepath,
                   imageFilename,
+                  isFeaturedSong,
+                  isContest,
                 ],
                 await function (err, result) {
                   if (err) {
@@ -87,6 +92,51 @@ exports.createContentWithTags = async (req, res) => {
                     console.log(err);
                     finishedProcess();
                   } else {
+                    // isFeaturedSong === 1, then remove isFeaturedSong from user's other featured song
+                    if (isFeaturedSong === true || isFeaturedSong === 1) {
+                      mysql_pool.getConnection(function (err, connection) {
+                        connection.query(
+                          "SELECT * FROM content WHERE userID=? AND isFeaturedSong=1;",
+                          [userID],
+                          function (err, resultForUpdate) {
+                            if (err) {
+                              console.log(err);
+                            } else {
+                              if (resultForUpdate[0]) {
+                                mysql_pool.getConnection(function (
+                                  err,
+                                  connection
+                                ) {
+                                  connection.query(
+                                    "UPDATE content SET isFeaturedSong=0 WHERE id=?",
+                                    [resultForUpdate[0].id],
+                                    function (err, resultAfterUpdate) {
+                                      if (err) {
+                                        console.log(err);
+                                      } else {
+                                        if (
+                                          resultAfterUpdate.affectedRows > 0
+                                        ) {
+                                          // success
+                                        } else {
+                                          console.log(
+                                            "Content does not exists"
+                                          );
+                                        }
+                                      }
+                                      connection.release();
+                                    }
+                                  );
+                                });
+                              } else {
+                                console.log("Content does not exists");
+                              }
+                            }
+                            connection.release();
+                          }
+                        );
+                      });
+                    }
                     // add tags from tagArray
                     var contentID = result.insertId;
                     console.log(contentID);
