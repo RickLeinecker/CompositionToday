@@ -7,7 +7,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // create user object based on User
   UserData? _userFromFirebase(User? user) {
-    return user != null ? UserData(uid: user.uid) : null;
+    return user != null ? UserData(uid: user.uid, email: user.email) : null;
   }
 
   // auth change user stream
@@ -65,4 +65,6 @@ class AuthService {
       return null;
     }
   }
+
+  Future deleteFirebaseUser(String email) async {}
 }

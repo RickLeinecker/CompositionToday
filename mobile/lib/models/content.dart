@@ -13,7 +13,6 @@ class ContentType {
   final String? contentName;
   final String? timestamp;
   final String? description;
-  final int? isEdited;
 
   ContentType({
     required this.id,
@@ -30,7 +29,6 @@ class ContentType {
     this.contentName,
     this.timestamp,
     this.description,
-    this.isEdited,
   });
 
   factory ContentType.fromJson(Map<String, dynamic> parsedJson) => ContentType(
@@ -48,7 +46,6 @@ class ContentType {
         contentName: parsedJson['contentName'],
         timestamp: parsedJson['timestamp'],
         description: parsedJson['description'],
-        isEdited: parsedJson['isEdited'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +63,5 @@ class ContentType {
         "contentName": contentName,
         "timestamp": timestamp,
         "description": description,
-        "isEdited": isEdited,
       };
 }

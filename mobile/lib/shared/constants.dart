@@ -1,4 +1,3 @@
-import 'package:composition_today/models/tag.dart';
 import 'package:flutter/material.dart';
 
 const textInputDecoration = InputDecoration(
