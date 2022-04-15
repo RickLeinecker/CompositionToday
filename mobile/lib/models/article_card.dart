@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:composition_today/models/generic_card.dart';
-import 'package:composition_today/services/rich_text.dart';
+import 'package:draft_view/draft_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -53,7 +56,17 @@ class _ArticleCardState extends State<ArticleCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(widget.item['contentText']),
+                      DraftView(
+                        rawDraftData: jsonDecode(widget.item['contentText']),
+                        plugins: [
+                          TextPlugin(),
+                          BlockQuotePlugin(),
+                          HeaderPlugin(),
+                          ImagePlugin(),
+                          ListPlugin(),
+                          AudioPlugin(),
+                        ],
+                      ),
                     ],
                   ),
                 ),

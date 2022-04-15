@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:composition_today/models/generic_card.dart';
 import 'package:composition_today/services/api.dart';
+import 'package:composition_today/services/display_map.dart';
 import 'package:composition_today/services/time.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,6 +23,12 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
+  final Completer<GoogleMapController> _controller = Completer();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
   @override
   Widget build(BuildContext context) {
     bool imageExists = false;
@@ -45,6 +53,7 @@ class _EventCardState extends State<EventCard> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GenericCardHead(
@@ -58,11 +67,13 @@ class _EventCardState extends State<EventCard> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Flexible(
                   fit: FlexFit.tight,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ElevatedButton(
@@ -120,7 +131,9 @@ class _EventCardState extends State<EventCard> {
                           : const Text(''),
                       const SizedBox(height: 10.0),
                       locationExists
-                          ? const Text('insert map here')
+                          ? SizedBox(
+                              child:
+                                  DisplayMap(location: widget.item['location']))
                           : const Text(''),
                     ],
                   ),
