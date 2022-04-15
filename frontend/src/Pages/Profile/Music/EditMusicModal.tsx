@@ -16,7 +16,7 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
     music: MusicType;
-    notifyChange: () => void;
+    notifyChange: (id?: number) => void;
     editOpen: boolean;
     handleCloseEdit: () => void;
 }
@@ -217,7 +217,7 @@ export default function EditMusicModal({ music, notifyChange, editOpen, handleCl
             }
 
             toast.success("Music updated")
-            notifyChange();
+            notifyChange(music.id);
 
         } catch (e: any) {
             console.error("Frontend Error: " + e);
