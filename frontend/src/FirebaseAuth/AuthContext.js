@@ -50,7 +50,8 @@ export const AuthProvider = ({children}) =>{
     }
 
     const logoutUser = () => {
-        signOut(auth)
+        signOut(auth);
+        setCurrentUser(null);
         navigate('/registration');
     }
 
