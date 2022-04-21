@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import './RegistrationStyle.scss';
-import { sendPasswordResetEmail, sendSignInLinkToEmail } from 'firebase/auth';
+import { sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail } from 'firebase/auth';
 import {auth} from '../../FirebaseAuth/firebase';
 
 export default function EmailSent(props:any){
@@ -12,7 +12,7 @@ export default function EmailSent(props:any){
     const actionCodeSettings = {
         // URL you want to redirect back to. The domain (www.example.com) for this
         // URL must be in the authorized domains list in the Firebase Console.
-        url: "http://compositiontoday.net/",
+        url: "http://compositiontoday.net/registration",
         // This must be true.
         handleCodeInApp: true,
       };
@@ -21,7 +21,8 @@ export default function EmailSent(props:any){
         if(type === "sign-up")
         {
             console.log(type + " = sign-up")
-            sendSignInLinkToEmail(auth, email, actionCodeSettings);
+            // sendSignInLinkToEmail(auth, email, actionCodeSettings);
+            sendEmailVerification(auth.currentUser!, actionCodeSettings);
         }
         if(type === 'forgot-pass'){
             console.log(type + " = sign-in")
