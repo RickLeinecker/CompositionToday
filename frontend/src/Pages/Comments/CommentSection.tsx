@@ -59,7 +59,8 @@ export default function CommentSection({contentID, clearCache, notifyParent}: Pr
             {!error && loading ? <div>...loading</div>
                     :
                     error ?
-                        <Alert variant="danger">{error}</Alert>
+                        // <Alert variant="danger">{error}</Alert>
+                        <></>
                         :
                         <div>
                             <GenericVirtualizedList
