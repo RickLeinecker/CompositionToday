@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuthContext } from './FirebaseAuth/AuthContext';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './Pages/Home/Home';
 import Blog from './Pages/Blog/Blog';
 import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
@@ -52,11 +52,20 @@ function App(this: any) {
         checkIfAdmin();
     }, [currentUser])
 
+    const location = useLocation();
+    console.log("current user:", currentUser)
+    console.log("location:", location.pathname)
+
     return (
         <>
             {
                 <>
-                    <TopNavBar isAdmin={isAdmin} currentUser={currentUser} />
+                    { 
+                        location.pathname !== "/registration" &&
+                        location.pathname !== "/forgot-password" &&
+                        location.pathname !== "/email-sent" &&
+                        <TopNavBar isAdmin={isAdmin} currentUser={currentUser} />
+                    }
                     <Routes>
                         {
                             isAdmin &&
