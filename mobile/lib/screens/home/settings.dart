@@ -101,16 +101,19 @@ class _SettingsListState extends State<SettingsList> {
                             itemBuilder: (BuildContext context, int index) {
                               final item =
                                   TagType.fromJson(snapshot.data![index]);
-                              return Center(
-                                child: CheckboxListTile(
-                                    title: Text(item.tagName),
-                                    // ignore: iterable_contains_unrelated_type
-                                    value: item.isChecked == true,
-                                    onChanged: (val) {
-                                      _onTagSelected(
-                                          _currentUserID, val!, item.toJson());
-                                    }),
-                              );
+                              return StatefulBuilder(
+                                  builder: (context, StateSetter setState) {
+                                return Center(
+                                  child: CheckboxListTile(
+                                      title: Text(item.tagName),
+                                      // ignore: iterable_contains_unrelated_type
+                                      value: item.isChecked == true,
+                                      onChanged: (val) {
+                                        _onTagSelected(_currentUserID, val!,
+                                            item.toJson());
+                                      }),
+                                );
+                              });
                             }),
                       );
                     } else {
