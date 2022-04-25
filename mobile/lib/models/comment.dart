@@ -2,15 +2,15 @@ class CommentType {
   final String username;
   final String profilePicPath;
   final String displayName;
+  final int likeCount;
+  final bool isEdited;
+  final bool isLikedByLoggedInUser;
   final int id;
   final int contentID;
   final String commenterUID;
   final String timestamp;
   final String comment;
   final int approved;
-  final bool isEdited;
-  final int likeCount;
-  final bool isLikedByLoggedInUser;
 
   CommentType({
     required this.username,
