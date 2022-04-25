@@ -17,6 +17,7 @@ export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
     const [isEventChecked, setIsEventChecked] = useState<boolean>(false);
     const [isMusicChecked, setIsMusicChecked] = useState<boolean>(false);
     const [isArticleChecked, setIsArticleChecked] = useState<boolean>(false);
+    const [isContestChecked, setIsContestChecked] = useState<boolean>(false);
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -32,6 +33,7 @@ export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
         if (type === "event") { setIsEventChecked(newValue); }
         if (type === "music") { setIsMusicChecked(newValue); }
         if (type === "article") { setIsArticleChecked(newValue); }
+        if (type === "contest") { setIsContestChecked(newValue); }
 
         updateFilterBy(type);
     };
@@ -62,6 +64,12 @@ export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
                                 <Checkbox checked={isArticleChecked} onChange={handleChange} name="article" />
                             }
                             label="Articles"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={isContestChecked} onChange={handleChange} name="contest" />
+                            }
+                            label="Contests"
                         />
                     </FormGroup>
                     <FormLabel component="legend">Filter by tags</FormLabel>
