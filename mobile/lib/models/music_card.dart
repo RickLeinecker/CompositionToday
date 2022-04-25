@@ -22,6 +22,15 @@ class MusicCard extends StatefulWidget {
 class _MusicCardState extends State<MusicCard> {
   @override
   Widget build(BuildContext context) {
+    bool imageExists = false;
+
+    if (widget.item['imageFilepath'] != "" &&
+        widget.item['imageFilepath'] != null) {
+      imageExists = true;
+    } else {
+      imageExists = false;
+    }
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: Column(
@@ -69,6 +78,12 @@ class _MusicCardState extends State<MusicCard> {
                               await launchUrl(
                                   widget.item['sheetMusicFilepath']);
                             })
+                        : const Text(''),
+                    imageExists
+                        ? Image(
+                            image: NetworkImage(widget.item['imageFilepath']),
+                            width: 800.0,
+                            height: 200.0)
                         : const Text(''),
                     widget.item['audioFilepath'] != null
                         ? Audio(

@@ -10,8 +10,6 @@ const textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.blue, width: 2.0),
   ),
 );
-
-List<Map<String, dynamic>> selectedTags = [];
 const secondaryColor = Color(0xff9affd3);
 const secondaryColorSemi = Color(0x1f9affd3);
 const primaryColor = Color(0xff3981FF);

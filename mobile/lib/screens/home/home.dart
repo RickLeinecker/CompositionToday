@@ -1,11 +1,13 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
 import 'package:composition_today/models/content_feed.dart';
+import 'package:composition_today/models/user.dart';
 import 'package:composition_today/screens/home/related_projects.dart';
 import 'package:composition_today/screens/home/settings.dart';
 import 'package:composition_today/services/auth.dart';
 import 'package:composition_today/shared/appbar.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'notification_feed.dart';
 
 class Home extends StatefulWidget {

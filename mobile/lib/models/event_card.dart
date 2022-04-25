@@ -23,12 +23,6 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
-  final Completer<GoogleMapController> _controller = Completer();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
   @override
   Widget build(BuildContext context) {
     bool imageExists = false;
@@ -131,9 +125,7 @@ class _EventCardState extends State<EventCard> {
                           : const Text(''),
                       const SizedBox(height: 10.0),
                       locationExists
-                          ? SizedBox(
-                              child:
-                                  DisplayMap(location: widget.item['location']))
+                          ? DisplayMap(location: widget.item['location'])
                           : const Text(''),
                     ],
                   ),

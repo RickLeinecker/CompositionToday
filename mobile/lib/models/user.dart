@@ -7,6 +7,7 @@ class UserData {
   final String? email;
   final int? isPublisher;
   final String? userProfileID;
+  List<Map<String, dynamic>>? selectedTags;
 
   UserData(
       {this.id,
@@ -16,7 +17,8 @@ class UserData {
       this.username,
       this.email,
       this.isPublisher,
-      this.userProfileID});
+      this.userProfileID,
+      this.selectedTags});
 
   factory UserData.fromJson(Map<String, dynamic> parsedJson) => UserData(
       id: parsedJson['id'],
