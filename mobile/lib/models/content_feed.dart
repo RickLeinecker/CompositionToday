@@ -1,15 +1,19 @@
 import 'package:composition_today/models/article_card.dart';
 import 'package:composition_today/models/event_card.dart';
 import 'package:composition_today/models/music_card.dart';
+import 'package:composition_today/models/user.dart';
 import 'package:composition_today/services/api.dart';
 import 'package:composition_today/shared/constants.dart';
 import 'package:composition_today/shared/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ContentFeed extends StatefulWidget {
   String sortBy;
-  ContentFeed({Key? key, required this.sortBy}) : super(key: key);
+  List<Map<String, dynamic>>? selectedTags;
+  ContentFeed({Key? key, this.selectedTags, required this.sortBy})
+      : super(key: key);
 
   @override
   State<ContentFeed> createState() => _ContentFeedState();
@@ -23,13 +27,17 @@ class _ContentFeedState extends State<ContentFeed> {
   void initState() {
     super.initState();
     contentCard = getHomefeedContentInBatches(
-        ['music', 'event', 'article'], selectedTags, widget.sortBy, 0, 100);
+        ['music', 'event', 'article', 'contest'],
+        widget.selectedTags ?? [],
+        widget.sortBy,
+        0,
+        100);
   }
 
   Future<void> _pullRefresh() async {
     Future<List<Map<String, dynamic>>> newContent = getHomefeedContentInBatches(
         ['music', 'event', 'article', 'contest'],
-        selectedTags,
+        widget.selectedTags ?? [],
         widget.sortBy,
         0,
         100);
