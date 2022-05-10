@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 
 import WaveSurfer from "wavesurfer.js";
 
-import DefaultValues from "../../../../Styles/DefaultValues.module.scss"
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import moment from 'moment'
-import './Waveform.scss'
+import DefaultValues from "../../../../Styles/DefaultValues.module.scss";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import moment from "moment";
+import "./Waveform.scss";
 
-const formWaveSurferOptions = ref => ({
+const formWaveSurferOptions = (ref) => ({
   container: ref,
   waveColor: "#eee",
   progressColor: DefaultValues.primaryColor,
@@ -17,7 +17,7 @@ const formWaveSurferOptions = ref => ({
   barRadius: 3,
   responsive: true,
   height: 150,
-  backend: "MediaElement",
+  // backend: "MediaElement",
   // If true, normalize by the maximum peak instead of 1.0.
   normalize: true,
   // Use the PeakCache to improve rendering speed of large waveforms.
@@ -58,16 +58,14 @@ export default function Waveform({ url }) {
       setTotalTime(Math.round(wavesurfer.current.getDuration() * 1000));
     });
 
-
-
-    wavesurfer.current.on('audioprocess', function () {
+    wavesurfer.current.on("audioprocess", function () {
       if (wavesurfer.current.isPlaying()) {
         var currentTime = wavesurfer.current.getCurrentTime();
         setCurrentTime(Math.round(currentTime * 1000));
       }
     });
 
-    wavesurfer.current.on('finish', function () {
+    wavesurfer.current.on("finish", function () {
       wavesurfer.current.stop();
       setCurrentTime(0);
       setPlay(false);
@@ -89,20 +87,37 @@ export default function Waveform({ url }) {
     wavesurfer.current.playPause();
   };
 
-
   return (
     <div>
       <div id="waveform" ref={waveformRef} />
-      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
         <div>
-          <p style={{ margin: "0" }}>{moment(currentTime).format("mm:ss") + "/" + moment(totalTime).format("mm:ss")} </p>
+          <p style={{ margin: "0" }}>
+            {moment(currentTime).format("mm:ss") +
+              "/" +
+              moment(totalTime).format("mm:ss")}{" "}
+          </p>
         </div>
         <div className="controls">
-          {!playing ? <PlayCircleIcon style={{ fontSize: "3rem" }} onClick={handlePlayPause}></PlayCircleIcon> : <PauseCircleIcon style={{ fontSize: "3rem" }} onClick={handlePlayPause}></PauseCircleIcon>}
+          {!playing ? (
+            <PlayCircleIcon
+              style={{ fontSize: "3rem" }}
+              onClick={handlePlayPause}
+            ></PlayCircleIcon>
+          ) : (
+            <PauseCircleIcon
+              style={{ fontSize: "3rem" }}
+              onClick={handlePlayPause}
+            ></PauseCircleIcon>
+          )}
         </div>
-
       </div>
-
     </div>
   );
 }
