@@ -19,27 +19,34 @@ var fileRoutes = require("./api/routes/fileRoutes.ts");
 var relatedProjectsRoutes = require("./api/routes/relatedProjectsRoutes.ts");
 
 const app = express();
-app.use(cors());
+// app.options("*", cors());
+// app.use(cors());
+// app.use(cors({ origin: "https://www.compositiontoday.net", credentials: true }));
 // wavesurfer.js cors test
 // app.use(cors({ origin: "compositiontoday.net", credentials: "true" }));
-// var allowedOrigins = ["http://localhost:3000", "http://compositiontoday.net"];
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       // allow requests with no origin
-//       // (like mobile apps or curl requests)
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         var msg =
-//           "The CORS policy for this site does not " +
-//           "allow access from the specified Origin.";
-//         return callback(new Error(msg), false);
-//       }
-//       return callback(null, true);
-//     },
-//     credentials: true,
-//   })
-// );
+var allowedOrigins = [
+  "http://localhost:3000",
+  "https://compositiontoday.net",
+  "https://www.compositiontoday.net",
+  "https://www.compositiontoday.net/audio/",
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin
+      // (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
 // app.use(cors({ origin: "http://compositiontoday.net", credentials: true }));
 app.use(express.json());
 

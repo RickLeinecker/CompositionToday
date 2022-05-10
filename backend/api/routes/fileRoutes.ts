@@ -164,7 +164,7 @@ router.post("/api/uploadAudio", function (req, res) {
       console.log(req.file.path);
       let fileInfo = {
         filename: req.file.filename,
-        filepath: "http://compositiontoday.net/audio/" + req.file.filename,
+        filepath: "https://www.compositiontoday.net/audio/" + req.file.filename,
       };
       results.push(fileInfo);
     }
@@ -199,7 +199,8 @@ router.post("/api/uploadSheetMusic", function (req, res) {
       console.log(req.file.path);
       let fileInfo = {
         filename: req.file.filename,
-        filepath: "http://compositiontoday.net/sheetMusic/" + req.file.filename,
+        filepath:
+          "https://www.compositiontoday.net/sheetMusic/" + req.file.filename,
       };
       results.push(fileInfo);
     }
@@ -249,7 +250,7 @@ router.post("/api/uploadProfileImage", function (req, res) {
       let fileInfo = {
         filename: req.file.filename,
         filepath:
-          "http://compositiontoday.net/images/" + "rs" + req.file.filename,
+          "https://www.compositiontoday.net/images/" + "rs" + req.file.filename,
       };
       results.push(fileInfo);
     }
@@ -298,7 +299,7 @@ router.post("/api/uploadImage", function (req, res) {
       let fileInfo = {
         filename: req.file.filename,
         filepath:
-          "http://compositiontoday.net/images/" + "rs" + req.file.filename,
+          "https://www.compositiontoday.net/images/" + "rs" + req.file.filename,
       };
       results.push(fileInfo);
     }
