@@ -106,7 +106,7 @@ function App(this: any) {
                             isAdmin
                                 ? <Route path='*' element={<ToAdmin />} />
                                 : (!currentUser || currentUser.isAnonymous)
-                                    ? <Route path='*' element={<Registration />} />
+                                    ? <Route path='*' element={<LandingPage />} />
                                     : <Route element={<PrivateRoute isLogged={currentUser} />}>
                                         <Route path='*' element={<Home />} />
                                     </Route>
