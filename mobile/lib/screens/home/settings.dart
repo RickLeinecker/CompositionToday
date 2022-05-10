@@ -53,6 +53,19 @@ class _SettingsListState extends State<SettingsList> {
     super.dispose();
   }
 
+  void _onTagSelected(
+      UserData userID, bool selected, Map<String, dynamic> tag) {
+    if (selected == true) {
+      setState(() {
+        userID.selectedTags!.add(tag);
+      });
+    } else {
+      setState(() {
+        userID.selectedTags!.remove(tag);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     UserData _currentUserID = Provider.of<UserData?>(context)!;
@@ -88,22 +101,16 @@ class _SettingsListState extends State<SettingsList> {
                             itemBuilder: (BuildContext context, int index) {
                               final item =
                                   TagType.fromJson(snapshot.data![index]);
-
                               return StatefulBuilder(
                                   builder: (context, StateSetter setState) {
                                 return Center(
                                   child: CheckboxListTile(
                                       title: Text(item.tagName),
+                                      // ignore: iterable_contains_unrelated_type
                                       value: item.isChecked == true,
                                       onChanged: (val) {
-                                        setState(() {
-                                          item.isChecked = val!;
-                                          if (item.isChecked == true) {
-                                            selectedTags.add(item.toJson());
-                                          } else if (item.isChecked == false) {
-                                            selectedTags.remove(item.toJson());
-                                          }
-                                        });
+                                        _onTagSelected(_currentUserID, val!,
+                                            item.toJson());
                                       }),
                                 );
                               });
