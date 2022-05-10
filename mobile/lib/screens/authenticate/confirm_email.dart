@@ -13,16 +13,14 @@ class ConfirmEmail extends StatelessWidget {
         title: const Text('Password Reset'),
       ),
       backgroundColor: Colors.grey[100],
-      body: Container(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              message,
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.black,
             ),
           ),
         ),

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 type Props = {
     contentID: number;
-    notifyChange: () => void;
+    notifyChange: (id?: number) => void;
     deleteOpen: boolean;
     handleCloseDelete: () => void;
     type: string;
@@ -28,7 +28,7 @@ export default function DeleteEventModal({ contentID, notifyChange, deleteOpen, 
                 return;
             }
 
-            notifyChange();
+            notifyChange(contentID);
             toast.success(type + ' deleted');
         } catch (e: any) {
             console.error("Frontend Error: " + e);

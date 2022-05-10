@@ -6,7 +6,6 @@ import HomeHeader from './HomeHeader';
 import { TagType } from '../../ObjectInterface';
 
 export default function Home() {
-
     const [sortBy, setSortBy] = useState<string>("newest");
     const [filterByType, setFilterByType] = useState<Array<string>>([]);
     const [filterByTags, setFilterByTags] = useState<TagType[]>([]);
@@ -37,6 +36,9 @@ export default function Home() {
         setKey(prev => prev + 1);
     }
 
+    const updateAdd = () => setKey(prev => prev + 1);
+
+
     return (
         <div>
             <div className='container-home'>
@@ -48,6 +50,7 @@ export default function Home() {
                         tags={filterByTags}
                         sortBy={sortBy}
                         uid={currentUid || ""}
+                        updateAdd={updateAdd}
                     />
                 }
 

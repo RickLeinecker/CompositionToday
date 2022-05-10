@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers
+// ignore_for_file: use_key_in_widget_constructors, avoid_unnecessary_containers, unused_local_variable
 
 import 'package:composition_today/models/tag.dart';
 import 'package:composition_today/services/api.dart';
@@ -36,20 +36,34 @@ class SettingsList extends StatefulWidget {
 }
 
 class _SettingsListState extends State<SettingsList> {
-  bool _isChecked = false;
   bool loading = false;
   late Future<List<Map<String, dynamic>>> tagList;
   final AuthService _auth = AuthService();
   final _emailKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
 
+  @override
   void initState() {
     super.initState();
     tagList = getTags();
   }
 
+  @override
   void dispose() {
     super.dispose();
+  }
+
+  void _onTagSelected(
+      UserData userID, bool selected, Map<String, dynamic> tag) {
+    if (selected == true) {
+      setState(() {
+        userID.selectedTags!.add(tag);
+      });
+    } else {
+      setState(() {
+        userID.selectedTags!.remove(tag);
+      });
+    }
   }
 
   @override
@@ -87,25 +101,16 @@ class _SettingsListState extends State<SettingsList> {
                             itemBuilder: (BuildContext context, int index) {
                               final item =
                                   TagType.fromJson(snapshot.data![index]);
-
                               return StatefulBuilder(
                                   builder: (context, StateSetter setState) {
                                 return Center(
                                   child: CheckboxListTile(
                                       title: Text(item.tagName),
+                                      // ignore: iterable_contains_unrelated_type
                                       value: item.isChecked == true,
                                       onChanged: (val) {
-                                        setState(() {
-                                          item.isChecked = val!;
-                                          if (item.isChecked == true) {
-                                            selectedTags.add(item.toJson());
-                                          } else {
-                                            selectedTags.remove(item.toJson()[{
-                                              ['id'],
-                                              ['tagName']
-                                            }]);
-                                          }
-                                        });
+                                        _onTagSelected(_currentUserID, val!,
+                                            item.toJson());
                                       }),
                                 );
                               });
@@ -198,7 +203,7 @@ class _SettingsListState extends State<SettingsList> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              // _auth.resetPassword();
+              _auth.resetPassword(_currentUserID.email!);
             },
             style: ElevatedButton.styleFrom(
               primary: primaryColor,
@@ -210,8 +215,9 @@ class _SettingsListState extends State<SettingsList> {
               'Delete Account',
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
-              // implement ability to delete account
+            onPressed: () async {
+              deleteUser(_currentUserID.uid!);
+              _auth.deleteFirebaseUser(_currentUserID.email!);
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.red,

@@ -1,22 +1,26 @@
 class TagType {
   final int id;
   final String tagName;
-  bool isChecked;
+  final String? imageFilepath;
+  bool? isChecked = false;
 
   TagType({
     required this.id,
     required this.tagName,
-    required this.isChecked,
+    this.imageFilepath,
+    this.isChecked,
   });
 
   factory TagType.fromJson(Map<String, dynamic> parsedJson) => TagType(
         id: parsedJson['id'],
         tagName: parsedJson['tagName'],
-        isChecked: false,
+        imageFilepath: parsedJson['imageFilepath'],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "tagName": tagName,
+        "imageFilepath": imageFilepath,
+        "isChecked": isChecked == false ? true : false,
       };
 }

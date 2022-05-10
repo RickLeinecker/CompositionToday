@@ -2,11 +2,15 @@ class EventType {
   final String username;
   final String profilePicPath;
   final String displayName;
+  final String tagArray;
+  final int likeCount;
+  final bool isLikedByLoggedInUser;
   final int id;
+  final bool isEdited;
   final String uid;
   final int? userID;
   final String contentName;
-  final String? timestamp;
+  final String timestamp;
   final String? description;
   final DateTime fromDate;
   final DateTime toDate;
@@ -14,10 +18,6 @@ class EventType {
   final String? imageFilename;
   final String? location;
   final bool mapsEnabled;
-  final int likeCount;
-  final bool isLikedByLoggedInUser;
-  final bool isEdited;
-  final String tagArray;
 
   EventType({
     required this.username,
@@ -27,7 +27,7 @@ class EventType {
     required this.uid,
     this.userID,
     required this.contentName,
-    this.timestamp,
+    required this.timestamp,
     this.description,
     required this.fromDate,
     required this.toDate,

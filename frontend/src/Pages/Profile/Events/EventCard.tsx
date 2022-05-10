@@ -16,7 +16,7 @@ type Props = {
 
 
 export default function EventCard({ event, isMyProfile, notifyVirtualizer, notifyChange, clearCache }: Props) {
-    const { id, contentName, description, fromDate, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser, tagArray } = event;
+    const { id, contentName, description, fromDate, isContest, toDate, imageFilepath, location, mapsEnabled, username, profilePicPath, displayName, timestamp, likeCount, isLikedByLoggedInUser, tagArray } = event;
     const [showMap, setShowMap] = useState<boolean>(false);
     const src: string = "https://www.google.com/maps/embed/v1/place?key=" + process.env.REACT_APP_GOOGLE_MAPS_API + "&q=" + location
     const [showMore, setShowMore] = useState(false);
@@ -51,9 +51,10 @@ export default function EventCard({ event, isMyProfile, notifyVirtualizer, notif
 
             <Divider variant="fullWidth" component="div" sx={{ margin: "0.5% auto", width: "95%" }} />
             <div style={{ margin: "1%" }}>
-                {status === 'Scheduled' && <Chip label={status} color="success" style={{ float: "right" }} />}
-                {status === 'Ongoing' && <Chip label={status} color="primary" style={{ float: "right" }} />}
-                {status === 'Completed' && <Chip label={status} color="error" style={{ float: "right" }} />}
+                {isContest ? <Chip label={"Contest"} color="primary" style={{ float: "right", marginLeft: "1%" }} /> : <></>}
+                {status === 'Scheduled' ? <Chip label={status} color="success" style={{ float: "right" }} /> : <></>}
+                {status === 'Ongoing' ? <Chip label={status} color="primary" style={{ float: "right" }} /> : <></>}
+                {status === 'Completed' ? <Chip label={status} color="error" style={{ float: "right" }} /> : <></>}
             </div>
             <div className="card-body" style={{ paddingBottom: "0%" }}>
                 <div style={{ display: "flex", margin: "0 0" }}>
