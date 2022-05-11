@@ -15,7 +15,7 @@ export default function useLogout() {
         try {
             await logoutUser();
             window.localStorage.clear();
-            navigate("/registration");
+            navigate("/landing-page");
         } catch {
             setError("Failed to log out");
         }

@@ -52,7 +52,7 @@ export const AuthProvider = ({children}) =>{
     const logoutUser = () => {
         signOut(auth);
         setCurrentUser(null);
-        navigate('/registration');
+        navigate('/landing-page');
     }
 
     const resetPassword = (email, actionCodeSettings) => {
