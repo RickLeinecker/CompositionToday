@@ -18,10 +18,12 @@ import ToAdmin from "./Pages/Admin/ToAdmin";
 import GenericHandler from './Handlers/GenericHandler';
 import { GenericHandlerType } from './ObjectInterface';
 import 'intro.js/introjs.css';
+import { Steps, Hints } from 'intro.js-react';
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [stepsEnabled, setStepsEnabled] = useState<boolean>(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -61,7 +63,7 @@ function App(this: any) {
         <>
             {
                 <>
-                    { 
+                    {
                         location.pathname !== "/registration" &&
                         location.pathname !== "/forgot-password" &&
                         location.pathname !== "/email-sent" &&
@@ -104,7 +106,7 @@ function App(this: any) {
                         {
                             isAdmin
                                 ? <Route path='*' element={<ToAdmin />} />
-                                : (!currentUser || currentUser.isAnonymous) 
+                                : (!currentUser || currentUser.isAnonymous)
                                     ? <Route path='*' element={<Registration />} />
                                     : <Route element={<PrivateRoute isLogged={currentUser} />}>
                                         <Route path='*' element={<Home />} />
@@ -125,7 +127,37 @@ function App(this: any) {
                 draggable
                 pauseOnHover
             />
+            <Steps
+                enabled={stepsEnabled}
+                steps={steps}
+                initialStep={0}
+                onExit={() => setStepsEnabled(false)}
+                options={{
+                    exitOnOverlayClick: false,
+                    exitOnEsc: false
+                }}
+            />
         </>
     )
 }
+
+const steps = [
+    {
+        element: '.icons-box',
+        title: 'Hello!',
+        intro: 'Welcome to Composition Today',
+        position: 'right',
+        tooltipClass: 'myTooltipClass',
+        highlightClass: 'myHighlightClass',
+    },
+    {
+        element: '.selector2',
+        intro: 'test 2',
+    },
+    {
+        element: '.selector3',
+        intro: 'test 3',
+    },
+];
+
 export default App;
