@@ -5,7 +5,7 @@ export default async function GetContentByTypeHandler(obj: GenericHandlerType) {
   let message = [];
 
   try {
-    const response = fetch("https://compositiontoday.net/api/" + obj.path, {
+    const response = fetch("https://www.compositiontoday.net/api/" + obj.path, {
       method: obj.methodType,
       body: obj.data,
       headers: { "Content-Type": "application/json" },

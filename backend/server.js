@@ -28,6 +28,7 @@ var allowedOrigins = [
   "http://localhost:3000",
   "https://compositiontoday.net",
   "https://www.compositiontoday.net",
+  "https://compositiontoday.net/audio/",
   "https://www.compositiontoday.net/audio/",
 ];
 app.use(

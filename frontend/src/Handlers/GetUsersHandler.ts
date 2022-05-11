@@ -10,7 +10,7 @@ export default async function GetUsersHandler(event: {
   var js = JSON.stringify(obj);
 
   // try {
-  const response = fetch("https://compositiontoday.net/api/getUsers", {
+  const response = fetch("https://www.compositiontoday.net/api/getUsers", {
     method: "GET",
     // body: js,
     headers: { "Content-Type": "application/json" },

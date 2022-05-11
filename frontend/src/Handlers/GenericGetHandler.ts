@@ -3,7 +3,7 @@ export default async function GenericGetHandler(url: string) {
   let message = [];
 
   try {
-    const response = fetch("https://compositiontoday.net/api/" + url, {
+    const response = fetch("https://www.compositiontoday.net/api/" + url, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

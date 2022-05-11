@@ -7,7 +7,7 @@ export default async function GetContentByTypeHandler(contentType: string) {
 
   try {
     const response = fetch(
-      "https://compositiontoday.net/api/getContentByType",
+      "https://www.compositiontoday.net/api/getContentByType",
       {
         method: "POST",
         body: js,
