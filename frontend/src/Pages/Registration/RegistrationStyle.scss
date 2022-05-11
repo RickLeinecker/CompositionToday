@@ -309,3 +309,9 @@ input.registration {
 .container.right-panel-active .overlayer-right {
 	transform: translateX(20%);
 }
+
+.ptsCanvasStyle {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+  }
