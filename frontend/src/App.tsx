@@ -17,6 +17,7 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ToAdmin from "./Pages/Admin/ToAdmin";
 import GenericHandler from './Handlers/GenericHandler';
 import { GenericHandlerType } from './ObjectInterface';
+import 'intro.js/introjs.css';
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
