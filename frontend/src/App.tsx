@@ -17,6 +17,7 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ToAdmin from "./Pages/Admin/ToAdmin";
 import GenericHandler from './Handlers/GenericHandler';
 import { GenericHandlerType } from './ObjectInterface';
+import LandingPage from "./Pages/LandingPage/LandingPage";
 
 function App(this: any) {
     const { currentUser } = useAuthContext();
@@ -78,6 +79,7 @@ function App(this: any) {
                             <Route path='/' element={<Home />} />
                         </Route>
 
+                        <Route path="/landing-page" element={<LandingPage />} />
                         <Route path="/registration" element={<Registration />} />
                         <Route path="/forgot-password" element={<ForgotPassword />} />
                         <Route path="/email-sent" element={<EmailSent />} />
@@ -103,8 +105,8 @@ function App(this: any) {
                         {
                             isAdmin
                                 ? <Route path='*' element={<ToAdmin />} />
-                                : (!currentUser || currentUser.isAnonymous) 
-                                    ? <Route path='*' element={<Registration />} />
+                                : (!currentUser || currentUser.isAnonymous)
+                                    ? <Route path='*' element={<LandingPage />} />
                                     : <Route element={<PrivateRoute isLogged={currentUser} />}>
                                         <Route path='*' element={<Home />} />
                                     </Route>

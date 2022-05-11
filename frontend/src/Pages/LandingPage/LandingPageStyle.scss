@@ -1,0 +1,40 @@
+@import "../../Styles/DefaultValues.module.scss";
+@import "../../Styles/DefaultComponents.module.scss";
+
+body,
+html {
+    height: 100%;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("./musiciansss.png");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.button{
+    background-color: $primary-color;
+    border: none;
+    padding: 1%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 2%;
+    cursor: pointer;
+    color: $white;
+}
+
+.landing-text {
+    color: $white;
+}
+
+// h2 {
+//     color: $white;
+// }
