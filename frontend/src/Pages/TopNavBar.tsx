@@ -71,10 +71,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
             if (!currentUser)
                 notInSignUp = false;
             else
-                if (currentUser.isAnonymous)
-                    notInSignUp = false;
-                else
-                    notInSignUp = true;
+                notInSignUp = true;
     }
 
     return (
