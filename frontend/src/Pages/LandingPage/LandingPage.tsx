@@ -12,7 +12,7 @@ export default function LandingPage() {
 
     return (
         <>
-            <div style={{ position: "absolute", zIndex: -1 }}>
+            <div style={{ position: "absolute"}}>
                 <AnimatedBackground
                     name="ptsCanvasStyle"
                     background="#123"
