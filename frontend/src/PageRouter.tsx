@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useAuthContext } from './FirebaseAuth/AuthContext';
 import Home from './Pages/Home/Home';
 import Blog from './Pages/Blog/Blog';
@@ -58,7 +58,6 @@ function PageRouter() {
 	return (
 		<>
 			{
-				location.pathname !== "/registration" &&
 				location.pathname !== "/landing-page" &&
 				location.pathname !== "/forgot-password" &&
 				location.pathname !== "/email-sent" &&
@@ -76,8 +75,7 @@ function PageRouter() {
 					<Route path='/' element={<Home />} />
 				</Route>
 
-				<Route path="/landing-page" element={<LandingPage />} />
-				<Route path="/registration" element={<Registration />} />
+				<Route path="/landing-page" element={currentUser ? <Navigate to="/" /> : <LandingPage/>} />
 				<Route path="/forgot-password" element={<ForgotPassword />} />
 				<Route path="/email-sent" element={<EmailSent />} />
 
