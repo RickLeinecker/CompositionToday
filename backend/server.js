@@ -19,10 +19,18 @@ var fileRoutes = require("./api/routes/fileRoutes.ts");
 var relatedProjectsRoutes = require("./api/routes/relatedProjectsRoutes.ts");
 
 const app = express();
+// app.options("*", cors());
 // app.use(cors());
+// app.use(cors({ origin: "https://www.compositiontoday.net", credentials: true }));
 // wavesurfer.js cors test
 // app.use(cors({ origin: "compositiontoday.net", credentials: "true" }));
-var allowedOrigins = ["http://localhost:3000", "http://compositiontoday.net"];
+var allowedOrigins = [
+  "http://localhost:3000",
+  "https://compositiontoday.net",
+  "https://www.compositiontoday.net",
+  "https://compositiontoday.net/audio/",
+  "https://www.compositiontoday.net/audio/",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
