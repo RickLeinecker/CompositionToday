@@ -30,7 +30,7 @@ export default function Registration() {
 
     return (
         <>
-            <div style={{position: "absolute", width: "2000px", height: "1000px"}}>
+            <div style={{position: "absolute"}}>
                 <AnimatedBackground
                     name="ptsCanvasStyle"
                     background="#123"
