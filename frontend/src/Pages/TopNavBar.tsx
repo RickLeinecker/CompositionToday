@@ -71,17 +71,14 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
             if (!currentUser)
                 notInSignUp = false;
             else
-                if (currentUser.isAnonymous)
-                    notInSignUp = false;
-                else
-                    notInSignUp = true;
+                notInSignUp = true;
     }
 
     return (
         <>
             {
                 notInSignUp &&
-                <Navbar className="px-5" bg="light" expand="lg">
+                <Navbar id="navbar" className="px-5" bg="light" expand="lg">
                     <Navbar.Brand as={Link} to="/">Composition Today</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" style={{ justifyContent: "space-between" }}>
@@ -122,7 +119,7 @@ export default function TopNavBar({ isAdmin, currentUser }: Props) {
                                             roundedCircle
                                         />
                                     </Nav.Link>
-                                    <NavDropdown align="end" title={username}>
+                                    <NavDropdown id="profile-dropdown" align="end" title={username}>
                                         <NavDropdown.Item as={Link} to={`/profile/${username}`}>My Profile</NavDropdown.Item>
                                         {isAdmin && <NavDropdown.Item as={Link} to={`/dashboard`}>Admin Dashboard</NavDropdown.Item>}
                                         <NavDropdown.Divider />
