@@ -26,11 +26,12 @@ export default function AnimatedBackground({ name, background, play }) {
             if (i % 2 === 0) {
                 pp[0].to(Geom.interpolate(pts[i], pp[0], Math.sin(t) * offset * 2));
                 pp[1].to(pts[i]);
-                form.stroke("#1f9affd3", 2).line(pp);
+                // form.stroke("#1f9affd3", 2).line(pp);
+                form.stroke("rgba(31, 154, 255, 0.5)", 2).line(pp);
             } else {
                 pp[0].to(pts[i]);
                 pp[1].to(Geom.interpolate(pts[i], pp[1], Math.cos(t) * offset * 2));
-                form.stroke("#fff", 2).line(pp);
+                form.stroke("rgba(255, 255, 255, 0.5)", 2).line(pp);
             }
 
         });

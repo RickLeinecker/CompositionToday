@@ -4,6 +4,7 @@
 body,
 html {
     height: 100%;
+    overflow: hidden;
 }
 
 .bg {
@@ -17,6 +18,22 @@ html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.welcome-banner{
+    position: relative; 
+    margin-left: 2%;
+    margin-top: 26%; 
+    width: 25%;
+}
+
+@media (max-width: 800px) {
+    .bg{
+        background-image: none;
+    }
+    .welcome-banner{
+        width: 100%;
+    }
 }
 
 .button{
@@ -33,8 +50,9 @@ html {
 
 .landing-text {
     color: $white;
+    text-shadow:
+    0.07em 0 black,
+    0 0.07em black,
+    -0.07em 0 black,
+    0 -0.07em black;
 }
-
-// h2 {
-//     color: $white;
-// }

@@ -1,88 +1,101 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 @import "../../Styles/DefaultValues.module.scss";
 
-
 main.registration {
-	background: $background-color;
+	// background: $background-color;
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
 	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
+	font-family: "Montserrat", sans-serif;
 	height: 100vh;
+	animation-duration: 1s;
+	animation-name: slidein;
 }
 
-.forgot-form-label{
-		font-size: 0.857143em;
-		font-style: inherit;
-		line-height: 1.33333;
-		color: #3c3d41;
-		font-weight: 600;
-		display: inline-block;
-		margin-top: 0px;
-		margin-bottom: 4px;
+@keyframes slidein {
+	from {
+		transform: translateX(50%);
+		width: 100%;
+		opacity: 0;
+	}
+
+	to {
+		transform: translateX(0%);
+		width: 100%;
+		opacity: 1;
+	}
+}
+
+.forgot-form-label {
+	font-size: 0.857143em;
+	font-style: inherit;
+	line-height: 1.33333;
+	color: #3c3d41;
+	font-weight: 600;
+	display: inline-block;
+	margin-top: 0px;
+	margin-bottom: 4px;
 }
 
 .email {
-    display: flex;
-    flex-direction: column;
-    margin: 0px auto 24px;
-    width: 400px;
-    padding: 32px 40px;
-    background: rgb(255, 255, 255);
-    border-radius: 3px;
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-	0 10px 15px rgba(0,0,0,0.22);
-    box-sizing: border-box;
-    color: rgb(94, 108, 132);
+	display: flex;
+	flex-direction: column;
+	margin: 0px auto 24px;
+	width: 400px;
+	padding: 32px 40px;
+	background: rgb(255, 255, 255);
+	border-radius: 3px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 15px rgba(0, 0, 0, 0.22);
+	box-sizing: border-box;
+	color: rgb(94, 108, 132);
 }
 
 .forgot {
-    display: flex;
-    flex-direction: column;
-    margin: 0px auto 24px;
-    width: 400px;
-    padding: 32px 40px;
-    background: rgb(255, 255, 255);
-    border-radius: 3px;
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-	0 10px 15px rgba(0,0,0,0.22);
-    box-sizing: border-box;
-    color: rgb(94, 108, 132);
+	display: flex;
+	flex-direction: column;
+	margin: 0px auto 24px;
+	width: 400px;
+	padding: 32px 40px;
+	background: rgb(255, 255, 255);
+	border-radius: 3px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 15px rgba(0, 0, 0, 0.22);
+	box-sizing: border-box;
+	color: rgb(94, 108, 132);
 }
 
 .confirm-email {
-    font-size: 1;
-    font-style: inherit;
-    line-height: 1.25;
-    color: var(--ds-text-highEmphasis,#172B4D);
-    font-weight: 600;
-    letter-spacing: -0.006em;
-    margin-top: 24px;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	font-size: 1;
+	font-style: inherit;
+	line-height: 1.25;
+	color: var(--ds-text-highEmphasis, #172b4d);
+	font-weight: 600;
+	letter-spacing: -0.006em;
+	margin-top: 24px;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .image {
-    background: url("./email-delivered.svg") center bottom no-repeat;
+	background: url("./email-delivered.svg") center bottom no-repeat;
 	background-size: 88px;
-    margin-bottom: 24px;
+	margin-bottom: 24px;
 }
 
 .title {
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    margin-bottom: 16px;
-    font-size: 16px;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	margin-bottom: 16px;
+	font-size: 16px;
 }
 
-.image{
-    height: 88px;
-    margin-bottom: 24px;
+.image {
+	height: 88px;
+	margin-bottom: 24px;
 }
 
 h1.registration {
@@ -91,7 +104,7 @@ h1.registration {
 }
 h5 {
 	color: #2a2b2e;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 p.registration {
@@ -115,23 +128,22 @@ a.registration {
 	color: #333;
 	font-size: 16px;
 	text-decoration: none;
-	
-	margin:20px 0;
 
+	margin: 20px 0;
 }
 
-.link-container{
+.link-container {
 	margin-bottom: 20px;
 }
 
-.sign-in-button{
+.sign-in-button {
 	margin-bottom: 20px;
 }
 button.registration {
 	border-radius: 20px;
 	border: 1px solid $primary-color;
 	background-color: $primary-color;
-	color: #FFFFFF;
+	color: #ffffff;
 	font-size: 12px;
 	font-weight: bold;
 	padding: 12px 45px;
@@ -140,11 +152,11 @@ button.registration {
 	transition: transform 80ms ease-in;
 }
 
-button.resend{
+button.resend {
 	border-radius: 20px;
 	border: 1px solid $secondary-color-semi;
 	background-color: $secondary-color-semi;
-	color: #FFFFFF;
+	color: #ffffff;
 	font-size: 12px;
 	font-weight: bold;
 	padding: 12px 45px;
@@ -163,11 +175,11 @@ button:focus {
 
 button.ghost.registration {
 	background-color: transparent;
-	border-color: #FFFFFF;
+	border-color: #ffffff;
 }
 
 form.registration {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -179,7 +191,7 @@ form.registration {
 }
 
 input.registration {
-	background-color: rgba(var(--b3f,250,250,250),1);
+	background-color: rgba(var(--b3f, 250, 250, 250), 1);
 	border-style: solid;
 	border-color: #e4e4e4;
 	padding: 12px 15px;
@@ -190,8 +202,7 @@ input.registration {
 .container.registration {
 	background-color: #fff;
 	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 	position: relative;
 	overflow: hidden;
 	width: 768px;
@@ -231,12 +242,14 @@ input.registration {
 }
 
 @keyframes show {
-	0%, 49.99% {
+	0%,
+	49.99% {
 		opacity: 0;
 		z-index: 1;
 	}
-	
-	50%, 100% {
+
+	50%,
+	100% {
 		opacity: 1;
 		z-index: 5;
 	}
@@ -253,29 +266,27 @@ input.registration {
 	z-index: 100;
 }
 
-.container.right-panel-active .overlayer-container{
+.container.right-panel-active .overlayer-container {
 	transform: translateX(-100%);
 }
 
 .overlayer {
 	background: $secondary-color-semi;
-	background: linear-gradient(142deg,
-	 rgba(57,129,255,1) 0%,
-	  rgba(124,197,255,1) 100%);
+	background: linear-gradient(142deg, rgba(57, 129, 255, 1) 0%, rgba(124, 197, 255, 1) 100%);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
-	color: #FFFFFF;
+	color: #ffffff;
 	position: relative;
 	left: -100%;
 	height: 100%;
 	width: 200%;
-  	transform: translateX(0);
+	transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
 }
 
 .container.right-panel-active .overlayer {
-  	transform: translateX(50%);
+	transform: translateX(50%);
 }
 
 .overlayer-panel {
@@ -315,4 +326,5 @@ input.registration {
 	overflow: hidden;
 	width: 100vw;
 	height: 100vh;
-  }
+	// opacity: 0.9;
+}

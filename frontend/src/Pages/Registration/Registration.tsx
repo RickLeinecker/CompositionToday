@@ -30,13 +30,13 @@ export default function Registration() {
 
     return (
         <>
-            <div style={{position: "absolute"}}>
+            {/* <div style={{position: "absolute"}}>
                 <AnimatedBackground
                     name="ptsCanvasStyle"
                     background="#123"
                     play={true}
                 />
-            </div>
+            </div> */}
             <main className="registration">
                 <div className="container registration" ref={container}>
                     <SignIn />
