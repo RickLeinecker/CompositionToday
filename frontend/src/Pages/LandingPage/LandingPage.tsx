@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '../Registration/AnimatedBackground';
 import Registration from '../Registration/Registration';
-import { Image } from 'react-bootstrap';
 import './LandingPageStyle.scss';
 
 export default function LandingPage() {
