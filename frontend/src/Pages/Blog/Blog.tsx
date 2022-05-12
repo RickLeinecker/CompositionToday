@@ -4,6 +4,7 @@ import { ContentType, GenericHandlerType } from '../../ObjectInterface';
 import GenericHandler from '../../Handlers/GenericHandler';
 import DefaultValues from '../../Styles/DefaultValues.module.scss';
 import { Alert } from 'react-bootstrap';
+import './BlogStyle.scss';
 
 export default function Blog() {
     const [response, setResponse] = useState<Array<ContentType> | undefined>(undefined);
@@ -57,13 +58,16 @@ export default function Blog() {
                     error ?
                         <Alert variant="danger">{error}</Alert>
                         :
-                        <GenericVirtualizedList
-                            bodyStyle={{ width: "100%", height: "82vh" }}
-                            individualStyle={{ width: "60%", padding: "1% 1% 20px", right: "0", marginLeft: "auto", marginRight: "auto" }}
-                            items={response}
-                            notifyChange={notifyChange}
-                            type={"article"}
-                        />
+                        <div className='blog-container'>
+                            <GenericVirtualizedList
+                                bodyStyle={{ width: "100%", height: "82vh" }}
+                                individualStyle={{ padding: "1% 1% 20px", right: "0", marginLeft: "auto", marginRight: "auto" }}
+                                items={response}
+                                notifyChange={notifyChange}
+                                type={"article"}
+                            />
+                        </div>
+
                 }
 
             </div>

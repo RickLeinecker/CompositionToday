@@ -1,0 +1,19 @@
+@import "../../Styles/DefaultValues.module.scss";
+@import "../../Styles/DefaultComponents.module.scss";
+
+.blog-container{
+    width: 60%;
+    margin: auto;
+}
+
+@media (max-width: 1000px) {
+    .blog-container{
+        width: 75%;
+    }
+}
+
+@media (max-width: 700px) {
+    .blog-container{
+        width: 90%;
+    }
+}
