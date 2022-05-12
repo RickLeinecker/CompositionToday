@@ -4,7 +4,6 @@ import './RegistrationStyle.scss';
 import { useEffect, useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../FirebaseAuth/firebase'
-import AnimatedBackground from "./AnimatedBackground";
 
 export default function Registration() {
     const [currentUser, setCurrentUser] = useState({});
@@ -30,13 +29,6 @@ export default function Registration() {
 
     return (
         <>
-            {/* <div style={{position: "absolute"}}>
-                <AnimatedBackground
-                    name="ptsCanvasStyle"
-                    background="#123"
-                    play={true}
-                />
-            </div> */}
             <main className="registration">
                 <div className="container registration" ref={container}>
                     <SignIn />
