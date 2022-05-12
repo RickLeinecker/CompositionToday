@@ -1,120 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuthContext } from './FirebaseAuth/AuthContext';
-import { Routes, Route, useLocation } from 'react-router-dom'
-import Home from './Pages/Home/Home';
-import Blog from './Pages/Blog/Blog';
-import RelatedProjects from './Pages/RelatedProjects/RelatedProjects';
-import Showcase from './Pages/Showcase/Showcase';
+import PageRouter from "./PageRouter";
 import { ToastContainer } from 'react-toastify';
-import Registration from './Pages/Registration/Registration';
-import EmailSent from './Pages/Registration/EmailSent';
-import ForgotPassword from "./Pages/Registration/ForgotPassword";
-import PrivateRoute from "./FirebaseAuth/PrivateRoute";
-import Profile from "./Pages/Profile/Profile";
-import TopNavBar from "./Pages/TopNavBar";
-import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import ToAdmin from "./Pages/Admin/ToAdmin";
-import GenericHandler from './Handlers/GenericHandler';
-import { GenericHandlerType } from './ObjectInterface';
-import LandingPage from "./Pages/LandingPage/LandingPage";
+import { Steps } from 'intro.js-react';
+import { tourSteps } from "./TourSteps";
+import { realisticConfetti } from "./confetti";
+import 'intro.js/introjs.css';
 
 function App(this: any) {
-    const { currentUser } = useAuthContext();
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [stepsEnabled, setStepsEnabled] = useState<boolean>(true);
 
-    useEffect(() => {
-        async function fetchData() {
-            const handlerObject: GenericHandlerType = {
-                data: JSON.stringify({ uid: currentUser?.uid }),
-                methodType: "POST",
-                path: "isAdmin",
-            }
-
-            try {
-                let answer = (await GenericHandler(handlerObject));
-                if (answer.error.length > 0) {
-                    return;
-                }
-
-                return await answer.result;
-            } catch (e: any) {
-                console.error("Frontend Error: " + e);
-            }
-
-            return false;
-        }
-
-        async function checkIfAdmin() {
-            setIsAdmin(await fetchData());
-            // setIsAdmin(true);
-        }
-
-        checkIfAdmin();
-    }, [currentUser])
-
-    const location = useLocation();
-    console.log("current user:", currentUser)
-    console.log("location:", location.pathname)
+    const handleBeforeExit = (): false | void => {
+        if (window.confirm("Are you sure you want to exit the tour? You can enter the tour any time in the profile dropdown."))
+            return;
+        return false;
+    }
 
     return (
         <>
-            {
-                <>
-                    { 
-                        location.pathname !== "/registration" &&
-                        location.pathname !== "/forgot-password" &&
-                        location.pathname !== "/email-sent" &&
-                        <TopNavBar isAdmin={isAdmin} currentUser={currentUser} />
-                    }
-                    <Routes>
-                        {
-                            isAdmin &&
-                            <Route element={<PrivateRoute isLogged={currentUser} />}>
-                                <Route path='/dashboard' element={<AdminDashboard />} />
-                            </Route>
-                        }
-
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/' element={<Home />} />
-                        </Route>
-
-                        <Route path="/landing-page" element={<LandingPage />} />
-                        <Route path="/registration" element={<Registration />} />
-                        <Route path="/forgot-password" element={<ForgotPassword />} />
-                        <Route path="/email-sent" element={<EmailSent />} />
-
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/blog' element={<Blog />} />
-                        </Route>
-
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/showcase' element={<Showcase />} />
-                        </Route>
-
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/related-projects' element={<RelatedProjects />} />
-                        </Route>
-
-                        {/* Fail-safe */}
-                        {/* <Route path="/profile/" element={<Home />} />  */}
-
-                        <Route element={<PrivateRoute isLogged={currentUser} />}>
-                            <Route path='/profile/:username' element={<Profile />} />
-                        </Route>
-                        {
-                            isAdmin
-                                ? <Route path='*' element={<ToAdmin />} />
-                                : (!currentUser || currentUser.isAnonymous)
-                                    ? <Route path='*' element={<LandingPage />} />
-                                    : <Route element={<PrivateRoute isLogged={currentUser} />}>
-                                        <Route path='*' element={<Home />} />
-                                    </Route>
-                        }
-                    </Routes>
-                </>
-            }
-
+            <PageRouter />
             <ToastContainer
                 position="bottom-right"
                 autoClose={3000}
@@ -126,7 +30,23 @@ function App(this: any) {
                 draggable
                 pauseOnHover
             />
+            <Steps
+                enabled={stepsEnabled}
+                steps={tourSteps}
+                initialStep={0}
+                onExit={() => setStepsEnabled(false)}
+                options={{
+                    exitOnOverlayClick: false,
+                    exitOnEsc: false,
+                    showProgress: true,
+                    // showBullets: true,
+                    showStepNumbers: true
+                }}
+                onBeforeExit={handleBeforeExit}
+                onComplete={realisticConfetti}
+            />
         </>
     )
 }
+
 export default App;

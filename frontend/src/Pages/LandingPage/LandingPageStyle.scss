@@ -4,6 +4,7 @@
 body,
 html {
     height: 100%;
+    overflow: hidden;
 }
 
 .bg {
@@ -17,9 +18,34 @@ html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    // z-index: 1;
+    position: relative;
+
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+    animation: fadein 2s;
 }
 
-.button{
+.welcome-banner {
+    position: relative;
+    margin-left: 2%;
+    margin-top: 26%;
+    width: 25%;
+}
+
+@media (max-width: 800px) {
+    .bg {
+        background-image: none;
+    }
+    .welcome-banner {
+        width: 100%;
+    }
+}
+
+.button {
     background-color: $primary-color;
     border: none;
     padding: 1%;
@@ -29,12 +55,58 @@ html {
     margin: 2%;
     cursor: pointer;
     color: $white;
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+    animation: fadein 2s;
 }
 
 .landing-text {
     color: $white;
+    text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+    animation: fadein 2s;
 }
 
-// h2 {
-//     color: $white;
-// }
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

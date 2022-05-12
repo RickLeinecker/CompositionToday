@@ -10,7 +10,7 @@ export default function Registration() {
     const container = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        return () => {};
+        return () => { };
     }, [])
 
     onAuthStateChanged(auth, (currentUser) => {
