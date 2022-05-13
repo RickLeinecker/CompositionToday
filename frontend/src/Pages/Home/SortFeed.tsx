@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SortIcon from '@mui/icons-material/Sort';
 import { IconButton, Popover, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import GenericHoverPopover from '../../Helper/Generics/GenericHoverPopover';
 
 type Props = {
     sortBy: string;
@@ -25,9 +26,11 @@ export default function SortFeed({ sortBy, updateSortBy }: Props) {
 
     return (
         <div>
-            <IconButton aria-label="sort" sx={{padding: "10%"}} onClick={handleClick}>
-                <SortIcon fontSize='large' />
-            </IconButton>
+            <GenericHoverPopover tooltipText={"Sort"}>
+                <IconButton aria-label="sort" sx={{ padding: "10%" }} onClick={handleClick}>
+                    <SortIcon fontSize='large' />
+                </IconButton>
+            </GenericHoverPopover>
             <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}>
                 <ToggleButtonGroup
                     color="primary"

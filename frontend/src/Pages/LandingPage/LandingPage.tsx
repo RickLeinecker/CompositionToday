@@ -14,7 +14,7 @@ export default function LandingPage() {
             <div style={{ position: "absolute"}}>
                 <AnimatedBackground
                     name="ptsCanvasStyle"
-                    background="#123"
+                    background="rgba(17, 34, 51, .94)"
                     play={true}
                 />
             </div>
