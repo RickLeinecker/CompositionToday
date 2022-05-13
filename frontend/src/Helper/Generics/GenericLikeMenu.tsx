@@ -18,7 +18,7 @@ type Props = {
     isComment: boolean;
 }
 
-export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, currentUid, likeType, refresh, updateLikeCount, isComment}: Props) {
+export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, currentUid, likeType, refresh, updateLikeCount, isComment }: Props) {
     const [alignment, setAlignment] = useState<string>(likeType?.likeType || "");
     const [likeCount, setLikeCount] = useState<number>(0)
     const [likedCount, setLikedCount] = useState<number>(0);
@@ -29,43 +29,43 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
     const open = Boolean(anchorEl);
     const didMountRef = useRef(false);
 
-    async function createLike(){
+    async function createLike() {
         let likeTypeID = -1;
-        if(alignment === 'thumbs_up'){
+        if (alignment === 'thumbs_up') {
             likeTypeID = 0;
         }
-        else if(alignment === 'music_notes'){
+        else if (alignment === 'music_notes') {
             likeTypeID = 1;
         }
-        else if(alignment === 'celebration'){
+        else if (alignment === 'celebration') {
             likeTypeID = 5;
         }
-        else if(alignment === 'heart'){
+        else if (alignment === 'heart') {
             likeTypeID = 3;
         }
 
-        const handlerObject: GenericHandlerType = isComment ? 
-        {
-            data: JSON.stringify({ 
-                commentID: contentID, 
-                uid: currentUid, 
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                likeTypeID: likeTypeID,
-            }),
-            methodType: "POST",
-            path: "createLikeForComment",
-        }
-        :
-        {
-            data: JSON.stringify({ 
-                contentID: contentID, 
-                uid: currentUid, 
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                likeTypeID: likeTypeID,
-            }),
-            methodType: "POST",
-            path: "createLikeForContent",
-        }
+        const handlerObject: GenericHandlerType = isComment ?
+            {
+                data: JSON.stringify({
+                    commentID: contentID,
+                    uid: currentUid,
+                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    likeTypeID: likeTypeID,
+                }),
+                methodType: "POST",
+                path: "createLikeForComment",
+            }
+            :
+            {
+                data: JSON.stringify({
+                    contentID: contentID,
+                    uid: currentUid,
+                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    likeTypeID: likeTypeID,
+                }),
+                methodType: "POST",
+                path: "createLikeForContent",
+            }
 
         try {
             let answer = (await GenericHandler(handlerObject));
@@ -81,45 +81,45 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
         }
     }
 
-    async function updateLike(){
+    async function updateLike() {
         let likeTypeID = -1;
-        if(alignment === 'thumbs_up'){
+        if (alignment === 'thumbs_up') {
             likeTypeID = 0;
         }
-        else if(alignment === 'music_notes'){
+        else if (alignment === 'music_notes') {
             likeTypeID = 1;
         }
-        else if(alignment === 'celebration'){
+        else if (alignment === 'celebration') {
             likeTypeID = 5;
         }
-        else if(alignment === 'heart'){
+        else if (alignment === 'heart') {
             likeTypeID = 3;
         }
 
-        const handlerObject: GenericHandlerType = isComment ? 
-        {
-            data: JSON.stringify({ 
-                likeID: likeType?.likeID,
-                commentID: contentID, 
-                uid: currentUid, 
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                likeTypeID: likeTypeID,
-            }),
-            methodType: "PATCH",
-            path: "updateLike",
-        }
-        : 
-        {
-            data: JSON.stringify({ 
-                likeID: likeType?.likeID,
-                contentID: contentID, 
-                uid: currentUid, 
-                timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                likeTypeID: likeTypeID,
-            }),
-            methodType: "PATCH",
-            path: "updateLike",
-        }
+        const handlerObject: GenericHandlerType = isComment ?
+            {
+                data: JSON.stringify({
+                    likeID: likeType?.likeID,
+                    commentID: contentID,
+                    uid: currentUid,
+                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    likeTypeID: likeTypeID,
+                }),
+                methodType: "PATCH",
+                path: "updateLike",
+            }
+            :
+            {
+                data: JSON.stringify({
+                    likeID: likeType?.likeID,
+                    contentID: contentID,
+                    uid: currentUid,
+                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    likeTypeID: likeTypeID,
+                }),
+                methodType: "PATCH",
+                path: "updateLike",
+            }
 
         try {
             let answer = (await GenericHandler(handlerObject));
@@ -134,9 +134,9 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
         }
     }
 
-    async function deleteLike(){
+    async function deleteLike() {
         const handlerObject: GenericHandlerType = {
-            data: JSON.stringify({ 
+            data: JSON.stringify({
                 likeID: likeType?.likeID,
             }),
             methodType: "DELETE",
@@ -159,18 +159,18 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
 
     useEffect(() => {
         async function fetchData() {
-            const handlerObject: GenericHandlerType = isComment ? 
-            {
-                data: JSON.stringify({ commentID: contentID}),
-                methodType: "POST",
-                path: "getLikeCountForComment",
-            }
-            :
-            {
-                data: JSON.stringify({ contentID: contentID}),
-                methodType: "POST",
-                path: "getLikeCountForContent",
-            }
+            const handlerObject: GenericHandlerType = isComment ?
+                {
+                    data: JSON.stringify({ commentID: contentID }),
+                    methodType: "POST",
+                    path: "getLikeCountForComment",
+                }
+                :
+                {
+                    data: JSON.stringify({ contentID: contentID }),
+                    methodType: "POST",
+                    path: "getLikeCountForContent",
+                }
 
             try {
                 let answer = (await GenericHandler(handlerObject));
@@ -191,65 +191,78 @@ export default function GenericLikeMenu({ closeMenu, anchorEl, contentID, curren
         }
         fetchData();
     }, [contentID, currentUid, isComment])
-    
+
     useEffect(() => {
-        if(didMountRef.current){
+        if (didMountRef.current) {
             // update
-            if(alignment !== null && likeType?.isLiked){
+            if (alignment !== null && likeType?.isLiked) {
                 updateLike();
             }
             // create
-            else if(alignment !== null && !likeType?.isLiked){
+            else if (alignment !== null && !likeType?.isLiked) {
                 createLike();
             }
             // delete
-            else if(alignment === null && likeType?.isLiked){
+            else if (alignment === null && likeType?.isLiked) {
                 deleteLike();
             }
             handleClose();
         }
 
         // onMount
-        if(!didMountRef.current){
+        if (!didMountRef.current) {
             didMountRef.current = true;
         }
     }, [alignment])
 
     const handleClose = () => {
+        console.log("we handle close");
         (alignment === null || alignment === "") ? closeMenu(false) : closeMenu(true);
     };
 
     const handleChange = (event: any, newAlignment: string) => {
         setAlignment(newAlignment);
-    };    
+    };
 
-  return (
-    <>
-    <Popover open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
-        <ToggleButtonGroup
-            color="primary"
-            value={alignment}
-            exclusive
-            onChange={handleChange}
+    return (
+        <>
+            <Popover
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
             >
-            <ToggleButton value="heart">
-                <p>{lovedCount}</p>
-                <FavoriteIcon/>
-            </ToggleButton>
-            <ToggleButton value="thumbs_up">
-                <p>{likedCount}</p>
-                <ThumbUpIcon/>
-            </ToggleButton>
-            <ToggleButton value="celebration">
-                <p>{celebratedCount}</p>
-                <CelebrationIcon/>
-            </ToggleButton>
-            <ToggleButton value="music_notes">
-                <p>{jammedCount}</p>
-                <MusicNoteIcon/>
-            </ToggleButton>
-        </ToggleButtonGroup>
-    </Popover>
-    </>
-  );
+                <ToggleButtonGroup
+                    onMouseLeave={handleClose}
+                    color="primary"
+                    value={alignment}
+                    exclusive
+                    onChange={handleChange}
+                >
+                    <ToggleButton value="heart">
+                        <p>{lovedCount}</p>
+                        <FavoriteIcon />
+                    </ToggleButton>
+                    <ToggleButton value="thumbs_up">
+                        <p>{likedCount}</p>
+                        <ThumbUpIcon />
+                    </ToggleButton>
+                    <ToggleButton value="celebration">
+                        <p>{celebratedCount}</p>
+                        <CelebrationIcon />
+                    </ToggleButton>
+                    <ToggleButton value="music_notes">
+                        <p>{jammedCount}</p>
+                        <MusicNoteIcon />
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Popover>
+        </>
+    );
 }

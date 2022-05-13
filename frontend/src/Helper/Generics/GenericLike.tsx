@@ -13,7 +13,7 @@ type Props = {
     isComment: boolean;
 }
 
-export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUser, isComment}: Props) {
+export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUser, isComment }: Props) {
 
     const [isLiked, setIsLiked] = useState<boolean>(isLikedByLoggedInUser);
     const [currentLikeCount, setCurrentLikeCount] = useState<number>(likeCount);
@@ -26,7 +26,8 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
         setIsRefresh(!isRefresh);
     }
 
-    function handleClick(event: any) {
+    function handleOpen(event: any) {
+        console.log("we here")
         setAnchorEl(event.currentTarget);
     }
 
@@ -36,26 +37,26 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
         // update like state
         setIsLiked(newIsLiked);
     }
-    
-    function updateLikeCount(newCount: number){
+
+    function updateLikeCount(newCount: number) {
         setCurrentLikeCount(newCount);
     }
 
     useEffect(() => {
         async function didUserLikeContent() {
-            
-            const handlerObject: GenericHandlerType = isComment ? 
-            {
-                data: JSON.stringify({ commentID: contentID, uid: currentUid }),
-                methodType: "POST",
-                path: "didUserLikeComment",
-            } 
-            : 
-            {                 
-                data: JSON.stringify({ contentID: contentID, uid: currentUid }),
-                methodType: "POST",
-                path: "didUserLikeContent",
-            }
+
+            const handlerObject: GenericHandlerType = isComment ?
+                {
+                    data: JSON.stringify({ commentID: contentID, uid: currentUid }),
+                    methodType: "POST",
+                    path: "didUserLikeComment",
+                }
+                :
+                {
+                    data: JSON.stringify({ contentID: contentID, uid: currentUid }),
+                    methodType: "POST",
+                    path: "didUserLikeContent",
+                }
 
             try {
                 let answer = (await GenericHandler(handlerObject));
@@ -75,16 +76,16 @@ export default function GenericLike({ contentID, likeCount, isLikedByLoggedInUse
     return (
         <div style={{ cursor: 'pointer', float: "right", display: "flex", marginRight: "1%" }}>
             <p>{currentLikeCount || "0"}</p>
-            {isLiked ? <FavoriteIcon style={{ marginLeft: "2%" }} onClick={handleClick}></FavoriteIcon> : <></>}
-            {!isLiked ? <FavoriteBorderIcon style={{ marginLeft: "2%" }} onClick={handleClick}></FavoriteBorderIcon> : <></>}
+            {isLiked ? <FavoriteIcon style={{ marginLeft: "2%" }} onMouseEnter={handleOpen}></FavoriteIcon> : <></>}
+            {!isLiked ? <FavoriteBorderIcon style={{ marginLeft: "2%" }} onMouseEnter={handleOpen}></FavoriteBorderIcon> : <></>}
             {anchorEl && <GenericLikeMenu
                 anchorEl={anchorEl}
                 closeMenu={closeMenu}
                 contentID={contentID}
                 isComment={isComment}
-                currentUid={currentUid} 
-                likeType={likeType} 
-                refresh={refresh} 
+                currentUid={currentUid}
+                likeType={likeType}
+                refresh={refresh}
                 updateLikeCount={updateLikeCount} />}
         </div>
     );
