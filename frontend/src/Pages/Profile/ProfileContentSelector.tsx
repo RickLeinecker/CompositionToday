@@ -14,18 +14,19 @@ import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
+import GenericHoverPopover from '../../Helper/Generics/GenericHoverPopover';
 
 const blue = {
-  50: '#F0F7FF',
-  100: '#C2E0FF',
-  200: '#80BFFF',
-  300: '#66B2FF',
-  400: '#3399FF',
-  500: '#1f9affd3',
-  600: '#0072E5',
-  700: '#0059B2',
-  800: '#004C99',
-  900: '#003A75',
+    50: '#F0F7FF',
+    100: '#C2E0FF',
+    200: '#80BFFF',
+    300: '#66B2FF',
+    400: '#3399FF',
+    500: '#1f9affd3',
+    600: '#0072E5',
+    700: '#0059B2',
+    800: '#004C99',
+    900: '#003A75',
 };
 
 const Tab = styled(TabUnstyled)`
@@ -96,28 +97,32 @@ export default function ProfileContentSelector({ userProfile, notifyChange }: Pr
         <>
             <div className="container-profile">
                 <div className="my-profile-box">
-                    <div style={{ position: "relative", display: "flex", marginLeft: "1%", marginTop: "2%", alignItems: "center", justifyContent: "center"}}>
+                    <div style={{ position: "relative", display: "flex", marginLeft: "1%", marginTop: "2%", alignItems: "center", justifyContent: "center" }}>
                         <div style={{ flex: "1.2 0 0", padding: "1%" }}>
                             <Image className="profile-pic" src={userProfile.profilePicPath || "img_avatar.png"} roundedCircle />
                         </div>
                         <div style={{ flex: "7 0 0" }}>
                             <h1 id="userDisplay" className='user-name'>{userProfile.displayName}</h1>
                             <div>
-                                <p style={{ fontSize: "calc(10px + 1vw)", marginLeft: "5%", wordBreak: "break-all"}}>{userProfile.bio}</p>
+                                <p style={{ fontSize: "calc(10px + 1vw)", marginLeft: "5%", wordBreak: "break-all" }}>{userProfile.bio}</p>
                             </div>
                         </div>
                         {isMyProfile &&
                             <>
-                                <div className='corner-icon' style={{flexDirection: "column"}}>
+                                <div className='corner-icon' style={{ flexDirection: "column" }}>
                                     <div>
-                                        <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
-                                            <EditIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black}} />
-                                        </IconButton>
+                                        <GenericHoverPopover tooltipText={"Edit Profile"}>
+                                            <IconButton aria-label="edit-profile" onClick={handleOpenEdit}>
+                                                <EditIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black }} />
+                                            </IconButton>
+                                        </GenericHoverPopover>
                                     </div>
                                     <div>
-                                        <IconButton aria-label="add-content" onClick={handleOpenCreate}>
-                                            <AddCircleIcon style={{ fontSize: "calc(12px + 2.5vw)" , color: DefaultValues.black }} />
-                                        </IconButton>
+                                        <GenericHoverPopover tooltipText={"Add " + currentSection}>
+                                            <IconButton aria-label="add-content" onClick={handleOpenCreate}>
+                                                <AddCircleIcon style={{ fontSize: "calc(12px + 2.5vw)", color: DefaultValues.black }} />
+                                            </IconButton>
+                                        </GenericHoverPopover>
                                     </div>
                                 </div>
 

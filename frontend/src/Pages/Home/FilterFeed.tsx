@@ -3,6 +3,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, IconButton, Popover } from '@mui/material';
 import GenericTagsPicker from '../../Helper/Generics/GenericTagsPicker';
 import { TagType } from '../../ObjectInterface';
+import GenericHoverPopover from '../../Helper/Generics/GenericHoverPopover';
 
 type Props = {
     updateFilterBy: (newValue: string) => void
@@ -10,7 +11,7 @@ type Props = {
     tags: Array<TagType>;
 }
 
-export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
+export default function FilterFeed({ updateFilterBy, updateTags, tags }: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -40,11 +41,13 @@ export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
 
     return (
         <div>
-            <IconButton aria-label="filter" sx={{padding: "10%"}} onClick={handleClick}>
-                <TuneIcon fontSize="large" />
-            </IconButton>
+            <GenericHoverPopover tooltipText={"Filter"}>
+                <IconButton aria-label="filter" sx={{ padding: "10%" }} onClick={handleClick}>
+                    <TuneIcon fontSize="large" />
+                </IconButton>
+            </GenericHoverPopover>
             <Popover style={{}} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-                <Container sx={{ mt: "10%", mb: "10%", borderRadius: "1em", width: "25vw"}}>
+                <Container sx={{ mt: "10%", mb: "10%", borderRadius: "1em", width: "25vw" }}>
                     <FormLabel component="legend">Filter by type</FormLabel>
                     <FormGroup>
                         <FormControlLabel
@@ -73,7 +76,7 @@ export default function FilterFeed({ updateFilterBy, updateTags, tags}: Props) {
                         />
                     </FormGroup>
                     <FormLabel component="legend">Filter by tags</FormLabel>
-                    <GenericTagsPicker updateTags={updateTags} defaultValue={tags}/>
+                    <GenericTagsPicker updateTags={updateTags} defaultValue={tags} />
                 </Container>
             </Popover>
         </div>
