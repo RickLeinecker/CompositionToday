@@ -1,4 +1,5 @@
 // Routes for likes
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -8,10 +9,30 @@ const updateLikeTypeController = require("../controllers/likeTypeControllers/upd
 const deleteLikeTypeController = require("../controllers/likeTypeControllers/deleteLikeTypeController.ts");
 const getLikeTypesController = require("../controllers/likeTypeControllers/getLikeTypesController.ts");
 
-router.post("/api/createLikeType", createLikeTypeController.createLikeType);
-router.post("/api/readLikeType", readLikeTypeController.readLikeType);
-router.patch("/api/updateLikeType", updateLikeTypeController.updateLikeType);
-router.delete("/api/deleteLikeType", deleteLikeTypeController.deleteLikeType);
-router.get("/api/getLikeTypes", getLikeTypesController.getLikeTypes);
+router.post(
+  "/api/createLikeType",
+  apiAuth.validateAPIKey,
+  createLikeTypeController.createLikeType
+);
+router.post(
+  "/api/readLikeType",
+  apiAuth.validateAPIKey,
+  readLikeTypeController.readLikeType
+);
+router.patch(
+  "/api/updateLikeType",
+  apiAuth.validateAPIKey,
+  updateLikeTypeController.updateLikeType
+);
+router.delete(
+  "/api/deleteLikeType",
+  apiAuth.validateAPIKey,
+  deleteLikeTypeController.deleteLikeType
+);
+router.get(
+  "/api/getLikeTypes",
+  apiAuth.validateAPIKey,
+  getLikeTypesController.getLikeTypes
+);
 
 module.exports = router;

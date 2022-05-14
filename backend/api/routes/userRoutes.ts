@@ -1,4 +1,5 @@
 // Routes for users
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -22,36 +23,96 @@ const makeAdminController = require("../controllers/userControllers/makeAdminCon
 const removeAdminController = require("../controllers/userControllers/removeAdminController.ts");
 const listAdminsController = require("../controllers/userControllers/listAdminsController.ts");
 
-router.post("/api/createUser", createUserController.createUser);
-router.get("/api/listAdmins", listAdminsController.listAdmins);
-router.post("/api/isAdmin", isAdminController.isAdmin);
-router.post("/api/makeAdmin", makeAdminController.makeAdmin);
-router.delete("/api/removeAdmin", removeAdminController.removeAdmin);
-router.post("/api/createComposer", createComposerController.createComposer);
-router.post("/api/removePublisher", removePublisherController.removePublisher);
+router.post(
+  "/api/createUser",
+  apiAuth.validateAPIKey,
+  createUserController.createUser
+);
+router.get(
+  "/api/listAdmins",
+  apiAuth.validateAPIKey,
+  listAdminsController.listAdmins
+);
+router.post("/api/isAdmin", apiAuth.validateAPIKey, isAdminController.isAdmin);
+router.post(
+  "/api/makeAdmin",
+  apiAuth.validateAPIKey,
+  makeAdminController.makeAdmin
+);
+router.delete(
+  "/api/removeAdmin",
+  apiAuth.validateAPIKey,
+  removeAdminController.removeAdmin
+);
+router.post(
+  "/api/createComposer",
+  apiAuth.validateAPIKey,
+  createComposerController.createComposer
+);
+router.post(
+  "/api/removePublisher",
+  apiAuth.validateAPIKey,
+  removePublisherController.removePublisher
+);
 
 router.post(
   "/api/createScrapedComposer",
+  apiAuth.validateAPIKey,
   createScrapedComposerController.createScrapedComposer
 );
-router.post("/api/searchComposers", searchComposersController.searchComposers);
-router.post("/api/createPublisher", createPublisherController.createPublisher);
-router.post("/api/readUser", readUserController.readUser);
-router.post("/api/readUserByUID", readUserByUIDController.readUserByUID);
+router.post(
+  "/api/searchComposers",
+  apiAuth.validateAPIKey,
+  searchComposersController.searchComposers
+);
+router.post(
+  "/api/createPublisher",
+  apiAuth.validateAPIKey,
+  createPublisherController.createPublisher
+);
+router.post(
+  "/api/readUser",
+  apiAuth.validateAPIKey,
+  readUserController.readUser
+);
+router.post(
+  "/api/readUserByUID",
+  apiAuth.validateAPIKey,
+  readUserByUIDController.readUserByUID
+);
 router.post(
   "/api/readUserByUsername",
+  apiAuth.validateAPIKey,
   readUserByUsernameController.readUserByUsername
 );
-router.patch("/api/updateUser", updateUserController.updateUser);
-router.delete("/api/deleteUser", deleteUserController.deleteUser);
-router.get("/api/getUsers", getUsersController.getUsers);
+router.patch(
+  "/api/updateUser",
+  apiAuth.validateAPIKey,
+  updateUserController.updateUser
+);
+router.delete(
+  "/api/deleteUser",
+  apiAuth.validateAPIKey,
+  deleteUserController.deleteUser
+);
+router.get(
+  "/api/getUsers",
+  apiAuth.validateAPIKey,
+  getUsersController.getUsers
+);
 router.get(
   "/api/getComposersForShowcase",
+  apiAuth.validateAPIKey,
   getComposersForShowcaseController.getComposersForShowcase
 );
-router.post("/api/getLoggedInUser", getLoggedInUserController.getLoggedInUser);
+router.post(
+  "/api/getLoggedInUser",
+  apiAuth.validateAPIKey,
+  getLoggedInUserController.getLoggedInUser
+);
 router.post(
   "/api/getComposersByGenre",
+  apiAuth.validateAPIKey,
   getComposersByGenreController.getComposersByGenre
 );
 

@@ -4,14 +4,23 @@ export default async function GetContentByTypeHandler(contentType: string) {
 
   var obj = { contentType: contentType };
   var js = JSON.stringify(obj);
-
+  // request headers
+  let headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  // api key
+  let key =
+    process.env.REACT_APP_COMP_TODAY_API_KEY === undefined
+      ? "no_key"
+      : process.env.REACT_APP_COMP_TODAY_API_KEY;
+  headers.append("X-API-Key", key);
+  // make call
   try {
     const response = fetch(
       "https://www.compositiontoday.net/api/getContentByType",
       {
         method: "POST",
         body: js,
-        headers: { "Content-Type": "application/json" },
+        headers: headers,
       }
     );
 

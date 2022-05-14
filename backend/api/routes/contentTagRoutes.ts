@@ -1,4 +1,5 @@
 // Routes for content tags
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -12,28 +13,38 @@ const removeTagsFromContentController = require("../controllers/contentTagContro
 
 router.post(
   "/api/createContentTag",
+  apiAuth.validateAPIKey,
   createContentTagController.createContentTag
 );
 router.post(
   "/api/addTagsToContent",
+  apiAuth.validateAPIKey,
   addTagsToContentController.addTagsToContent
 );
 router.post(
   "/api/getTagsForContent",
+  apiAuth.validateAPIKey,
   getTagsForContentController.getTagsForContent
 );
 router.patch(
   "/api/updateContentTag",
+  apiAuth.validateAPIKey,
   updateContentTagController.updateContentTag
 );
 router.delete(
   "/api/deleteContentTag",
+  apiAuth.validateAPIKey,
   deleteContentTagController.deleteContentTag
 );
 router.delete(
   "/api/removeTagsFromContent",
+  apiAuth.validateAPIKey,
   removeTagsFromContentController.removeTagsFromContent
 );
-router.get("/api/getContentTags", getContentTagsController.getContentTags);
+router.get(
+  "/api/getContentTags",
+  apiAuth.validateAPIKey,
+  getContentTagsController.getContentTags
+);
 
 module.exports = router;

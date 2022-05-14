@@ -1,4 +1,5 @@
 // Routes for likes
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -15,43 +16,71 @@ const didUserLikeContentController = require("../controllers/likeControllers/did
 const getLikeCountForCommentController = require("../controllers/likeControllers/getLikeCountForCommentController.ts");
 const getLikeCountForContentController = require("../controllers/likeControllers/getLikeCountForContentController.ts");
 const didUserLikeCommentController = require("../controllers/likeControllers/didUserLikeCommentController.ts");
-router.post("/api/createLike", createLikeController.createLike);
+router.post(
+  "/api/createLike",
+  apiAuth.validateAPIKey,
+  createLikeController.createLike
+);
 router.post(
   "/api/getLikeCountForContent",
+  apiAuth.validateAPIKey,
   getLikeCountForContentController.getLikeCountForContent
 );
 router.post(
   "/api/getLikeCountForComment",
+  apiAuth.validateAPIKey,
   getLikeCountForCommentController.getLikeCountForComment
 );
 router.post(
   "/api/createLikeForComment",
+  apiAuth.validateAPIKey,
   createLikeForCommentController.createLikeForComment
 );
 router.post(
   "/api/createLikeForContent",
+  apiAuth.validateAPIKey,
   createLikeForContentController.createLikeForContent
 );
 router.post(
   "/api/didUserLikeContent",
+  apiAuth.validateAPIKey,
   didUserLikeContentController.didUserLikeContent
 );
 router.post(
   "/api/didUserLikeComment",
+  apiAuth.validateAPIKey,
   didUserLikeCommentController.didUserLikeComment
 );
 
-router.post("/api/readLike", readLikeController.readLike);
+router.post(
+  "/api/readLike",
+  apiAuth.validateAPIKey,
+  readLikeController.readLike
+);
 router.post(
   "/api/getLikesForContent",
+  apiAuth.validateAPIKey,
   getLikesForContentController.getLikesForContent
 );
 router.post(
   "/api/getLikesForComment",
+  apiAuth.validateAPIKey,
   getLikesForCommentController.getLikesForComment
 );
-router.patch("/api/updateLike", updateLikeController.updateLike);
-router.delete("/api/deleteLike", deleteLikeController.deleteLike);
-router.get("/api/getLikes", getLikesController.getLikes);
+router.patch(
+  "/api/updateLike",
+  apiAuth.validateAPIKey,
+  updateLikeController.updateLike
+);
+router.delete(
+  "/api/deleteLike",
+  apiAuth.validateAPIKey,
+  deleteLikeController.deleteLike
+);
+router.get(
+  "/api/getLikes",
+  apiAuth.validateAPIKey,
+  getLikesController.getLikes
+);
 
 module.exports = router;

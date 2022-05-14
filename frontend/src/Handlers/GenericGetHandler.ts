@@ -1,11 +1,20 @@
 // returns JSON containing users
 export default async function GenericGetHandler(url: string) {
   let message = [];
-
+  // request headers
+  let headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  // api key
+  let key =
+    process.env.REACT_APP_COMP_TODAY_API_KEY === undefined
+      ? "no_key"
+      : process.env.REACT_APP_COMP_TODAY_API_KEY;
+  headers.append("X-API-Key", key);
+  // make call
   try {
     const response = fetch("https://www.compositiontoday.net/api/" + url, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: headers,
     });
 
     var retResponse = await response;

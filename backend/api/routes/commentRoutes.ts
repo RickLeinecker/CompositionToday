@@ -1,4 +1,5 @@
 // Routes for comments
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -10,15 +11,40 @@ const getCommentsController = require("../controllers/commentControllers/getComm
 const approveCommentController = require("../controllers/commentControllers/approveCommentController.ts");
 const getCommentsForContentController = require("../controllers/commentControllers/getCommentsForContentController.ts");
 
-router.post("/api/createComment", createCommentController.createComment);
-router.post("/api/readComment", readCommentController.readComment);
+router.post(
+  "/api/createComment",
+  apiAuth.validateAPIKey,
+  createCommentController.createComment
+);
+router.post(
+  "/api/readComment",
+  apiAuth.validateAPIKey,
+  readCommentController.readComment
+);
 router.post(
   "/api/getCommentsForContent",
+  apiAuth.validateAPIKey,
   getCommentsForContentController.getCommentsForContent
 );
-router.patch("/api/updateComment", updateCommentController.updateComment);
-router.patch("/api/approveComment", approveCommentController.approveComment);
-router.delete("/api/deleteComment", deleteCommentController.deleteComment);
-router.get("/api/getComments", getCommentsController.getComments);
+router.patch(
+  "/api/updateComment",
+  apiAuth.validateAPIKey,
+  updateCommentController.updateComment
+);
+router.patch(
+  "/api/approveComment",
+  apiAuth.validateAPIKey,
+  approveCommentController.approveComment
+);
+router.delete(
+  "/api/deleteComment",
+  apiAuth.validateAPIKey,
+  deleteCommentController.deleteComment
+);
+router.get(
+  "/api/getComments",
+  apiAuth.validateAPIKey,
+  getCommentsController.getComments
+);
 
 module.exports = router;
