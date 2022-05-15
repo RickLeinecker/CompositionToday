@@ -307,7 +307,9 @@ exports.updateContent = async (req, res) => {
                           var updatedTagsStringUsedForDeletion = "";
                           for (var i = 0; i < tagArray.length; ++i) {
                             updatedTagsStringUsedForDeletion +=
-                              "tagID=" + tagArray[i].id + " OR ";
+                              "tagID=" +
+                              connection.escape(tagArray[i].id) +
+                              " OR ";
                             sqlQuery(i);
                             function sqlQuery(index) {
                               mysql_pool.getConnection(function (
