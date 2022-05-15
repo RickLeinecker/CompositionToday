@@ -1,4 +1,5 @@
 // Routes for file uploads and downloads
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 const sharp = require("sharp");
 var router = express.Router();
@@ -21,7 +22,7 @@ var audioStorage = multer.diskStorage({
     callback(null, file.fieldname + "-" + randomizeFilename);
   },
 });
-var desiredNumberOfMegabytesForAudio = 5;
+var desiredNumberOfMegabytesForAudio = 10;
 var uploadAudio = multer({
   storage: audioStorage,
   limits: { fileSize: MEGABYTE * desiredNumberOfMegabytesForAudio },
@@ -142,7 +143,7 @@ function checkSheetMusicFileType(file, cb) {
 // });
 
 // uploadAudio
-router.post("/api/uploadAudio", function (req, res) {
+router.post("/api/uploadAudio", apiAuth.validateAPIKey, function (req, res) {
   var error = "";
   var results = [];
   var responseCode;
@@ -179,93 +180,103 @@ router.post("/api/uploadAudio", function (req, res) {
 });
 
 // uploadSheetMusic
-router.post("/api/uploadSheetMusic", function (req, res) {
-  var error = "";
-  var results = [];
-  var responseCode;
-  uploadSheetMusic(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
-      error = err.message;
-      responseCode = 500;
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      error = err;
-      responseCode = 500;
-    } else {
-      // Everything went fine.
-      responseCode = 200;
-      console.log(req.file);
-      console.log(req.file.path);
-      let fileInfo = {
-        filename: req.file.filename,
-        filepath:
-          "https://www.compositiontoday.net/sheetMusic/" + req.file.filename,
+router.post(
+  "/api/uploadSheetMusic",
+  apiAuth.validateAPIKey,
+  function (req, res) {
+    var error = "";
+    var results = [];
+    var responseCode;
+    uploadSheetMusic(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        error = err.message;
+        responseCode = 500;
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        error = err;
+        responseCode = 500;
+      } else {
+        // Everything went fine.
+        responseCode = 200;
+        console.log(req.file);
+        console.log(req.file.path);
+        let fileInfo = {
+          filename: req.file.filename,
+          filepath:
+            "https://www.compositiontoday.net/sheetMusic/" + req.file.filename,
+        };
+        results.push(fileInfo);
+      }
+      // package data
+      var ret = {
+        result: results,
+        error: error,
       };
-      results.push(fileInfo);
-    }
-    // package data
-    var ret = {
-      result: results,
-      error: error,
-    };
-    // send data
-    res.status(responseCode).json(ret);
-  });
-});
+      // send data
+      res.status(responseCode).json(ret);
+    });
+  }
+);
 
 // uploadProfileImage
-router.post("/api/uploadProfileImage", function (req, res) {
-  var error = "";
-  var results = [];
-  var responseCode;
-  uploadImage(req, res, async function (err) {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
-      error = err.message;
-      responseCode = 500;
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      error = err;
-      responseCode = 500;
-    } else {
-      // Everything went fine.
-      responseCode = 200;
-      console.log(req.file);
-      console.log(req.file.path);
-      const { filename: image } = req.file;
-      var options = {
-        width: 256,
-        height: 256,
-        fit: sharp.fit.cover,
-        position: sharp.strategy.entropy,
-      };
-      await sharp(req.file.path)
-        .resize(options)
-        .jpeg()
-        .toFile(path.resolve(req.file.destination, "rs" + image));
-      fs.unlinkSync(req.file.path);
+router.post(
+  "/api/uploadProfileImage",
+  apiAuth.validateAPIKey,
+  function (req, res) {
+    var error = "";
+    var results = [];
+    var responseCode;
+    uploadImage(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        error = err.message;
+        responseCode = 500;
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        error = err;
+        responseCode = 500;
+      } else {
+        // Everything went fine.
+        responseCode = 200;
+        console.log(req.file);
+        console.log(req.file.path);
+        const { filename: image } = req.file;
+        var options = {
+          width: 256,
+          height: 256,
+          fit: sharp.fit.cover,
+          position: sharp.strategy.entropy,
+        };
+        await sharp(req.file.path)
+          .resize(options)
+          .jpeg()
+          .toFile(path.resolve(req.file.destination, "rs" + image));
+        fs.unlinkSync(req.file.path);
 
-      // return res.send("SUCCESS!");
-      let fileInfo = {
-        filename: req.file.filename,
-        filepath:
-          "https://www.compositiontoday.net/images/" + "rs" + req.file.filename,
+        // return res.send("SUCCESS!");
+        let fileInfo = {
+          filename: req.file.filename,
+          filepath:
+            "https://www.compositiontoday.net/images/" +
+            "rs" +
+            req.file.filename,
+        };
+        results.push(fileInfo);
+      }
+      // package data
+      var ret = {
+        result: results,
+        error: error,
       };
-      results.push(fileInfo);
-    }
-    // package data
-    var ret = {
-      result: results,
-      error: error,
-    };
-    // send data
-    res.status(responseCode).json(ret);
-  });
-});
+      // send data
+      res.status(responseCode).json(ret);
+    });
+  }
+);
 
 // uploadImage
-router.post("/api/uploadImage", function (req, res) {
+router.post("/api/uploadImage", apiAuth.validateAPIKey, function (req, res) {
   var error = "";
   var results = [];
   var responseCode;
@@ -314,7 +325,7 @@ router.post("/api/uploadImage", function (req, res) {
 });
 
 // delete file
-router.delete("/api/deleteFile", async (req, res) => {
+router.delete("/api/deleteFile", apiAuth.validateAPIKey, async (req, res) => {
   // incoming: filepath
   // outgoing: success or error
 
