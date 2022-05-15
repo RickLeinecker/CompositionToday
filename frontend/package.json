@@ -2,6 +2,7 @@
   "name": "composition-today",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://www.compositiontoday.net/",
   "dependencies": {
     "@date-io/date-fns": "^2.11.0",
     "@editorjs/editorjs": "^2.23.2",

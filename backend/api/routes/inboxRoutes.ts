@@ -1,4 +1,5 @@
 // Routes for inbox entries
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -10,17 +11,28 @@ const getInboxEntriesController = require("../controllers/inboxControllers/getIn
 
 router.post(
   "/api/createInboxEntry",
+  apiAuth.validateAPIKey,
   createInboxEntryController.createInboxEntry
 );
-router.post("/api/readInboxEntry", readInboxEntryController.readInboxEntry);
+router.post(
+  "/api/readInboxEntry",
+  apiAuth.validateAPIKey,
+  readInboxEntryController.readInboxEntry
+);
 router.patch(
   "/api/updateInboxEntry",
+  apiAuth.validateAPIKey,
   updateInboxEntryController.updateInboxEntry
 );
 router.delete(
   "/api/deleteInboxEntry",
+  apiAuth.validateAPIKey,
   deleteInboxEntryController.deleteInboxEntry
 );
-router.get("/api/getInboxEntries", getInboxEntriesController.getInboxEntries);
+router.get(
+  "/api/getInboxEntries",
+  apiAuth.validateAPIKey,
+  getInboxEntriesController.getInboxEntries
+);
 
 module.exports = router;

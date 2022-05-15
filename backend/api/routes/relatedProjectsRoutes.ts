@@ -1,4 +1,5 @@
 // Routes for likes
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -7,9 +8,25 @@ const editProjectController = require("../controllers/relatedProjectsControllers
 const removeProjectController = require("../controllers/relatedProjectsControllers/removeProjectController.ts");
 const getProjectsController = require("../controllers/relatedProjectsControllers/getProjectsController.ts");
 
-router.post("/api/addProject", addProjectController.addProject);
-router.patch("/api/editProject", editProjectController.editProject);
-router.delete("/api/removeProject", removeProjectController.removeProject);
-router.get("/api/getProjects", getProjectsController.getProjects);
+router.post(
+  "/api/addProject",
+  apiAuth.validateAPIKey,
+  addProjectController.addProject
+);
+router.patch(
+  "/api/editProject",
+  apiAuth.validateAPIKey,
+  editProjectController.editProject
+);
+router.delete(
+  "/api/removeProject",
+  apiAuth.validateAPIKey,
+  removeProjectController.removeProject
+);
+router.get(
+  "/api/getProjects",
+  apiAuth.validateAPIKey,
+  getProjectsController.getProjects
+);
 
 module.exports = router;

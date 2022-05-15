@@ -1,4 +1,5 @@
 // Routes for content
+var apiAuth = require("../auth/validateAPIKey.ts");
 var express = require("express");
 var router = express.Router();
 
@@ -14,33 +15,59 @@ const getContentByTypeInBatchesController = require("../controllers/contentContr
 const getHomefeedContentInBatchesController = require("../controllers/contentControllers/getHomefeedContentInBatchesController.ts");
 const createContentWithTagsController = require("../controllers/contentControllers/createContentWithTagsController.ts");
 
-router.post("/api/createContent", createContentController.createContent);
+router.post(
+  "/api/createContent",
+  apiAuth.validateAPIKey,
+  createContentController.createContent
+);
 router.post(
   "/api/createContentAndTag",
+  apiAuth.validateAPIKey,
   createContentAndTagController.createContentAndTag
 );
 router.post(
   "/api/createContentWithTags",
+  apiAuth.validateAPIKey,
   createContentWithTagsController.createContentWithTags
 );
 router.post(
   "/api/getContentByTypeInBatches",
+  apiAuth.validateAPIKey,
   getContentByTypeInBatchesController.getContentByTypeInBatches
 );
 router.post(
   "/api/getHomefeedContentInBatches",
+  apiAuth.validateAPIKey,
   getHomefeedContentInBatchesController.getHomefeedContentInBatches
 );
-router.post("/api/readContent", readContentController.readContent);
-router.patch("/api/updateContent", updateContentController.updateContent);
-router.delete("/api/deleteContent", deleteContentController.deleteContent);
-router.get("/api/getContents", getContentController.getContents);
+router.post(
+  "/api/readContent",
+  apiAuth.validateAPIKey,
+  readContentController.readContent
+);
+router.patch(
+  "/api/updateContent",
+  apiAuth.validateAPIKey,
+  updateContentController.updateContent
+);
+router.delete(
+  "/api/deleteContent",
+  apiAuth.validateAPIKey,
+  deleteContentController.deleteContent
+);
+router.get(
+  "/api/getContents",
+  apiAuth.validateAPIKey,
+  getContentController.getContents
+);
 router.post(
   "/api/getContentByType",
+  apiAuth.validateAPIKey,
   getContentByTypeController.getContentByType
 );
 router.post(
   "/api/getUserContentByType",
+  apiAuth.validateAPIKey,
   getUserContentByTypeController.getUserContentByType
 );
 

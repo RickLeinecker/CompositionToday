@@ -22,19 +22,11 @@ const formWaveSurferOptions = (ref) => ({
   normalize: true,
   // Use the PeakCache to improve rendering speed of large waveforms.
   partialRender: true,
-  // xhr: {
-  //   cache: "default",
-  //   mode: "no-cors",
-  //   method: "GET",
-  //   credentials: "same-origin",
-  //   redirect: "follow",
-  //   referrer: "client",
-  //   headers: [{ key: "Authorization", value: "my-token" }],
-  // },
   xhr: {
     cache: "default",
     mode: "cors",
     method: "GET",
+    // comment out credentials for local testing
     credentials: "include",
     headers: [
       { key: "cache-control", value: "no-cache" },
@@ -57,10 +49,10 @@ export default function Waveform({ url }) {
 
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
-    // const myAudio = new Audio(url);
-    // myAudio.crossOrigin = "anonymous";
 
     wavesurfer.current.load(url);
+    // comment out load above, and use load below
+    // wavesurfer.current.load("https://wavesurfer-js.org/example/media/demo.wav");
 
     wavesurfer.current.on("ready", function () {
       // https://wavesurfer-js.org/docs/methods.html

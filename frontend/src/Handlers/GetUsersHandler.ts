@@ -8,12 +8,21 @@ export default async function GetUsersHandler(event: {
 
   var obj = {};
   var js = JSON.stringify(obj);
-
+  // request headers
+  let headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  // api key
+  let key =
+    process.env.REACT_APP_COMP_TODAY_API_KEY === undefined
+      ? "no_key"
+      : process.env.REACT_APP_COMP_TODAY_API_KEY;
+  headers.append("X-API-Key", key);
+  // make call
   // try {
   const response = fetch("https://www.compositiontoday.net/api/getUsers", {
     method: "GET",
     // body: js,
-    headers: { "Content-Type": "application/json" },
+    headers: headers,
   });
 
   var txt = (await response).text();
