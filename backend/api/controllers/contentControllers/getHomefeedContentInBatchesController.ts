@@ -38,7 +38,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
   if (tagArray && tagArray.length > 0) {
     insertString += "INNER JOIN (SELECT * FROM contentTag WHERE ";
     for (var tag of tagArray) {
-      insertString += "tagID=" + tag.id + " OR ";
+      insertString += "tagID=? OR ";
+      insertArray.push(tag.id);
     }
     insertString = insertString.slice(0, -3);
     insertString += ") AS ct1 ON ct1.contentID=content.id ";
@@ -66,7 +67,8 @@ exports.getHomefeedContentInBatches = async (req, res) => {
       insertString += "WHERE ";
       for (var contentT of contentTypeArray) {
         if (contentT !== "contest") {
-          insertString += `contentType='${contentT}' OR `;
+          insertString += `contentType=? OR `;
+          insertArray.push(contentT);
         }
       }
       insertString += " isContest=1 ";
@@ -106,7 +108,7 @@ exports.getHomefeedContentInBatches = async (req, res) => {
           responseCode = 200;
         } else {
           error = "Content does not exist";
-          responseCode = 500;
+          responseCode = 200;
         }
       }
       var ret = {
